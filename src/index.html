@@ -46,43 +46,62 @@
         <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black to-transparent"></div>
     </section>
 
-    <!-- Portfolio Grid -->
+    <!-- Portfolio Grid with Enhanced Baywatch Section -->
     <section id="work" class="py-20 bg-black">
         <div class="container mx-auto px-6">
-            <h2 class="text-4xl font-bold mb-16 reveal">Our Latest Work</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Portfolio Items -->
-                <div class="group relative overflow-hidden rounded-lg reveal animate__animated animate__fadeInUp">
-                    <img src="https://via.placeholder.com/600x400" alt="E-commerce Platform" class="w-full transform group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">E-commerce Platform</h3>
-                            <p class="text-gray-300">Modern online shopping experience</p>
+            <h2 class="text-4xl font-bold mb-16 reveal bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Our Latest Work</h2>
+            
+            <!-- Featured Project Card -->
+            <div class="max-w-5xl mx-auto mb-20 reveal">
+                <div class="relative overflow-hidden rounded-xl bg-gradient-to-r from-purple-900/30 to-blue-900/30 backdrop-blur">
+                    <div class="grid md:grid-cols-2 gap-8 p-8">
+                        <div class="space-y-6">
+                            <div class="space-y-4">
+                                <h3 class="text-3xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                                    Baywatch Robotics
+                                </h3>
+                                <p class="text-xl text-gray-300 leading-relaxed">
+                                    Pioneering the future of robotics through innovative engineering and cutting-edge technology solutions. This website was created to showcase the work at our
+                                    robotics team, FRC 7790.
+                                </p>
+                            </div>
+                            
+                            <!-- Project Features -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                    <span class="text-gray-300">Advanced Robotics</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                    <span class="text-gray-300">Photonic Vision</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                    <span class="text-gray-300">Modern Design</span>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                    <span class="text-gray-300">Innovative Engineering</span>
+                                </div>
+                            </div>
+                            
+                            <!-- CTA Button -->
+                            <a href="https://FRC7790.com" 
+                               class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg text-white font-semibold hover:scale-105 transition-all group">
+                                Explore Project
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-2 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </a>
                         </div>
-                    </div>
-                </div>
-
-                <!-- New Portfolio Item: Baywatch Robotics -->
-                <div class="group relative overflow-hidden rounded-lg reveal animate__animated animate__fadeInUp animate__delay-1s">
-                    <img src="https://via.placeholder.com/600x400" alt="Baywatch Robotics" class="w-full transform group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-start p-6">
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">Baywatch Robotics</h3>
-                            <p class="text-gray-300">
-                                Explore innovative robotics solutions at 
-                                <a href="https://FRC7790.com" class="underline hover:text-purple-400 transition-colors duration-300">FRC7790.com</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Additional Cool Animated Portfolio Item -->
-                <div class="group relative overflow-hidden rounded-lg reveal animate__animated animate__fadeInUp animate__delay-2s">
-                    <img src="https://via.placeholder.com/600x400" alt="Interactive Design" class="w-full transform group-hover:scale-110 transition-transform duration-500">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">Interactive Design</h3>
-                            <p class="text-gray-300">Engaging animations and visual effects that captivate audiences</p>
+                        
+                        <!-- Project Image -->
+                        <div class="relative group">
+                            <div class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 group-hover:opacity-75 transition-opacity rounded-xl"></div>
+                            <img src="assets/images/baywatchLogo.png" 
+                                 alt="Baywatch Robotics" 
+                                 class="w-full h-full object-cover rounded-xl transform group-hover:scale-105 transition-transform duration-500">
                         </div>
                     </div>
                 </div>
@@ -90,7 +109,7 @@
         </div>
     </section>
 
-    <!-- About Section -->
+    <!-- Updated About Section to include riptide.png -->
     <section id="about" class="py-20 bg-gradient-to-b from-black to-gray-900">
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -110,9 +129,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="relative reveal">
-                    <!-- Add about section image or graphics -->
-                    <div class="aspect-square rounded-full bg-gradient-to-r from-purple-500 to-blue-500 opacity-20 animate-pulse"></div>
+                <div class="relative reveal flex justify-center items-center">
+                    <!-- About Section Graphic -->
+                    <div class="aspect-square rounded-full bg-gradient-to-r from-purple-500 to-blue-500 opacity-20 animate-pulse">
+                        
+                    </div>  
                 </div>
             </div>
         </div>
