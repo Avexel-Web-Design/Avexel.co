@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Web Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="assets/styles/main.css" rel="stylesheet">
+    <script src="js/animations.js" defer></script>
+</head>
+<body class="bg-black text-white overflow-x-hidden">
+    <!-- Hero Section -->
+    <section class="min-h-screen relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-purple-900/20 to-blue-900/20 z-0"></div>
+        <nav class="fixed w-full z-50 bg-black/80 backdrop-blur-sm">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                        WebStudio
+                    </div>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="#work" class="hover:text-purple-400 transition-colors">Work</a>
+                        <a href="#about" class="hover:text-purple-400 transition-colors">About</a>
+                        <a href="#contact" class="hover:text-purple-400 transition-colors">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container mx-auto px-6 pt-32 relative z-10">
+            <h1 class="text-6xl md:text-8xl font-bold mb-8 animate__animated animate__fadeIn">
+                We Create<br>
+                <span class="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                    Digital Magic
+                </span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-400 mb-12 max-w-2xl animate__animated animate__fadeIn animate__delay-1s">
+                Transforming ideas into stunning digital experiences through creative web design and development.
+            </p>
+            <a href="#work" class="inline-block px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full text-white font-semibold hover:scale-105 transition-transform animate__animated animate__fadeIn animate__delay-2s">
+                View Our Work
+            </a>
+        </div>
+
+        <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black to-transparent"></div>
+    </section>
+
+    <!-- Portfolio Grid -->
+    <section id="work" class="py-20 bg-black">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-16 reveal">Our Latest Work</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Portfolio Items -->
+                <div class="group relative overflow-hidden rounded-lg reveal">
+                    <img src="https://via.placeholder.com/600x400" alt="Project 1" class="w-full transform group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">E-commerce Platform</h3>
+                            <p class="text-gray-300">Modern online shopping experience</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add more portfolio items here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="reveal">
+                    <h2 class="text-4xl font-bold mb-8">About Us</h2>
+                    <p class="text-gray-400 text-lg mb-6">
+                        We're a creative team of designers and developers passionate about crafting exceptional digital experiences.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6 mt-12">
+                        <div class="p-6 bg-gray-800 rounded-lg hover:bg-purple-500 transition-colors">
+                            <h3 class="text-xl font-bold mb-2">Design</h3>
+                            <p class="text-gray-400">Beautiful, intuitive interfaces</p>
+                        </div>
+                        <div class="p-6 bg-gray-800 rounded-lg hover:bg-purple-500 transition-colors">
+                            <h3 class="text-xl font-bold mb-2">Develop</h3>
+                            <p class="text-gray-400">Clean, efficient code</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative reveal">
+                    <!-- Add about section image or graphics -->
+                    <div class="aspect-square rounded-full bg-gradient-to-r from-purple-500 to-blue-500 opacity-20 animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-black">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold mb-16 text-center reveal">Get In Touch</h2>
+                <form class="space-y-8 reveal">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <input type="text" placeholder="Name" class="w-full p-4 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400">
+                        <input type="email" placeholder="Email" class="w-full p-4 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400">
+                    </div>
+                    <textarea rows="6" placeholder="Message" class="w-full p-4 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"></textarea>
+                    <button class="w-full py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg hover:scale-105 transition-transform">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
