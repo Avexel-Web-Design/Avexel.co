@@ -25,3 +25,35 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         });
     });
 });
+
+// Counter animation
+const counters = document.querySelectorAll('.counter');
+        
+        const runCounter = (counter) => {
+            const target = +counter.dataset.target;
+            let count = 0;
+            const increment = target / 100;
+            
+            const updateCount = () => {
+                if(count < target) {
+                    count += increment;
+                    counter.innerText = Math.ceil(count);
+                    setTimeout(updateCount, 10);
+                } else {
+                    counter.innerText = target;
+                }
+            }
+            
+            updateCount();
+        }
+
+        const observerCallback = (entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    runCounter(entry.target);
+                }
+            });
+        }
+
+        const observer = new IntersectionObserver(observerCallback);
+        counters.forEach(counter => observer.observe(counter));
