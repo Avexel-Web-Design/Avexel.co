@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creative Web Studio</title>
+    <title>Avexel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link href="assets/styles/main.css" rel="stylesheet">
@@ -17,7 +17,7 @@
             <div class="container mx-auto px-6 py-4">
                 <div class="flex items-center justify-between">
                     <div class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                        WebStudio
+                        Avexel
                     </div>
                     <div class="hidden md:flex space-x-8">
                         <a href="#work" class="hover:text-purple-400 transition-colors">Work</a>
@@ -38,11 +38,11 @@
                     Create
                 </span>
                 <br>
-                <span class="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    <span class="inline-block mr-4 animate__animated animate__fadeInUp animate__delay-3s">
+                <span>
+                    <span class="inline-block mr-4 animate__animated animate__fadeInUp animate__delay-3s bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent leading-normal pb-1">
                         Digital
                     </span>
-                    <span class="inline-block animate__animated animate__fadeInUp animate__delay-4s">
+                    <span class="inline-block animate__animated animate__fadeInUp animate__delay-4s bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent leading-normal pb-1">
                         Magic
                     </span>
                 </span>
@@ -126,40 +126,6 @@
                 </div>
             </div>
         </section>
-
-    <!-- Add this JavaScript for counter animation for cards -->
-    <script>
-        const counters = document.querySelectorAll('.counter');
-        
-        const runCounter = (counter) => {
-            const target = +counter.dataset.target;
-            let count = 0;
-            const increment = target / 100;
-            
-            const updateCount = () => {
-                if(count < target) {
-                    count += increment;
-                    counter.innerText = Math.ceil(count);
-                    setTimeout(updateCount, 10);
-                } else {
-                    counter.innerText = target;
-                }
-            }
-            
-            updateCount();
-        }
-
-        const observerCallback = (entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    runCounter(entry.target);
-                }
-            });
-        }
-
-        const observer = new IntersectionObserver(observerCallback);
-        counters.forEach(counter => observer.observe(counter));
-    </script>
 
     <!-- Portfolio Grid with Enhanced Baywatch Section -->
     <section id="work" class="py-20 bg-black">
