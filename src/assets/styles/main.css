@@ -46,26 +46,26 @@
 }
 
 .animate-draw {
-    animation: drawComplex 2s ease-out forwards;
+    animation: drawComplex 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .draw-path {
     opacity: 0.8;
-    animation: drawPath 2s ease-out forwards;
+    animation: drawPath 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .delay-1 {
-    animation-delay: 0.2s;
+    animation-delay: 1.5s;
 }
 
 .delay-2 {
-    animation-delay: 0.4s;
+    animation-delay: 1.75s;
 }
 
 .delay-3 {
-    animation-delay: 0.6s;
+    animation-delay: 1.8s;
 }
 
 .delay-4 {
-    animation-delay: 0.8s;
+    animation-delay: 1.8s;
 }
