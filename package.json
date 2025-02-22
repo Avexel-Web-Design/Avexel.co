@@ -2,7 +2,7 @@
   "name": "portfolio-website",
   "version": "1.0.0",
   "description": "A visually engaging portfolio website showcasing design abilities with animated web design elements.",
-  "main": "src/index.html",
+  "main": "index.html",
   "scripts": {
     "start": "live-server src",
     "build": "echo 'Build process not defined yet.'"
