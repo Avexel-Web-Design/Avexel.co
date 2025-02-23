@@ -117,37 +117,37 @@ document.addEventListener('DOMContentLoaded', function(){
     const btn = document.getElementById('menu-btn');
     const menu = document.getElementById('mobile-menu');
     const hamburger = btn.querySelector('.hamburger-menu');
-    let isOpen = false;
-  
+    
     btn.addEventListener('click', () => {
-      isOpen = !isOpen;
-      hamburger.classList.toggle('active');
-      
-      if (isOpen) {
-        menu.style.transform = 'translateY(0)';
-        document.body.style.overflow = 'hidden';
-      } else {
-        menu.style.transform = 'translateY(-100%)';
-        document.body.style.overflow = '';
-      }
+        hamburger.classList.toggle('active');
+        menu.classList.toggle('active');
+        menu.classList.toggle('hidden');
+        
+        // Toggle body scroll
+        if (menu.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
     });
-  
+    
     // Close menu when clicking menu items
     menu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        if (isOpen) {
-          isOpen = false;
-          hamburger.classList.remove('active');
-          menu.style.transform = 'translateY(-100%)';
-          document.body.style.overflow = '';
-        }
-      });
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            menu.classList.remove('active');
+            menu.classList.add('hidden');
+            document.body.style.overflow = '';
+        });
     });
-  
+    
     // Close menu on escape key
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        toggleMenu();
-      }
+        if (e.key === 'Escape' && menu.classList.contains('active')) {
+            hamburger.classList.remove('active');
+            menu.classList.remove('active');
+            menu.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
     });
-  });
+});

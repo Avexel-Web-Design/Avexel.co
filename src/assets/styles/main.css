@@ -141,3 +141,17 @@
     visibility: visible;
     opacity: 1;
   }
+
+.mobile-menu {
+    visibility: visible;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.mobile-menu.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) !important;
+}
