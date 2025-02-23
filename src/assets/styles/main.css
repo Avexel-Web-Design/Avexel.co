@@ -45,6 +45,18 @@
     }
 }
 
+@keyframes flowingGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 .animate-draw {
     animation: drawComplex 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -52,6 +64,11 @@
 .draw-path {
     opacity: 0.8;
     animation: drawPath 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.flowing-gradient {
+    background-size: 200% 200%;
+    animation: flowingGradient 3s ease infinite;
 }
 
 .delay-1 {
