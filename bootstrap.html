@@ -13,15 +13,42 @@
 <body class="bg-black text-white overflow-y-scroll">
 
 <!-- Navigation Bar -->
-<nav class="fixed top-0 w-full z-50 backdrop-blur-sm">
-  <div class="container mx-auto px-6 py-4">
-    <a href="/" class="flex items-center space-x-3 w-fit">
-      <img src="../assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-8 h-8">
-      <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+<nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
+  <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center space-x-1">
+      <!-- Artistic Logo -->
+      <div class="relative flex items-center">
+        <img src="src/assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-16 h-16 relative">
+      </div>
+      <div class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
         Avexel
-      </span>
-    </a>
+      </div>
+    </div>
+    <!-- Desktop Menu -->
+    <ul class="hidden md:flex space-x-8">
+      <li><a href="#capabilities" class="hover:text-purple-400 transition-colors">Capabilities</a></li>
+      <li><a href="#about" class="hover:text-purple-400 transition-colors">About</a></li>
+      <li><a href="#services" class="hover:text-purple-400 transition-colors">Services</a></li>
+      <li><a href="#work" class="hover:text-purple-400 transition-colors">Portfolio</a></li>
+      <li><a href="#blog" class="hover:text-purple-400 transition-colors">Articles</a></li>
+    </ul>
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden focus:outline-none" aria-label="Toggle menu">
+      <svg id="hamburger-icon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16">
+        </path>
+      </svg>
+    </button>
   </div>
+  <!-- Mobile Menu -->
+  <ul id="mobile-menu" class="md:hidden bg-black px-6 pb-4 hidden flex-col space-y-4">
+    <li><a href="#capabilities" class="block hover:text-purple-400 transition-colors">Capabilities</a></li>
+    <li><a href="#about" class="block hover:text-purple-400 transition-colors">About</a></li>
+    <li><a href="#services" class="block hover:text-purple-400 transition-colors">Services</a></li>
+    <li><a href="#work" class="block hover:text-purple-400 transition-colors">Portfolio</a></li>
+    <li><a href="#blog" class="block hover:text-purple-400 transition-colors">Articles</a></li>
+  </ul>
 </nav>
 
 <header class="relative min-h-[70vh] overflow-hidden bg-fixed">

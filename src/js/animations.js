@@ -32,11 +32,10 @@ if (history.scrollRestoration) {
 }
 
 window.addEventListener('load', () => {
-    // Only restore scroll position if this is a page refresh (not navigation from another page)
-    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-        const savedScrollPos = sessionStorage.getItem('scrollPos') || '0';
+    const savedScrollData = JSON.parse(sessionStorage.getItem('scrollPos'));
+    if (savedScrollData && savedScrollData.path === window.location.pathname) {
         window.scrollTo({
-            top: parseInt(savedScrollPos),
+            top: parseInt(savedScrollData.position),
             behavior: 'smooth'
         });
     }
@@ -44,10 +43,8 @@ window.addEventListener('load', () => {
 
 // Store scroll position before unload
 window.addEventListener('beforeunload', () => {
-    // Store the URL along with the scroll position
-    const currentPath = window.location.pathname;
     const scrollData = {
-        path: currentPath,
+        path: window.location.pathname,
         position: window.scrollY
     };
     sessionStorage.setItem('scrollPos', JSON.stringify(scrollData));
