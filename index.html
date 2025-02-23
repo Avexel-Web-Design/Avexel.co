@@ -36,10 +36,11 @@
       </div>
       <!-- Desktop Menu -->
       <ul class="hidden md:flex space-x-8">
-        <li><a href="#work" class="hover:text-purple-400 transition-colors">Work</a></li>
+        <li><a href="#capabilities" class="hover:text-purple-400 transition-colors">Capabilities</a></li>
         <li><a href="#about" class="hover:text-purple-400 transition-colors">About</a></li>
         <li><a href="#services" class="hover:text-purple-400 transition-colors">Services</a></li>
-        <li><a href="#blog" class="hover:text-purple-400 transition-colors">Blog</a></li>
+        <li><a href="#work" class="hover:text-purple-400 transition-colors">Portfolio</a></li>
+        <li><a href="#blog" class="hover:text-purple-400 transition-colors">Articles</a></li>
       </ul>
       <!-- Mobile Menu Button -->
       <button id="menu-btn" class="md:hidden focus:outline-none" aria-label="Toggle menu">
@@ -52,18 +53,19 @@
     </div>
     <!-- Mobile Menu -->
     <ul id="mobile-menu" class="md:hidden bg-black px-6 pb-4 hidden flex-col space-y-4">
-      <li><a href="#work" class="block hover:text-purple-400 transition-colors">Work</a></li>
+      <li><a href="#capabilities" class="block hover:text-purple-400 transition-colors">Capabilities</a></li>
       <li><a href="#about" class="block hover:text-purple-400 transition-colors">About</a></li>
       <li><a href="#services" class="block hover:text-purple-400 transition-colors">Services</a></li>
-      <li><a href="#blog" class="block hover:text-purple-400 transition-colors">Blog</a></li>
+      <li><a href="#work" class="block hover:text-purple-400 transition-colors">Portfolio</a></li>
+      <li><a href="#blog" class="block hover:text-purple-400 transition-colors">Articles</a></li>
     </ul>
   </nav>
 
-  <!-- Hero Section with Parallax/Background Animation -->
+  <!-- Banner Section -->
   <section class="min-h-screen relative overflow-hidden bg-fixed">
     <div class="absolute inset-0 bg-gradient-to-r from-purple-900/20 to-blue-900/20 animate-pulse" style="animation-duration: 5s;"></div>
     <div class="container mx-auto px-6 pt-32 relative z-10 flex flex-col md:flex-row items-center justify-between">
-      <!-- Hero Text (Left Side) -->
+      <!-- Banner Text -->
       <div class="md:w-1/2">
         <h1 class="text-6xl md:text-8xl font-bold mb-8">
           <span class="inline-block animate__animated animate__fadeInUp" style="animation-delay: 0s;">We</span>
@@ -90,7 +92,7 @@
           </a>
         </div>
       </div>
-      <!-- Animated SVG Wireframe (Right Side) -->
+      <!-- Animated SVG Wireframe -->
       <div class="md:w-1/2 flex justify-center p-4">
         <svg viewBox="0 0 400 300" class="w-full h-auto">
           <defs>
@@ -145,8 +147,8 @@
     <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black to-transparent"></div>
   </section>
 
-  <!-- Skills & Capabilities Section -->
-  <section class="py-20 bg-black">
+  <!-- Capabilities Section -->
+  <section id="capabilities" class="py-20 bg-black scroll-mt-24">
       <div class="container mx-auto px-6">
           <h2 class="text-4xl font-bold mb-16 text-center reveal">Skills & Capabilities</h2>
           
@@ -214,8 +216,8 @@
       </div>
   </section>
 
-  <!-- About Us Section with Team and Timeline -->
-  <section id="about" class="py-20 bg-gradient-to-b from-black to-gray-900">
+  <!-- About Us Section -->
+  <section id="about" class="py-20 bg-gradient-to-b from-black to-gray-900 scroll-mt-24">
     <div class="container mx-auto px-6">
       <h2 class="text-4xl font-bold mb-8 text-center">About Us</h2>
       <p class="text-gray-400 text-lg mb-12 text-center max-w-3xl mx-auto">
@@ -261,7 +263,7 @@
   </section>
 
   <!-- Services Section -->
-  <section id="services" class="py-20 bg-gradient-to-b from-gray-900 to-black">
+  <section id="services" class="py-20 bg-gradient-to-b from-gray-900 to-black scroll-mt-24">
     <div class="container mx-auto px-6">
       <h2 class="text-4xl font-bold mb-12 text-center">Our Services & Process</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -315,7 +317,7 @@
   </section>
 
   <!-- Portfolio Section -->
-  <section id="work" class="py-20 bg-black">
+  <section id="work" class="py-20 bg-black scroll-mt-24">
     <div class="container mx-auto px-6">
       <h2 class="text-4xl font-bold mb-12 text-center bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Our Portfolio</h2>
       <!-- Baywatch Robotics Website -->

@@ -26,24 +26,31 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Save scroll position before page refresh
+// Modified scroll position handling
 if (history.scrollRestoration) {
     history.scrollRestoration = 'manual';
 }
 
 window.addEventListener('load', () => {
-    // Get the stored scroll position or default to 0
-    const savedScrollPos = sessionStorage.getItem('scrollPos') || '0';
-    // Animate to the saved position
-    window.scrollTo({
-        top: parseInt(savedScrollPos),
-        behavior: 'smooth'
-    });
+    // Only restore scroll position if this is a page refresh (not navigation from another page)
+    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+        const savedScrollPos = sessionStorage.getItem('scrollPos') || '0';
+        window.scrollTo({
+            top: parseInt(savedScrollPos),
+            behavior: 'smooth'
+        });
+    }
 });
 
 // Store scroll position before unload
 window.addEventListener('beforeunload', () => {
-    sessionStorage.setItem('scrollPos', window.scrollY.toString());
+    // Store the URL along with the scroll position
+    const currentPath = window.location.pathname;
+    const scrollData = {
+        path: currentPath,
+        position: window.scrollY
+    };
+    sessionStorage.setItem('scrollPos', JSON.stringify(scrollData));
 });
 
 // Navbar background control
