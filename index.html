@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Avexel</title>
-  <link rel="shortcut icon" type="image/png" href="src/assets/images/Logo.png">
+  <link rel="shortcut icon" type="image/png" href="src/assets/images/Logo-nobg-sm.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link href="src/assets/styles/main.css" rel="stylesheet">
@@ -25,8 +25,14 @@
   <!-- Navigation Bar -->
   <nav class="fixed top-0 w-full z-50 backdrop-blur-sm">
     <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-        Avexel
+      <div class="flex items-center space-x-3">
+        <!-- Artistic Logo -->
+        <div class="relative flex items-center">
+          <img src="src/assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-10 h-10 relative">
+        </div>
+        <div class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+          Avexel
+        </div>
       </div>
       <!-- Desktop Menu -->
       <ul class="hidden md:flex space-x-8">
@@ -36,10 +42,11 @@
         <li><a href="#blog" class="hover:text-purple-400 transition-colors">Blog</a></li>
       </ul>
       <!-- Mobile Menu Button -->
-      <button id="menu-btn" class="md:hidden focus:outline-none">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <button id="menu-btn" class="md:hidden focus:outline-none" aria-label="Toggle menu">
+        <svg id="hamburger-icon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"></path>
+                d="M4 6h16M4 12h16M4 18h16">
+          </path>
         </svg>
       </button>
     </div>
@@ -49,7 +56,6 @@
       <li><a href="#about" class="block hover:text-purple-400 transition-colors">About</a></li>
       <li><a href="#services" class="block hover:text-purple-400 transition-colors">Services</a></li>
       <li><a href="#blog" class="block hover:text-purple-400 transition-colors">Blog</a></li>
-      li>
     </ul>
   </nav>
 
