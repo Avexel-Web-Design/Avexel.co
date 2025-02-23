@@ -28,7 +28,7 @@
       <div class="flex items-center space-x-1">
         <!-- Artistic Logo -->
         <div class="relative flex items-center">
-          <img src="src/assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-10 h-10 relative">
+          <img src="src/assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-16 h-16 relative">
         </div>
         <div class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
           Avexel
@@ -190,33 +190,52 @@
   </section>
 
   <!-- Services Section -->
-  <section id="services" class="py-20 bg-black">
+  <section id="services" class="py-20 bg-gradient-to-b from-gray-900 to-black">
     <div class="container mx-auto px-6">
       <h2 class="text-4xl font-bold mb-12 text-center">Our Services & Process</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-        <!-- Detailed Service -->
-        <div class="flex gap-6">
-          <div class="flex-shrink-0">
-            <i class="fas fa-laptop-code text-4xl text-purple-500"></i>
-          </div>
-          <div>
-            <h3 class="text-2xl font-bold mb-2">Web Design & Development</h3>
-            <p class="text-gray-400">
-              Creating visually stunning and highly functional websites, from conceptualization to launch. We work
-              directly with our business clients to ensure perfect alignment with their brand and goals.
-            </p>
+        <!-- Service Card 1 -->
+        <div class="relative group overflow-hidden rounded-lg transition-transform duration-500 hover:scale-105">
+          <!-- Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-75 transition-opacity rounded-lg"></div>
+          <div class="flex gap-6 bg-gray-800 p-6 rounded-lg relative">
+            <div class="flex-shrink-0">
+              <i class="fas fa-laptop-code text-4xl text-purple-500"></i>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold mb-2">Web Design & Development</h3>
+              <p class="text-gray-400">
+                Creating visually stunning and highly functional websites, from conceptualization to launch.
+                We work directly with our business clients to ensure perfect alignment with their brand and goals.
+              </p>
+            </div>
           </div>
         </div>
-        <div class="flex gap-6">
-          <div class="flex-shrink-0">
-            <i class="fas fa-mobile-alt text-4xl text-blue-500"></i>
+        <!-- Service Card 2 -->
+        <div class="relative group overflow-hidden rounded-lg transition-transform duration-500 hover:scale-105">
+          <!-- Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-75 transition-opacity rounded-lg"></div>
+          <div class="flex gap-6 bg-gray-800 p-6 rounded-lg relative">
+            <div class="flex-shrink-0">
+              <i class="fas fa-mobile-alt text-4xl text-blue-500"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-2">
+                <h3 class="text-2xl font-bold">Mobile App Development</h3>
+                <span class="inline-block bg-gray-700 text-xs text-white px-2 py-1 rounded">COMING SOON</span>
+              </div>
+              <p class="text-gray-400">
+                Developing intuitive, high-performance mobile applications tailored to your business needs.
+                Engage your customers on the go with seamless and responsive apps.
+                Stay tuned for upcoming features and improvements.
+              </p>
+            </div>
           </div>
-          <!-- Missing content and closing div -->
         </div>
-        <!-- Process Description -->
-        <div class="md:col-span-2 mt-12">
-          <h3 class="text-3xl font-bold mb-4 text-center">Our Process</h3>
-          <p class="text-gray-400 text-lg text-center max-w-3xl mx-auto">
+        <!-- Process Description Card -->
+        <div class="md:col-span-2 mt-12 bg-gray-800 p-6 rounded-lg text-center duration-500 hover:scale-105">
+          <h3 class="text-3xl font-bold mb-4">Our Process</h3>
+          <p class="text-gray-400 text-lg max-w-3xl mx-auto">
             From ideation and design through development and deployment, we work collaboratively with our clients to transform ideas into digital solutions. Our agile process ensures timely delivery and continuous improvement.
           </p>
         </div>
