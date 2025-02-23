@@ -44,6 +44,15 @@
   <link href="src/assets/styles/main.css" rel="stylesheet">
   <script src="src/js/animations.js" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const btn = document.getElementById('menu-btn');
+      const menu = document.getElementById('mobile-menu');
+      btn.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+      });
+    });
+  </script>
 </head>
 <body class="bg-black text-white overflow-x-hidden">
 
@@ -78,7 +87,55 @@
         </div>
       </button>
     </div>
-
+    <!-- Mobile Menu -->
+<!-- Change this part in your index.html -->
+<div class="mobile-menu fixed top-0 left-0 w-full h-screen bg-black/95 backdrop-blur-lg transform transition-all duration-300 -translate-y-full z-50 hidden" id="mobile-menu">
+  <!-- Menu Header -->
+  <div class="flex items-center justify-between p-6 border-b border-gray-800">
+    <div class="flex items-center space-x-2">
+      <img src="src/assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-12 h-12">
+      <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+        Avexel
+      </span>
+    </div>
+  </div>
+  <!-- Menu Items -->
+  <nav class="p-6">
+    <ul class="space-y-6">
+      <li>
+        <a href="#capabilities" class="flex items-center space-x-2 text-xl hover:text-purple-400 transition-colors">
+          <i class="fas fa-chart-bar w-6"></i>
+          <span>Capabilities</span>
+        </a>
+      </li>
+      <li>
+        <a href="#about" class="flex items-center space-x-2 text-xl hover:text-purple-400 transition-colors">
+          <i class="fas fa-users w-6"></i>
+          <span>About</span>
+        </a>
+      </li>
+      <li>
+        <a href="#services" class="flex items-center space-x-2 text-xl hover:text-purple-400 transition-colors">
+          <i class="fas fa-code w-6"></i>
+          <span>Services</span>
+        </a>
+      </li>
+      <li>
+        <a href="#work" class="flex items-center space-x-2 text-xl hover:text-purple-400 transition-colors">
+          <i class="fas fa-briefcase w-6"></i>
+          <span>Portfolio</span>
+        </a>
+      </li>
+      <li>
+        <a href="#blog" class="flex items-center space-x-2 text-xl hover:text-purple-400 transition-colors">
+          <i class="fas fa-newspaper w-6"></i>
+          <span>Articles</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+  </nav>
 
   <!-- Banner Section -->
   <section class="min-h-screen relative overflow-hidden bg-fixed">
