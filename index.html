@@ -44,15 +44,6 @@
   <link href="src/assets/styles/main.css" rel="stylesheet">
   <script src="src/js/animations.js" defer></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <script>
-    document.addEventListener('DOMContentLoaded', function(){
-      const btn = document.getElementById('menu-btn');
-      const menu = document.getElementById('mobile-menu');
-      btn.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-      });
-    });
-  </script>
 </head>
 <body class="bg-black text-white overflow-x-hidden">
 
@@ -72,7 +63,23 @@
         <li><a href="#work" class="hover:text-purple-400 transition-colors">Portfolio</a></li>
         <li><a href="#blog" class="hover:text-purple-400 transition-colors">Articles</a></li>
       </ul>
+      <!-- Hamburger Button (visible on mobile) -->
+      <button id="menu-btn" class="md:hidden focus:outline-none text-white">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+    </div>
   </nav>
+
+  <!-- Add the mobile menu container (initially hidden via scale-0) -->
+  <div id="mobile-menu" class="fixed inset-0 z-40 bg-black/70 backdrop-blur-lg flex flex-col items-center justify-center transform scale-0 transition-transform duration-300">
+    <ul class="text-center space-y-8">
+      <li><a href="#capabilities" class="text-3xl text-white" onclick="toggleMenu()">Capabilities</a></li>
+      <li><a href="#about" class="text-3xl text-white" onclick="toggleMenu()">About</a></li>
+      <li><a href="#services" class="text-3xl text-white" onclick="toggleMenu()">Services</a></li>
+      <li><a href="#work" class="text-3xl text-white" onclick="toggleMenu()">Portfolio</a></li>
+      <li><a href="#blog" class="text-3xl text-white" onclick="toggleMenu()">Articles</a></li>
+    </ul>
+  </div>
 
   <!-- Banner Section -->
   <section class="min-h-screen relative overflow-hidden bg-fixed">
@@ -456,6 +463,17 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function toggleMenu() {
+      mobileMenu.classList.toggle('scale-0');
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+  </script>
 
 </body>
 </html>
