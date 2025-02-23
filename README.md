@@ -78,7 +78,7 @@ Contributions are always welcome! If you have suggestions, improvements, or bug 
 
 For inquiries or further information about the project, contact:
 - **Email**: your-email@domain.com
-- **Website**: [https://yourdomain.com](https://yourdomain.com)
+- **Website**: [https://ryanlatimer.github.io/Portfolio/](https://ryanlatimer.github.io/Portfolio/)
 
 ---
 
