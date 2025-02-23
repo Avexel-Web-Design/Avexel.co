@@ -361,44 +361,57 @@
   <section id="blog" class="py-20 bg-black">
     <div class="container mx-auto px-6">
       <h2 class="text-4xl font-bold mb-12 text-center">Featured Articles</h2>
-      <!-- Article Previews -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Updated Article Previews with Button and Group Hover Scale Effect -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
   <!-- Bootstrap Article -->
-  <div class="bg-gray-800 p-6 rounded-lg flex flex-col h-full">
-    <div class="mb-4 aspect-w-16 aspect-h-9">
-      <img src="src/assets/images/bootstrap-logo.svg" alt="Bootstrap Article" class="w-full h-48 object-contain rounded">
+  <a href="bootstrap.html" class="group block">
+    <div class="bg-gray-800 p-6 rounded-lg flex flex-col h-full transform transition-all duration-300 group-hover:scale-105">
+      <div class="mb-4 aspect-w-16 aspect-h-9">
+        <img src="src/assets/images/bootstrap-logo.svg" alt="Bootstrap Article" class="w-full h-48 object-contain rounded transition-transform duration-300 group-hover:scale-105">
+      </div>
+      <div class="flex flex-col flex-grow">
+        <h3 class="text-xl font-bold mb-2">Bootstrap: Block Based Website Creation</h3>
+        <p class="text-gray-400 mb-4 flex-grow">How Bootstrap set the standard for rapid prototyping.</p>
+        <button class="mt-auto inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg text-white font-semibold hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 transition-all duration-300">
+          Read More
+        </button>
+      </div>
     </div>
-    <div class="flex flex-col flex-grow">
-      <h3 class="text-xl font-bold mb-2">Bootstrap: Block Based Website Creation</h3>
-      <p class="text-gray-400 mb-4 flex-grow">How Bootsrapt set the standard for rapid prototyping.</p>
-      <a href="bootstrap.html" class="text-purple-500 hover:underline mt-auto">Read More</a>
-    </div>
-  </div>
+  </a>
 
   <!-- Tailwind Article -->
-  <div class="bg-gray-800 p-6 rounded-lg flex flex-col h-full">
-    <div class="mb-4 aspect-w-16 aspect-h-9">
-      <img src="src/assets/images/Tailwind_CSS_Logo.svg" alt="Tailwind Article" class="w-full h-48 object-contain rounded">
+  <a href="tailwind.html" class="group block">
+    <div class="bg-gray-800 p-6 rounded-lg flex flex-col h-full transform transition-all duration-300 group-hover:scale-105">
+      <div class="mb-4 aspect-w-16 aspect-h-9">
+        <img src="src/assets/images/Tailwind_CSS_Logo.svg" alt="Tailwind Article" class="w-full h-48 object-contain rounded transition-transform duration-300 group-hover:scale-105">
+      </div>
+      <div class="flex flex-col flex-grow">
+        <h3 class="text-xl font-bold mb-2">Tailwind CSS: Beautiful Customized Websites</h3>
+        <p class="text-gray-400 mb-4 flex-grow">A explanation of the framework powering beautiful websites with powerful creation abilities.</p>
+        <button class="mt-auto inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg text-white font-semibold hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 transition-all duration-300">
+          Read More
+        </button>
+      </div>
     </div>
-    <div class="flex flex-col flex-grow">
-      <h3 class="text-xl font-bold mb-2">Tailwind CSS: Beautiful Customized Websites</h3>
-      <p class="text-gray-400 mb-4 flex-grow">A explanation of the framework powering beautiful websites with powerful creation abilities.</p>
-      <a href="tailwind.html" class="text-purple-500 hover:underline mt-auto">Read More</a>
-    </div>
-  </div>
+  </a>
 
   <!-- Robotics Article -->
-  <div class="bg-gray-800 p-6 rounded-lg flex flex-col h-full">
-    <div class="mb-4 aspect-w-16 aspect-h-9">
-      <img src="src/assets/images/blog3.jpg" alt="Article 3" class="w-full h-48 object-cover rounded">
+  <a href="#" class="group block">
+    <div class="bg-gray-800 p-6 rounded-lg flex flex-col h-full transform transition-all duration-300 group-hover:scale-105">
+      <div class="mb-4 aspect-w-16 aspect-h-9">
+        <img src="src/assets/images/blog3.jpg" alt="Article 3" class="w-full h-48 object-cover rounded transition-transform duration-300 group-hover:scale-105">
+      </div>
+      <div class="flex flex-col flex-grow">
+        <h3 class="text-xl font-bold mb-2">Baywatch Robotics</h3>
+        <p class="text-gray-400 mb-4 flex-grow">The work by the Harbor Springs FRC Team in the 2025 Season</p>
+        <button class="mt-auto inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg text-white font-semibold hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 transition-all duration-300">
+          Read More
+        </button>
+      </div>
     </div>
-    <div class="flex flex-col flex-grow">
-      <h3 class="text-xl font-bold mb-2">Baywatch Robotics</h3>
-      <p class="text-gray-400 mb-4 flex-grow">The work by the Harbor Springs FRC Team in the 2025 Season</p>
-      <a href="#" class="text-purple-500 hover:underline mt-auto">Read More</a>
-    </div>
-  </div>
+  </a>
 </div>
+
     </div>
   </section>
 
