@@ -79,22 +79,61 @@
         <li><a href="index.html#blog" class="hover:text-purple-400 transition-colors">Articles</a></li>
       </ul>
       <!-- Mobile Menu Button -->
-      <button id="menu-btn" class="md:hidden focus:outline-none" aria-label="Toggle menu">
-        <svg id="hamburger-icon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16">
-          </path>
-        </svg>
+      <button id="menu-btn" class="navbar-toggler md:hidden" type="button" data-bs-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <div class="hamburger-menu">
+          <span class="line"></span>
+          <span class="line"></span>
+          <span class="line"></span>
+        </div>
       </button>
     </div>
     <!-- Mobile Menu -->
-    <ul id="mobile-menu" class="md:hidden bg-black px-6 pb-4 hidden flex-col space-y-4">
-      <li><a href="index.html#capabilities" class="block hover:text-purple-400 transition-colors">Capabilities</a></li>
-      <li><a href="index.html#about" class="block hover:text-purple-400 transition-colors">About</a></li>
-      <li><a href="index.html#services" class="block hover:text-purple-400 transition-colors">Services</a></li>
-      <li><a href="index.html#work" class="block hover:text-purple-400 transition-colors">Portfolio</a></li>
-      <li><a href="index.html#blog" class="block hover:text-purple-400 transition-colors">Articles</a></li>
-    </ul>
+    <div class="collapse navbar-collapse fixed top-0 left-0 w-full h-screen bg-black/95 backdrop-blur-lg transform transition-transform duration-300 ease-in-out translate-y-[-100%] z-40" id="mobile-menu">
+      <!-- Menu Header -->
+      <div class="flex items-center justify-between p-6 border-b border-gray-800">
+        <div class="flex items-center space-x-2">
+          <img src="src/assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-12 h-12">
+          <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            Avexel
+          </span>
+        </div>
+      </div>
+      <!-- Menu Items -->
+      <nav class="p-6">
+        <ul class="space-y-6">
+          <li>
+            <a href="#capabilities" class="flex items-center space-x-2 text-xl hover:text-purple-400 transition-colors">
+              <i class="fas fa-chart-bar w-6"></i>
+              <span>Capabilities</span>
+            </a>
+          </li>
+          <li>
+            <a href="#about" class="flex items-center space-x-2 text-xl hover:text-purple-400 transition-colors">
+              <i class="fas fa-users w-6"></i>
+              <span>About</span>
+            </a>
+          </li>
+          <li>
+            <a href="#services" class="flex items-center space-x-2 text-xl hover:text-purple-400 transition-colors">
+              <i class="fas fa-code w-6"></i>
+              <span>Services</span>
+            </a>
+          </li>
+          <li>
+            <a href="#work" class="flex items-center space-x-2 text-xl hover:text-purple-400 transition-colors">
+              <i class="fas fa-briefcase w-6"></i>
+              <span>Portfolio</span>
+            </a>
+          </li>
+          <li>
+            <a href="#blog" class="flex items-center space-x-2 text-xl hover:text-purple-400 transition-colors">
+              <i class="fas fa-newspaper w-6"></i>
+              <span>Articles</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </nav>
 
   <!-- Banner Section -->

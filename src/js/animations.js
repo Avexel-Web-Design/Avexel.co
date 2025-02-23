@@ -112,3 +112,42 @@ const observerCallback = (entries) => {
 
 const observer = new IntersectionObserver(observerCallback);
 counters.forEach(counter => observer.observe(counter));
+
+document.addEventListener('DOMContentLoaded', function(){
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    const hamburger = btn.querySelector('.hamburger-menu');
+    let isOpen = false;
+  
+    btn.addEventListener('click', () => {
+      isOpen = !isOpen;
+      hamburger.classList.toggle('active');
+      
+      if (isOpen) {
+        menu.style.transform = 'translateY(0)';
+        document.body.style.overflow = 'hidden';
+      } else {
+        menu.style.transform = 'translateY(-100%)';
+        document.body.style.overflow = '';
+      }
+    });
+  
+    // Close menu when clicking menu items
+    menu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) {
+          isOpen = false;
+          hamburger.classList.remove('active');
+          menu.style.transform = 'translateY(-100%)';
+          document.body.style.overflow = '';
+        }
+      });
+    });
+  
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        toggleMenu();
+      }
+    });
+  });
