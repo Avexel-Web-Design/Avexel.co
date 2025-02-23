@@ -26,6 +26,26 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Save scroll position before page refresh
+if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+}
+
+window.addEventListener('load', () => {
+    // Get the stored scroll position or default to 0
+    const savedScrollPos = sessionStorage.getItem('scrollPos') || '0';
+    // Animate to the saved position
+    window.scrollTo({
+        top: parseInt(savedScrollPos),
+        behavior: 'smooth'
+    });
+});
+
+// Store scroll position before unload
+window.addEventListener('beforeunload', () => {
+    sessionStorage.setItem('scrollPos', window.scrollY.toString());
+});
+
 // Counter animation
 const counters = document.querySelectorAll('.counter');
 
