@@ -151,6 +151,8 @@
       <h2 class="text-4xl font-bold mb-8 text-center">About Us</h2>
       <p class="text-gray-400 text-lg mb-12 text-center max-w-3xl mx-auto">
         We're a creative team of high school students dedicated to creating functional, beautiful websites and applications. Our focus on web design, development, and user experience enables us to exceed client expectations.
+        Our team works to create sites that serve to enhance your business, expand your outreach and visibility, and increase your online presence. We are dedicated to providing the best possible service to our clients
+        ensuring that your website works for your business.
       </p>
       <!-- Team Members Section -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
@@ -289,39 +291,45 @@
   <!-- Blog Section -->
   <section id="blog" class="py-20 bg-black">
     <div class="container mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-12 text-center">Latest Articles</h2>
-      <!-- Categories -->
-      <div class="flex justify-center gap-4 mb-12">
-        <button class="px-4 py-2 border border-purple-500 text-purple-500 rounded hover:bg-purple-500 hover:text-white transition">All</button>
-        <button class="px-4 py-2 border border-purple-500 text-purple-500 rounded hover:bg-purple-500 hover:text-white transition">Tutorials</button>
-        <button class="px-4 py-2 border border-purple-500 text-purple-500 rounded hover:bg-purple-500 hover:text-white transition">Insights</button>
-        <button class="px-4 py-2 border border-purple-500 text-purple-500 rounded hover:bg-purple-500 hover:text-white transition">News</button>
-      </div>
+      <h2 class="text-4xl font-bold mb-12 text-center">Featured Articles</h2>
       <!-- Article Previews -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <!-- Bootstrap Article -->
-        <div class="bg-gray-800 p-6 rounded-lg">
-          <img src="src/assets/images/bootstrap-logo.svg" alt="Bootstrap Article" class="w-full h-40 object-contain rounded mb-4">
-          <h3 class="text-xl font-bold mb-2">Bootstrap: The Framework That Changed Web Design</h3>
-          <p class="text-gray-400 mb-4">Explore how Bootstrap revolutionized responsive web development and continues to shape the industry.</p>
-          <a href="src/articles/bootstrap.html" class="text-purple-500 hover:underline">Read More</a>
-        </div>
-      
-        <!-- Tailwind Article -->
-        <div class="bg-gray-800 p-6 rounded-lg">
-          <img src="src/assets/images/Tailwind_CSS_Logo.svg" alt="Tailwind Article" class="w-full h-40 object-contain rounded mb-4">
-          <h3 class="text-xl font-bold mb-2">Understanding Tailwind CSS: A Comprehensive Guide</h3>
-          <p class="text-gray-400 mb-4">A deep dive into the utility-first CSS framework that's revolutionizing web development.</p>
-          <a href="src/articles/tailwind.html" class="text-purple-500 hover:underline">Read More</a>
-        </div>
-      </div>
-        <div class="bg-gray-800 p-6 rounded-lg">
-          <img src="src/assets/images/blog3.jpg" alt="Article 3" class="w-full h-40 object-cover rounded mb-4">
-          <h3 class="text-xl font-bold mb-2">Innovations in Robotics</h3>
-          <p class="text-gray-400 mb-4">Exploring how advancements in robotics are revolutionizing industries.</p>
-          <a href="#" class="text-purple-500 hover:underline">Read More</a>
-        </div>
-      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <!-- Bootstrap Article -->
+  <div class="bg-gray-800 p-6 rounded-lg flex flex-col h-full">
+    <div class="mb-4 aspect-w-16 aspect-h-9">
+      <img src="src/assets/images/bootstrap-logo.svg" alt="Bootstrap Article" class="w-full h-48 object-contain rounded">
+    </div>
+    <div class="flex flex-col flex-grow">
+      <h3 class="text-xl font-bold mb-2">Bootstrap: Block Based Website Creation</h3>
+      <p class="text-gray-400 mb-4 flex-grow">How Bootsrapt set the standard for rapid prototyping.</p>
+      <a href="src/articles/bootstrap.html" class="text-purple-500 hover:underline mt-auto">Read More</a>
+    </div>
+  </div>
+
+  <!-- Tailwind Article -->
+  <div class="bg-gray-800 p-6 rounded-lg flex flex-col h-full">
+    <div class="mb-4 aspect-w-16 aspect-h-9">
+      <img src="src/assets/images/Tailwind_CSS_Logo.svg" alt="Tailwind Article" class="w-full h-48 object-contain rounded">
+    </div>
+    <div class="flex flex-col flex-grow">
+      <h3 class="text-xl font-bold mb-2">Tailwind CSS: Beautiful Customized Websites</h3>
+      <p class="text-gray-400 mb-4 flex-grow">A explanation of the framework powering beautiful websites with powerful creation abilities.</p>
+      <a href="src/articles/tailwind.html" class="text-purple-500 hover:underline mt-auto">Read More</a>
+    </div>
+  </div>
+
+  <!-- Robotics Article -->
+  <div class="bg-gray-800 p-6 rounded-lg flex flex-col h-full">
+    <div class="mb-4 aspect-w-16 aspect-h-9">
+      <img src="src/assets/images/blog3.jpg" alt="Article 3" class="w-full h-48 object-cover rounded">
+    </div>
+    <div class="flex flex-col flex-grow">
+      <h3 class="text-xl font-bold mb-2">Baywatch Robotics</h3>
+      <p class="text-gray-400 mb-4 flex-grow">The work by the Harbor Springs FRC Team in the 2025 Season</p>
+      <a href="#" class="text-purple-500 hover:underline mt-auto">Read More</a>
+    </div>
+  </div>
+</div>
     </div>
   </section>
 
