@@ -46,6 +46,19 @@ window.addEventListener('beforeunload', () => {
     sessionStorage.setItem('scrollPos', window.scrollY.toString());
 });
 
+// Navbar background control
+const navbar = document.getElementById('navbar');
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        navbar.classList.add('bg-black/80', 'backdrop-blur-md');
+        navbar.classList.remove('backdrop-blur-sm');
+    } else {
+        navbar.classList.remove('bg-black/80', 'backdrop-blur-md');
+        navbar.classList.add('backdrop-blur-sm');
+    }
+});
+
 // Counter animation
 const counters = document.querySelectorAll('.counter');
 
