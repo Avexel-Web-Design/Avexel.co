@@ -4,24 +4,53 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tailwind: The Ultimate Utility-First Framework - Avexel</title>
-  <link rel="shortcut icon" type="image/png" href="../../assets/images/Logo-nobg-sm.png">
+  <link rel="shortcut icon" type="image/png" href="src/assets/images/Logo-nobg-sm.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-  <link href="../../assets/styles/main.css" rel="stylesheet">
-  <script src="../js/animations.js" defer></script>
+  <link href="src/assets/styles/main.css" rel="stylesheet">
+  <script src="src/js/animations.js" defer></script>
 </head>
 <body class="bg-black text-white overflow-y-scroll">
 
 <!-- Navigation Bar -->
-<nav class="fixed top-0 w-full z-50 backdrop-blur-sm">
-  <div class="container mx-auto px-6 py-4">
-    <a href="/" class="flex items-center space-x-3 w-fit">
-      <img src="../assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-8 h-8">
-      <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-        Avexel
-      </span>
-    </a>
+<nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
+  <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center space-x-1">
+      <!-- Artistic Logo -->
+      <a href="index.html#" class="flex items-center space-x-1">
+        <div class="relative flex items-center">
+          <img src="src/assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-16 h-16 relative">
+        </div>
+        <div class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+          Avexel
+        </div>
+      </a>
+    </div>
+    <!-- Desktop Menu -->
+    <ul class="hidden md:flex space-x-8">
+      <li><a href="index.html#capabilities" class="hover:text-purple-400 transition-colors">Capabilities</a></li>
+      <li><a href="index.html#about" class="hover:text-purple-400 transition-colors">About</a></li>
+      <li><a href="index.html#services" class="hover:text-purple-400 transition-colors">Services</a></li>
+      <li><a href="index.html#work" class="hover:text-purple-400 transition-colors">Portfolio</a></li>
+      <li><a href="index.html#blog" class="hover:text-purple-400 transition-colors">Articles</a></li>
+    </ul>
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden focus:outline-none" aria-label="Toggle menu">
+      <svg id="hamburger-icon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16">
+        </path>
+      </svg>
+    </button>
   </div>
+  <!-- Mobile Menu -->
+  <ul id="mobile-menu" class="md:hidden bg-black px-6 pb-4 hidden flex-col space-y-4">
+    <li><a href="index.html#capabilities" class="block hover:text-purple-400 transition-colors">Capabilities</a></li>
+    <li><a href="index.html#about" class="block hover:text-purple-400 transition-colors">About</a></li>
+    <li><a href="index.html#services" class="block hover:text-purple-400 transition-colors">Services</a></li>
+    <li><a href="index.html#work" class="block hover:text-purple-400 transition-colors">Portfolio</a></li>
+    <li><a href="index.html#blog" class="block hover:text-purple-400 transition-colors">Articles</a></li>
+  </ul>
 </nav>
 
 <!-- Enhanced Hero Section with Animated Visual -->
