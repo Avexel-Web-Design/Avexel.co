@@ -109,3 +109,7 @@ const observerCallback = (entries) => {
     }
   });
 };
+
+const observerOptions = { threshold: 0.5 };
+const observer = new IntersectionObserver(observerCallback, observerOptions);
+counters.forEach(counter => observer.observe(counter));

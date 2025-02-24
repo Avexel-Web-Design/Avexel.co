@@ -12,46 +12,39 @@
 </head>
 <body class="bg-black text-white overflow-y-scroll">
 
-<!-- Navigation Bar -->
-<nav class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
-  <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-    <div class="flex items-center space-x-1">
-      <!-- Artistic Logo -->
+  <!-- New Navigation Bar with Hamburger Mobile Menu -->
+  <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-black">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <!-- Logo -->
       <a href="index.html#" class="flex items-center space-x-1">
-        <div class="relative flex items-center">
-          <img src="src/assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-16 h-16 relative">
-        </div>
-        <div class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-          Avexel
-        </div>
+        <img src="src/assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-16 h-16">
+        <span class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Avexel</span>
       </a>
+      <!-- Desktop Menu -->
+      <ul class="hidden md:flex space-x-8">
+        <li><a href="index.html#capabilities" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Capabilities</a></li>
+        <li><a href="index.html#about" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">About</a></li>
+        <li><a href="index.html#services" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Services</a></li>
+        <li><a href="index.html#work" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Portfolio</a></li>
+        <li><a href="index.html#blog" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Articles</a></li>    
+      </ul>
+      <!-- Hamburger Button (visible on mobile) -->
+      <button id="menu-btn" class="md:hidden focus:outline-none text-white">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
     </div>
-    <!-- Desktop Menu -->
-    <ul class="hidden md:flex space-x-8">
-      <li><a href="index.html#capabilities" class="hover:text-purple-400 transition-colors">Capabilities</a></li>
-      <li><a href="index.html#about" class="hover:text-purple-400 transition-colors">About</a></li>
-      <li><a href="index.html#services" class="hover:text-purple-400 transition-colors">Services</a></li>
-      <li><a href="index.html#work" class="hover:text-purple-400 transition-colors">Portfolio</a></li>
-      <li><a href="index.html#blog" class="hover:text-purple-400 transition-colors">Articles</a></li>
+  </nav>
+
+  <!-- Add the mobile menu container (initially hidden via scale-0) -->
+  <div id="mobile-menu" class="fixed inset-0 z-40 bg-black/70 backdrop-blur-lg flex flex-col items-center justify-center transform -translate-y-full transition-all duration-500 ease-in-out">
+    <ul class="text-center space-y-8">
+      <li><a href="#capabilities" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Capabilities</a></li>
+      <li><a href="#about" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">About</a></li>
+      <li><a href="#services" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Services</a></li>
+      <li><a href="#work" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Portfolio</a></li>
+      <li><a href="#blog" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Articles</a></li>
     </ul>
-    <!-- Mobile Menu Button -->
-    <button id="menu-btn" class="md:hidden focus:outline-none" aria-label="Toggle menu">
-      <svg id="hamburger-icon" class="w-6 h-6 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16">
-        </path>
-      </svg>
-    </button>
   </div>
-  <!-- Mobile Menu -->
-  <ul id="mobile-menu" class="md:hidden bg-black px-6 pb-4 hidden flex-col space-y-4">
-    <li><a href="index.html#capabilities" class="block hover:text-purple-400 transition-colors">Capabilities</a></li>
-    <li><a href="index.html#about" class="block hover:text-purple-400 transition-colors">About</a></li>
-    <li><a href="index.html#services" class="block hover:text-purple-400 transition-colors">Services</a></li>
-    <li><a href="index.html#work" class="block hover:text-purple-400 transition-colors">Portfolio</a></li>
-    <li><a href="index.html#blog" class="block hover:text-purple-400 transition-colors">Articles</a></li>
-  </ul>
-</nav>
 
 <!-- Enhanced Hero Section with Animated Visual -->
 <header class="relative min-h-[70vh] overflow-hidden bg-fixed">
@@ -202,6 +195,36 @@
 
   </article>
 </main>
+
+<script>
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+
+  function toggleMenu() {
+    mobileMenu.classList.toggle('-translate-y-full');
+    
+    // Toggle menu icon
+    const icon = menuBtn.querySelector('i');
+    icon.classList.toggle('fa-bars');
+    icon.classList.toggle('fa-times');
+    
+    // Animate links
+    if (!mobileMenu.classList.contains('-translate-y-full')) {
+      mobileLinks.forEach((link, index) => {
+        setTimeout(() => {
+          link.classList.remove('opacity-0', 'translate-y-8');
+        }, 200 + (index * 100));
+      });
+    } else {
+      mobileLinks.forEach(link => {
+        link.classList.add('opacity-0', 'translate-y-8');
+      });
+    }
+  }
+
+  menuBtn.addEventListener('click', toggleMenu);
+</script>
 
 <!-- Footer -->
 <footer class="bg-black py-12">
