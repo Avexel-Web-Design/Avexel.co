@@ -7,44 +7,45 @@
   <link rel="shortcut icon" type="image/png" href="src/assets/images/Logo-nobg-sm.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link href="src/assets/styles/main.css" rel="stylesheet">
   <script src="src/js/animations.js" defer></script>
 </head>
 <body class="bg-black text-white overflow-y-scroll">
 
-  <!-- New Navigation Bar with Hamburger Mobile Menu -->
-  <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-black">
-    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="index.html#" class="flex items-center space-x-1">
-        <img src="src/assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-16 h-16">
-        <span class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Avexel</span>
-      </a>
-      <!-- Desktop Menu -->
-      <ul class="hidden md:flex space-x-8">
-        <li><a href="index.html#capabilities" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Capabilities</a></li>
-        <li><a href="index.html#about" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">About</a></li>
-        <li><a href="index.html#services" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Services</a></li>
-        <li><a href="index.html#work" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Portfolio</a></li>
-        <li><a href="index.html#blog" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Articles</a></li>    
-      </ul>
-      <!-- Hamburger Button (visible on mobile) -->
-      <button id="menu-btn" class="md:hidden focus:outline-none text-white">
-        <i class="fas fa-bars text-2xl"></i>
-      </button>
-    </div>
-  </nav>
-
-  <!-- Add the mobile menu container (initially hidden via scale-0) -->
-  <div id="mobile-menu" class="fixed inset-0 z-40 bg-black/70 backdrop-blur-lg flex flex-col items-center justify-center transform -translate-y-full transition-all duration-500 ease-in-out">
-    <ul class="text-center space-y-8">
-      <li><a href="#capabilities" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Capabilities</a></li>
-      <li><a href="#about" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">About</a></li>
-      <li><a href="#services" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Services</a></li>
-      <li><a href="#work" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Portfolio</a></li>
-      <li><a href="#blog" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Articles</a></li>
+<!-- New Navigation Bar with Hamburger Mobile Menu -->
+<nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-black">
+  <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="index.html#" class="flex items-center space-x-1">
+      <img src="src/assets/images/Logo-nobg-sm.png" alt="Avexel Logo" class="w-16 h-16">
+      <span class="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Avexel</span>
+    </a>
+    <!-- Desktop Menu -->
+    <ul class="hidden md:flex space-x-8">
+      <li><a href="#capabilities" class="hover:text-purple-400 transition-colors">Capabilities</a></li>
+      <li><a href="#about" class="hover:text-purple-400 transition-colors">About</a></li>
+      <li><a href="#services" class="hover:text-purple-400 transition-colors">Services</a></li>
+      <li><a href="#work" class="hover:text-purple-400 transition-colors">Portfolio</a></li>
+      <li><a href="#blog" class="hover:text-purple-400 transition-colors">Articles</a></li>
     </ul>
+    <!-- Hamburger Button (visible on mobile) -->
+    <button id="menu-btn" class="md:hidden focus:outline-none text-white">
+      <i class="fas fa-bars text-2xl"></i>
+    </button>
   </div>
+</nav>
+
+<!-- Add the mobile menu container (initially hidden via scale-0) -->
+<div id="mobile-menu" class="fixed inset-0 z-40 bg-black/70 backdrop-blur-lg flex flex-col items-center justify-center transform -translate-y-full transition-all duration-500 ease-in-out">
+  <ul class="text-center space-y-8">
+    <li><a href="#capabilities" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Capabilities</a></li>
+    <li><a href="#about" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">About</a></li>
+    <li><a href="#services" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Services</a></li>
+    <li><a href="#work" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Portfolio</a></li>
+    <li><a href="#blog" class="text-3xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link" onclick="toggleMenu()">Articles</a></li>
+  </ul>
+</div>
 
 <!-- Enhanced Hero Section with Animated Visual -->
 <header class="relative min-h-[70vh] overflow-hidden bg-fixed">
