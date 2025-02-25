@@ -78,7 +78,7 @@ Contributions are always welcome! If you have suggestions, improvements, or bug 
 
 For inquiries or further information about the project, contact:
 - **Email**: contact@avexel.co
-- **Website**: [https://www.avexel.co](avexel.co)
+- **Website**: [avexel.co]((https://www.avexel.co))
 
 ---
 
