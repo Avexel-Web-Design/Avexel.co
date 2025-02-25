@@ -24,19 +24,19 @@
   <link rel="canonical" href="https://yourdomain.com">
   
   <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Avexel",
-    "url": "https://yourdomain.com",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://yourdomain.com/?s={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Avexel",
+  "url": "https://yourdomain.com",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://yourdomain.com/?s={search_term_string}",
+    "query-input": "required name=search_term_string"
   }
-  </script>
+}
+</script>
   
   <link rel="shortcut icon" type="image/png" href="src/assets/images/Logo-nobg-sm.png">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -61,7 +61,7 @@
 <body class="bg-black text-white overflow-x-hidden">
 
   <!-- New Navigation Bar with Hamburger Mobile Menu -->
-  <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-black">
+  <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-transparent">
     <div class="container mx-auto px-6 py-4 flex items-center justify-between">
       <!-- Logo -->
       <a href="index.html#" class="flex items-center space-x-1">
@@ -545,10 +545,23 @@
 
     // Add click event listeners
     menuBtn.addEventListener('click', toggleMenu);
-    mobileLinks.forEach(link => {
-        link.addEventListener('click', closeMenu);
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+    // Add this inside your existing DOMContentLoaded event listener
+    const navbar = document.getElementById('navbar');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('bg-black/75', 'backdrop-blur-sm');
+            navbar.classList.remove('bg-transparent');
+        } else {
+            navbar.classList.remove('bg-black/75', 'backdrop-blur-sm');
+            navbar.classList.add('bg-transparent');
+        }
     });
-});
+  });
   </script>
 
 </body>
