@@ -77,8 +77,8 @@ Contributions are always welcome! If you have suggestions, improvements, or bug 
 ## Contact
 
 For inquiries or further information about the project, contact:
-- **Email**: your-email@domain.com
-- **Website**: [https://ryanlatimer.github.io/Portfolio/](https://ryanlatimer.github.io/Portfolio/)
+- **Email**: contact@avexel.co
+- **Website**: [https://www.avexel.co](avexel.co)
 
 ---
 
