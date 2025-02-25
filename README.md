@@ -1,85 +1,101 @@
-# Portfolio Website
+# Avexel Website
 
-Welcome to the **Avexel Portfolio Website** repository – a modern, visually engaging platform that showcases creative web design and development skills. This project demonstrates a range of animated effects, interactive elements, and a responsive design built with HTML, CSS, JavaScript, and Tailwind CSS.
+## Introduction
 
-## Overview
+This repository contains the source code for Avexel's website. Built with modern web technologies, it serves as our digital storefront and showcases our portfolio of work in web development and digital solutions.
 
-The Avexel Portfolio Website is designed to be both aesthetically appealing and highly functional. Key highlights include:
+## Technical Stack
 
-- **Responsive Design**: Effortlessly adapts to various devices and screen sizes.
-- **Rich Animations**: Utilizes CSS transitions, Tailwind animations, and custom JavaScript for dynamic interactions.
-- **Projects Showcase**: An engaging portfolio section that highlights completed projects with detailed case studies and animated previews.
-- **About & Contact**: Comprehensive sections that introduce the creative vision and offer an intuitive contact form for new opportunities.
+- **Frontend Framework**: HTML5, CSS3, JavaScript (ES6+)
+- **CSS Framework**: Tailwind CSS
+- **Performance Optimizations**: 
+  - Lazy loading images
+  - Optimized asset delivery
+  - Responsive design patterns
+- **Animation Libraries**:
+  - Animate.css
+  - Custom CSS transitions
+- **Icon System**: Font Awesome Pro
 
-## Key Features
+## Development Setup
 
-- **Utility-First Styling**: Leveraging Tailwind CSS to maintain a lean, maintainable codebase while ensuring rapid prototyping.
-- **Smooth Animations**: Subtle yet impactful animations that enhance user interactivity and overall experience.
-- **Modern Layouts**: Clean, modular layout sections that emphasize readability and user engagement.
-- **SEO Optimized**: Structured markup and meta tags for improved search engine visibility and better social media integration.
-- **Custom Scrollbar & Interactive Elements**: Unique design touches such as a custom animated scrollbar and hover effects that make the site stand out.
+### Prerequisites
 
-## Setup & Installation
+- Node.js (v18.0.0 or higher)
+- npm (v9.0.0 or higher)
+- Git
 
-Follow these simple steps to get the project running locally:
+### Local Development
 
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   ```
-2. **Navigate to the project directory**:
-   ```bash
-   cd portfolio-website
-   ```
-3. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-4. **Launch the Website**:
-   Open the `index.html` file directly in your preferred browser or use a local server (like Live Server in VS Code) to see the website in action.
+1. Clone the repository:
+```bash
+git clone https://github.com/avexel/corporate-website.git
+cd corporate-website
+```
 
-## Technologies Used
+2. Install dependencies:
+```bash
+npm install
+```
 
-The project leverages a modern web stack for a robust development experience:
-  
-- **HTML5** – Markup for a semantic structure and improved accessibility.
-- **CSS3 & Tailwind CSS** – Utility-first CSS framework for fast, responsive, and clean design.
-- **JavaScript** – For interactive elements and dynamic content rendering.
-- **Animate.css** – Pre-built CSS animations to add flair to visual transitions.
-- **Font Awesome** – Iconography to enrich navigational and UI components.
+3. Start development server:
+```bash
+npm run dev
+```
 
-## Project Structure
+The site will be available at `http://localhost:3000`
 
-A brief overview of the project’s directory layout:
+## Project Architecture
 
 ```
-/portfolio-website
-│
+corporate-website/
 ├── src/
 │   ├── assets/
-│   │   ├── images/         # Logo and project images
-│   │   └── styles/         # Main CSS/SCSS files
-│   ├── js/                 # JavaScript files including animations.js
-│   └── articles/           # Individual project or article pages
-│
-├── index.html              # Main landing page
-└── README.md               # Project documentation
+│   │   ├── images/     # Optimized images and graphics
+│   │   └── styles/     # Tailwind and custom CSS
+│   ├── js/            # JavaScript modules
+│   └── pages/         # Static pages and templates
+├── public/            # Static assets
+├── tailwind.config.js # Tailwind configuration
+└── package.json      
 ```
 
-## License
+## Build & Deployment
 
-This project is licensed under the **MIT License**. For further details, please refer to the [LICENSE](LICENSE) file included in the repository.
+### Production Build
+
+```bash
+npm run build
+```
+
+### Quality Assurance
+
+Before deploying:
+1. Run tests: `npm test`
+2. Check accessibility: `npm run a11y`
+3. Validate markup: `npm run validate`
+
+## Browser Support
+
+- Chrome (latest 2 versions)
+- Firefox (latest 2 versions)
+- Safari (latest 2 versions)
+- Edge (latest 2 versions)
 
 ## Contributing
 
-Contributions are always welcome! If you have suggestions, improvements, or bug reports, feel free to open an issue or submit a pull request. Please follow the repository's contribution guidelines for a smooth collaboration process.
+Internal team members should follow our [contribution guidelines](CONTRIBUTING.md) and coding standards.
+
+## Security
+
+Please report security vulnerabilities to security@avexel.co
+
+## Legal
+
+© 2024 Avexel. All rights reserved.  
+For licensing information, see [LICENSE](LICENSE)
 
 ## Contact
 
-For inquiries or further information about the project, contact:
-- **Email**: contact@avexel.co
-- **Website**: [avexel.co]((https://www.avexel.co))
-
----
-
-Thank you for checking out the Avexel Portfolio Website. Happy coding and designing!
+- **Business Inquiries**: contact@avexel.co
+- **Website**: [avexel.co](https://www.avexel.co)
