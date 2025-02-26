@@ -175,3 +175,115 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   });
 });
+
+// Mobile menu controller
+document.addEventListener('DOMContentLoaded', function() {
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    let menuOpen = false;
+    
+    // Only initialize if menu elements exist
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', function() {
+            if (!menuOpen) {
+                mobileMenu.classList.remove('-translate-y-full');
+                mobileMenu.classList.add('translate-y-0');
+                
+                // Animate links with delay
+                mobileLinks.forEach((link, index) => {
+                    setTimeout(() => {
+                        link.classList.remove('opacity-0', 'translate-y-8');
+                        link.classList.add('opacity-100', 'translate-y-0');
+                    }, 300 + (index * 100));
+                });
+            } else {
+                // Reset links first
+                mobileLinks.forEach((link) => {
+                    link.classList.add('opacity-0', 'translate-y-8');
+                    link.classList.remove('opacity-100', 'translate-y-0');
+                });
+                
+                // Then animate menu out after a small delay
+                setTimeout(() => {
+                    mobileMenu.classList.add('-translate-y-full');
+                    mobileMenu.classList.remove('translate-y-0');
+                }, 200);
+            }
+            menuOpen = !menuOpen;
+        });
+    }
+    
+    // Scroll reveal animations
+    const revealElements = document.querySelectorAll('.reveal');
+    
+    function checkReveal() {
+        const windowHeight = window.innerHeight;
+        const revealPoint = 150;
+        
+        revealElements.forEach(element => {
+            const revealTop = element.getBoundingClientRect().top;
+            
+            if (revealTop < windowHeight - revealPoint) {
+                element.classList.add('active');
+            } else {
+                element.classList.remove('active');
+            }
+        });
+    }
+    
+    // Counter animations
+    const counters = document.querySelectorAll('.counter');
+    let hasRun = false;
+    
+    function runCounters() {
+        if (hasRun) return;
+        
+        counters.forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            const count = +counter.innerText;
+            const increment = target / 100;
+            
+            if (count < target) {
+                counter.innerText = Math.ceil(count + increment);
+                setTimeout(() => runCounters(), 20);
+            } else {
+                counter.innerText = target;
+            }
+        });
+        
+        hasRun = true;
+    }
+    
+    function checkCounters() {
+        const capabilitiesSection = document.getElementById('capabilities');
+        if (capabilitiesSection) {
+            const top = capabilitiesSection.getBoundingClientRect().top;
+            if (top < window.innerHeight / 2) {
+                runCounters();
+            }
+        }
+    }
+    
+    // Initialize animations on scroll
+    window.addEventListener('scroll', () => {
+        checkReveal();
+        checkCounters();
+    });
+    
+    // Handle navbar transparency
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+            navbar.classList.add('bg-black/90', 'backdrop-blur-sm');
+            navbar.classList.remove('bg-transparent');
+        } else {
+            navbar.classList.remove('bg-black/90', 'backdrop-blur-sm');
+            navbar.classList.add('bg-transparent');
+        }
+    });
+    
+    // Initialize on page load
+    checkReveal();
+    checkCounters();
+});
