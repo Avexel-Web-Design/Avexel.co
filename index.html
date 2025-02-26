@@ -24,19 +24,19 @@
   <link rel="canonical" href="https://yourdomain.com">
   
   <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Avexel",
-    "url": "https://yourdomain.com",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://yourdomain.com/?s={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Avexel",
+  "url": "https://yourdomain.com",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://yourdomain.com/?s={search_term_string}",
+    "query-input": "required name=search_term_string"
   }
-  </script>
+}
+</script>
   
   <!-- Updated favicon with proper path -->
   <link rel="shortcut icon" type="image/png" href="/src/assets/images/Logo-nobg-sm.png">
@@ -66,7 +66,7 @@
 <body class="bg-black text-white overflow-x-hidden">
 
   <!-- New Navigation Bar with Hamburger Mobile Menu -->
-  <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-black">
+  <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-transparent">
     <div class="container mx-auto px-6 py-4 flex items-center justify-between">
       <!-- Logo -->
       <a href="index.html#" class="flex items-center space-x-1">
@@ -255,7 +255,7 @@
                   <h3 class="text-xl font-bold text-center mb-4">Speedy Development</h3>
                   <p class="text-gray-400 text-center">Fast prototyping and delivery of final product</p>
                   <div class="mt-4 text-center">
-                      <span class="text-3xl font-bold text-purple-500 counter" data-target="2">0</span>
+                      <span class="text-3xl font-bold text-purple-500 counter" data-target="7">100</span>
                       <span class="text-purple-500">Days</span>
                   </div>
               </div>
@@ -292,12 +292,12 @@
         <div class="text-center">
           <h3 class="text-xl font-bold">Gavin Moceri</h3>
           <p class="text-gray-400">Lead Developer</p>
-          <p class="mt-2 text-sm">Description Go Here</p>
+          <p class="mt-2 text-sm">Gavin Moceri is a talented frontend developer with skills in design, interactivity, and clarity.</p>
         </div>
         <div class="text-center">
           <h3 class="text-xl font-bold">Ryan Latimer</h3>
           <p class="text-gray-400">Lead Developer</p>
-          <p class="mt-2 text-sm">Description Go Here</p>
+          <p class="mt-2 text-sm">Ryan Latimer is a skilled frontend developer with skills in dynamic, engaging content and styling.</p>
         </div>
       </div>
       <!-- Timeline -->
@@ -392,20 +392,10 @@
               <p class="text-xl text-gray-300 leading-relaxed">
                 We encountered challenges with integrating modern design with advanced robotics technology. Our solution included a complete redesign, improved UX/UI and robust backend integration. The result was increased performance and client satisfaction.
               </p>
-              <div class="grid grid-cols-2 gap-4">
-                <div class="flex items-center space-x-2">
-                  <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
-                  <span class="text-gray-300">Creative Design</span>
-                </div>
-                <div class="flex items-center space-x-2">
-                  <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-                  <span class="text-gray-300">Tech Integration</span>
-                </div>
-              </div>
               <a href="https://FRC7790.com" 
                  class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg text-white font-semibold hover:scale-105 transition-all">
                 Explore Project
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transition-transform group-hover:translate-x-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="https://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transition-transform group-hover:translate-x-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </a>
@@ -478,6 +468,92 @@
     </div>
   </section>
 
+  <!-- Contact Section -->
+<section id="contact" class="py-20 bg-black scroll-mt-24">
+  <div class="container mx-auto px-6">
+    <h2 class="text-4xl font-bold mb-16 text-center bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Get in Touch</h2>
+    
+    <div class="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+      <!-- Contact Information -->
+      <div class="bg-gray-800/30 p-8 rounded-xl space-y-8">
+        <h3 class="text-2xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Contact Information</h3>
+        
+        <!-- Email Contact -->
+        <div class="flex items-center space-x-6 group">
+          <div class="w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+            <i class="fas fa-envelope text-2xl"></i>
+          </div>
+          <div class="transform transition-all duration-300 group-hover:translate-x-2">
+            <p class="text-gray-400 text-sm mb-1">Email Us At</p>
+            <p class="text-lg font-semibold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">contact@avexel.co</p>
+          </div>
+        </div>
+
+        <!-- Response Time -->
+        <div class="flex items-center space-x-6 group">
+          <div class="w-14 h-14 bg-gradient-to-r from-purple-500 to-blue-500 rounded-xl flex items-center justify-center transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
+            <i class="fas fa-clock text-2xl"></i>
+          </div>
+          <div class="transform transition-all duration-300 group-hover:translate-x-2">
+            <p class="text-gray-400 text-sm mb-1">Average Response Time</p>
+            <p class="text-lg font-semibold text-white">Within 24 hours</p>
+          </div>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="mt-12 p-6 bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-xl border border-purple-500/20">
+          <p class="text-gray-400 text-sm leading-relaxed">
+            We're here to help bring your digital vision to life. Reach out to us anytime for a consultation or to discuss your project needs.
+          </p>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="bg-gray-800/30 p-8 rounded-xl">
+        <form action="https://formsubmit.co/contact@avexel.co" method="POST" class="space-y-6">
+          <!-- Honeypot -->
+          <input type="text" name="_honey" style="display: none;">
+          <!-- Disable Captcha -->
+          <input type="hidden" name="_captcha" value="false">
+          <!-- Success Page -->
+          <input type="hidden" name="_next" value="https://avexel.co/success.html">
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-400 mb-2">Name</label>
+              <input type="text" id="name" name="name" required
+                class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white hover:border-purple-500/50">
+            </div>
+
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-400 mb-2">Email</label>
+              <input type="email" id="email" name="email" required
+                class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white hover:border-purple-500/50">
+            </div>
+          </div>
+
+          <div>
+            <label for="subject" class="block text-sm font-medium text-gray-400 mb-2">Subject</label>
+            <input type="text" id="subject" name="_subject" required
+              class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white hover:border-purple-500/50">
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-400 mb-2">Message</label>
+            <textarea id="message" name="message" rows="4" required
+              class="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-white hover:border-purple-500/50"></textarea>
+          </div>
+
+          <button type="submit"
+            class="w-full px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg text-white font-semibold hover:scale-105 transition-transform">
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
   <!-- Footer -->
   <footer class="bg-black py-12">
     <div class="container mx-auto px-6">
@@ -504,57 +580,5 @@
       </div>
     </div>
   </footer>
-
-  <script>
- document.addEventListener('DOMContentLoaded', () => {
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileLinks = document.querySelectorAll('.mobile-link');
-
-    function closeMenu() {
-        mobileMenu.classList.add('-translate-y-full');
-        const icon = menuBtn.querySelector('i');
-        icon.classList.remove('fa-times', 'rotate-180');
-        icon.classList.add('fa-bars');
-        
-        mobileLinks.forEach(link => {
-            link.classList.add('opacity-0', 'translate-y-8');
-            link.classList.remove('animate__animated', 'animate__fadeInUp');
-        });
-    }
-
-    function toggleMenu() {
-        mobileMenu.classList.toggle('-translate-y-full');
-        
-        // Toggle menu icon with rotation
-        const icon = menuBtn.querySelector('i');
-        icon.classList.toggle('fa-bars');
-        icon.classList.toggle('fa-times');
-        icon.classList.toggle('rotate-180');
-        
-        // Staggered animation for links
-        if (!mobileMenu.classList.contains('-translate-y-full')) {
-            mobileLinks.forEach((link, index) => {
-                setTimeout(() => {
-                    link.classList.remove('opacity-0', 'translate-y-8');
-                    link.classList.add('animate__animated', 'animate__fadeInUp');
-                }, 150 + (index * 100));
-            });
-        } else {
-            mobileLinks.forEach(link => {
-                link.classList.add('opacity-0', 'translate-y-8');
-                link.classList.remove('animate__animated', 'animate__fadeInUp');
-            });
-        }
-    }
-
-    // Add click event listeners
-    menuBtn.addEventListener('click', toggleMenu);
-    mobileLinks.forEach(link => {
-        link.addEventListener('click', closeMenu);
-    });
-});
-  </script>
-
 </body>
 </html>
