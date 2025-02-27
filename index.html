@@ -75,7 +75,7 @@
     }
   </style>
 </head>
-<body class="bg-black text-white overflow-x-hidden">
+<body class="bg-black text-white overflow-x-hidden select-none">
   <!-- Particle Background Canvas -->
   <canvas id="particle-background"></canvas>
 
@@ -93,7 +93,6 @@
         <li><a href="index.html#about" class="hover:text-purple-400 transition-colors">About</a></li>
         <li><a href="index.html#services" class="hover:text-purple-400 transition-colors">Services</a></li>
         <li><a href="index.html#work" class="hover:text-purple-400 transition-colors">Portfolio</a></li>
-        <li><a href="index.html#blog" class="hover:text-purple-400 transition-colors">Articles</a></li>
       </ul>
       <!-- Hamburger Button (visible on mobile) -->
       <button id="menu-btn" class="md:hidden focus:outline-none text-white">
@@ -127,11 +126,6 @@
       <li><a href="index.html#work" class="text-4xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link group">
         <span class="bg-left-bottom bg-gradient-to-r from-purple-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
           Portfolio
-        </span>
-      </a></li>
-      <li><a href="index.html#blog" class="text-4xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link group">
-        <span class="bg-left-bottom bg-gradient-to-r from-purple-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-          Articles
         </span>
       </a></li>
     </ul>
@@ -430,64 +424,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Blog Section -->
-  <section id="blog" class="py-20 bg-black">
-    <div class="container mx-auto px-6">
-      <h2 class="text-4xl font-bold mb-12 text-center">Featured Articles</h2>
-      <!-- Updated Article Previews with Button and Group Hover Scale Effect -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-  <!-- Bootstrap Article -->
-  <a href="bootstrap.html" class="group block">
-    <div class="bg-gray-800 p-6 rounded-lg flex flex-col h-full transform transition-all duration-300 group-hover:scale-105">
-      <div class="mb-4 aspect-w-16 aspect-h-9">
-        <img src="src/assets/images/bootstrap-logo.svg" alt="Bootstrap Article" class="w-full h-48 object-contain rounded transition-transform duration-300 group-hover:scale-105">
-      </div>
-      <div class="flex flex-col flex-grow">
-        <h3 class="text-xl font-bold mb-2">Bootstrap: Block Based Website Creation</h3>
-        <p class="text-gray-400 mb-4 flex-grow">How Bootstrap set the standard for rapid prototyping.</p>
-        <button class="mt-auto inline-flex items-center px-6 py-3 bg-[radial-gradient(circle_at_20%_65%,theme(colors.purple.500)_0%,theme(colors.blue.500)_150%)] rounded-lg text-white font-semibold hover:brightness-110 transition-all duration-300 flowing-gradient">
-          Read More
-        </button>
-      </div>
-    </div>
-  </a>
-
-  <!-- Tailwind Article -->
-  <a href="tailwind.html" class="group block">
-    <div class="bg-gray-800 p-6 rounded-lg flex flex-col h-full transform transition-all duration-300 group-hover:scale-105">
-      <div class="mb-4 aspect-w-16 aspect-h-9">
-        <img src="src/assets/images/Tailwind_CSS_Logo.svg" alt="Tailwind Article" class="w-full h-48 object-contain rounded transition-transform duration-300 group-hover:scale-105">
-      </div>
-      <div class="flex flex-col flex-grow">
-        <h3 class="text-xl font-bold mb-2">Tailwind CSS: Beautiful Customized Websites</h3>
-        <p class="text-gray-400 mb-4 flex-grow">A explanation of the framework powering beautiful websites with powerful creation abilities.</p>
-        <button class="mt-auto inline-flex items-center px-6 py-3 bg-[radial-gradient(circle_at_80%_30%,theme(colors.purple.500)_0%,theme(colors.blue.500)_150%)] rounded-lg text-white font-semibold hover:brightness-110 transition-all duration-300 flowing-gradient">
-          Read More
-        </button>
-      </div>
-    </div>
-  </a>
-
-  <!-- Robotics Article -->
-  <a href="baywatch.html" class="group block">
-    <div class="bg-gray-800 p-6 rounded-lg flex flex-col h-full transform transition-all duration-300 group-hover:scale-105">
-      <div class="mb-4 aspect-w-16 aspect-h-9 flex items-center justify-center">
-        <img src="src/assets/images/baywatchLogo.png" alt="Article 3" class="w-48 h-48 object-contain rounded transition-transform duration-300 group-hover:scale-105">
-      </div>
-      <div class="flex flex-col flex-grow">
-        <h3 class="text-xl font-bold mb-2">Baywatch Robotics</h3>
-        <p class="text-gray-400 mb-4 flex-grow">The work by the Harbor Springs FRC Team in the 2025 Season</p>
-        <button class="mt-auto inline-flex items-center px-6 py-3 bg-[radial-gradient(circle_at_40%_90%,theme(colors.purple.500)_0%,theme(colors.blue.500)_150%)] rounded-lg text-white font-semibold hover:brightness-110 transition-all duration-300 flowing-gradient">
-          Read More
-        </button>
-      </div>
-    </div>
-  </a>
-</div>
-
     </div>
   </section>
 
