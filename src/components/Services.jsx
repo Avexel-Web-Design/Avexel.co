@@ -3,21 +3,29 @@ import useScrollReveal from '../hooks/useScrollReveal';
 
 const ServiceCard = ({ icon, title, description, comingSoon = false }) => {
   return (
-    <div className="relative group overflow-hidden rounded-lg transition-transform duration-500 hover:scale-105">
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-75 transition-opacity rounded-lg"></div>
-      <div className="flex gap-6 bg-gray-800 p-6 rounded-lg relative">
-        <div className="flex-shrink-0">
-          <div className="w-14 h-14 glass-icon flex items-center justify-center">
-            <i className={`fas ${icon} text-3xl`}></i>
+    <div className="group relative">
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
+      <div className="relative flex flex-col h-full bg-dark/80 backdrop-blur-sm p-8 rounded-xl border border-white/10 transition-all duration-500 group-hover:translate-y-[-2px]">
+        <div className="mb-6">
+          <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary-500/20 to-secondary-500/20 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
+            <i className={`fas ${icon} text-3xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent`}></i>
           </div>
         </div>
-        <div>
-          <div className="flex items-center gap-2 mb-2">
-            <h3 className="text-2xl font-bold">{title}</h3>
-            {comingSoon && <span className="inline-block bg-gray-700 text-xs text-white px-2 py-1 rounded">COMING SOON</span>}
+        
+        <div className="flex-grow">
+          <div className="flex items-center gap-3 mb-3">
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+              {title}
+            </h3>
+            {comingSoon && (
+              <span className="px-2.5 py-0.5 text-xs font-semibold bg-secondary-500/10 text-secondary-400 rounded-full border border-secondary-500/20">
+                Coming Soon
+              </span>
+            )}
           </div>
-          <p className="text-gray-400">{description}</p>
+          <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+            {description}
+          </p>
         </div>
       </div>
     </div>
@@ -28,31 +36,45 @@ const Services = () => {
   useScrollReveal();
   
   return (
-    <section id="services" className="py-20 bg-gradient-to-b from-gray-900 to-black scroll-mt-24">
-      <div className="container mx-auto px-6">
-        <h2 className="text-4xl font-bold mb-12 text-center reveal">Our Services & Process</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 reveal">
-          {/* Service Card 1 */}
+    <section id="services" className="py-24 bg-gradient-to-b from-dark via-dark/95 to-dark scroll-mt-24">
+      <div className="container mx-auto px-4 lg:px-8">
+        <div className="max-w-3xl mx-auto text-center mb-16 reveal">
+          <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+            Our Services & Process
+          </h2>
+          <p className="text-lg text-gray-400">
+            Delivering exceptional digital solutions through innovative design and development
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 reveal">
           <ServiceCard 
             icon="fa-laptop-code"
             title="Web Design & Development"
             description="Creating visually stunning and highly functional websites, from conceptualization to launch. We work directly with our business clients to ensure perfect alignment with their brand and goals."
           />
           
-          {/* Service Card 2 */}
           <ServiceCard 
             icon="fa-mobile-alt"
             title="Mobile App Development"
             description="Developing intuitive, high-performance mobile applications tailored to your business needs. Engage your customers on the go with seamless and responsive apps."
             comingSoon={true}
           />
-          
-          {/* Process Description Card */}
-          <div className="md:col-span-2 mt-12 bg-gray-800 p-6 rounded-lg text-center duration-500 hover:scale-105 reveal">
-            <h3 className="text-3xl font-bold mb-4">Our Process</h3>
-            <p className="text-gray-400 text-lg max-w-3xl mx-auto">
-              From ideation and design through development and deployment, we work collaboratively with our clients to transform ideas into digital solutions. Our agile process ensures timely delivery and continuous improvement.
-            </p>
+        </div>
+        
+        <div className="mt-16 reveal">
+          <div className="relative">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-30"></div>
+            <div className="relative bg-dark/80 backdrop-blur-sm p-8 lg:p-12 rounded-xl border border-white/10 text-center">
+              <h3 className="text-3xl font-bold mb-6 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+                Our Process
+              </h3>
+              <div className="max-w-3xl mx-auto">
+                <p className="text-lg text-gray-400 leading-relaxed">
+                  From ideation and design through development and deployment, we work collaboratively with our clients to transform ideas into digital solutions. Our agile process ensures timely delivery and continuous improvement.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

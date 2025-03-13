@@ -1,0 +1,38 @@
+{
+    "name": "avexel-website",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@tailwindcss/forms": "^0.5.10",
+        "@tailwindcss/typography": "^0.5.16",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.20.1",
+        "react-router-hash-link": "^2.4.3",
+        "web-vitals": "^2.1.4"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-react": "^4.2.0",
+        "autoprefixer": "^10.4.16",
+        "postcss": "^8.4.31",
+        "tailwindcss": "^3.3.5",
+        "vite": "^5.0.0"
+    },
+    "scripts": {
+        "start": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
+}
