@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -11,31 +10,42 @@ import Footer from './components/Footer';
 import Contact from './components/Contact';
 import ParticleBackground from './components/ParticleBackground';
 import './App.css';
-import './assets/styles/main.css'; // Import custom styles
+import './assets/styles/main.css';
 
 function HomePage() {
   return (
     <>
-      <ParticleBackground />
-      <Hero />
-      <Capabilities />
-      <About />
-      <Services />
-      <Portfolio />
-      <Contact />
+      <div className="relative min-h-screen">
+        <ParticleBackground />
+        <div className="relative z-10">
+          <Hero />
+          <Capabilities />
+          <About />
+          <Services />
+          <Portfolio />
+          <Contact />
+        </div>
+      </div>
     </>
   );
 }
+
 function App() {
   return (
-    <div className="App bg-black text-white overflow-x-hidden">
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        {/* Add more routes as needed */}
-      </Routes>
-      <Footer />
+    <div className="relative bg-dark text-white overflow-x-hidden">
+      <div className="relative z-50">
+        <Navbar />
+      </div>
+      <main className="relative">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </main>
+      <div className="relative z-10">
+        <Footer />
+      </div>
     </div>
   );
 }
+
 export default App;

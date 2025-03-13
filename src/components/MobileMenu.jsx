@@ -6,55 +6,96 @@ const MobileMenu = ({ isOpen, closeMenu }) => {
     { to: "#capabilities", text: "Capabilities" },
     { to: "#about", text: "About" },
     { to: "#services", text: "Services" },
-    { to: "#work", text: "Portfolio" }
+    { to: "#work", text: "Portfolio" },
+    { to: "#contact", text: "Contact" }
   ];
 
   useEffect(() => {
-    // This effect handles the animation of links when menu opens/closes
-    const links = document.querySelectorAll('.mobile-link');
-    
     if (isOpen) {
-      links.forEach((link, index) => {
-        setTimeout(() => {
-          link.classList.remove('opacity-0', 'translate-y-8');
-          link.classList.add('animate__animated', 'animate__fadeInUp');
-        }, 150 + (index * 100));
-      });
+      document.body.style.overflow = 'hidden';
     } else {
-      links.forEach(link => {
-        link.classList.add('opacity-0', 'translate-y-8');
-        link.classList.remove('animate__animated', 'animate__fadeInUp');
-      });
+      document.body.style.overflow = '';
     }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isOpen]);
 
   return (
     <div 
-      id="mobile-menu" 
-      className={`fixed inset-0 z-40 flex flex-col items-center justify-center transform transition-all duration-500 ease-in-out ${
-        isOpen ? 'translate-y-0' : '-translate-y-full'
+      className={`fixed inset-0 z-50 transition-all duration-500 ${
+        isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
     >
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/30 via-black/95 to-blue-500/30 backdrop-blur-lg animate-gradient"></div>
-      
-      {/* Menu content with enhanced animations */}
-      <ul className="text-center space-y-8 relative z-10">
-        {menuLinks.map((link, index) => (
-          <li key={index}>
-            <HashLink 
-              smooth 
-              to={link.to} 
-              className="text-4xl text-white opacity-0 transition-all duration-300 hover:text-purple-400 transform translate-y-8 mobile-link group"
-              onClick={closeMenu}
-            >
-              <span className="bg-left-bottom bg-gradient-to-r from-purple-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                {link.text}
-              </span>
-            </HashLink>
-          </li>
-        ))}
-      </ul>
+      {/* Backdrop */}
+      <div 
+        className={`absolute inset-0 bg-dark/90 backdrop-blur-xl transition-opacity duration-500 ${
+          isOpen ? 'opacity-100' : 'opacity-0'
+        }`}
+        onClick={closeMenu}
+      />
+
+      {/* Content */}
+      <div className={`relative h-full flex flex-col items-center justify-center p-8 transition-all duration-500 ${
+        isOpen ? 'translate-y-0' : '-translate-y-8'
+      }`}>
+        {/* Background Effects */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-secondary-500/5 to-primary-500/10"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,transparent_100%)]"></div>
+        </div>
+
+        {/* Menu Items */}
+        <nav className="relative z-10 w-full max-w-md">
+          <ul className="space-y-6">
+            {menuLinks.map((link, index) => (
+              <li 
+                key={index}
+                className={`transform transition-all duration-500 delay-${index * 100} ${
+                  isOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                }`}
+              >
+                <HashLink 
+                  smooth 
+                  to={link.to}
+                  onClick={closeMenu}
+                  className="relative block text-2xl md:text-3xl font-bold text-white/90 hover:text-white transition-colors duration-300 group"
+                >
+                  <span className="relative">
+                    {link.text}
+                    <span className="absolute left-0 right-0 bottom-0 h-px transform scale-x-0 transition-transform duration-300 bg-gradient-to-r from-primary-500 to-secondary-500 group-hover:scale-x-100"></span>
+                  </span>
+                </HashLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Social Links */}
+        <div className={`absolute bottom-8 flex items-center gap-6 transition-all duration-500 delay-500 ${
+          isOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+        }`}>
+          <a 
+            href="https://github.com/yourusername" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/70 hover:text-white transition-colors duration-300"
+            aria-label="GitHub"
+          >
+            <i className="fab fa-github text-2xl"></i>
+          </a>
+          <a 
+            href="https://linkedin.com/in/yourusername" 
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/70 hover:text-white transition-colors duration-300"
+            aria-label="LinkedIn"
+          >
+            <i className="fab fa-linkedin text-2xl"></i>
+          </a>
+        </div>
+      </div>
     </div>
   );
 };
