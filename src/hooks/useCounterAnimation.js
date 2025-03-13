@@ -1,54 +1,57 @@
 import { useEffect } from 'react';
 
+const easeOutExpo = t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+
 const useCounterAnimation = () => {
   useEffect(() => {
     const counters = document.querySelectorAll('.counter');
+    const animationDuration = 2000; // 2 seconds
+    const frameDuration = 1000 / 60; // 60fps
+    const totalFrames = Math.round(animationDuration / frameDuration);
 
-    const runCounter = (counter) => {
-      const target = +counter.dataset.target;
-      let updateCount;
+    const animateCounter = (counter, endValue) => {
+      let frame = 0;
+      
+      const startValue = parseInt(counter.innerText, 10) || 0;
+      const countTo = parseInt(endValue, 10);
+      const range = countTo - startValue;
+      
+      const animate = () => {
+        frame++;
+        const progress = easeOutExpo(frame / totalFrames);
+        const currentValue = Math.round(startValue + (range * progress));
+        
+        if (countTo > startValue) {
+          counter.textContent = Math.min(currentValue, countTo);
+        } else {
+          counter.textContent = Math.max(currentValue, countTo);
+        }
 
-      // If target is less than 50, let's animate downward from 100.
-      if (target < 50) {
-        let count = 100;
-        const decrement = (100 - target) / 100;
-
-        updateCount = () => {
-          if (count > target) {
-            count -= decrement;
-            counter.innerText = Math.floor(count);
-            setTimeout(updateCount, 10);
-          } else {
-            counter.innerText = target;
-          }
-        };
-      } else { // Regular count up for other counters
-        let count = 0;
-        const increment = target / 100;
-
-        updateCount = () => {
-          if (count < target) {
-            count += increment;
-            counter.innerText = Math.ceil(count);
-            setTimeout(updateCount, 10);
-          } else {
-            counter.innerText = target;
-          }
-        };
-      }
-
-      updateCount();
+        if (frame < totalFrames) {
+          requestAnimationFrame(animate);
+        }
+      };
+      
+      animate();
     };
 
     const observerCallback = (entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          runCounter(entry.target);
+          const counter = entry.target;
+          const target = counter.dataset.target;
+          
+          animateCounter(counter, target);
+          observer.unobserve(counter);
         }
       });
     };
 
-    const observerOptions = { threshold: 0.5 };
+    const observerOptions = {
+      threshold: 0.5,
+      rootMargin: '0px 0px -10% 0px'
+    };
+    
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     counters.forEach(counter => observer.observe(counter));
 
