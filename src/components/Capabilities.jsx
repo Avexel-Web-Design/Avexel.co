@@ -6,17 +6,17 @@ const CapabilityCard = ({ icon, title, description, target, suffix, startValue =
   return (
     <div className="group relative">
       <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
-      <div className="relative h-full bg-dark/80 backdrop-blur-sm p-8 rounded-xl border border-white/10 transition-all duration-500 group-hover:translate-y-[-2px]">
+      <div className="relative h-full bg-dark backdrop-blur-sm p-8 rounded-xl border border-white/5 transition-all duration-500 group-hover:translate-y-[-2px]">
         {/* Icon */}
         <div className="mb-6">
-          <div className="w-16 h-16 mx-auto rounded-xl bg-gradient-to-br from-primary-500/20 to-secondary-500/20 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
+          <div className="w-16 h-16 mx-auto rounded-xl bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
             <i className={`fas ${icon} text-2xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent`}></i>
           </div>
         </div>
 
         {/* Content */}
         <div className="text-center space-y-4">
-          <h3 className="text-xl font-bold bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+          <h3 className="text-xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             {title}
           </h3>
           <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
@@ -43,7 +43,7 @@ const Capabilities = () => {
   useCounterAnimation();
 
   return (
-    <section id="capabilities" className="py-24 bg-gradient-to-b from-dark via-dark/95 to-dark scroll-mt-24">
+    <section id="capabilities" className="py-24 bg-dark scroll-mt-24">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="max-w-3xl mx-auto text-center mb-16 reveal">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">

@@ -5,13 +5,11 @@ const Hero = () => {
   const svgRef = useRef(null);
 
   useEffect(() => {
-    // Interactive SVG animation
     const svg = svgRef.current;
     if (!svg) return;
 
     const paths = svg.querySelectorAll('path');
     
-    // Mouse move effect
     const handleMouseMove = (e) => {
       const { left, top, width, height } = svg.getBoundingClientRect();
       const x = (e.clientX - left) / width;
@@ -30,20 +28,20 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-dark">
-      {/* Background gradients */}
+      {/* Subtle background gradients */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 via-secondary-500/10 to-primary-500/20 animate-pulse" style={{ animationDuration: '8s' }}></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_0%,transparent_100%)]"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-secondary-500/3 to-primary-500/5 animate-pulse-slow"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(56,189,248,0.05),transparent_50%)]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(139,92,246,0.05),transparent_50%)]"></div>
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 pt-32 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-0 items-center">
-          {/* Text Content */}
           <div className="space-y-8">
             <h1 className="space-y-4">
               <div className="flex flex-wrap gap-x-4 text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight">
-                <span className="animate-slide-up" style={{ animationDelay: '0.2s' }}>We</span>
-                <span className="animate-slide-up" style={{ animationDelay: '0.4s' }}>Create</span>
+                <span className="animate-slide-up inline-block" style={{ animationDelay: '0.2s' }}>We</span>
+                <span className="animate-slide-up inline-block" style={{ animationDelay: '0.4s' }}>Create</span>
               </div>
               <div className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight">
                 <span className="inline-block animate-slide-up bg-gradient-to-r from-primary-400 via-secondary-400 to-primary-400 bg-clip-text text-transparent bg-[length:200%_100%] animate-flowing-gradient" style={{ animationDelay: '0.6s' }}>
@@ -52,7 +50,7 @@ const Hero = () => {
               </div>
             </h1>
 
-            <p className="text-lg sm:text-xl text-gray-300 max-w-2xl animate-fade-in" style={{ animationDelay: '0.8s' }}>
+            <p className="text-lg sm:text-xl text-gray-400 max-w-2xl animate-fade-in" style={{ animationDelay: '0.8s' }}>
               Transforming ideas into stunning digital experiences through creative web design and development.
             </p>
 
@@ -60,15 +58,16 @@ const Hero = () => {
               <HashLink 
                 smooth 
                 to="#work" 
-                className="group px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/40 hover:-translate-y-0.5 transition-all duration-300"
+                className="group relative px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold overflow-hidden shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/40 hover:-translate-y-0.5 transition-all duration-300"
               >
-                View Our Work
-                <i className="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                <span className="relative z-10">View Our Work</span>
+                <span className="absolute inset-0 bg-gradient-to-r from-secondary-500 to-primary-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                <i className="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform relative z-10"></i>
               </HashLink>
               <HashLink 
                 smooth 
                 to="#about" 
-                className="group px-8 py-4 border-2 border-primary-500/50 text-primary-400 rounded-full font-semibold hover:bg-primary-500/10 hover:border-primary-400 transition-colors duration-300"
+                className="group px-8 py-4 border-2 border-primary-500/30 text-primary-400 rounded-full font-semibold hover:bg-primary-500/10 hover:border-primary-400 transition-colors duration-300"
               >
                 Learn More
                 <i className="fas fa-chevron-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
@@ -76,7 +75,6 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Animated Interactive SVG */}
           <div className="relative lg:h-[600px] animate-fade-in" style={{ animationDelay: '1.2s' }}>
             <svg ref={svgRef} viewBox="0 0 400 300" className="w-full h-full filter drop-shadow-lg">
               <defs>
@@ -202,9 +200,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
-
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-dark via-dark/80 to-transparent"></div>
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-dark to-transparent"></div>
     </section>
   );
 };

@@ -4,15 +4,15 @@ import useScrollReveal from '../hooks/useScrollReveal';
 const TeamMember = ({ name, role, description }) => (
   <div className="relative group">
     <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-20 group-hover:opacity-75 transition duration-500"></div>
-    <div className="relative bg-dark/80 backdrop-blur-sm p-8 rounded-xl border border-white/10 text-center transition-all duration-500 group-hover:translate-y-[-2px]">
+    <div className="relative bg-dark backdrop-blur-sm p-8 rounded-xl border border-white/5 text-center transition-all duration-500 group-hover:translate-y-[-2px]">
       <div className="mb-4">
-        <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-primary-500/20 to-secondary-500/20 flex items-center justify-center ring-1 ring-white/10">
+        <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center ring-1 ring-white/10">
           <span className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             {name.charAt(0)}
           </span>
         </div>
       </div>
-      <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">{name}</h3>
+      <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">{name}</h3>
       <p className="text-secondary-400 font-medium mb-4">{role}</p>
       <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">{description}</p>
     </div>
@@ -37,7 +37,7 @@ const About = () => {
   useScrollReveal();
   
   return (
-    <section id="about" className="py-24 bg-gradient-to-b from-dark via-dark/95 to-dark scroll-mt-24">
+    <section id="about" className="py-24 bg-dark scroll-mt-24">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="max-w-3xl mx-auto text-center mb-16 reveal">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
@@ -73,7 +73,7 @@ const About = () => {
         
         {/* Timeline */}
         <div className="max-w-2xl mx-auto reveal">
-          <h3 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+          <h3 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             Our Journey
           </h3>
           <div className="relative">

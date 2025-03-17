@@ -2,7 +2,6 @@ import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Loader from './components/Loader';
-import ParticleBackground from './components/ParticleBackground';
 import './App.css';
 import './assets/styles/main.css';
 
@@ -18,8 +17,7 @@ const Footer = lazy(() => import('./components/Footer'));
 function HomePage() {
   return (
     <>
-      <div className="relative min-h-screen">
-        <ParticleBackground />
+      <div className="relative min-h-screen bg-dark">
         <div className="relative z-10">
           <Suspense fallback={<div className="min-h-screen" />}>
             <Hero />

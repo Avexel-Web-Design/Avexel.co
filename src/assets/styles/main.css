@@ -16,91 +16,34 @@
     background: linear-gradient(to bottom, #0284c7, #7c3aed);
 }
 
-/* Base styles and existing animations */
+/* Base styles */
 ::selection {
     background: rgba(14, 165, 233, 0.2);
     color: #fff;
 }
 
-/* Enhanced Reveal Animations */
-.reveal {
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.75s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.reveal.revealing {
-  visibility: visible;
-}
-
-.reveal.reveal-up {
-  transform: translateY(30px);
-}
-
-.reveal.reveal-down {
-  transform: translateY(-30px);
-}
-
-.reveal.reveal-left {
-  transform: translateX(-30px);
-}
-
-.reveal.reveal-right {
-  transform: translateX(30px);
-}
-
-.reveal.reveal-scale {
-  transform: scale(0.9);
-}
-
-.reveal.active {
-  opacity: 1;
-  transform: translate(0) scale(1);
-}
-
-/* Stagger children animations */
-.stagger-children > * {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.stagger-children.active > * {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.stagger-children.active > *:nth-child(1) { transition-delay: 0.1s; }
-.stagger-children.active > *:nth-child(2) { transition-delay: 0.2s; }
-.stagger-children.active > *:nth-child(3) { transition-delay: 0.3s; }
-.stagger-children.active > *:nth-child(4) { transition-delay: 0.4s; }
-.stagger-children.active > *:nth-child(5) { transition-delay: 0.5s; }
-
-/* Advanced hover effects */
-.hover-lift {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hover-lift:hover {
-  transform: translateY(-5px);
-}
-
-.hover-glow {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hover-glow:hover {
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
-}
-
-/* Enhanced animation keyframes */
-@keyframes drawPath {
+/* Performance optimized animations */
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
     to {
-        stroke-dashoffset: 0;
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-@keyframes flowingGradient {
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes flowing-gradient {
     0% {
         background-position: 0% 50%;
     }
@@ -112,177 +55,73 @@
     }
 }
 
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
-    }
-    50% {
-        transform: translateY(-10px) rotate(1deg);
-    }
-}
-
-@keyframes pulse {
+@keyframes pulse-slow {
     0%, 100% {
         opacity: 1;
-        transform: scale(1);
     }
     50% {
-        opacity: 0.8;
-        transform: scale(0.95);
+        opacity: 0.7;
     }
 }
 
-@keyframes shimmer {
-    0% {
-        background-position: -1000px 0;
-    }
-    100% {
-        background-position: 1000px 0;
-    }
-}
-
-@keyframes fadeInScale {
-    0% {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-@keyframes borderGlow {
-    0%, 100% {
-        border-color: rgba(255, 255, 255, 0.1);
-    }
-    50% {
-        border-color: rgba(14, 165, 233, 0.3);
-    }
-}
-
-/* New advanced animations */
-@keyframes morphPath {
-    0% {
-        d: path("M0,0 Q50,0 100,0");
-    }
-    50% {
-        d: path("M0,20 Q50,-20 100,20");
-    }
-    100% {
-        d: path("M0,0 Q50,0 100,0");
-    }
-}
-
-@keyframes glowPulse {
-    0% {
-        filter: drop-shadow(0 0 2px rgba(14, 165, 233, 0.3))
-               drop-shadow(0 0 5px rgba(14, 165, 233, 0.2));
-    }
-    50% {
-        filter: drop-shadow(0 0 5px rgba(14, 165, 233, 0.5))
-               drop-shadow(0 0 10px rgba(14, 165, 233, 0.3));
-    }
-    100% {
-        filter: drop-shadow(0 0 2px rgba(14, 165, 233, 0.3))
-               drop-shadow(0 0 5px rgba(14, 165, 233, 0.2));
-    }
-}
-
-@keyframes rotateGradient {
-    0% {
-        background: linear-gradient(0deg, var(--tw-gradient-from), var(--tw-gradient-to));
-    }
-    100% {
-        background: linear-gradient(360deg, var(--tw-gradient-from), var(--tw-gradient-to));
-    }
-}
-
-@keyframes dashOffset {
-    0% {
-        stroke-dashoffset: 1000;
-    }
-    100% {
+@keyframes drawPath {
+    to {
         stroke-dashoffset: 0;
     }
 }
 
-/* Animation utility classes */
-.animate-float {
-    animation: float 4s ease-in-out infinite;
+/* Utility classes */
+.animate-slide-up {
+    opacity: 0;
+    animation: slide-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-fade-in {
+    opacity: 0;
+    animation: fade-in 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-flowing-gradient {
+    animation: flowing-gradient 8s linear infinite;
+    will-change: background-position;
 }
 
 .animate-pulse-slow {
-    animation: pulse 3s ease-in-out infinite;
+    animation: pulse-slow 4s ease-in-out infinite;
 }
 
-.animate-shimmer {
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.05),
-        transparent
-    );
-    background-size: 1000px 100%;
-    animation: shimmer 3s infinite;
+/* Enhanced hover effects with hardware acceleration */
+.hover-lift {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
 }
 
-.animate-fade-scale {
-    animation: fadeInScale 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+.hover-lift:hover {
+    transform: translateY(-5px);
 }
 
-.animate-border-glow {
-    animation: borderGlow 2s ease-in-out infinite;
+.hover-glow {
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.animate-glow-pulse {
-    animation: glowPulse 2s ease-in-out infinite;
+.hover-glow:hover {
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
 }
 
-.animate-rotate-gradient {
-    animation: rotateGradient 8s linear infinite;
-}
-
-.animate-dash-offset {
-    animation: dashOffset 2s linear infinite;
-}
-
-/* Animation delays */
-.delay-1 {
-    animation-delay: 0.2s;
-}
-
-.delay-2 {
-    animation-delay: 0.4s;
-}
-
-.delay-3 {
-    animation-delay: 0.6s;
-}
-
-.delay-4 {
-    animation-delay: 0.8s;
-}
-
-/* Utility classes for backdrop blur variations */
+/* Backdrop blur utilities with performance optimization */
 .backdrop-blur-xs {
     backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
 }
 
 .backdrop-blur-sm {
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 .backdrop-blur-md {
     backdrop-filter: blur(8px);
-}
-
-.backdrop-blur-lg {
-    backdrop-filter: blur(12px);
-}
-
-.backdrop-blur-xl {
-    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 /* Custom gradient text utility */
@@ -290,22 +129,9 @@
     @apply bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent;
 }
 
-/* Custom border gradient utility */
-.border-gradient {
-    border: 2px solid transparent;
-    background-clip: padding-box;
-    position: relative;
-}
-
-.border-gradient::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: -1;
-    margin: -2px;
-    border-radius: inherit;
-    background: linear-gradient(to right, #0ea5e9, #8b5cf6);
+/* Reduce paint operations with transform instead of all */
+.transition-transform-gpu {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    transform: translateZ(0);
 }
