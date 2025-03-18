@@ -6,7 +6,37 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('home');
+  const [hoveredTab, setHoveredTab] = useState(null);
   const navRef = useRef(null);
+  const tabRefs = useRef({
+    home: useRef(null),
+    capabilities: useRef(null),
+    about: useRef(null),
+    services: useRef(null),
+    work: useRef(null),
+    contact: useRef(null)
+  });
+  
+  // Highlight position state
+  const [highlightStyle, setHighlightStyle] = useState({
+    left: 0,
+    width: 0,
+    opacity: 0
+  });
+
+  // Update highlight position based on active or hovered tab
+  useEffect(() => {
+    const currentTab = hoveredTab || activeTab;
+    const tabElement = tabRefs.current[currentTab]?.current;
+    
+    if (tabElement) {
+      setHighlightStyle({
+        left: tabElement.offsetLeft,
+        width: tabElement.offsetWidth,
+        opacity: 1
+      });
+    }
+  }, [activeTab, hoveredTab]);
 
   // Detect active section based on scroll position
   useEffect(() => {
@@ -68,13 +98,34 @@ const Navbar = () => {
                 </span>
               </HashLink>
               
-              <div className="ml-8 flex items-center gap-1">
-                <TabLink to="#" label="Home" isActive={activeTab === 'home'} onClick={() => setActiveTab('home')} />
-                <TabLink to="#capabilities" label="Skills" isActive={activeTab === 'capabilities'} onClick={() => setActiveTab('capabilities')} />
-                <TabLink to="#about" label="Team" isActive={activeTab === 'about'} onClick={() => setActiveTab('about')} />
-                <TabLink to="#services" label="Services" isActive={activeTab === 'services'} onClick={() => setActiveTab('services')} />
-                <TabLink to="#work" label="Work" isActive={activeTab === 'work'} onClick={() => setActiveTab('work')} />
-                <TabLink to="#contact" label="Contact" isActive={activeTab === 'contact'} onClick={() => setActiveTab('contact')} />
+              <div className="ml-8 flex items-center gap-1 relative">
+                {/* Moving highlight element */}
+                <div 
+                  className="absolute top-0 rounded-full bg-gradient-to-r from-primary-500/80 to-secondary-500/80 h-10 shadow-lg transition-all duration-300 ease-out -z-0"
+                  style={{
+                    left: `${highlightStyle.left}px`,
+                    width: `${highlightStyle.width}px`,
+                    opacity: highlightStyle.opacity,
+                  }}
+                />
+                
+                {/* Tab links */}
+                {['home', 'capabilities', 'about', 'services', 'work', 'contact'].map((tab) => (
+                  <TabLink
+                    key={tab}
+                    to={tab === 'home' ? '#' : `#${tab}`}
+                    label={
+                      tab === 'capabilities' ? 'Skills' :
+                      tab === 'about' ? 'Team' :
+                      tab.charAt(0).toUpperCase() + tab.slice(1)
+                    }
+                    tabRef={tabRefs.current[tab]}
+                    isActive={activeTab === tab}
+                    onMouseEnter={() => setHoveredTab(tab)}
+                    onMouseLeave={() => setHoveredTab(null)}
+                    onClick={() => setActiveTab(tab)}
+                  />
+                ))}
               </div>
             </div>
             
@@ -129,23 +180,20 @@ const Navbar = () => {
   );
 };
 
-// Tab link component with improved pill design
-const TabLink = ({ to, label, isActive, onClick }) => (
+// Tab link component with improved design for sliding highlight
+const TabLink = ({ to, label, tabRef, isActive, onMouseEnter, onMouseLeave, onClick }) => (
   <HashLink 
+    ref={tabRef}
     smooth 
     to={to} 
-    className={`relative px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-      isActive 
-        ? 'text-white' 
-        : 'text-white/70 hover:text-white'
+    className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 z-10 ${
+      isActive ? 'text-white' : 'text-white/70 hover:text-white'
     }`}
     onClick={onClick}
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
   >
-    <span className="relative z-10">{label}</span>
-    {isActive && (
-      <span className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-500/80 to-secondary-500/80 shadow-lg animate-fade-in"></span>
-    )}
-    <span className="absolute inset-0 rounded-full bg-white/5 opacity-0 transform scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 -z-10"></span>
+    {label}
   </HashLink>
 );
 
