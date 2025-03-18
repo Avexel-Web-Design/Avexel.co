@@ -23,9 +23,7 @@
         "dev": "vite",
         "start": "vite",
         "build": "vite build",
-        "preview": "vite preview",
-        "predeploy": "npm run build",
-        "deploy": "gh-pages -d build"
+        "preview": "vite preview"
     },
     "browserslist": {
         "production": [
