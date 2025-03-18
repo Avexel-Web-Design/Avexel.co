@@ -1,64 +1,59 @@
 import { useEffect } from 'react';
 
-const easeOutExpo = t => t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-
+/**
+ * Hook to animate counter elements
+ */
 const useCounterAnimation = () => {
   useEffect(() => {
-    const counters = document.querySelectorAll('.counter');
-    const animationDuration = 2000; // 2 seconds
-    const frameDuration = 1000 / 60; // 60fps
-    const totalFrames = Math.round(animationDuration / frameDuration);
-
-    const animateCounter = (counter, endValue) => {
-      let frame = 0;
-      
-      const startValue = parseInt(counter.innerText, 10) || 0;
-      const countTo = parseInt(endValue, 10);
-      const range = countTo - startValue;
-      
-      const animate = () => {
-        frame++;
-        const progress = easeOutExpo(frame / totalFrames);
-        const currentValue = Math.round(startValue + (range * progress));
+    const counterElements = document.querySelectorAll('.counter');
+    
+    const animateCounter = () => {
+      counterElements.forEach(counterElement => {
+        const target = parseInt(counterElement.getAttribute('data-target'));
+        const startValue = parseInt(counterElement.textContent);
+        const duration = 2000; // Animation duration in ms
+        const startTime = performance.now();
         
-        if (countTo > startValue) {
-          counter.textContent = Math.min(currentValue, countTo);
-        } else {
-          counter.textContent = Math.max(currentValue, countTo);
-        }
-
-        if (frame < totalFrames) {
-          requestAnimationFrame(animate);
-        }
-      };
-      
-      animate();
-    };
-
-    const observerCallback = (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const counter = entry.target;
-          const target = counter.dataset.target;
+        const updateCounter = (currentTime) => {
+          const elapsedTime = currentTime - startTime;
+          const progress = Math.min(elapsedTime / duration, 1);
           
-          animateCounter(counter, target);
-          observer.unobserve(counter);
-        }
+          // Apply easing function for smooth animation
+          const easedProgress = progress < 0.5
+            ? 4 * progress * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+          
+          const currentValue = Math.round(startValue + easedProgress * (target - startValue));
+          counterElement.textContent = currentValue;
+          
+          if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+          } else {
+            counterElement.textContent = target;
+          }
+        };
+        
+        requestAnimationFrame(updateCounter);
       });
     };
-
-    const observerOptions = {
-      threshold: 0.5,
-      rootMargin: '0px 0px -10% 0px'
-    };
     
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-    counters.forEach(counter => observer.observe(counter));
-
+    // Create an Intersection Observer to trigger counter animation when visible
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter();
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+    
+    // Observe the first counter element
+    if (counterElements.length > 0) {
+      observer.observe(counterElements[0].closest('section') || counterElements[0]);
+    }
+    
     return () => {
-      if (observer) {
-        counters.forEach(counter => observer.unobserve(counter));
-      }
+      observer.disconnect();
     };
   }, []);
 };

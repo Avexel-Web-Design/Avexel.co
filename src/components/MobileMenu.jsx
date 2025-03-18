@@ -1,14 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import { HashLink } from 'react-router-hash-link';
 
-const MobileMenu = ({ isOpen, closeMenu }) => {
+const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
   const menuRef = useRef(null);
   const menuLinks = [
-    { to: "#capabilities", text: "Capabilities" },
-    { to: "#about", text: "About" },
-    { to: "#services", text: "Services" },
-    { to: "#work", text: "Portfolio" },
-    { to: "#contact", text: "Contact" }
+    { to: "#", text: "Home", id: "home" },
+    { to: "#capabilities", text: "Skills", id: "capabilities" },
+    { to: "#about", text: "Team", id: "about" },
+    { to: "#services", text: "Services", id: "services" },
+    { to: "#work", text: "Work", id: "work" },
+    { to: "#contact", text: "Contact", id: "contact" }
   ];
 
   useEffect(() => {
@@ -41,7 +42,6 @@ const MobileMenu = ({ isOpen, closeMenu }) => {
       >
         <div className="absolute inset-0 backdrop-blur-lg bg-dark/90"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-primary-500/5 via-secondary-500/5 to-primary-500/5"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,transparent_100%)]"></div>
       </div>
 
       {/* Menu Content */}
@@ -51,21 +51,23 @@ const MobileMenu = ({ isOpen, closeMenu }) => {
           isOpen ? 'translate-y-0' : '-translate-y-8'
         }`}
       >
-        {/* Close Button */}
-        <button
-          className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 transition-colors duration-300"
-          onClick={closeMenu}
-          aria-label="Close menu"
-        >
-          <div className="relative w-full h-full">
-            <span className="absolute top-1/2 left-1/2 w-5 h-0.5 bg-white transform -translate-x-1/2 -translate-y-1/2 rotate-45"></span>
-            <span className="absolute top-1/2 left-1/2 w-5 h-0.5 bg-white transform -translate-x-1/2 -translate-y-1/2 -rotate-45"></span>
+        {/* Logo */}
+        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 flex items-center gap-2">
+          <div className="w-10 h-10 relative">
+            <img 
+              src="/src/assets/images/Logo-nobg-sm.png" 
+              alt="Logo" 
+              className="w-full h-full object-contain"
+            />
           </div>
-        </button>
+          <span className="text-xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+            Avexel
+          </span>
+        </div>
 
         {/* Menu Links */}
         <nav className="w-full max-w-md">
-          <ul className="space-y-6">
+          <ul className="space-y-4">
             {menuLinks.map((link, index) => (
               <li 
                 key={link.to}
@@ -76,58 +78,52 @@ const MobileMenu = ({ isOpen, closeMenu }) => {
                 <HashLink 
                   smooth 
                   to={link.to}
-                  onClick={closeMenu}
-                  className="relative block text-2xl md:text-3xl font-bold text-white/90 hover:text-white transition-all duration-300 group"
+                  onClick={() => {
+                    closeMenu();
+                    setActiveTab(link.id);
+                  }}
+                  className={`relative flex items-center gap-3 px-4 py-3 text-xl font-medium transition-all duration-300 rounded-xl ${
+                    activeTab === link.id 
+                      ? 'text-white bg-gradient-to-r from-primary-500/20 to-secondary-500/20'
+                      : 'text-white/70 hover:text-white'
+                  }`}
                 >
-                  <div className="relative inline-block">
-                    {link.text}
-                    <div className="absolute left-0 right-0 bottom-0 h-px bg-gradient-to-r from-primary-500 to-secondary-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                  </div>
+                  {activeTab === link.id && (
+                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-1/2 bg-gradient-to-b from-primary-400 to-secondary-400 rounded-r"></div>
+                  )}
+                  <span>{link.text}</span>
                 </HashLink>
               </li>
             ))}
           </ul>
         </nav>
 
-        {/* Social Links */}
-        <div className={`absolute bottom-8 flex items-center gap-6 transition-all duration-500 delay-500 ${
+        {/* Team Contact */}
+        <div className={`absolute bottom-8 transition-all duration-500 delay-500 ${
           isOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
         }`}>
-          <a 
-            href="https://avexel.bsky.social" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300"
-          >
-            <img 
-              src="/src/assets/images/Bluesky_Logo.png" 
-              alt="Bluesky" 
-              className="w-5 h-5 object-contain opacity-70 group-hover:opacity-100 transition-opacity" 
-            />
-            <span>Bluesky</span>
-          </a>
-          <a 
-            href="https://github.com/yourusername" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white/70 hover:text-white transition-colors duration-300"
-            aria-label="GitHub"
-          >
-            <i className="fab fa-github text-2xl"></i>
-          </a>
-          <a 
-            href="https://linkedin.com/in/yourusername" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white/70 hover:text-white transition-colors duration-300"
-            aria-label="LinkedIn"
-          >
-            <i className="fab fa-linkedin text-2xl"></i>
-          </a>
+          <p className="text-center text-sm text-white/70 mb-2">Contact the team:</p>
+          <div className="flex justify-center items-center gap-6">
+            <SocialLink icon="fa-envelope" href="mailto:contact@avexel.co" text="Email" />
+            <SocialLink icon="fa-github" href="https://github.com/avexel" />
+            <SocialLink icon="fa-linkedin" href="https://linkedin.com/company/avexel" />
+          </div>
         </div>
       </div>
     </div>
   );
 };
+
+const SocialLink = ({ icon, href, text }) => (
+  <a 
+    href={href} 
+    target="_blank"
+    rel="noopener noreferrer"
+    className="group flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300"
+  >
+    <i className={`fab ${icon} text-lg`}></i>
+    {text && <span className="text-sm">{text}</span>}
+  </a>
+);
 
 export default MobileMenu;
