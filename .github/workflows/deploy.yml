@@ -5,7 +5,6 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: write
   pages: write
@@ -25,24 +24,24 @@ jobs:
       pages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3.5.3
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3.8.1
         with:
           node-version: "20"
           cache: 'npm'
       - name: Install dependencies
-        run: npm ci
-        continue-on-error: false
+        run: |
+          npm clean-install
+          npm ci
       - name: Build
         run: npm run build
-        continue-on-error: false
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v3.0.7
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v1.0.8
         with:
-          path: './dist'
+          path: 'dist'
           
   deploy:
     environment:
@@ -57,4 +56,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v2.0.4
