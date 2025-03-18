@@ -62,7 +62,7 @@ const Contact = () => {
                 <ContactInfo
                   icon="fa-map-marker-alt"
                   title="School"
-                  content="Lake Orion High School, Michigan"
+                  content="Harbor Springs High School, Michigan"
                 />
                 
                 <ContactInfo
@@ -158,7 +158,7 @@ const Contact = () => {
                 
                 <div className="pt-2">
                   <p className="text-xs text-gray-400 mb-4">
-                    All messages will be read by our student team members. We'll respond during after-school hours.
+                    All messages will be read by our student team members. We'll respond as soon as we can.
                   </p>
                 </div>
 

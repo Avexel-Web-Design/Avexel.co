@@ -79,7 +79,7 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <i className="fas fa-map-marker-alt text-primary-400 mt-1"></i>
                 <span className="text-gray-400">
-                  Lake Orion High School, Michigan
+                  Harbor Springs High School, Michigan
                 </span>
               </li>
               <li>
