@@ -126,25 +126,6 @@ const Portfolio = () => {
             teamName="FRC Team 7790 Project"
           />
           
-          {/* Local Business Site */}
-          <ProjectCard
-            title="Local Coffee Shop"
-            description="We helped a local coffee shop establish their online presence with a simple, effective website showcasing their menu, hours, and story. The clean design makes it easy for customers to find what they need."
-            image="/src/assets/images/project2.jpg"
-            tags={["Small Business", "Web Design", "Menu"]}
-            websiteUrl="#"
-            orientation="left"
-          />
-          
-          {/* School Club */}
-          <ProjectCard
-            title="High School Chess Club"
-            description="We created a website for our school's chess club to help them organize meetings, share tournament information, and recruit new members. The interactive calendar feature makes it easy to track upcoming events."
-            image="/src/assets/images/project3.jpg"
-            tags={["School Club", "Calendar", "Events"]}
-            websiteUrl="#"
-            orientation="right"
-          />
         </div>
       </div>
     </section>
