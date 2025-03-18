@@ -1,79 +1,150 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useScrollReveal from '../hooks/useScrollReveal';
+
+const ProjectCard = ({ title, description, image, tags, websiteUrl, caseStudyUrl, orientation = 'right' }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <div 
+      className="group relative reveal"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
+      <div className="relative bg-dark backdrop-blur-sm rounded-xl border border-white/5 overflow-hidden">
+        <div className="grid md:grid-cols-2 gap-8 p-8 lg:p-12">
+          <div className={`space-y-6 ${orientation === 'left' ? 'md:order-2' : 'md:order-1'}`}>
+            <h3 className="text-3xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+              {title}
+            </h3>
+            
+            <div className="flex flex-wrap gap-2">
+              {tags.map(tag => (
+                <span 
+                  key={tag}
+                  className="px-3 py-1 text-xs font-medium bg-primary-500/10 text-primary-400 rounded-full border border-primary-500/20"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+            
+            <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+              {description}
+            </p>
+            
+            <div className="flex flex-wrap gap-4 pt-4">
+              {websiteUrl && (
+                <a 
+                  href={websiteUrl} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold overflow-hidden"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-secondary-500 to-primary-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></span>
+                  <span className="relative">Visit Website</span>
+                  <svg className="w-4 h-4 relative transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none">
+                    <path d="M13 5L20 12M20 12L13 19M20 12H4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </a>
+              )}
+              
+              {caseStudyUrl && (
+                <a 
+                  href={caseStudyUrl}
+                  className="group relative inline-flex items-center gap-2 px-6 py-3 border border-secondary-500 text-secondary-400 rounded-full font-semibold overflow-hidden"
+                >
+                  <span className="absolute inset-0 bg-secondary-500/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></span>
+                  <span className="relative">Case Study</span>
+                  <svg className="w-4 h-4 relative transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none">
+                    <path d="M17 8L21 12M21 12L17 16M21 12H3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </a>
+              )}
+            </div>
+          </div>
+          
+          <div className={`relative ${orientation === 'left' ? 'md:order-1' : 'md:order-2'}`}>
+            {/* Project Image with interactive effects */}
+            <div className="relative aspect-video md:aspect-square overflow-hidden rounded-xl">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-secondary-500/10 group-hover:opacity-0 transition-opacity duration-500 z-10"></div>
+              <div className={`absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-50 ${isHovered ? 'opacity-0' : 'opacity-50'} transition-opacity duration-500 z-10`}></div>
+              <img 
+                src={image} 
+                alt={title}
+                className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
+              />
+              
+              {/* Interactive overlay */}
+              <div className={`absolute inset-0 bg-gradient-to-t from-dark to-transparent flex flex-col justify-end p-6 ${isHovered ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500 z-20`}>
+                <span className="text-white/70 text-sm">Featured Project</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Portfolio = () => {
   useScrollReveal();
   
   return (
-    <section id="work" className="py-24 bg-dark scroll-mt-24">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center mb-16 reveal">
+    <section id="work" className="py-32 bg-black relative overflow-hidden scroll-mt-24">
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <div className="absolute top-1/4 right-1/4 w-72 h-72 border border-white/5 rounded-full animate-spin-slow"></div>
+      <div className="absolute bottom-1/3 left-1/5 w-64 h-64 border border-white/5 animate-spin-slow-reverse"></div>
+      
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        <div className="max-w-3xl mx-auto text-center mb-16 reveal stagger-reveal">
+          <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Our Work</span>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            Our Portfolio
+            Featured Projects
           </h2>
-          <p className="text-lg text-gray-400">
-            Showcasing our latest projects and digital innovations
+          <p className="text-lg text-gray-300">
+            Discover our latest digital creations and successful client projects
           </p>
         </div>
         
-        {/* Portfolio Items */}
         <div className="max-w-6xl mx-auto space-y-24">
-          {/* Baywatch Robotics Website */}
-          <div className="group relative reveal">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
-            <div className="relative bg-dark backdrop-blur-sm rounded-xl border border-white/5 overflow-hidden">
-              <div className="grid md:grid-cols-2 gap-8 p-8 lg:p-12">
-                <div className="space-y-6">
-                  <h3 className="text-3xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                    Baywatch Robotics
-                  </h3>
-                  <p className="text-lg text-gray-400 leading-relaxed">
-                    We encountered challenges with integrating modern design with advanced robotics technology. Our solution included a complete redesign, improved UX/UI and robust backend integration. The result was increased performance and client satisfaction.
-                  </p>
-                  <div className="flex flex-wrap gap-4 pt-4">
-                    <a 
-                      href="https://FRC7790.com" 
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/40 hover:-translate-y-0.5 transition-all duration-300"
-                    >
-                      Visit Website
-                      <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        className="h-5 w-5 ml-2 transition-transform group-hover:translate-x-1" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                      >
-                        <path 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          strokeWidth="2" 
-                          d="M14 5l7 7m0 0l-7 7m7-7H3" 
-                        />
-                      </svg>
-                    </a>
-                    <a 
-                      href="#"
-                      className="inline-flex items-center px-6 py-3 border-2 border-primary-500/50 text-primary-400 rounded-full font-semibold hover:bg-primary-500/10 hover:border-primary-400 transition-colors duration-300"
-                    >
-                      Case Study
-                    </a>
-                  </div>
-                </div>
-                <div className="relative aspect-video md:aspect-auto overflow-hidden rounded-xl">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-secondary-500/10 group-hover:opacity-75 transition-opacity duration-500 z-10"></div>
-                  <img 
-                    src="/src/assets/images/baywatchLogo.png" 
-                    alt="Baywatch Robotics Website Preview" 
-                    className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Baywatch Robotics */}
+          <ProjectCard
+            title="Baywatch Robotics"
+            description="We encountered challenges with integrating modern design with advanced robotics technology. Our solution included a complete redesign, improved UX/UI and robust backend integration. The result was increased performance and client satisfaction."
+            image="/src/assets/images/baywatchLogo.png"
+            tags={["Web Design", "Frontend Development", "UI/UX"]}
+            websiteUrl="https://FRC7790.com"
+            caseStudyUrl="#"
+            orientation="right"
+          />
           
-          {/* Add more portfolio items here with the same structure */}
+          {/* Example Project 2 - Uncomment and customize as needed */}
+          {/*
+          <ProjectCard
+            title="Creative Agency Website"
+            description="A comprehensive website redesign for a creative agency focusing on visual storytelling and unique interactive elements that showcase their portfolio effectively."
+            image="/src/assets/images/project2.jpg"
+            tags={["Branding", "Web Development", "Animation"]}
+            websiteUrl="#"
+            caseStudyUrl="#"
+            orientation="left"
+          />
+          */}
+          
+          {/* Example Project 3 - Uncomment and customize as needed */}
+          {/*
+          <ProjectCard
+            title="E-commerce Platform"
+            description="A modern e-commerce solution with a focus on user experience, mobile responsiveness, and seamless payment integration for a fashion retailer."
+            image="/src/assets/images/project3.jpg"
+            tags={["E-commerce", "UI/UX", "Payment Integration"]}
+            websiteUrl="#"
+            caseStudyUrl="#"
+            orientation="right"
+          />
+          */}
         </div>
       </div>
     </section>

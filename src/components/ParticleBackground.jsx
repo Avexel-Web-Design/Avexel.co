@@ -189,7 +189,7 @@ const ParticleBackground = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full bg-dark"
+      className="fixed top-0 left-0 w-full h-full bg-black"
       style={{ WebkitBackdropFilter: 'blur(2px)', backdropFilter: 'blur(2px)' }}
     />
   );

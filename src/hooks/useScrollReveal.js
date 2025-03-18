@@ -1,52 +1,35 @@
 import { useEffect } from 'react';
 
+/**
+ * Hook to add scroll reveal animations to elements with the 'reveal' class
+ */
 const useScrollReveal = () => {
   useEffect(() => {
-    const observerCallback = (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const target = entry.target;
-          const delay = target.dataset.revealDelay || '0';
-          const direction = target.dataset.revealDirection || 'up';
-          
-          // Add reveal direction class
-          const directionClass = {
-            up: 'reveal-up',
-            down: 'reveal-down',
-            left: 'reveal-left',
-            right: 'reveal-right',
-            scale: 'reveal-scale',
-          }[direction];
-
-          // Add base reveal class and direction-specific class
-          requestAnimationFrame(() => {
-            target.classList.add('revealing', directionClass);
-            target.style.transitionDelay = `${delay}ms`;
-            
-            // Force a reflow to ensure the animation triggers
-            target.offsetHeight;
-            
-            // Add active class after a frame to ensure transition happens
-            requestAnimationFrame(() => {
-              target.classList.add('active');
-            });
-          });
-
-          observer.unobserve(target);
+    const revealElements = document.querySelectorAll('.reveal');
+    
+    const revealOnScroll = () => {
+      const windowHeight = window.innerHeight;
+      const revealPoint = 150;
+      
+      revealElements.forEach((element) => {
+        const revealTop = element.getBoundingClientRect().top;
+        
+        if (revealTop < windowHeight - revealPoint) {
+          element.classList.add('active');
+        } else {
+          // Uncomment the line below if you want elements to hide again when scrolled away
+          // element.classList.remove('active');
         }
       });
     };
-
-    const observer = new IntersectionObserver(observerCallback, {
-      threshold: 0.15,
-      rootMargin: '0px 0px -10% 0px'
-    });
-
-    const reveals = document.querySelectorAll('.reveal');
-    reveals.forEach(el => observer.observe(el));
-
+    
+    // Run once on mount to reveal elements already in view
+    revealOnScroll();
+    
+    window.addEventListener('scroll', revealOnScroll);
+    
     return () => {
-      reveals.forEach(el => observer.unobserve(el));
+      window.removeEventListener('scroll', revealOnScroll);
     };
   }, []);
 };

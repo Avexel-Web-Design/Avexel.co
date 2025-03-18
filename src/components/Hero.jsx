@@ -84,6 +84,7 @@ const Hero = () => {
               >
                 View Our Work
               </HashLink>
+              
               <HashLink 
                 smooth 
                 to="#about" 

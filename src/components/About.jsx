@@ -1,25 +1,7 @@
 import React from 'react';
 import useScrollReveal from '../hooks/useScrollReveal';
 
-const TeamMember = ({ name, role, description }) => (
-  <div className="relative group">
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-20 group-hover:opacity-75 transition duration-500"></div>
-    <div className="relative bg-dark backdrop-blur-sm p-8 rounded-xl border border-white/5 text-center transition-all duration-500 group-hover:translate-y-[-2px]">
-      <div className="mb-4">
-        <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center ring-1 ring-white/10">
-          <span className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            {name.charAt(0)}
-          </span>
-        </div>
-      </div>
-      <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">{name}</h3>
-      <p className="text-secondary-400 font-medium mb-4">{role}</p>
-      <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">{description}</p>
-    </div>
-  </div>
-);
-
-const TimelineItem = ({ year, description }) => (
+const TimelineItem = ({ year, title, description }) => (
   <div className="relative pl-8 pb-12 group">
     <div className="absolute left-[-5px] w-3 h-3 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500">
       <div className="absolute -inset-2 rounded-full border border-primary-500/30 group-hover:border-primary-500/60 transition-colors duration-300"></div>
@@ -28,7 +10,50 @@ const TimelineItem = ({ year, description }) => (
     <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-primary-500/50 to-secondary-500/50"></div>
     <div className="group-hover:translate-x-1 transition-transform duration-300">
       <h4 className="text-xl font-bold mb-2 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">{year}</h4>
+      <p className="text-xl font-medium text-white mb-1">{title}</p>
       <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">{description}</p>
+    </div>
+  </div>
+);
+
+const TeamMemberCard = ({ name, role, image, description, socialLinks = [] }) => (
+  <div className="relative group">
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
+    <div className="relative flex flex-col h-full glass-morphism p-6 rounded-xl border border-white/5 transition-all duration-500 group-hover:translate-y-[-2px]">
+      {/* Image with decorative elements */}
+      <div className="relative mb-6 mx-auto">
+        <div className="absolute -inset-2 border border-primary-500/20 rounded-full"></div>
+        <div className="relative w-32 h-32 rounded-full overflow-hidden border-2 border-white/10">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 mix-blend-overlay"></div>
+          <img 
+            src={image} 
+            alt={name} 
+            className="w-full h-full object-cover object-center"
+          />
+        </div>
+      </div>
+      
+      <div className="text-center mb-4">
+        <h3 className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">{name}</h3>
+        <p className="text-gray-400 mt-1">{role}</p>
+      </div>
+      
+      <p className="text-gray-300 text-center mb-6 flex-grow">{description}</p>
+      
+      <div className="flex justify-center gap-4">
+        {socialLinks.map((link, index) => (
+          <a 
+            key={index}
+            href={link.url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-primary-500/20 hover:border-primary-500/30 transition-colors duration-300"
+            aria-label={link.label}
+          >
+            <i className={`${link.icon} text-white`}></i>
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 );
@@ -37,57 +62,125 @@ const About = () => {
   useScrollReveal();
   
   return (
-    <section id="about" className="py-24 bg-dark scroll-mt-24">
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center mb-16 reveal">
+    <section id="about" className="py-32 bg-black relative overflow-hidden scroll-mt-24">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 border border-white/5 rounded-full animate-spin-slow-reverse"></div>
+      <div className="absolute bottom-1/3 right-1/3 w-96 h-96 border border-white/5 animate-spin-slow"></div>
+      
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        <div className="max-w-3xl mx-auto text-center mb-16 reveal stagger-reveal">
+          <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Our Story</span>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             About Us
           </h2>
-          <p className="text-lg text-gray-400 leading-relaxed">
-            We're a creative team of high school students dedicated to creating functional, beautiful websites and applications. 
-            Our focus on web design, development, and user experience enables us to exceed client expectations.
-            Our team works to create sites that serve to enhance your business, expand your outreach and visibility, and increase your online presence.
+          <p className="text-lg text-gray-300">
+            A passionate team turning ideas into beautiful digital experiences
           </p>
         </div>
         
-        {/* Team Members Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20 reveal">
-          <TeamMember 
-            name="Gavin Moceri"
-            role="Developer"
-            description="Gavin Moceri is a talented frontend developer with skills in design, interactivity, and clarity."
-          />
-          <TeamMember 
-            name="Ryan Latimer"
-            role="Developer"
-            description="Ryan Latimer is a skilled frontend developer with skills in dynamic, engaging content and styling."
-          />
-          <div className="md:col-span-2">
-            <TeamMember 
+        {/* Team Section */}
+        <div className="mb-24 reveal">
+          <h3 className="text-3xl font-bold mb-12 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Meet the Team</h3>
+          <div className="grid md:grid-cols-3 gap-8">
+            <TeamMemberCard 
+              name="Ryan Latimer"
+              role="Lead Developer"
+              image="/src/assets/images/team/ryan.jpg"
+              description="Full-stack developer with expertise in creating responsive web applications and intuitive user interfaces."
+              socialLinks={[
+                { icon: "fab fa-github", url: "https://github.com/ryanlatimer", label: "GitHub" },
+                { icon: "fab fa-linkedin-in", url: "https://linkedin.com/in/ryanlatimer", label: "LinkedIn" },
+                { icon: "fas fa-envelope", url: "mailto:ryan@avexel.co", label: "Email" }
+              ]}
+            />
+            
+            <TeamMemberCard 
+              name="Gavin Moceri"
+              role="Backend Developer"
+              image="/src/assets/images/team/gavin.jpg"
+              description="Specialized in database architecture, API development, and ensuring optimal performance for all our projects."
+              socialLinks={[
+                { icon: "fab fa-github", url: "https://github.com/gavinmoceri", label: "GitHub" },
+                { icon: "fab fa-linkedin-in", url: "https://linkedin.com/in/gavinmoceri", label: "LinkedIn" },
+                { icon: "fas fa-envelope", url: "mailto:gavin@avexel.co", label: "Email" }
+              ]}
+            />
+            
+            <TeamMemberCard 
               name="Conner Breckenfeld"
-              role="Designer"
-              description="Conner Breckenfeld is a creative designer with an exceptional eye for aesthetics, bringing visual excellence and innovative design concepts to our projects."
+              role="UI/UX Designer"
+              image="/src/assets/images/team/conner.jpg"
+              description="Creative designer focusing on crafting visually stunning interfaces that deliver exceptional user experiences."
+              socialLinks={[
+                { icon: "fab fa-dribbble", url: "https://dribbble.com/connerbreckenfeld", label: "Dribbble" },
+                { icon: "fab fa-linkedin-in", url: "https://linkedin.com/in/connerbreckenfeld", label: "LinkedIn" },
+                { icon: "fas fa-envelope", url: "mailto:conner@avexel.co", label: "Email" }
+              ]}
             />
           </div>
         </div>
         
-        {/* Timeline */}
-        <div className="max-w-2xl mx-auto reveal">
-          <h3 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            Our Journey
+        <div className="max-w-3xl mx-auto text-center mb-16 reveal">
+          <h3 className="text-3xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+            Our Mission
           </h3>
-          <div className="relative">
+          <p className="text-lg text-gray-300 leading-relaxed mb-8">
+            We are dedicated to creating exceptional digital experiences that solve real problems. By combining our technical expertise, design skills, and innovative thinking, we deliver solutions that exceed expectations and drive tangible results for our clients.
+          </p>
+          
+          <div className="space-y-4">
+            <div className="flex items-start gap-4 group">
+              <div className="w-8 h-8 rounded-full bg-primary-500/10 flex items-center justify-center mt-1 ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
+                <i className="fas fa-paint-brush text-xs bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
+              </div>
+              <div className="flex-1 glass-morphism p-4 rounded-xl group-hover:shadow-neon transition-all duration-300">
+                <p className="text-gray-300">We craft visually stunning interfaces that engage users and communicate brand values effectively.</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-4 group">
+              <div className="w-8 h-8 rounded-full bg-primary-500/10 flex items-center justify-center mt-1 ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
+                <i className="fas fa-code text-xs bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
+              </div>
+              <div className="flex-1 glass-morphism p-4 rounded-xl group-hover:shadow-neon transition-all duration-300">
+                <p className="text-gray-300">We write clean, efficient code that brings designs to life while ensuring optimal performance and accessibility.</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-4 group">
+              <div className="w-8 h-8 rounded-full bg-primary-500/10 flex items-center justify-center mt-1 ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
+                <i className="fas fa-users text-xs bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
+              </div>
+              <div className="flex-1 glass-morphism p-4 rounded-xl group-hover:shadow-neon transition-all duration-300">
+                <p className="text-gray-300">We love collaborating with clients to understand their needs and deliver solutions that exceed expectations.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Timeline Section */}
+        <div className="mt-32 reveal">
+          <h3 className="text-3xl font-bold mb-12 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Our Journey</h3>
+          <div className="max-w-3xl mx-auto">
             <TimelineItem 
-              year="Founded in 2024"
-              description="Started our journey with a passion for digital innovation and a vision to create impactful web solutions."
+              year="2018"
+              title="The Beginning"
+              description="Our team began exploring design and development while working on personal projects and building our foundational skills."
             />
             <TimelineItem 
-              year="First Major Project - FRC7790.com"
-              description="Created our first website, a side project to build up the online presence of our FIRST Robotics team, showcasing our ability to create engaging and functional web experiences."
+              year="2020"
+              title="First Professional Projects"
+              description="Worked with our first clients on web design and development projects, focusing on user experience and responsive design."
             />
             <TimelineItem 
-              year="Expansion & Growth"
-              description="Expanded our service offerings and reach to a multitude of local businesses, helping them establish and enhance their digital presence."
+              year="2021"
+              title="Team Formation"
+              description="Ryan, Gavin, and Conner officially joined forces, combining their expertise to deliver comprehensive digital solutions."
+            />
+            <TimelineItem 
+              year="Present"
+              title="Continuous Growth"
+              description="Constantly learning and refining our craft, pushing creative boundaries and exploring new technologies to deliver exceptional digital experiences."
             />
           </div>
         </div>
