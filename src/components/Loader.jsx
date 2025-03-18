@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import logo from '../assets/images/Logo-nobg-sm.png';
 
 const Loader = () => {
   const [progress, setProgress] = useState(0);
@@ -51,7 +52,7 @@ const Loader = () => {
               <div className="absolute inset-0 rounded-full bg-gradient-radial from-primary-500/20 to-transparent blur-2xl animate-pulse-slow"></div>
             </div>
             <img 
-              src="/src/assets/images/Logo-nobg-sm.png" 
+              src={logo}
               alt="Logo"
               className="relative w-24 h-24 mx-auto animate-float"
             />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useScrollReveal from '../hooks/useScrollReveal';
+import baywatchLogo from '../assets/images/baywatchLogo.png';
 
 const ProjectCard = ({ title, description, image, tags, websiteUrl, caseStudyUrl, orientation = 'right', teamName = '' }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -176,7 +177,7 @@ const Portfolio = () => {
             title="FRC Team 7790 Website"
             description="An interactive website for Baywatch Robotics showcasing our team, robot designs, competition history, and STEM outreach programs. Features include a team member directory, sponsorship information, and resources for aspiring robotics enthusiasts."
             tags={[]}
-            image="/src/assets/images/baywatchLogo.png"
+            image={baywatchLogo}
             websiteUrl="https://frc7790.com"
             teamName="Baywatch Robotics"
           />
