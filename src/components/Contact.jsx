@@ -32,6 +32,7 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCopied, setShowCopied] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,6 +57,15 @@ const Contact = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleEmailClick = (e) => {
+    e.preventDefault();
+    const email = 'contact@avexel.com';
+    navigator.clipboard.writeText(email).then(() => {
+      setShowCopied(true);
+      setTimeout(() => setShowCopied(false), 2000); // Hide after 2 seconds
+    });
   };
 
   return (
@@ -109,9 +119,20 @@ const Contact = () => {
                 Have questions or ready to start? Drop us a message, and we'll get back to you within 24 hours. We're excited to learn about your project!
               </p>
               <div className="space-y-4">
-                <a href="mailto:contact@avexel.com" className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
+                <a 
+                  href="mailto:contact@avexel.com" 
+                  onClick={handleEmailClick}
+                  className="group flex items-center gap-3 text-gray-300 hover:text-white transition-colors relative"
+                >
                   <i className="fas fa-envelope text-primary-400"></i>
                   <span>contact@avexel.com</span>
+                  <span 
+                    className={`absolute -top-8 left-0 px-2 py-1 text-sm bg-primary-500 text-white rounded-md transition-opacity duration-200 ${
+                      showCopied ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  >
+                    Email copied!
+                  </span>
                 </a>
                 <a href="tel:+1234567890" className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
                   <i className="fas fa-phone text-primary-400"></i>
