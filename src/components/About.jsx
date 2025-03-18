@@ -162,24 +162,24 @@ const About = () => {
           </p>
         </div>
         
-        {/* Timeline Section - Fixed */}
+        {/* Timeline Section - Reverted to original */}
         <div className="mt-20 reveal">
           <h3 className="text-3xl font-bold mb-12 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Our Journey</h3>
           <div className="max-w-3xl mx-auto">
             <TimelineItem 
-              year="2019"
-              title="FRC Team 7790 Founded"
-              description="Baywatch Robotics was established at Harbor Springs High School, joining the FIRST Robotics Competition community and beginning our journey in STEM education and competitive robotics."
+              year="2024"
+              title="Avexel is conceptualized"
+              description="As team members of FRC Team 7790, we wanted to find a way to support our robotics team while making use of our web development skills."
             />
             <TimelineItem 
-              year="2023"
-              title="Avexel Web Services Launched"
-              description="After gaining experience developing the team's website and online presence, we created Avexel to offer professional web development services to local businesses while supporting our robotics program."
+              year="2025"
+              title="FRC7790.com Is Created"
+              description="Our opening website, created to build a platform for our robotics team to showcase our team, attract sponsors, and provide a useful reservoir of information on FRC Events, Teams, and more."
             />
             <TimelineItem 
               year="Present"
-              title="Growing Our Impact"
-              description="Today, we balance our academic responsibilities, robotics competitions, and web development projects, using our technical skills to serve our community while funding our team's robotics initiatives."
+              title="Exapnsion"
+              description="We are continuing to expand our robotits teams website, our business, and our impact to meaningful ideas."
             />
           </div>
         </div>
