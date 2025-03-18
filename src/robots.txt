@@ -1,0 +1,4 @@
+sUser-agent: *
+Allow: /
+
+Sitemap: https://www.avecxel.com/sitemap.xml
