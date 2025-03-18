@@ -99,36 +99,11 @@ const Capabilities = () => {
           />
         </div>
         
-        {/* Skills Showcase */}
-        <div className="mt-24 relative reveal">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-30"></div>
-          <div className="relative glass-morphism p-8 lg:p-12 rounded-xl text-center">
-            <h3 className="text-2xl font-bold mb-8 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-              Our Tech Stack
-            </h3>
-            
-            <div className="flex flex-wrap justify-center gap-6 md:gap-10">
-              {['React', 'Next.js', 'TailwindCSS', 'JavaScript', 'TypeScript', 'Node.js', 'Firebase', 'MongoDB'].map((tech, index) => (
-                <div 
-                  key={tech} 
-                  className="group relative"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-secondary-500/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative px-5 py-3 bg-dark rounded-lg border border-white/10 group-hover:border-primary-500/30 transition-colors duration-300">
-                    <span className="text-gray-300 group-hover:text-white transition-colors duration-300">
-                      {tech}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        {/* Remove the entire "Skills Showcase" section with the tech stack */}
+        
+        {/* Angled section divider */}
+        <div className="section-divider mt-24"></div>
       </div>
-      
-      {/* Angled section divider */}
-      <div className="section-divider mt-24"></div>
     </section>
   );
 };
