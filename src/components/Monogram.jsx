@@ -44,22 +44,16 @@ const Monogram = ({
         return "w-16 h-16 text-xl";
     }
   }, [size]);
-  
-  // Generate a predictable gradient based on the name
+
+  // Use the same gradient as the rest of the site instead of generating random ones
   const gradientStyle = useMemo(() => {
     if (bgColorClass) return {};
     
-    // Generate a predictable hash from the name
-    const hash = name ? name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 0;
-    
-    // Use the hash to select gradient colors from our theme palette
-    const hue1 = (hash * 137) % 360; // Using prime number for better distribution
-    const hue2 = (hash * 271) % 360;
-    
+    // Match the site's blue-purple gradient
     return {
-      background: `linear-gradient(135deg, hsl(${hue1}, 70%, 50%), hsl(${hue2}, 70%, 50%))`
+      background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)'
     };
-  }, [name, bgColorClass]);
+  }, [bgColorClass]);
 
   return (
     <div 

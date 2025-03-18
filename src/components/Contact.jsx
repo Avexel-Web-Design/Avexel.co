@@ -1,5 +1,6 @@
 import React from 'react';
 import useScrollReveal from '../hooks/useScrollReveal';
+import Monogram from './Monogram';
 
 const ContactInfo = ({ icon, title, content }) => (
   <div className="flex items-start gap-4 group">
@@ -77,9 +78,7 @@ const Contact = () => {
                   
                   <div className="flex flex-col sm:flex-row gap-4 justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full overflow-hidden border border-white/10">
-                        <img src="/src/assets/images/team/ryan.jpg" alt="Ryan" className="w-full h-full object-cover" />
-                      </div>
+                      <Monogram name="Ryan Latimer" size="xs" />
                       <div>
                         <p className="text-sm font-medium text-white">Ryan Latimer</p>
                         <p className="text-xs text-gray-400">Student Developer</p>
@@ -87,9 +86,7 @@ const Contact = () => {
                     </div>
                     
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full overflow-hidden border border-white/10">
-                        <img src="/src/assets/images/team/gavin.jpg" alt="Gavin" className="w-full h-full object-cover" />
-                      </div>
+                      <Monogram name="Gavin Moceri" size="xs" />
                       <div>
                         <p className="text-sm font-medium text-white">Gavin Moceri</p>
                         <p className="text-xs text-gray-400">Student Developer</p>
@@ -97,9 +94,7 @@ const Contact = () => {
                     </div>
                     
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full overflow-hidden border border-white/10">
-                        <img src="/src/assets/images/team/conner.jpg" alt="Conner" className="w-full h-full object-cover" />
-                      </div>
+                      <Monogram name="Conner Breckenfeld" size="xs" />
                       <div>
                         <p className="text-sm font-medium text-white">Conner Breckenfeld</p>
                         <p className="text-xs text-gray-400">Student Designer</p>

@@ -1,5 +1,6 @@
 import React from 'react';
 import useScrollReveal from '../hooks/useScrollReveal';
+import Monogram from './Monogram';
 
 const TimelineItem = ({ year, title, description }) => (
   <div className="relative pl-8 pb-12 group">
@@ -16,21 +17,17 @@ const TimelineItem = ({ year, title, description }) => (
   </div>
 );
 
-const TeamMemberCard = ({ name, role, image, description, socialLinks = [] }) => (
+const TeamMemberCard = ({ name, role, description }) => (
   <div className="relative group">
     <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
     <div className="relative flex flex-col h-full glass-morphism p-6 rounded-xl border border-white/5 transition-all duration-500 group-hover:translate-y-[-2px]">
-      {/* Image with decorative elements */}
+      {/* Use Monogram instead of image */}
       <div className="relative mb-6 mx-auto">
-        <div className="absolute -inset-2 border border-primary-500/20 rounded-full"></div>
-        <div className="relative w-32 h-32 rounded-full overflow-hidden border-2 border-white/10">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 mix-blend-overlay"></div>
-          <img 
-            src={image} 
-            alt={name} 
-            className="w-full h-full object-cover object-center"
-          />
-        </div>
+        <Monogram 
+          name={name} 
+          size="lg" 
+          className="mx-auto"
+        />
       </div>
       
       <div className="text-center mb-4">
@@ -38,22 +35,7 @@ const TeamMemberCard = ({ name, role, image, description, socialLinks = [] }) =>
         <p className="text-gray-400 mt-1">{role}</p>
       </div>
       
-      <p className="text-gray-300 text-center mb-6 flex-grow">{description}</p>
-      
-      <div className="flex justify-center gap-4">
-        {socialLinks.map((link, index) => (
-          <a 
-            key={index}
-            href={link.url} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-primary-500/20 hover:border-primary-500/30 transition-colors duration-300"
-            aria-label={link.label}
-          >
-            <i className={`${link.icon} text-white`}></i>
-          </a>
-        ))}
-      </div>
+      <p className="text-gray-300 text-center flex-grow">{description}</p>
     </div>
   </div>
 );
@@ -83,43 +65,25 @@ const About = () => {
         {/* Team Section */}
         <div className="mb-16 reveal">
           {/* Reduced mb-24 to mb-16 */}
-          <h3 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Meet the Team</h3>
+          <h3 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Our Team</h3>
           {/* Reduced mb-12 to mb-8 */}
           <div className="grid md:grid-cols-3 gap-8">
             <TeamMemberCard 
               name="Ryan Latimer"
               role="Student Developer"
-              image="/src/assets/images/team/ryan.jpg"
               description="FRC Team 7790 member with a passion for coding and creating responsive websites that make an impact."
-              socialLinks={[
-                { icon: "fab fa-github", url: "https://github.com/ryanlatimer", label: "GitHub" },
-                { icon: "fab fa-linkedin-in", url: "https://linkedin.com/in/ryanlatimer", label: "LinkedIn" },
-                { icon: "fas fa-envelope", url: "mailto:ryan@avexel.co", label: "Email" }
-              ]}
             />
             
             <TeamMemberCard 
               name="Gavin Moceri"
               role="Student Developer"
-              image="/src/assets/images/team/gavin.jpg"
               description="Robotics enthusiast who enjoys problem-solving and building cool websites to help local businesses shine online."
-              socialLinks={[
-                { icon: "fab fa-github", url: "https://github.com/gavinmoceri", label: "GitHub" },
-                { icon: "fab fa-linkedin-in", url: "https://linkedin.com/in/gavinmoceri", label: "LinkedIn" },
-                { icon: "fas fa-envelope", url: "mailto:gavin@avexel.co", label: "Email" }
-              ]}
             />
             
             <TeamMemberCard 
               name="Conner Breckenfeld"
               role="Student Designer"
-              image="/src/assets/images/team/conner.jpg"
               description="Creative member of Team 7790 who loves making websites look good and work even better for users of all types."
-              socialLinks={[
-                { icon: "fab fa-dribbble", url: "https://dribbble.com/connerbreckenfeld", label: "Dribbble" },
-                { icon: "fab fa-linkedin-in", url: "https://linkedin.com/in/connerbreckenfeld", label: "LinkedIn" },
-                { icon: "fas fa-envelope", url: "mailto:conner@avexel.co", label: "Email" }
-              ]}
             />
           </div>
         </div>
