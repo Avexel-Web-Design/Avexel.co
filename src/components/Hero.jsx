@@ -65,7 +65,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark" aria-label="Hero section">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden" aria-label="Hero section">
       {/* Enhanced background gradients */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-secondary-500/3 to-primary-500/5 animate-pulse-slow"></div>
