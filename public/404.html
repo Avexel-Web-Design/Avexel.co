@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Avexel - Page Redirect</title>
+  <script type="text/javascript">
+    // Single Page Apps for GitHub Pages
+    // MIT License
+    // https://github.com/rafgraph/spa-github-pages
+    var pathSegmentsToKeep = 1; // Keeps /Avexel.co/ from the path
+
+    var l = window.location;
+    var segmentCount = l.pathname.split('/').length;
+    var redirectTo = l.protocol + '//' + l.hostname + 
+      (l.port ? ':' + l.port : '') +
+      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+      l.hash;
+    
+    window.location.replace(redirectTo);
+  </script>
+</head>
+<body>
+  Redirecting...
+</body>
+</html>
