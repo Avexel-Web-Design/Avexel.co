@@ -34,7 +34,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden" aria-label="Hero section">
+    <section className="relative min-h-[100vh] flex items-center overflow-hidden pt-28 sm:pt-32 md:pt-28 pb-8 sm:pb-12" aria-label="Hero section">
       {/* Enhanced background gradients */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-secondary-500/3 to-primary-500/5 animate-pulse-slow"></div>
@@ -42,26 +42,26 @@ const Hero = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(139,92,246,0.08),transparent_50%)]"></div>
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 items-center">
-          {/* Hero Text */}
-          <div className="max-w-xl">
-            <h1 className="text-5xl lg:text-7xl font-bold mb-6 tracking-tight opacity-100"> {/* Remove reveal classes */}
+      <div className="container mx-auto px-4 lg:px-8 relative z-10 mt-6 sm:mt-0">
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-8 items-center">
+          {/* Hero Text - improved mobile-first approach */}
+          <div className="max-w-md sm:max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
+            <h1 className="text-3xl xs:text-4xl sm:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 tracking-tight opacity-100 leading-tight">
               <span className="block">Websites that</span>
               <span className="block bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
                 Make a Difference
               </span>
             </h1>
             
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl opacity-100"> {/* Remove reveal classes */}
+            <p className="text-sm xs:text-base sm:text-lg md:text-xl text-gray-300 mb-6 sm:mb-8 max-w-md sm:max-w-2xl mx-auto lg:mx-0 opacity-100">
               Student developers creating modern web solutions while powering the next generation of STEM innovation through FRC Team 7790.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-start gap-4 opacity-100"> {/* Remove reveal classes */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-start justify-center lg:justify-start gap-3 sm:gap-4 opacity-100">
               <HashLink 
                 smooth 
                 to="#contact" 
-                className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300"
+                className="w-full sm:w-auto px-5 xs:px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300"
               >
                 Start Your Project
               </HashLink>
@@ -69,16 +69,16 @@ const Hero = () => {
               <HashLink 
                 smooth 
                 to="#work" 
-                className="w-full sm:w-auto px-8 py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300"
+                className="w-full sm:w-auto px-5 xs:px-6 sm:px-8 py-3 sm:py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300 mt-3 sm:mt-0"
               >
                 View Our Work
               </HashLink>
             </div>
           </div>
 
-          {/* SVG Wireframe */}
-          <div className="flex justify-center items-center">
-            <div className="w-[110%] md:w-full lg:w-[115%]">
+          {/* SVG Wireframe - better mobile display with proper sizing */}
+          <div className="flex justify-center items-center mt-0 md:-mt-4 lg:mt-0">
+            <div className="w-[85%] xs:w-[80%] sm:w-[70%] md:w-[75%] lg:w-[115%] max-w-md lg:max-w-none mx-auto">
               <svg ref={svgRef} viewBox="0 0 400 300" className="w-full h-auto" aria-hidden="true">
                 <defs>
                   <linearGradient id="gradStroke" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -148,16 +148,16 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-0 w-full flex justify-center animate-bounce-slow" aria-hidden="true">
-        <HashLink smooth to="#work" aria-label="Scroll down" className="text-white/50 hover:text-white/80 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      {/* Mobile-friendly scroll indicator with better positioning */}
+      <div className="absolute bottom-4 xs:bottom-6 sm:bottom-8 left-0 w-full flex justify-center animate-bounce-slow" aria-hidden="true">
+        <HashLink smooth to="#work" aria-label="Scroll down" className="text-white/50 hover:text-white/80 transition-colors p-2">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </HashLink>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-full h-16 sm:h-20 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
       
       {/* Animation keyframes */}
       <style>{`

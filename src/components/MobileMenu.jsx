@@ -44,30 +44,43 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
         <div className="absolute inset-0 bg-gradient-to-b from-primary-500/5 via-secondary-500/5 to-primary-500/5"></div>
       </div>
 
-      {/* Menu Content */}
+      {/* Mobile Menu Content - enhanced for all screen sizes */}
       <div 
         ref={menuRef}
-        className={`relative h-full flex flex-col items-center justify-center p-8 transition-all duration-500 ${
+        className={`relative h-full flex flex-col items-center justify-between p-4 xs:p-6 pt-20 xs:pt-20 pb-8 xs:pb-12 sm:p-8 sm:pb-12 transition-all duration-500 overflow-y-auto ${
           isOpen ? 'translate-y-0' : '-translate-y-8'
         }`}
       >
-        {/* Logo */}
-        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 flex items-center gap-2">
-          <div className="w-10 h-10 relative">
-            <img 
-              src="/src/assets/images/Logo-nobg-sm.png" 
-              alt="Logo" 
-              className="w-full h-full object-contain"
-            />
+        {/* Enhanced close button - more visible and better positioned */}
+        <button 
+          onClick={closeMenu}
+          className="fixed top-4 right-4 w-10 h-10 rounded-full bg-primary-500/20 flex items-center justify-center hover:bg-primary-500/40 transition-colors duration-300 z-50 shadow-lg"
+          aria-label="Close menu"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        {/* Logo - adjusted positioning with better spacing */}
+        <div className="w-full flex justify-center items-center mb-8 xs:mb-6 sm:absolute sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 sm:mb-0">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 relative">
+              <img 
+                src="/src/assets/images/Logo-nobg-sm.png" 
+                alt="Logo" 
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+              Avexel
+            </span>
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            Avexel
-          </span>
         </div>
 
-        {/* Menu Links */}
-        <nav className="w-full max-w-md">
-          <ul className="space-y-4">
+        {/* Menu Links - enhanced for better touch targets */}
+        <nav className="w-full max-w-md mt-0 sm:mt-0 flex-1 flex items-center">
+          <ul className="space-y-3 xs:space-y-3 sm:space-y-4 w-full">
             {menuLinks.map((link, index) => (
               <li 
                 key={link.to}
@@ -82,7 +95,7 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
                     closeMenu();
                     setActiveTab(link.id);
                   }}
-                  className={`relative flex items-center gap-3 px-4 py-3 text-xl font-medium transition-all duration-300 rounded-xl ${
+                  className={`relative flex items-center gap-3 px-4 py-3 text-lg sm:text-xl font-medium transition-all duration-300 rounded-xl ${
                     activeTab === link.id 
                       ? 'text-white bg-gradient-to-r from-primary-500/20 to-secondary-500/20'
                       : 'text-white/70 hover:text-white'
@@ -98,15 +111,15 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
           </ul>
         </nav>
 
-        {/* Team Contact */}
-        <div className={`absolute bottom-8 transition-all duration-500 delay-500 ${
+        {/* Team Contact - better positioning for all screen sizes */}
+        <div className={`w-full mt-6 sm:mt-0 px-0 sm:absolute sm:bottom-8 sm:left-0 sm:px-4 transition-all duration-500 delay-500 ${
           isOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
         }`}>
-          <p className="text-center text-sm text-white/70 mb-2">Contact the team:</p>
-          <div className="flex justify-center items-center gap-6">
-            <SocialLink icon="fa-envelope" href="mailto:contact@avexel.co" text="Email" />
-            <SocialLink icon="fa-github" href="https://github.com/avexel" />
-            <SocialLink icon="fa-linkedin" href="https://linkedin.com/company/avexel" />
+          <p className="text-center text-xs sm:text-sm text-white/70 mb-2">Contact the team:</p>
+          <div className="flex justify-center items-center gap-6 sm:gap-6">
+            <SocialLink icon="fa-envelope" href="mailto:contact@avexel.co" iconOnly />
+            <SocialLink icon="fa-github" href="https://github.com/avexel" iconOnly />
+            <SocialLink icon="fa-linkedin" href="https://linkedin.com/company/avexel" iconOnly />
           </div>
         </div>
       </div>
@@ -114,15 +127,14 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
   );
 };
 
-const SocialLink = ({ icon, href, text }) => (
+const SocialLink = ({ icon, href, iconOnly = false }) => (
   <a 
     href={href} 
     target="_blank"
     rel="noopener noreferrer"
-    className="group flex items-center gap-2 text-white/70 hover:text-white transition-colors duration-300"
+    className="group flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 transition-all duration-300"
   >
-    <i className={`fab ${icon} text-lg`}></i>
-    {text && <span className="text-sm">{text}</span>}
+    <i className={`fab ${icon} text-lg text-white/70 group-hover:text-white transition-colors duration-300`}></i>
   </a>
 );
 
