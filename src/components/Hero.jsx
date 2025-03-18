@@ -73,7 +73,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(139,92,246,0.08),transparent_50%)]"></div>
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 py-16 md:py-20 relative z-10">
+      <div className="container mx-auto px-4 lg:px-8 py-12 md:py-16 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-4 items-center">
           {/* Hero Text */}
           <div className="md:w-full lg:pr-12 mt-8 md:mt-0">
@@ -192,7 +192,7 @@ const Hero = () => {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-0 w-full flex justify-center animate-bounce-slow" aria-hidden="true">
+      <div className="absolute bottom-8 left-0 w-full flex justify-center animate-bounce-slow" aria-hidden="true">
         <HashLink smooth to="#work" aria-label="Scroll down" className="text-white/50 hover:text-white/80 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />

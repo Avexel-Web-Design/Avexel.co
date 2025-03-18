@@ -62,13 +62,15 @@ const About = () => {
   useScrollReveal();
   
   return (
-    <section id="about" className="py-32 bg-black relative overflow-hidden scroll-mt-24">
+    <section id="about" className="py-20 bg-black relative overflow-hidden scroll-mt-16">
+      {/* Reduced py-32 to py-20 and scroll-mt-24 to scroll-mt-16 */}
       {/* Decorative Background Elements */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 border border-white/5 rounded-full animate-spin-slow-reverse"></div>
       <div className="absolute bottom-1/3 right-1/3 w-96 h-96 border border-white/5 animate-spin-slow"></div>
       
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16 reveal stagger-reveal">
+        <div className="max-w-3xl mx-auto text-center mb-12 reveal stagger-reveal">
+          {/* Reduced mb-16 to mb-12 */}
           <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Our Story</span>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             About Us
@@ -79,8 +81,10 @@ const About = () => {
         </div>
         
         {/* Team Section */}
-        <div className="mb-24 reveal">
-          <h3 className="text-3xl font-bold mb-12 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Meet the Team</h3>
+        <div className="mb-16 reveal">
+          {/* Reduced mb-24 to mb-16 */}
+          <h3 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Meet the Team</h3>
+          {/* Reduced mb-12 to mb-8 */}
           <div className="grid md:grid-cols-3 gap-8">
             <TeamMemberCard 
               name="Ryan Latimer"
@@ -120,7 +124,8 @@ const About = () => {
           </div>
         </div>
         
-        <div className="max-w-3xl mx-auto text-center mb-16 reveal">
+        <div className="max-w-3xl mx-auto text-center mb-12 reveal">
+          {/* Reduced mb-16 to mb-12 */}
           <h3 className="text-3xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             Our Mission
           </h3>
@@ -159,7 +164,8 @@ const About = () => {
         </div>
         
         {/* Timeline Section */}
-        <div className="mt-32 reveal">
+        <div className="mt-20 reveal">
+          {/* Reduced mt-32 to mt-20 */}
           <h3 className="text-3xl font-bold mb-12 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Our Journey</h3>
           <div className="max-w-3xl mx-auto">
             <TimelineItem 

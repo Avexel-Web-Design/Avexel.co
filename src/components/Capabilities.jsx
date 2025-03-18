@@ -47,14 +47,14 @@ const Capabilities = () => {
   useCounterAnimation();
 
   return (
-    <section id="capabilities" className="py-32 bg-black relative overflow-hidden scroll-mt-24">
+    <section id="capabilities" className="py-20 bg-black relative overflow-hidden scroll-mt-16">
       {/* Decorative Background Elements */}
       <div className="absolute bottom-0 left-0 w-full h-1/2 bg-grid-pattern opacity-5"></div>
       <div className="absolute top-1/3 right-1/5 w-72 h-72 border border-white/5 rounded-full animate-spin-slow"></div>
       <div className="absolute bottom-1/4 left-1/6 w-48 h-48 border border-white/5 animate-spin-slow-reverse"></div>
       
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16 reveal stagger-reveal">
+        <div className="max-w-3xl mx-auto text-center mb-12 reveal stagger-reveal">
           <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">What We Do Best</span>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             Our Skills
@@ -67,40 +67,40 @@ const Capabilities = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 reveal">
           <CapabilityCard 
             icon="fa-mobile-alt"
-            title="Mobile-Friendly"
-            description="We make sure all our websites work perfectly on phones and tablets, just like they do on computers."
+            title="Mobile Development"
+            description="We create responsive websites that work flawlessly on smartphones, tablets, and computers for a seamless user experience."
             target="100"
             suffix="%"
           />
           
           <CapabilityCard 
             icon="fa-smile"
-            title="Happy Clients"
-            description="Our focus on communication and meeting your needs ensures you'll be satisfied with the final result."
+            title="Customer Satisfaction"
+            description="Our focus on communication and understanding client needs ensures you'll be fully satisfied with the final product."
             target="100"
             suffix="%"
           />
           
           <CapabilityCard 
-            icon="fa-robot"
-            title="FRC Experience"
-            description="Years of problem-solving in FIRST Robotics competitions has taught us how to tackle challenges creatively."
-            target="3"
-            suffix="Years"
+            icon="fa-bolt"
+            title="Speedy Development"
+            description="We deliver quality websites efficiently, bringing your online presence to life quickly without sacrificing quality."
+            target="7"
+            suffix="Days"
             startValue={0}
           />
           
           <CapabilityCard 
             icon="fa-paint-brush"
             title="Clean Design"
-            description="We create simple, effective designs that make it easy for visitors to find what they're looking for."
+            description="We create simple, effective designs that make it easy for visitors to find what they're looking for and enjoy the experience."
             target="100"
             suffix="%"
           />
         </div>
         
         {/* FRC connection section */}
-        <div className="mt-32 relative glass-morphism p-8 lg:p-12 rounded-xl border border-white/5 reveal">
+        <div className="mt-20 relative glass-morphism p-8 lg:p-12 rounded-xl border border-white/5 reveal">
           <div className="max-w-4xl mx-auto text-center">
             <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
               From Robotics to Websites
@@ -122,7 +122,7 @@ const Capabilities = () => {
         </div>
         
         {/* Angled section divider */}
-        <div className="section-divider mt-24"></div>
+        <div className="section-divider mt-16"></div>
       </div>
     </section>
   );

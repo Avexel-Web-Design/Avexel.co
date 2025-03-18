@@ -66,14 +66,14 @@ const Services = () => {
   useScrollReveal();
   
   return (
-    <section id="services" className="py-32 bg-black relative overflow-hidden scroll-mt-24">
+    <section id="services" className="py-20 bg-black relative overflow-hidden scroll-mt-16">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-1/3 bg-grid-pattern opacity-5"></div>
       <div className="absolute top-1/4 right-1/6 w-64 h-64 border border-white/5 animate-spin-slow"></div>
       <div className="absolute bottom-1/3 left-1/5 w-48 h-48 border border-white/5 rounded-full animate-spin-slow-reverse"></div>
       
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16 reveal stagger-reveal">
+        <div className="max-w-3xl mx-auto text-center mb-12 reveal stagger-reveal">
           <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">What We Offer</span>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             Our Services
@@ -111,7 +111,7 @@ const Services = () => {
         </div>
         
         {/* Process Section */}
-        <div className="mt-32 reveal">
+        <div className="mt-20 reveal">
           <h3 className="text-3xl font-bold mb-16 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             How We Work
           </h3>
@@ -152,7 +152,7 @@ const Services = () => {
         </div>
         
         {/* FRC Support Section */}
-        <div className="mt-32 reveal">
+        <div className="mt-20 reveal">
           <div className="relative glass-morphism p-8 lg:p-12 rounded-xl border border-white/5">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">

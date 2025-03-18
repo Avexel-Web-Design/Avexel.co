@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import useScrollReveal from '../hooks/useScrollReveal';
 
-const ProjectCard = ({ title, description, image, tags, websiteUrl, caseStudyUrl, orientation = 'right' }) => {
+const ProjectCard = ({ title, description, image, tags, websiteUrl, caseStudyUrl, orientation = 'right', teamName = '' }) => {
   const [isHovered, setIsHovered] = useState(false);
   
   return (
@@ -76,9 +76,11 @@ const ProjectCard = ({ title, description, image, tags, websiteUrl, caseStudyUrl
               />
               
               {/* Interactive overlay */}
-              <div className={`absolute inset-0 bg-gradient-to-t from-dark to-transparent flex flex-col justify-end p-6 ${isHovered ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500 z-20`}>
-                <span className="text-white/70 text-sm">FRC Team 7790 Project</span>
-              </div>
+              {teamName && (
+                <div className={`absolute inset-0 bg-gradient-to-t from-dark to-transparent flex flex-col justify-end p-6 ${isHovered ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500 z-20`}>
+                  <span className="text-white/70 text-sm">{teamName}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -91,14 +93,16 @@ const Portfolio = () => {
   useScrollReveal();
   
   return (
-    <section id="work" className="py-32 bg-black relative overflow-hidden scroll-mt-24">
+    <section id="work" className="py-20 bg-black relative overflow-hidden scroll-mt-16">
+      {/* Reduced py-32 to py-20 and scroll-mt-24 to scroll-mt-16 */}
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       <div className="absolute top-1/4 right-1/4 w-72 h-72 border border-white/5 rounded-full animate-spin-slow"></div>
       <div className="absolute bottom-1/3 left-1/5 w-64 h-64 border border-white/5 animate-spin-slow-reverse"></div>
       
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16 reveal stagger-reveal">
+        <div className="max-w-3xl mx-auto text-center mb-12 reveal stagger-reveal">
+          {/* Reduced mb-16 to mb-12 */}
           <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Our Work</span>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             Featured Projects
@@ -108,7 +112,8 @@ const Portfolio = () => {
           </p>
         </div>
         
-        <div className="max-w-6xl mx-auto space-y-24">
+        <div className="max-w-6xl mx-auto space-y-16">
+          {/* Reduced space-y-24 to space-y-16 */}
           {/* Baywatch Robotics */}
           <ProjectCard
             title="Baywatch Robotics"
@@ -118,6 +123,7 @@ const Portfolio = () => {
             websiteUrl="https://FRC7790.com"
             caseStudyUrl="#"
             orientation="right"
+            teamName="FRC Team 7790 Project"
           />
           
           {/* Local Business Site */}
