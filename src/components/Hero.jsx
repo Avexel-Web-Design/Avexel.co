@@ -5,7 +5,8 @@ const Hero = () => {
   const svgRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [typedText, setTypedText] = useState('');
-  const fullText = "Digital Magic";
+  const [typingComplete, setTypingComplete] = useState(false);
+  const fullText = "Digital\nMagic";  // Added line break
 
   // Handle visibility animation
   useEffect(() => {
@@ -28,6 +29,8 @@ const Hero = () => {
         currentIndex++;
       } else {
         clearInterval(typingInterval);
+        // Set typing complete to true once animation is done
+        setTypingComplete(true);
       }
     }, 100);
     
@@ -79,12 +82,12 @@ const Hero = () => {
               <span className="inline-block animate-slide-up" style={{ animationDelay: '0.3s' }}>Create</span>
             </h1>
             
-            {/* "Digital Magic" text with typing animation */}
+            {/* "Digital Magic" text with typing animation - now on two lines */}
             <div className={`relative mb-8 md:mb-10 transform ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}>
-              <div className="flex flex-col md:flex-row items-start md:items-center">
-                <span className="text-6xl md:text-8xl lg:text-9xl font-bold leading-none pb-1 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
+              <div className="flex flex-col items-start">
+                <span className="text-6xl md:text-8xl lg:text-9xl font-bold leading-none pb-1 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500 typing-container whitespace-pre-line">
                   {typedText}
-                  <span className="typing-cursor">|</span>
+                  {!typingComplete && <span className="typing-cursor">|</span>}
                 </span>
               </div>
             </div>
@@ -197,7 +200,7 @@ const Hero = () => {
         </HashLink>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-black to-transparent"></div>
+      <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
       
       {/* Animation keyframes */}
       <style jsx>{`
@@ -221,9 +224,22 @@ const Hero = () => {
           50% { opacity: 0; }
         }
         
+        .typing-container {
+          display: inline-block;
+          white-space: pre-line;
+          overflow: visible;
+          position: relative;
+        }
+
+        @keyframes pulse-glow {
+          0%, 100% { text-shadow: 0 0 8px rgba(139, 92, 246, 0.4); }
+          50% { text-shadow: 0 0 16px rgba(139, 92, 246, 0.7); }
+        }
+        
         .draw-path {
           animation: draw 2s forwards;
           will-change: stroke-dashoffset;
+          filter: drop-shadow(0 0 3px rgba(139, 92, 246, 0.4));
         }
         
         .delay-1 {
@@ -242,6 +258,17 @@ const Hero = () => {
           display: inline-block;
           animation: blink 1s step-end infinite;
           color: #9333ea;
+          font-weight: 400;
+        }
+
+        .animate-fade-in {
+          opacity: 0;
+          animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         
         @media (prefers-reduced-motion: reduce) {
