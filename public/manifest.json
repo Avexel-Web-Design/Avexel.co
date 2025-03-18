@@ -9,19 +9,19 @@
       "type": "image/x-icon"
     },
     {
-      "src": "/src/assets/images/Logo-nobg-sm.png",
+      "src": "assets/images/Logo-nobg-sm.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "/src/assets/images/Logo.png",
+      "src": "assets/images/Logo.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
     }
   ],
-  "start_url": "./",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#121212",
   "background_color": "#121212",
@@ -47,5 +47,6 @@
       "url": "./#work",
       "description": "View our latest work"
     }
-  ]
+  ],
+  "scope": "/Portfolio/"
 }
