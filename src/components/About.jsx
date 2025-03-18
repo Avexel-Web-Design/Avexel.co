@@ -134,20 +134,20 @@ const About = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <TeamMemberCard 
               name="Ryan Latimer"
-              role="Student Developer"
-              description="FRC Team 7790 member with a passion for coding and creating responsive websites that make an impact."
+              role="Lead Developer"
+              description="Specializing in React and modern JavaScript frameworks. Focused on building scalable web applications and mentoring fellow team members in software development best practices."
             />
             
             <TeamMemberCard 
               name="Gavin Moceri"
-              role="Student Developer"
-              description="Robotics enthusiast who enjoys problem-solving and building cool websites to help local businesses shine online."
+              role="Backend Developer"
+              description="Experienced in Node.js and database architecture. Passionate about creating efficient server-side solutions and implementing secure authentication systems."
             />
             
             <TeamMemberCard 
               name="Conner Breckenfeld"
-              role="Student Designer"
-              description="Creative member of Team 7790 who loves making websites look good and work even better for users of all types."
+              role="UI/UX Designer"
+              description="Brings a detail-oriented approach to user interface design. Skilled in Figma and modern design systems, focusing on creating intuitive and accessible web experiences."
             />
           </div>
         </div>
