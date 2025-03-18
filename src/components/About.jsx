@@ -169,24 +169,19 @@ const About = () => {
           <h3 className="text-3xl font-bold mb-12 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Our Journey</h3>
           <div className="max-w-3xl mx-auto">
             <TimelineItem 
-              year="2022"
-              title="Robotics Team Experience"
-              description="We joined FRC Team 7790 Baywatch Robotics and discovered our shared passion for technology and problem-solving."
+              year="2024"
+              title="Avexel is conceptualized"
+              description="As team members of FRC Team 7790, we wanted to find a way to support our robotics team while making use of our web development skills."
             />
             <TimelineItem 
-              year="2023"
-              title="The Idea Forms"
-              description="While brainstorming fundraising ideas for our robotics team, we realized we could use our web development skills to help local businesses."
-            />
-            <TimelineItem 
-              year="2023"
-              title="Avexel is Born"
-              description="We officially launched Avexel as a student-led initiative to create websites while supporting our robotics team's activities."
+              year="2025"
+              title="FRC7790.com Is Created"
+              description="Our opening website, created to build a platform for our robotics team to showcase our team, attract sponsors, and provide a useful reservoir of information on FRC Events, Teams, and more."
             />
             <TimelineItem 
               year="Present"
-              title="Growing & Learning"
-              description="We continue to balance school, robotics competitions, and building our skills to deliver better websites for our clients."
+              title="Exapnsion"
+              description="We are continuing to expand our robotits teams website, our business, and our impact to meaningful ideas."
             />
           </div>
         </div>
