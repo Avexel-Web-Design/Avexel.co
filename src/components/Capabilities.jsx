@@ -98,29 +98,6 @@ const Capabilities = () => {
             suffix="%"
           />
         </div>
-        
-        {/* FRC connection section */}
-        <div className="mt-20 relative glass-morphism p-8 lg:p-12 rounded-xl border border-white/5 reveal">
-          <div className="max-w-4xl mx-auto text-center">
-            <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-              From Robotics to Websites
-            </h3>
-            <p className="text-gray-300 mb-8">
-              In FRC Team 7790, we learn to solve complex problems under pressure, work as a team, and adapt to challenges. We bring these same skills to our web design projects, creating effective solutions for our clients while having fun along the way.
-            </p>
-            <div className="flex flex-wrap justify-center gap-8 items-center">
-              <img src="/src/assets/images/baywatchLogo.png" alt="Team 7790 Baywatch Robotics" className="h-24 object-contain" />
-              <div className="w-px h-16 bg-gradient-to-b from-primary-500/0 via-primary-500/30 to-primary-500/0"></div>
-              <div className="flex items-center">
-                <span className="text-4xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent counter" data-target="7790">
-                  7790
-                </span>
-                <span className="text-xl text-white ml-2">Baywatch Robotics</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
         {/* Angled section divider */}
         <div className="section-divider mt-16"></div>
       </div>
