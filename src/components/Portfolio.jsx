@@ -91,7 +91,7 @@ const Portfolio = () => {
   useScrollReveal();
   
   return (
-    <section id="work" className="py-32 bg-dark relative overflow-hidden scroll-mt-24">
+    <section id="work" className="py-32 bg-black relative overflow-hidden scroll-mt-24">
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       <div className="absolute top-1/4 right-1/4 w-72 h-72 border border-white/5 rounded-full animate-spin-slow"></div>

@@ -6,9 +6,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative py-16 bg-dark border-t border-white/5">
-      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      
+    <footer className="relative py-16 bg-black border-t border-white/5">
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         <div className="grid md:grid-cols-3 gap-12">
           {/* Logo and Description */}
@@ -123,7 +121,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-white/5">
+        <div className="mt-12 pt-8 border-t border-white/5"></div>
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-gray-400 text-sm">
               © {currentYear} Avexel. All rights reserved.
@@ -136,7 +134,6 @@ const Footer = () => {
               <span className="text-gray-500">by our team</span>
             </div>
           </div>
-        </div>
       </div>
     </footer>
   );

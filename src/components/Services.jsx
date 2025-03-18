@@ -66,7 +66,7 @@ const Services = () => {
   useScrollReveal();
   
   return (
-    <section id="services" className="py-32 bg-dark relative overflow-hidden scroll-mt-24">
+    <section id="services" className="py-32 bg-black relative overflow-hidden scroll-mt-24">
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-1/3 bg-grid-pattern opacity-5"></div>
       <div className="absolute top-1/4 right-1/6 w-64 h-64 border border-white/5 animate-spin-slow"></div>

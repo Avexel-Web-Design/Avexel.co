@@ -4,7 +4,7 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: #0f172a;
+    background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -25,8 +25,8 @@
 :root {
   --primary-color: rgb(56, 189, 248);
   --secondary-color: rgb(139, 92, 246);
-  --dark-bg: #0a0f1e;
-  --dark-card: #111827;
+  --dark-bg: #000000;
+  --dark-card: #000000;
   --text-primary: #f3f4f6;
   --text-secondary: #d1d5db;
   --text-muted: #9ca3af;
@@ -434,7 +434,7 @@ img {
 
 /* Custom glass morphism effect */
 .glass-morphism {
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -442,7 +442,7 @@ img {
 
 /* Custom glass morphism for floating navbar */
 .glass-morphism-nav {
-  background: rgba(10, 15, 30, 0.6);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.08);

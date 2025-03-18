@@ -62,7 +62,7 @@ const About = () => {
   useScrollReveal();
   
   return (
-    <section id="about" className="py-32 bg-dark relative overflow-hidden scroll-mt-24">
+    <section id="about" className="py-32 bg-black relative overflow-hidden scroll-mt-24">
       {/* Decorative Background Elements */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 border border-white/5 rounded-full animate-spin-slow-reverse"></div>
       <div className="absolute bottom-1/3 right-1/3 w-96 h-96 border border-white/5 animate-spin-slow"></div>

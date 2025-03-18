@@ -40,7 +40,7 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
           isOpen ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        <div className="absolute inset-0 backdrop-blur-lg bg-dark/90"></div>
+        <div className="absolute inset-0 backdrop-blur-lg bg-black/90"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-primary-500/5 via-secondary-500/5 to-primary-500/5"></div>
       </div>
 

@@ -16,7 +16,7 @@ const Footer = lazy(() => import('./components/Footer'));
 function HomePage() {
   return (
     <>
-      <div id="home" className="relative min-h-screen bg-dark">
+      <div id="home" className="relative min-h-screen bg-black">
         {/* Background decorative elements */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
           {/* Subtle gradient orbs */}
@@ -48,7 +48,7 @@ function HomePage() {
 
 function App() {
   return (
-    <div className="relative bg-dark text-white overflow-x-hidden">
+    <div className="relative bg-black text-white overflow-x-hidden">
       <div className="relative z-50">
         <Navbar />
       </div>

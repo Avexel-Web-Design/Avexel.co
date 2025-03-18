@@ -47,7 +47,7 @@ const Capabilities = () => {
   useCounterAnimation();
 
   return (
-    <section id="capabilities" className="py-32 bg-dark relative overflow-hidden scroll-mt-24">
+    <section id="capabilities" className="py-32 bg-black relative overflow-hidden scroll-mt-24">
       {/* Decorative Background Elements */}
       <div className="absolute bottom-0 left-0 w-full h-1/2 bg-grid-pattern opacity-5"></div>
       <div className="absolute top-1/3 right-1/5 w-72 h-72 border border-white/5 rounded-full animate-spin-slow"></div>
