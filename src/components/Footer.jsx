@@ -18,7 +18,7 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-gray-400 max-w-md">
-              Our team transforms ideas into stunning digital experiences through creative design and thoughtful development.
+              A student-led initiative by FRC Team 7790 members creating websites to fund our robotics activities while helping local businesses build their online presence.
             </p>
           </div>
 
@@ -50,17 +50,18 @@ const Footer = () => {
                   to="#work" 
                   className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
                 >
-                  Portfolio
+                  Projects
                 </HashLink>
               </li>
               <li>
-                <HashLink 
-                  smooth 
-                  to="#contact" 
+                <a
+                  href="https://FRC7790.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
                 >
-                  Contact
-                </HashLink>
+                  FRC Team 7790
+                </a>
               </li>
             </ul>
           </div>
@@ -78,7 +79,7 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <i className="fas fa-map-marker-alt text-primary-400 mt-1"></i>
                 <span className="text-gray-400">
-                  Michigan, United States
+                  Lake Orion High School, Michigan
                 </span>
               </li>
               <li>
@@ -121,19 +122,20 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-white/5"></div>
+        <div className="mt-12 pt-8 border-t border-white/5">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-gray-400 text-sm">
-              © {currentYear} Avexel. All rights reserved.
+              © {currentYear} Avexel | Student Web Design Team | FRC 7790
             </div>
             <div className="flex items-center gap-4 text-sm">
-              <span className="text-gray-500">Made with</span>
+              <span className="text-gray-500">Created by</span>
               <span className="text-primary-400">
-                <i className="fas fa-heart text-xs"></i>
+                Team 7790
               </span>
-              <span className="text-gray-500">by our team</span>
+              <span className="text-gray-500">students</span>
             </div>
           </div>
+        </div>
       </div>
     </footer>
   );

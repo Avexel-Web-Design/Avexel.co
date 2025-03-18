@@ -76,44 +76,44 @@ const Services = () => {
         <div className="max-w-3xl mx-auto text-center mb-16 reveal stagger-reveal">
           <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">What We Offer</span>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            Our Services & Process
+            Our Services
           </h2>
           <p className="text-lg text-gray-300">
-            Delivering exceptional digital solutions through innovative design and development
+            Simple, affordable web solutions by students helping to fund FRC Team 7790
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 reveal">
           <ServiceCard 
             icon="fa-laptop-code"
-            title="Web Design & Development"
-            description="Creating visually stunning and highly functional websites, from conceptualization to launch. We work directly with our business clients to ensure perfect alignment with their brand and goals."
-          />
-          
-          <ServiceCard 
-            icon="fa-mobile-alt"
-            title="Mobile App Development"
-            description="Developing intuitive, high-performance mobile applications tailored to your business needs. Engage your customers on the go with seamless and responsive apps."
-            comingSoon={true}
+            title="Website Creation"
+            description="We build simple, effective websites for small businesses and organizations in our community. Our focus is on clean designs that are easy to navigate and work well on all devices."
           />
           
           <ServiceCard 
             icon="fa-paint-brush"
-            title="UI/UX Design"
-            description="Crafting beautiful, intuitive interfaces that guide users through meaningful interactions with your brand. Our designs focus on usability while maintaining visual appeal."
+            title="Web Design"
+            description="Need a fresh look for your online presence? We can create a design that reflects your brand and appeals to your customers, making sure your website stands out in the right way."
           />
           
           <ServiceCard 
-            icon="fa-rocket"
-            title="Performance Optimization"
-            description="Enhancing your existing web applications for speed and efficiency. We fine-tune your digital assets to provide lightning-fast experiences to your users."
+            icon="fa-bullhorn"
+            title="Social Media Setup"
+            description="We'll help you get started on social media platforms that make sense for your business, creating profiles that connect with your website for a consistent online presence."
+            comingSoon={true}
+          />
+          
+          <ServiceCard 
+            icon="fa-tools"
+            title="Website Maintenance"
+            description="Let us handle the technical details of keeping your website running smoothly, including updates, backups, and making small changes when you need them."
           />
         </div>
         
         {/* Process Section */}
         <div className="mt-32 reveal">
           <h3 className="text-3xl font-bold mb-16 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            Our Process
+            How We Work
           </h3>
           
           <div className="relative glass-morphism p-8 lg:p-12 rounded-xl border border-white/5">
@@ -126,27 +126,52 @@ const Services = () => {
             <div className="relative z-10 space-y-12">
               <ProcessStep 
                 number="1"
-                title="Discovery & Planning"
-                description="We begin by understanding your goals, target audience, and specific requirements to create a strategic roadmap for your project."
+                title="Chat & Listen"
+                description="We start by understanding your needs and goals. This meeting can be after school or on weekends to fit your schedule."
               />
               
               <ProcessStep 
                 number="2"
-                title="Design & Prototyping"
-                description="Our designers craft beautiful mockups and interactive prototypes to visualize the final product before any development begins."
+                title="Design & Review"
+                description="We'll create a simple design for your approval, making sure it represents your business the way you want."
               />
               
               <ProcessStep 
                 number="3"
-                title="Development & Testing"
-                description="Our development team brings the designs to life with clean, efficient code while ensuring quality through rigorous testing."
+                title="Build & Test"
+                description="Our team builds your website, testing it thoroughly to ensure everything works perfectly on all devices."
               />
               
               <ProcessStep 
                 number="4"
-                title="Deployment & Support"
-                description="We handle the launch process and provide ongoing support to ensure your digital solution continues to perform optimally."
+                title="Launch & Support"
+                description="Once you're happy with the site, we'll help you launch it and show you how to use it. And we're always available if you need help later!"
               />
+            </div>
+          </div>
+        </div>
+        
+        {/* FRC Support Section */}
+        <div className="mt-32 reveal">
+          <div className="relative glass-morphism p-8 lg:p-12 rounded-xl border border-white/5">
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+                Supporting FRC Team 7790
+              </h3>
+              <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
+                A portion of all proceeds from our web design projects directly supports Baywatch Robotics (FRC Team 7790), helping us fund competition fees, materials, and travel expenses.
+              </p>
+            </div>
+            
+            <div className="flex justify-center mt-6">
+              <a 
+                href="https://FRC7790.com" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300"
+              >
+                Visit Our Robotics Team
+              </a>
             </div>
           </div>
         </div>

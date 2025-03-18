@@ -57,49 +57,69 @@ const Capabilities = () => {
         <div className="max-w-3xl mx-auto text-center mb-16 reveal stagger-reveal">
           <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">What We Do Best</span>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            Skills & Capabilities
+            Our Skills
           </h2>
           <p className="text-lg text-gray-300">
-            Delivering excellence through our core competencies and technical expertise
+            We apply the same determination and teamwork from robotics to our web projects
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 reveal">
           <CapabilityCard 
             icon="fa-mobile-alt"
-            title="Responsive Design"
-            description="Fluid layouts that adapt seamlessly to any device or screen size, ensuring a consistent experience across all platforms."
+            title="Mobile-Friendly"
+            description="We make sure all our websites work perfectly on phones and tablets, just like they do on computers."
             target="100"
             suffix="%"
           />
           
           <CapabilityCard 
-            icon="fa-code"
-            title="Customer Satisfaction"
-            description="Exceeding expectations through careful attention to detail and client-focused development approach."
+            icon="fa-smile"
+            title="Happy Clients"
+            description="Our focus on communication and meeting your needs ensures you'll be satisfied with the final result."
             target="100"
             suffix="%"
           />
           
           <CapabilityCard 
-            icon="fa-tachometer-alt"
-            title="Rapid Development"
-            description="Swift prototyping and efficient delivery without compromising on quality or attention to detail."
-            target="7"
-            suffix="Days"
+            icon="fa-robot"
+            title="FRC Experience"
+            description="Years of problem-solving in FIRST Robotics competitions has taught us how to tackle challenges creatively."
+            target="3"
+            suffix="Years"
             startValue={0}
           />
           
           <CapabilityCard 
             icon="fa-paint-brush"
-            title="UI/UX Design"
-            description="Creating intuitive, engaging interfaces that delight users and drive conversions."
+            title="Clean Design"
+            description="We create simple, effective designs that make it easy for visitors to find what they're looking for."
             target="100"
             suffix="%"
           />
         </div>
         
-        {/* Remove the entire "Skills Showcase" section with the tech stack */}
+        {/* FRC connection section */}
+        <div className="mt-32 relative glass-morphism p-8 lg:p-12 rounded-xl border border-white/5 reveal">
+          <div className="max-w-4xl mx-auto text-center">
+            <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+              From Robotics to Websites
+            </h3>
+            <p className="text-gray-300 mb-8">
+              In FRC Team 7790, we learn to solve complex problems under pressure, work as a team, and adapt to challenges. We bring these same skills to our web design projects, creating effective solutions for our clients while having fun along the way.
+            </p>
+            <div className="flex flex-wrap justify-center gap-8 items-center">
+              <img src="/src/assets/images/baywatchLogo.png" alt="Team 7790 Baywatch Robotics" className="h-24 object-contain" />
+              <div className="w-px h-16 bg-gradient-to-b from-primary-500/0 via-primary-500/30 to-primary-500/0"></div>
+              <div className="flex items-center">
+                <span className="text-4xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent counter" data-target="7790">
+                  7790
+                </span>
+                <span className="text-xl text-white ml-2">Baywatch Robotics</span>
+              </div>
+            </div>
+          </div>
+        </div>
         
         {/* Angled section divider */}
         <div className="section-divider mt-24"></div>

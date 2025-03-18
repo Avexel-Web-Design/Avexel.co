@@ -34,12 +34,12 @@ const Contact = () => {
       
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16 reveal stagger-reveal">
-          <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Let's Talk</span>
+          <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Get In Touch</span>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            Get in Touch
+            Contact Us
           </h2>
           <p className="text-lg text-gray-300">
-            Have a project in mind? We'd love to hear about it. Let's start a conversation.
+            Have a website project idea? Want to support our FRC team? We'd love to hear from you!
           </p>
         </div>
         
@@ -61,19 +61,19 @@ const Contact = () => {
                 
                 <ContactInfo
                   icon="fa-map-marker-alt"
-                  title="Location"
-                  content="Michigan, United States"
+                  title="School"
+                  content="Lake Orion High School, Michigan"
                 />
                 
                 <ContactInfo
                   icon="fa-clock"
-                  title="Working Hours"
-                  content="Monday - Friday, 9AM - 5PM EST"
+                  title="Response Time"
+                  content="We'll respond after school hours, usually within 24 hours"
                 />
                 
                 {/* Team Members */}
                 <div className="pt-8 space-y-4">
-                  <p className="text-white font-medium mb-4">Our Team Members:</p>
+                  <p className="text-white font-medium mb-4">Our Student Team:</p>
                   
                   <div className="flex flex-col sm:flex-row gap-4 justify-between">
                     <div className="flex items-center gap-3">
@@ -82,7 +82,7 @@ const Contact = () => {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-white">Ryan Latimer</p>
-                        <p className="text-xs text-gray-400">Lead Developer</p>
+                        <p className="text-xs text-gray-400">Student Developer</p>
                       </div>
                     </div>
                     
@@ -92,7 +92,7 @@ const Contact = () => {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-white">Gavin Moceri</p>
-                        <p className="text-xs text-gray-400">Lead Developer</p>
+                        <p className="text-xs text-gray-400">Student Developer</p>
                       </div>
                     </div>
                     
@@ -102,7 +102,7 @@ const Contact = () => {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-white">Conner Breckenfeld</p>
-                        <p className="text-xs text-gray-400">UI/UX Designer</p>
+                        <p className="text-xs text-gray-400">Student Designer</p>
                       </div>
                     </div>
                   </div>
@@ -154,6 +154,12 @@ const Contact = () => {
                     required
                     className="w-full px-4 py-3 bg-dark/50 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all duration-300 placeholder-gray-500 resize-none"
                   ></textarea>
+                </div>
+                
+                <div className="pt-2">
+                  <p className="text-xs text-gray-400 mb-4">
+                    All messages will be read by our student team members. We'll respond during after-school hours.
+                  </p>
                 </div>
 
                 <div>

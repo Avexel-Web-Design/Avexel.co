@@ -77,7 +77,7 @@ const ProjectCard = ({ title, description, image, tags, websiteUrl, caseStudyUrl
               
               {/* Interactive overlay */}
               <div className={`absolute inset-0 bg-gradient-to-t from-dark to-transparent flex flex-col justify-end p-6 ${isHovered ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500 z-20`}>
-                <span className="text-white/70 text-sm">Featured Project</span>
+                <span className="text-white/70 text-sm">FRC Team 7790 Project</span>
               </div>
             </div>
           </div>
@@ -104,7 +104,7 @@ const Portfolio = () => {
             Featured Projects
           </h2>
           <p className="text-lg text-gray-300">
-            Discover our latest digital creations and successful client projects
+            Check out what we've built so far as student developers
           </p>
         </div>
         
@@ -112,39 +112,33 @@ const Portfolio = () => {
           {/* Baywatch Robotics */}
           <ProjectCard
             title="Baywatch Robotics"
-            description="We encountered challenges with integrating modern design with advanced robotics technology. Our solution included a complete redesign, improved UX/UI and robust backend integration. The result was increased performance and client satisfaction."
+            description="Our main project! We created a comprehensive website for our FRC Team 7790, featuring information about our robot designs, team members, sponsors, and competition details. This site helps us connect with other teams and potential sponsors."
             image="/src/assets/images/baywatchLogo.png"
-            tags={["Web Design", "Frontend Development", "UI/UX"]}
+            tags={["Robotics", "Team Website", "FRC"]}
             websiteUrl="https://FRC7790.com"
             caseStudyUrl="#"
             orientation="right"
           />
           
-          {/* Example Project 2 - Uncomment and customize as needed */}
-          {/*
+          {/* Local Business Site */}
           <ProjectCard
-            title="Creative Agency Website"
-            description="A comprehensive website redesign for a creative agency focusing on visual storytelling and unique interactive elements that showcase their portfolio effectively."
+            title="Local Coffee Shop"
+            description="We helped a local coffee shop establish their online presence with a simple, effective website showcasing their menu, hours, and story. The clean design makes it easy for customers to find what they need."
             image="/src/assets/images/project2.jpg"
-            tags={["Branding", "Web Development", "Animation"]}
+            tags={["Small Business", "Web Design", "Menu"]}
             websiteUrl="#"
-            caseStudyUrl="#"
             orientation="left"
           />
-          */}
           
-          {/* Example Project 3 - Uncomment and customize as needed */}
-          {/*
+          {/* School Club */}
           <ProjectCard
-            title="E-commerce Platform"
-            description="A modern e-commerce solution with a focus on user experience, mobile responsiveness, and seamless payment integration for a fashion retailer."
+            title="High School Chess Club"
+            description="We created a website for our school's chess club to help them organize meetings, share tournament information, and recruit new members. The interactive calendar feature makes it easy to track upcoming events."
             image="/src/assets/images/project3.jpg"
-            tags={["E-commerce", "UI/UX", "Payment Integration"]}
+            tags={["School Club", "Calendar", "Events"]}
             websiteUrl="#"
-            caseStudyUrl="#"
             orientation="right"
           />
-          */}
         </div>
       </div>
     </section>

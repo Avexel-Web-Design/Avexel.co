@@ -93,7 +93,7 @@ const Hero = () => {
             </div>
 
             <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 md:mb-10 max-w-2xl animate-fade-in" style={{ animationDelay: '1.5s' }}>
-              Transforming ideas into stunning digital experiences through creative web design and development.
+              High school robotics enthusiasts making websites that matter. Supporting Team 7790 while helping businesses build their online presence.
             </p>
             
             <div className="flex flex-wrap gap-4 mb-8 md:mb-0">
@@ -104,7 +104,7 @@ const Hero = () => {
                 style={{ animationDelay: '1.8s' }}
                 aria-label="View our portfolio work"
               >
-                View Our Work
+                See Our Work
               </HashLink>
               
               <HashLink 
@@ -114,7 +114,7 @@ const Hero = () => {
                 style={{ animationDelay: '2s' }}
                 aria-label="Learn more about us"
               >
-                Learn More
+                Our Team
               </HashLink>
             </div>
           </div>

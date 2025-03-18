@@ -74,7 +74,7 @@ const About = () => {
             About Us
           </h2>
           <p className="text-lg text-gray-300">
-            A passionate team turning ideas into beautiful digital experiences
+            High school students passionate about robotics and web development
           </p>
         </div>
         
@@ -84,9 +84,9 @@ const About = () => {
           <div className="grid md:grid-cols-3 gap-8">
             <TeamMemberCard 
               name="Ryan Latimer"
-              role="Lead Developer"
+              role="Student Developer"
               image="/src/assets/images/team/ryan.jpg"
-              description="Full-stack developer with expertise in creating responsive web applications and intuitive user interfaces."
+              description="FRC Team 7790 member with a passion for coding and creating responsive websites that make an impact."
               socialLinks={[
                 { icon: "fab fa-github", url: "https://github.com/ryanlatimer", label: "GitHub" },
                 { icon: "fab fa-linkedin-in", url: "https://linkedin.com/in/ryanlatimer", label: "LinkedIn" },
@@ -96,9 +96,9 @@ const About = () => {
             
             <TeamMemberCard 
               name="Gavin Moceri"
-              role="Backend Developer"
+              role="Student Developer"
               image="/src/assets/images/team/gavin.jpg"
-              description="Specialized in database architecture, API development, and ensuring optimal performance for all our projects."
+              description="Robotics enthusiast who enjoys problem-solving and building cool websites to help local businesses shine online."
               socialLinks={[
                 { icon: "fab fa-github", url: "https://github.com/gavinmoceri", label: "GitHub" },
                 { icon: "fab fa-linkedin-in", url: "https://linkedin.com/in/gavinmoceri", label: "LinkedIn" },
@@ -108,9 +108,9 @@ const About = () => {
             
             <TeamMemberCard 
               name="Conner Breckenfeld"
-              role="UI/UX Designer"
+              role="Student Designer"
               image="/src/assets/images/team/conner.jpg"
-              description="Creative designer focusing on crafting visually stunning interfaces that deliver exceptional user experiences."
+              description="Creative member of Team 7790 who loves making websites look good and work even better for users of all types."
               socialLinks={[
                 { icon: "fab fa-dribbble", url: "https://dribbble.com/connerbreckenfeld", label: "Dribbble" },
                 { icon: "fab fa-linkedin-in", url: "https://linkedin.com/in/connerbreckenfeld", label: "LinkedIn" },
@@ -125,7 +125,7 @@ const About = () => {
             Our Mission
           </h3>
           <p className="text-lg text-gray-300 leading-relaxed mb-8">
-            We are dedicated to creating exceptional digital experiences that solve real problems. By combining our technical expertise, design skills, and innovative thinking, we deliver solutions that exceed expectations and drive tangible results for our clients.
+            We started Avexel as a side project to support our FRC Team 7790 while helping businesses in our community establish their online presence. As high school students passionate about technology, we're using our skills to make websites that matter.
           </p>
           
           <div className="space-y-4">
@@ -134,7 +134,7 @@ const About = () => {
                 <i className="fas fa-paint-brush text-xs bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
               </div>
               <div className="flex-1 glass-morphism p-4 rounded-xl group-hover:shadow-neon transition-all duration-300">
-                <p className="text-gray-300">We craft visually stunning interfaces that engage users and communicate brand values effectively.</p>
+                <p className="text-gray-300">We create simple, user-friendly websites that help businesses connect with their customers.</p>
               </div>
             </div>
             
@@ -143,7 +143,7 @@ const About = () => {
                 <i className="fas fa-code text-xs bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
               </div>
               <div className="flex-1 glass-morphism p-4 rounded-xl group-hover:shadow-neon transition-all duration-300">
-                <p className="text-gray-300">We write clean, efficient code that brings designs to life while ensuring optimal performance and accessibility.</p>
+                <p className="text-gray-300">We apply the problem-solving skills we've learned in robotics to build effective digital solutions.</p>
               </div>
             </div>
             
@@ -152,7 +152,7 @@ const About = () => {
                 <i className="fas fa-users text-xs bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
               </div>
               <div className="flex-1 glass-morphism p-4 rounded-xl group-hover:shadow-neon transition-all duration-300">
-                <p className="text-gray-300">We love collaborating with clients to understand their needs and deliver solutions that exceed expectations.</p>
+                <p className="text-gray-300">A portion of our proceeds goes directly to supporting Team 7790 Baywatch Robotics.</p>
               </div>
             </div>
           </div>
@@ -163,24 +163,24 @@ const About = () => {
           <h3 className="text-3xl font-bold mb-12 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Our Journey</h3>
           <div className="max-w-3xl mx-auto">
             <TimelineItem 
-              year="2018"
-              title="The Beginning"
-              description="Our team began exploring design and development while working on personal projects and building our foundational skills."
+              year="2022"
+              title="Robotics Team Experience"
+              description="We joined FRC Team 7790 Baywatch Robotics and discovered our shared passion for technology and problem-solving."
             />
             <TimelineItem 
-              year="2020"
-              title="First Professional Projects"
-              description="Worked with our first clients on web design and development projects, focusing on user experience and responsive design."
+              year="2023"
+              title="The Idea Forms"
+              description="While brainstorming fundraising ideas for our robotics team, we realized we could use our web development skills to help local businesses."
             />
             <TimelineItem 
-              year="2021"
-              title="Team Formation"
-              description="Ryan, Gavin, and Conner officially joined forces, combining their expertise to deliver comprehensive digital solutions."
+              year="2023"
+              title="Avexel is Born"
+              description="We officially launched Avexel as a student-led initiative to create websites while supporting our robotics team's activities."
             />
             <TimelineItem 
               year="Present"
-              title="Continuous Growth"
-              description="Constantly learning and refining our craft, pushing creative boundaries and exploring new technologies to deliver exceptional digital experiences."
+              title="Growing & Learning"
+              description="We continue to balance school, robotics competitions, and building our skills to deliver better websites for our clients."
             />
           </div>
         </div>
