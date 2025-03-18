@@ -3,8 +3,13 @@ import { HashLink } from 'react-router-hash-link';
 
 const Hero = () => {
   const svgRef = useRef(null);
+  const heroRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [typedText, setTypedText] = useState('');
+  const fullText = "Digital Magic";
 
+  // Handle visibility animation
   useEffect(() => {
     // Add a small delay to trigger animations
     const timer = setTimeout(() => {
@@ -14,32 +19,69 @@ const Hero = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Mouse move effect for interactive SVG with improved responsiveness
+  // Typing animation effect
+  useEffect(() => {
+    if (!isVisible) return;
+    
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (currentIndex <= fullText.length) {
+        setTypedText(fullText.substring(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, 100);
+    
+    return () => clearInterval(typingInterval);
+  }, [isVisible]);
+
+  // Parallax mouse effect
+  useEffect(() => {
+    if (!heroRef.current) return;
+    
+    const handleMouseMove = (e) => {
+      const { clientX, clientY } = e;
+      const { width, height } = heroRef.current.getBoundingClientRect();
+      const x = (clientX / width - 0.5) * 20;
+      const y = (clientY / height - 0.5) * 20;
+      setMousePosition({ x, y });
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Combined floating animation with drawing effect
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg) return;
 
     const paths = svg.querySelectorAll('path');
     
-    const handleMouseMove = (e) => {
-      const { left, top, width, height } = svg.getBoundingClientRect();
-      const x = (e.clientX - left) / width;
-      const y = (e.clientY - top) / height;
-
-      paths.forEach((path, index) => {
-        // Enhanced movements for better visual effect
-        const translateX = (x - 0.5) * (6 + index * 1.5);
-        const translateY = (y - 0.5) * (6 + index * 1.5);
-        path.style.transform = `translate(${translateX}px, ${translateY}px)`;
-      });
-    };
-
-    svg.addEventListener('mousemove', handleMouseMove);
-    return () => svg.removeEventListener('mousemove', handleMouseMove);
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    // Apply floating animation to each path with different timings
+    paths.forEach((path, index) => {
+      const delayClass = path.classList.contains('delay-1') ? 1 : 
+                         path.classList.contains('delay-2') ? 2 :
+                         path.classList.contains('delay-3') ? 3 :
+                         path.classList.contains('delay-4') ? 4 : 0;
+      
+      if (prefersReducedMotion) {
+        // Just show the paths immediately for users who prefer reduced motion
+        path.style.strokeDashoffset = "0";
+      } else {
+        // Start floating after drawing completes
+        path.style.animation = `draw 2s ease forwards, floatElement ${3 + index * 0.2}s ease-in-out infinite alternate`;
+        path.style.animationDelay = `${delayClass * 0.3}s, ${delayClass * 0.3 + 2}s`;
+      }
+    });
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark">
+    <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark" aria-label="Hero section">
       {/* Enhanced background gradients */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-secondary-500/3 to-primary-500/5 animate-pulse-slow"></div>
@@ -53,25 +95,20 @@ const Hero = () => {
           <div className="md:w-full lg:pr-12 mt-8 md:mt-0">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 md:mb-6">
               <span className="inline-block animate-slide-up" style={{ animationDelay: '0s' }}>We</span>{' '}
-              <span className="inline-block animate-slide-up" style={{ animationDelay: '0.5s' }}>Create</span>
+              <span className="inline-block animate-slide-up" style={{ animationDelay: '0.3s' }}>Create</span>
             </h1>
             
-            {/* "Digital Magic" text with gradient but no glow */}
+            {/* "Digital Magic" text with typing animation and gradient */}
             <div className={`relative mb-8 md:mb-10 transform ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}>
               <div className="flex flex-col md:flex-row items-start md:items-center">
-                <span className="text-6xl md:text-8xl lg:text-9xl font-bold animate-slide-up leading-none pb-1 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500" 
-                  style={{ animationDelay: '1.25s' }}>
-                  Digital
-                </span>
-                
-                <span className="text-6xl md:text-8xl lg:text-9xl font-bold animate-slide-up leading-none ml-1 pb-1 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500" 
-                  style={{ animationDelay: '1.5s' }}>
-                  Magic
+                <span className="text-6xl md:text-8xl lg:text-9xl font-bold leading-none pb-1 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
+                  {typedText}
+                  <span className="typing-cursor">|</span>
                 </span>
               </div>
             </div>
 
-            <p className="text-lg md:text-xl lg:text-2xl text-gray-400 mb-8 md:mb-10 max-w-2xl animate-fade-in" style={{ animationDelay: '1.75s' }}>
+            <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 md:mb-10 max-w-2xl animate-fade-in" style={{ animationDelay: '1.5s' }}>
               Transforming ideas into stunning digital experiences through creative web design and development.
             </p>
             
@@ -79,8 +116,9 @@ const Hero = () => {
               <HashLink 
                 smooth 
                 to="#work" 
-                className="inline-block px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full text-white font-semibold hover:scale-105 transition-transform animate-fade-in" 
-                style={{ animationDelay: '2s' }}
+                className="inline-block px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 animate-fade-in" 
+                style={{ animationDelay: '1.8s' }}
+                aria-label="View our portfolio work"
               >
                 View Our Work
               </HashLink>
@@ -88,20 +126,26 @@ const Hero = () => {
               <HashLink 
                 smooth 
                 to="#about" 
-                className="inline-block px-6 py-3 md:px-8 md:py-4 border border-purple-500 text-purple-500 rounded-full font-semibold hover:bg-purple-500 hover:text-white transition-colors animate-fade-in" 
-                style={{ animationDelay: '2.25s' }}
+                className="inline-block px-6 py-3 md:px-8 md:py-4 border border-purple-500 text-purple-500 rounded-full font-semibold hover:bg-purple-500/10 hover:text-white transition-colors duration-300 animate-fade-in" 
+                style={{ animationDelay: '2s' }}
+                aria-label="Learn more about us"
               >
                 Learn More
               </HashLink>
             </div>
           </div>
 
-          {/* Improved Animated SVG Wireframe */}
+          {/* Animated SVG Wireframe with parallax effect */}
           <div className="md:w-full flex justify-center items-center lg:justify-end relative">
-            <div className="w-[110%] md:w-[115%] lg:w-[130%] xl:w-[125%] transform -translate-y-4 md:translate-y-0">
-              <svg ref={svgRef} viewBox="0 0 400 300" className="w-full h-auto">
+            <div 
+              className="w-[110%] md:w-[115%] lg:w-[130%] xl:w-[125%] transform -translate-y-4 md:translate-y-0 transition-transform duration-200"
+              style={{ 
+                transform: `translate3d(${mousePosition.x}px, ${mousePosition.y}px, 0)`,
+              }}
+            >
+              <svg ref={svgRef} viewBox="0 0 400 300" className="w-full h-auto" aria-hidden="true">
                 <defs>
-                  <linearGradient id="gradStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <linearGradient id="gradStroke" x1="0%" y1="0%" x2="100%">
                     <stop offset="0%" style={{ stopColor: '#a78bfa', stopOpacity: 0.8 }} />
                     <stop offset="50%" style={{ stopColor: '#60a5fa', stopOpacity: 0.9 }} />
                     <stop offset="100%" style={{ stopColor: '#818cf8', stopOpacity: 0.8 }} />
@@ -200,7 +244,87 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-10 left-0 w-full flex justify-center animate-bounce-slow" aria-hidden="true">
+        <HashLink smooth to="#work" aria-label="Scroll down" className="text-white/50 hover:text-white/80 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+        </HashLink>
+      </div>
+
       <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-black to-transparent"></div>
+      
+      {/* Animation keyframes for drawing and floating effects */}
+      <style jsx>{`
+        @keyframes draw {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+        
+        @keyframes floatElement {
+          0% {
+            transform: translate(0, 0);
+          }
+          100% {
+            transform: translate(3px, -3px);
+          }
+        }
+        
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+        
+        .draw-path {
+          animation: draw 2s forwards;
+          will-change: stroke-dashoffset;
+        }
+        
+        .delay-1 {
+          animation-delay: 0.5s;
+        }
+        
+        .delay-2 {
+          animation-delay: 1s;
+        }
+        
+        .delay-3 {
+          animation-delay: 1.5s;
+        }
+        
+        .delay-4 {
+          animation-delay: 2s;
+        }
+        
+        .typing-cursor {
+          display: inline-block;
+          animation: blink 1s step-end infinite;
+          color: #9333ea;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+          .draw-path {
+            animation: none;
+            stroke-dashoffset: 0;
+          }
+          
+          .typing-cursor {
+            animation: none;
+          }
+          
+          .animate-slide-up,
+          .animate-fade-in,
+          .animate-pulse-slow,
+          .animate-bounce-slow {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };
