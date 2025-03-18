@@ -1,41 +1,10 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { HashLink } from 'react-router-hash-link';
+import useScrollReveal from '../hooks/useScrollReveal';
 
 const Hero = () => {
   const svgRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [typedText, setTypedText] = useState('');
-  const [typingComplete, setTypingComplete] = useState(false);
-  const fullText = "Digital\nMagic";  // Added line break
-
-  // Handle visibility animation
-  useEffect(() => {
-    // Add a small delay to trigger animations
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 300);
-    
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Typing animation effect
-  useEffect(() => {
-    if (!isVisible) return;
-    
-    let currentIndex = 0;
-    const typingInterval = setInterval(() => {
-      if (currentIndex <= fullText.length) {
-        setTypedText(fullText.substring(0, currentIndex));
-        currentIndex++;
-      } else {
-        clearInterval(typingInterval);
-        // Set typing complete to true once animation is done
-        setTypingComplete(true);
-      }
-    }, 100);
-    
-    return () => clearInterval(typingInterval);
-  }, [isVisible]);
+  useScrollReveal(); // Add this to initialize the reveal animations
 
   // Combined floating animation with drawing effect
   useEffect(() => {
@@ -65,7 +34,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden" aria-label="Hero section">
+    <section className="relative min-h-screen flex items-center overflow-hidden" aria-label="Hero section">
       {/* Enhanced background gradients */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-secondary-500/3 to-primary-500/5 animate-pulse-slow"></div>
@@ -74,92 +43,42 @@ const Hero = () => {
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl lg:text-7xl font-bold mb-6 tracking-tight reveal stagger-reveal">
-            <span className="block">Websites that</span>
-            <span className="block bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-              Make a Difference
-            </span>
-          </h1>
-          
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto reveal stagger-reveal">
-            Student developers creating modern web solutions while powering the next generation of STEM innovation through FRC Team 7790.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 reveal stagger-reveal">
-            <a 
-              href="#contact" 
-              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300"
-            >
-              Start Your Project
-            </a>
-            
-            <a 
-              href="#portfolio" 
-              className="w-full sm:w-auto px-8 py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300"
-            >
-              View Our Work
-            </a>
-          </div>
-          
-          <div className="mt-16 reveal">
-            <p className="text-gray-400 mb-6">Trusted by local businesses</p>
-            <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
-              {/* Add your client logos here */}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 lg:px-8 py-12 md:py-16 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-4 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 items-center">
           {/* Hero Text */}
-          <div className="md:w-full lg:pr-12 mt-8 md:mt-0">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-4 md:mb-6">
-              <span className="inline-block animate-slide-up" style={{ animationDelay: '0s' }}>We</span>{' '}
-              <span className="inline-block animate-slide-up" style={{ animationDelay: '0.3s' }}>Create</span>
+          <div className="max-w-xl">
+            <h1 className="text-5xl lg:text-7xl font-bold mb-6 tracking-tight opacity-100"> {/* Remove reveal classes */}
+              <span className="block">Websites that</span>
+              <span className="block bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+                Make a Difference
+              </span>
             </h1>
             
-            {/* "Digital Magic" text with typing animation - now on two lines */}
-            <div className={`relative mb-8 md:mb-10 transform ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}>
-              <div className="flex flex-col items-start">
-                <span className="text-6xl md:text-8xl lg:text-9xl font-bold leading-none pb-1 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500 typing-container whitespace-pre-line">
-                  {typedText}
-                  {!typingComplete && <span className="typing-cursor">|</span>}
-                </span>
-              </div>
-            </div>
-
-            <p className="text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 md:mb-10 max-w-2xl animate-fade-in" style={{ animationDelay: '1.5s' }}>
-              High school robotics enthusiasts making websites that matter. Supporting Team 7790 while helping businesses build their online presence.
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl opacity-100"> {/* Remove reveal classes */}
+              Student developers creating modern web solutions while powering the next generation of STEM innovation through FRC Team 7790.
             </p>
             
-            <div className="flex flex-wrap gap-4 mb-8 md:mb-0">
+            <div className="flex flex-col sm:flex-row items-start gap-4 opacity-100"> {/* Remove reveal classes */}
               <HashLink 
                 smooth 
-                to="#work" 
-                className="inline-block px-6 py-3 md:px-8 md:py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg hover:shadow-purple-500/20 transition-all duration-300 animate-fade-in" 
-                style={{ animationDelay: '1.8s' }}
-                aria-label="View our portfolio work"
+                to="#contact" 
+                className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300"
               >
-                See Our Work
+                Start Your Project
               </HashLink>
               
               <HashLink 
                 smooth 
-                to="#about" 
-                className="inline-block px-6 py-3 md:px-8 md:py-4 border border-purple-500 text-purple-500 rounded-full font-semibold hover:bg-purple-500/10 hover:text-white transition-colors duration-300 animate-fade-in" 
-                style={{ animationDelay: '2s' }}
-                aria-label="Learn more about us"
+                to="#work" 
+                className="w-full sm:w-auto px-8 py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300"
               >
-                Our Team
+                View Our Work
               </HashLink>
             </div>
           </div>
 
-          {/* Simplified SVG Wireframe */}
-          <div className="md:w-full flex justify-center items-center lg:justify-end relative">
-            <div className="w-[110%] md:w-[115%] lg:w-[130%] xl:w-[125%] transform -translate-y-4 md:translate-y-0">
+          {/* SVG Wireframe */}
+          <div className="flex justify-center items-center">
+            <div className="w-[110%] md:w-full lg:w-[115%]">
               <svg ref={svgRef} viewBox="0 0 400 300" className="w-full h-auto" aria-hidden="true">
                 <defs>
                   <linearGradient id="gradStroke" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -257,23 +176,6 @@ const Hero = () => {
           }
         }
         
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
-        
-        .typing-container {
-          display: inline-block;
-          white-space: pre-line;
-          overflow: visible;
-          position: relative;
-        }
-
-        @keyframes pulse-glow {
-          0%, 100% { text-shadow: 0 0 8px rgba(139, 92, 246, 0.4); }
-          50% { text-shadow: 0 0 16px rgba(139, 92, 246, 0.7); }
-        }
-        
         .draw-path {
           animation: draw 2s forwards;
           will-change: stroke-dashoffset;
@@ -291,13 +193,6 @@ const Hero = () => {
         .delay-3 {
           animation-delay: 1.5s;
         }
-        
-        .typing-cursor {
-          display: inline-block;
-          animation: blink 1s step-end infinite;
-          color: #9333ea;
-          font-weight: 400;
-        }
 
         .animate-fade-in {
           opacity: 0;
@@ -307,6 +202,13 @@ const Hero = () => {
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Ensure reveal elements are visible */
+        .reveal, .stagger-reveal {
+          opacity: 1 !important;
+          visibility: visible !important;
+          transform: translateY(0) !important;
         }
       `}</style>
     </section>
