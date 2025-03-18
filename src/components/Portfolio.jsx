@@ -113,27 +113,11 @@ const Portfolio = () => {
 
         <div className="grid gap-8 reveal">
           <ProjectCard
-            title="Local Bakery Website"
-            description="A modern, mobile-first website for a beloved local bakery. We implemented online ordering, a dynamic menu system, and integrated social media to help grow their digital presence and streamline customer orders."
-            tags={["React", "TailwindCSS", "Firebase"]}
-            image="/path/to/image.jpg"
-            link="https://example.com"
-          />
-
-          <ProjectCard
-            title="Community Sports Club"
-            description="Revamped the digital home of a local sports club with a focus on event scheduling, membership management, and real-time facility booking. The new system helped increase member engagement by 40%."
-            tags={["Next.js", "Stripe", "MongoDB"]}
-            image="/path/to/image.jpg"
-            link="https://example.com"
-          />
-
-          <ProjectCard
-            title="Automotive Service Center"
-            description="Created an intuitive website featuring online appointment booking, service history tracking, and automated maintenance reminders. The platform helped reduce phone calls by 60% while improving customer satisfaction."
-            tags={["React", "Node.js", "PostgreSQL"]}
-            image="/path/to/image.jpg"
-            link="https://example.com"
+            title="FRC Team 7790 Website"
+            description="An interactive website for Baywatch Robotics showcasing our team, robot designs, competition history, and STEM outreach programs. Features include a team member directory, sponsorship information, and resources for aspiring robotics enthusiasts."
+            tags={["React", "TailwindCSS", "JavaScript"]}
+            image="/src/assets/images/baywatchLogo.png"
+            websiteUrl="https://frc7790.com"
           />
         </div>
 

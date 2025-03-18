@@ -156,16 +156,16 @@ const Services = () => {
           <div className="relative glass-morphism p-8 lg:p-12 rounded-xl border border-white/5">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                Empowering Innovation
+                Supporting FIRST Robotics
               </h3>
               <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
-                Your partnership with us directly supports Baywatch Robotics (FRC Team 7790). Every project contributes to fostering innovation and developing future technology leaders through competitive robotics, helping cover essential costs for equipment, competition fees, and team development.
+                Your partnership with us directly supports Baywatch Robotics (FRC Team 7790), a competitive high school robotics team from Harbor Springs, Michigan. Your project helps fund our robot parts, competition registration fees, travel expenses, and STEM outreach activities in our community.
               </p>
             </div>
             
             <div className="flex justify-center mt-6">
               <a 
-                href="https://FRC7790.com" 
+                href="https://frc7790.com" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300"

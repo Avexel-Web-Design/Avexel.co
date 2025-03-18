@@ -45,13 +45,13 @@ const About = () => {
   
   return (
     <section id="about" className="py-20 bg-black relative overflow-hidden scroll-mt-16">
-      {/* Reduced py-32 to py-20 and scroll-mt-24 to scroll-mt-16 */}
       {/* Decorative Background Elements */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 border border-white/5 rounded-full animate-spin-slow-reverse"></div>
       <div className="absolute bottom-1/3 right-1/3 w-96 h-96 border border-white/5 animate-spin-slow"></div>
       
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto">
+          {/* Who We Are section */}
           <div className="text-center mb-12 reveal">
             <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Who We Are</span>
             <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
@@ -62,6 +62,7 @@ const About = () => {
             </p>
           </div>
 
+          {/* Story & Mission sections */}
           <div className="grid md:grid-cols-2 gap-8 reveal">
             <div className="glass-morphism p-8 rounded-xl border border-white/5">
               <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
@@ -88,6 +89,7 @@ const About = () => {
             </div>
           </div>
 
+          {/* Why Choose Us section */}
           <div className="mt-12 reveal">
             <div className="glass-morphism p-8 rounded-xl border border-white/5">
               <h3 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
@@ -128,60 +130,56 @@ const About = () => {
         
         {/* Team Section */}
         <div className="mb-16 reveal">
-          {/* Reduced mb-24 to mb-16 */}
           <h3 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Our Team</h3>
-          {/* Reduced mb-12 to mb-8 */}
           <div className="grid md:grid-cols-3 gap-8">
             <TeamMemberCard 
               name="Ryan Latimer"
               role="Lead Developer"
-              description=""
+              description="Programming team lead on FRC 7790 with expertise in full-stack development. Specializes in React applications and creating responsive, intuitive user interfaces."
             />
             
             <TeamMemberCard 
               name="Gavin Moceri"
-              role="Lead Developer"
-              description=""
+              role="Technical Lead"
+              description="Robotics software specialist with strong backend development skills. Experience with robot control systems translated into secure, efficient web architecture."
             />
             
             <TeamMemberCard 
               name="Conner Breckenfeld"
-              role="UI/UX Designer"
-              description=""
+              role="Design Specialist"
+              description="Design team member bringing creative vision to both robot design and digital interfaces. Focused on creating accessible, visually engaging web experiences."
             />
           </div>
         </div>
         
+        {/* Origin Story Section - Fixed */}
         <div className="max-w-3xl mx-auto text-center mb-12 reveal">
-          {/* Reduced mb-16 to mb-12 */}
           <h3 className="text-3xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            Our Mission
+            Our Origin Story
           </h3>
           <p className="text-lg text-gray-300 leading-relaxed mb-8">
-            We started Avexel as a side project to support our FRC Team 7790 while helping businesses in our community establish their online presence. As high school students passionate about technology, we're using our skills to make websites that matter.
+            We started Avexel as a student initiative from Baywatch Robotics (FRC Team 7790), based in Harbor Springs, Michigan. Our team competes in the FIRST Robotics Competition, where we design, build, and program robots for international competitions. To support our robotics endeavors and apply our technical skills, we're now creating professional websites for local businesses.
           </p>
-
         </div>
         
-        {/* Timeline Section */}
+        {/* Timeline Section - Fixed */}
         <div className="mt-20 reveal">
-          {/* Reduced mt-32 to mt-20 */}
           <h3 className="text-3xl font-bold mb-12 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Our Journey</h3>
           <div className="max-w-3xl mx-auto">
             <TimelineItem 
-              year="2024"
-              title="Avexel is conceptualized"
-              description="As team members of FRC Team 7790, we wanted to find a way to support our robotics team while making use of our web development skills."
+              year="2019"
+              title="FRC Team 7790 Founded"
+              description="Baywatch Robotics was established at Harbor Springs High School, joining the FIRST Robotics Competition community and beginning our journey in STEM education and competitive robotics."
             />
             <TimelineItem 
-              year="2025"
-              title="FRC7790.com Is Created"
-              description="Our opening website, created to build a platform for our robotics team to showcase our team, attract sponsors, and provide a useful reservoir of information on FRC Events, Teams, and more."
+              year="2023"
+              title="Avexel Web Services Launched"
+              description="After gaining experience developing the team's website and online presence, we created Avexel to offer professional web development services to local businesses while supporting our robotics program."
             />
             <TimelineItem 
               year="Present"
-              title="Exapnsion"
-              description="We are continuing to expand our robotits teams website, our business, and our impact to meaningful ideas."
+              title="Growing Our Impact"
+              description="Today, we balance our academic responsibilities, robotics competitions, and web development projects, using our technical skills to serve our community while funding our team's robotics initiatives."
             />
           </div>
         </div>
