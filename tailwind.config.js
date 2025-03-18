@@ -1,25 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./public/index.html"
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       colors: {
         primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-        },
-        secondary: {
           50: '#f5f3ff',
           100: '#ede9fe',
           200: '#ddd6fe',
@@ -30,100 +18,57 @@ module.exports = {
           700: '#6d28d9',
           800: '#5b21b6',
           900: '#4c1d95',
+          950: '#2e1065',
         },
-        dark: '#121212',
-        light: '#fafafa'
+        secondary: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+          950: '#172554',
+        },
+        dark: '#111827',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['Lexend', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.5s ease-out',
-        'slide-down': 'slideDown 0.5s ease-out',
-        'float': 'float 4s ease-in-out infinite',
-        'pulse-slow': 'pulse 3s ease-in-out infinite',
+        'pulse-slow': 'pulseSlow 8s ease-in-out infinite',
+        'float-particle': 'float-particle 3s ease-out forwards',
+        'pulse-particle': 'pulse-particle 2s infinite alternate',
         'shimmer': 'shimmer 3s infinite',
-        'fade-scale': 'fadeInScale 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards',
-        'border-glow': 'borderGlow 2s ease-in-out infinite',
-        'glow-pulse': 'glowPulse 2s ease-in-out infinite',
-        'rotate-gradient': 'rotateGradient 8s linear infinite',
-        'dash-offset': 'dashOffset 2s linear infinite',
-        'draw-path': 'drawPath 2s ease-out forwards',
-        'flowing-gradient': 'flowingGradient 3s ease infinite',
-        'morph-path': 'morphPath 8s ease-in-out infinite',
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        slideDown: {
-          '0%': { transform: 'translateY(-20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
+        pulseSlow: {
+          '0%, 100%': { opacity: '0.5' },
+          '50%': { opacity: '0.7' },
         },
         float: {
-          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-          '50%': { transform: 'translateY(-10px) rotate(1deg)' },
+          '0%': { 
+            transform: 'translate(0, 0)',
+            opacity: '0.8',
+          },
+          '100%': { 
+            transform: 'translate(var(--tx, 10px), var(--ty, 10px))',
+            opacity: '0',
+          },
         },
         pulse: {
-          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
-          '50%': { transform: 'scale(0.95)', opacity: '0.8' },
+          '0%, 100%': { opacity: '0.2' },
+          '50%': { opacity: '0.8' },
         },
         shimmer: {
-          '0%': { backgroundPosition: '-1000px 0' },
-          '100%': { backgroundPosition: '1000px 0' },
+          '0%': { transform: 'translateX(-100%)' },
+          '50%, 100%': { transform: 'translateX(100%)' },
         },
-        flowingGradient: {
-          '0%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' },
-          '100%': { backgroundPosition: '0% 50%' },
-        },
-        drawPath: {
-          to: { strokeDashoffset: '0' },
-        },
-        glowPulse: {
-          '0%, 100%': {
-            filter: 'drop-shadow(0 0 2px rgba(14, 165, 233, 0.3)) drop-shadow(0 0 5px rgba(14, 165, 233, 0.2))',
-          },
-          '50%': {
-            filter: 'drop-shadow(0 0 5px rgba(14, 165, 233, 0.5)) drop-shadow(0 0 10px rgba(14, 165, 233, 0.3))',
-          },
-        },
-        rotateGradient: {
-          '0%': {
-            background: 'linear-gradient(0deg, var(--tw-gradient-from), var(--tw-gradient-to))',
-          },
-          '100%': {
-            background: 'linear-gradient(360deg, var(--tw-gradient-from), var(--tw-gradient-to))',
-          },
-        },
-      },
-      spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-        '128': '32rem',
-      },
-      maxWidth: {
-        '8xl': '88rem',
-      },
-      blur: {
-        xs: '2px',
-      },
-      dropShadow: {
-        'glow-sm': '0 0 2px rgba(14, 165, 233, 0.3)',
-        'glow': '0 0 5px rgba(14, 165, 233, 0.5)',
-        'glow-lg': '0 0 10px rgba(14, 165, 233, 0.7)',
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/forms'),
-  ],
+  plugins: [],
 }
