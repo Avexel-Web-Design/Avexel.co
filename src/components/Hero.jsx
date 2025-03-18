@@ -3,9 +3,7 @@ import { HashLink } from 'react-router-hash-link';
 
 const Hero = () => {
   const svgRef = useRef(null);
-  const heroRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [typedText, setTypedText] = useState('');
   const fullText = "Digital Magic";
 
@@ -36,22 +34,6 @@ const Hero = () => {
     return () => clearInterval(typingInterval);
   }, [isVisible]);
 
-  // Parallax mouse effect
-  useEffect(() => {
-    if (!heroRef.current) return;
-    
-    const handleMouseMove = (e) => {
-      const { clientX, clientY } = e;
-      const { width, height } = heroRef.current.getBoundingClientRect();
-      const x = (clientX / width - 0.5) * 20;
-      const y = (clientY / height - 0.5) * 20;
-      setMousePosition({ x, y });
-    };
-    
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   // Combined floating animation with drawing effect
   useEffect(() => {
     const svg = svgRef.current;
@@ -66,8 +48,7 @@ const Hero = () => {
     paths.forEach((path, index) => {
       const delayClass = path.classList.contains('delay-1') ? 1 : 
                          path.classList.contains('delay-2') ? 2 :
-                         path.classList.contains('delay-3') ? 3 :
-                         path.classList.contains('delay-4') ? 4 : 0;
+                         path.classList.contains('delay-3') ? 3 : 0;
       
       if (prefersReducedMotion) {
         // Just show the paths immediately for users who prefer reduced motion
@@ -81,7 +62,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark" aria-label="Hero section">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-dark" aria-label="Hero section">
       {/* Enhanced background gradients */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-secondary-500/3 to-primary-500/5 animate-pulse-slow"></div>
@@ -98,7 +79,7 @@ const Hero = () => {
               <span className="inline-block animate-slide-up" style={{ animationDelay: '0.3s' }}>Create</span>
             </h1>
             
-            {/* "Digital Magic" text with typing animation and gradient */}
+            {/* "Digital Magic" text with typing animation */}
             <div className={`relative mb-8 md:mb-10 transform ${isVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}>
               <div className="flex flex-col md:flex-row items-start md:items-center">
                 <span className="text-6xl md:text-8xl lg:text-9xl font-bold leading-none pb-1 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
@@ -135,33 +116,17 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Animated SVG Wireframe with parallax effect */}
+          {/* Simplified SVG Wireframe */}
           <div className="md:w-full flex justify-center items-center lg:justify-end relative">
-            <div 
-              className="w-[110%] md:w-[115%] lg:w-[130%] xl:w-[125%] transform -translate-y-4 md:translate-y-0 transition-transform duration-200"
-              style={{ 
-                transform: `translate3d(${mousePosition.x}px, ${mousePosition.y}px, 0)`,
-              }}
-            >
+            <div className="w-[110%] md:w-[115%] lg:w-[130%] xl:w-[125%] transform -translate-y-4 md:translate-y-0">
               <svg ref={svgRef} viewBox="0 0 400 300" className="w-full h-auto" aria-hidden="true">
                 <defs>
-                  <linearGradient id="gradStroke" x1="0%" y1="0%" x2="100%">
+                  <linearGradient id="gradStroke" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" style={{ stopColor: '#a78bfa', stopOpacity: 0.8 }} />
                     <stop offset="50%" style={{ stopColor: '#60a5fa', stopOpacity: 0.9 }} />
                     <stop offset="100%" style={{ stopColor: '#818cf8', stopOpacity: 0.8 }} />
                   </linearGradient>
-                  <filter id="svgSoftGlow" height="130%">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur" />
-                    <feComposite in="blur" in2="SourceGraphic" operator="over" />
-                  </filter>
                 </defs>
-                
-                {/* Decorative background elements */}
-                <g opacity="0.1" filter="url(#svgSoftGlow)">
-                  <circle cx="100" cy="150" r="50" fill="url(#gradStroke)" />
-                  <circle cx="300" cy="100" r="40" fill="url(#gradStroke)" />
-                  <circle cx="200" cy="250" r="35" fill="url(#gradStroke)" />
-                </g>
                 
                 {/* Main container */}
                 <path 
@@ -179,65 +144,43 @@ const Hero = () => {
                   d="M40 20 H360 V60 H40 Z M280 30 H340 M200 30 H260 M120 30 H180" 
                   fill="none" 
                   stroke="url(#gradStroke)" 
-                  strokeWidth="2"
+                  strokeWidth="1.5"
                   strokeDasharray="1000" 
                   strokeDashoffset="1000"
                   className="draw-path delay-1"
                 />
                 
-                {/* Content blocks with improved details */}
+                {/* Content blocks */}
                 <path 
-                  d="M60 100 H200 M60 120 H180 M60 140 H160 M60 180 H140 V200 H60 Z M240 90 H340 V190 H240 Z" 
-                  fill="none" 
-                  stroke="url(#gradStroke)" 
-                  strokeWidth="2"
-                  strokeDasharray="1200" 
-                  strokeDashoffset="1200"
-                  className="draw-path delay-2"
-                />
-                
-                {/* Image placeholder in the right block */}
-                <path 
-                  d="M260 110 H320 V170 H260 Z" 
+                  d="M60 100 H200 M60 120 H180 M60 140 H160" 
                   fill="none" 
                   stroke="url(#gradStroke)" 
                   strokeWidth="1.5"
-                  strokeDasharray="400" 
-                  strokeDashoffset="400"
+                  strokeDasharray="600" 
+                  strokeDashoffset="600"
                   className="draw-path delay-2"
                 />
                 
-                {/* Cross pattern in image placeholder */}
+                {/* Image placeholder with simplified design */}
                 <path 
-                  d="M260 110 L320 170 M260 170 L320 110" 
+                  d="M240 90 H340 V190 H240 Z" 
                   fill="none" 
                   stroke="url(#gradStroke)" 
-                  strokeWidth="1"
-                  strokeDasharray="200" 
-                  strokeDashoffset="200"
-                  className="draw-path delay-3"
-                />
-                
-                {/* Decorative elements */}
-                <path 
-                  d="M70 240 H120 M150 240 H200 M230 240 H280 M60 260 H340" 
-                  fill="none" 
-                  stroke="url(#gradStroke)" 
-                  strokeWidth="2"
+                  strokeWidth="1.5"
                   strokeDasharray="800" 
                   strokeDashoffset="800"
-                  className="draw-path delay-3"
+                  className="draw-path delay-2"
                 />
                 
-                {/* Button/interactive elements */}
+                {/* Footer elements */}
                 <path 
-                  d="M260 140 H320 V160 H260 Z M280 220 H340 V240 H280 Z" 
+                  d="M60 240 H340 M60 260 H340" 
                   fill="none" 
                   stroke="url(#gradStroke)" 
-                  strokeWidth="2"
-                  strokeDasharray="400" 
-                  strokeDashoffset="400"
-                  className="draw-path delay-4"
+                  strokeWidth="1.5"
+                  strokeDasharray="600" 
+                  strokeDashoffset="600"
+                  className="draw-path delay-3"
                 />
               </svg>
             </div>
@@ -256,7 +199,7 @@ const Hero = () => {
 
       <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-black to-transparent"></div>
       
-      {/* Animation keyframes for drawing and floating effects */}
+      {/* Animation keyframes */}
       <style jsx>{`
         @keyframes draw {
           to {
@@ -269,7 +212,7 @@ const Hero = () => {
             transform: translate(0, 0);
           }
           100% {
-            transform: translate(3px, -3px);
+            transform: translate(2px, -2px);
           }
         }
         
@@ -293,10 +236,6 @@ const Hero = () => {
         
         .delay-3 {
           animation-delay: 1.5s;
-        }
-        
-        .delay-4 {
-          animation-delay: 2s;
         }
         
         .typing-cursor {
