@@ -117,9 +117,16 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
         }`}>
           <p className="text-center text-xs sm:text-sm text-white/70 mb-2">Contact the team:</p>
           <div className="flex justify-center items-center gap-6 sm:gap-6">
-            <SocialLink icon="fa-envelope" href="mailto:contact@avexel.co" iconOnly />
-            <SocialLink icon="fa-github" href="https://github.com/avexel" iconOnly />
-            <SocialLink icon="fa-linkedin" href="https://linkedin.com/company/avexel" iconOnly />
+            <SocialLink 
+              icon="fa-envelope-open-text" 
+              href="mailto:contact@avexel.co" 
+              iconOnly 
+            />
+            <SocialLink 
+              icon="fa-github" 
+              href="https://github.com/avexel-webdesign" 
+              iconOnly 
+            />
           </div>
         </div>
       </div>
@@ -127,15 +134,22 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
   );
 };
 
-const SocialLink = ({ icon, href, iconOnly = false }) => (
-  <a 
-    href={href} 
-    target="_blank"
-    rel="noopener noreferrer"
-    className="group flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 transition-all duration-300"
-  >
-    <i className={`fab ${icon} text-lg text-white/70 group-hover:text-white transition-colors duration-300`}></i>
-  </a>
-);
+const SocialLink = ({ icon, href, iconOnly = false }) => {
+  // Special handling for email links
+  const finalHref = href.startsWith('mailto:') ? 
+    (href.includes('?') ? href : `${href}?subject=Website%20Inquiry&body=Hello%20Avexel%20Team,%0A%0AI'm%20interested%20in%20learning%20more%20about%20your%20web%20development%20services.%0A%0ARegards,%0A`) : 
+    href;
+    
+  return (
+    <a 
+      href={finalHref} 
+      target={href.startsWith('mailto:') ? '_self' : '_blank'}
+      rel="noopener noreferrer"
+      className="group flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 transition-all duration-300"
+    >
+      <i className={`fab ${icon} text-lg text-white/70 group-hover:text-white transition-colors duration-300`}></i>
+    </a>
+  );
+};
 
 export default MobileMenu;

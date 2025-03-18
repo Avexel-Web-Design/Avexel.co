@@ -85,36 +85,14 @@ const Footer = () => {
               <li>
                 <div className="flex items-center gap-4 pt-2">
                   <a 
-                    href="https://github.com/avexel" 
+                    href="https://github.com/avexel-web-design" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
                     aria-label="GitHub"
                   >
                     <i className="fab fa-github text-xl"></i>
-                  </a>
-                  <a 
-                    href="https://linkedin.com/company/avexel" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
-                    aria-label="LinkedIn"
-                  >
-                    <i className="fab fa-linkedin-in text-xl"></i>
-                  </a>
-                  <a 
-                    href="https://avexel.bsky.social" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
-                    aria-label="BlueSky"
-                  >
-                    <img 
-                      src="/src/assets/images/Bluesky_Logo.png" 
-                      alt="BlueSky" 
-                      className="w-5 h-5 opacity-70 hover:opacity-100 transition-opacity"
-                    />
-                  </a>
+                  </a>     
                 </div>
               </li>
             </ul>
@@ -125,12 +103,12 @@ const Footer = () => {
         <div className="mt-12 pt-8 border-t border-white/5">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-gray-400 text-sm">
-              © {currentYear} Avexel | Student Web Design Team | FRC 7790
+              © {currentYear} Avexel Web Design
             </div>
             <div className="flex items-center gap-4 text-sm">
               <span className="text-gray-500">Created by</span>
               <span className="text-primary-400">
-                Team 7790
+                FRC Team 7790
               </span>
               <span className="text-gray-500">students</span>
             </div>

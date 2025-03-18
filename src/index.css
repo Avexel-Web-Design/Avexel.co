@@ -160,6 +160,59 @@
 
 @keyframes float-particle {
   0% {
+    transform: scale(0) translate(0, 0);
+    opacity: 0;
+  }
+  25% {
+    transform: scale(1) translate(var(--tx, 10px), var(--ty, 10px));
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0.5) translate(calc(var(--tx, 10px) * 2), calc(var(--ty, 10px) * 2));
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-150%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(150%);
+    opacity: 0;
+  }
+}
+
+/* Add enhanced glass morphism effect */
+.glass-morphism {
+  background: rgba(17, 24, 39, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Add subtle shadow effect for depth */
+.shadow-glow {
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+}
+
+/* Enhanced reveal animation */
+.reveal {
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal.active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@keyframes float-particle {
+  0% {
     transform: translate(0, 0);
     opacity: 0.8;
   }
