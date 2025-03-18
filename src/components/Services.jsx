@@ -74,12 +74,12 @@ const Services = () => {
       
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-12 reveal stagger-reveal">
-          <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">What We Offer</span>
+          <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Our Expertise</span>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            Our Services
+            Services We Provide
           </h2>
           <p className="text-lg text-gray-300">
-            Simple, affordable web solutions by students helping to fund FRC Team 7790
+            Professional web solutions crafted by passionate student developers, supporting the next generation of STEM leaders at FRC Team 7790
           </p>
         </div>
 
@@ -87,33 +87,33 @@ const Services = () => {
           <ServiceCard 
             icon="fa-laptop-code"
             title="Website Creation"
-            description="We build simple, effective websites for small businesses and organizations in our community. Our focus is on clean designs that are easy to navigate and work well on all devices."
+            description="From concept to launch, we craft tailored websites that capture your unique vision. Our expertise ensures your site not only looks great but delivers an exceptional user experience across all devices, helping you establish a strong digital presence."
           />
           
           <ServiceCard 
             icon="fa-paint-brush"
             title="Web Design"
-            description="Need a fresh look for your online presence? We can create a design that reflects your brand and appeals to your customers, making sure your website stands out in the right way."
+            description="Every pixel matters. We create distinctive, purpose-driven designs that align with your brand identity and business goals. Our approach combines modern aesthetics with intuitive navigation to keep your visitors engaged and coming back."
           />
           
           <ServiceCard 
-            icon="fa-bullhorn"
-            title="Social Media Setup"
-            description="We'll help you get started on social media platforms that make sense for your business, creating profiles that connect with your website for a consistent online presence."
+            icon="fa-mobile-alt"
+            title="Mobile App Development"
+            description="Ready to take your business mobile? We're expanding into native iOS and Android development, helping you reach customers wherever they are. From concept validation to App Store launch, we'll guide you through the entire process."
             comingSoon={true}
           />
           
           <ServiceCard 
             icon="fa-tools"
             title="Website Maintenance"
-            description="Let us handle the technical details of keeping your website running smoothly, including updates, backups, and making small changes when you need them."
+            description="Keep your digital presence running smoothly with our reliable maintenance services. We handle everything from security updates and performance optimization to content updates, letting you focus on what matters most - running your business."
           />
         </div>
         
         {/* Process Section */}
         <div className="mt-20 reveal">
           <h3 className="text-3xl font-bold mb-16 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            How We Work
+            Our Approach
           </h3>
           
           <div className="relative glass-morphism p-8 lg:p-12 rounded-xl border border-white/5">
@@ -126,26 +126,26 @@ const Services = () => {
             <div className="relative z-10 space-y-12">
               <ProcessStep 
                 number="1"
-                title="Chat & Listen"
-                description="We start by understanding your needs and goals. This meeting can be after school or on weekends to fit your schedule."
+                title="Discovery & Planning"
+                description="We begin with an in-depth conversation to understand your vision, goals, and requirements. Our flexible scheduling ensures we can meet at a time that works best for you, whether after school or on weekends."
               />
               
               <ProcessStep 
                 number="2"
-                title="Design & Review"
-                description="We'll create a simple design for your approval, making sure it represents your business the way you want."
+                title="Design & Collaboration"
+                description="We transform your ideas into visual concepts, creating mockups that align with your brand. Through collaborative feedback, we refine the design until it perfectly matches your vision."
               />
               
               <ProcessStep 
                 number="3"
-                title="Build & Test"
-                description="Our team builds your website, testing it thoroughly to ensure everything works perfectly on all devices."
+                title="Development & Quality Assurance"
+                description="Our development team brings your website to life, implementing modern best practices and rigorous testing across all devices and browsers to ensure a flawless user experience."
               />
               
               <ProcessStep 
                 number="4"
-                title="Launch & Support"
-                description="Once you're happy with the site, we'll help you launch it and show you how to use it. And we're always available if you need help later!"
+                title="Launch & Ongoing Support"
+                description="Once your site meets our quality standards, we guide you through the launch process and provide comprehensive training. We remain available for support, ensuring your continued success in the digital space."
               />
             </div>
           </div>
@@ -156,10 +156,10 @@ const Services = () => {
           <div className="relative glass-morphism p-8 lg:p-12 rounded-xl border border-white/5">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                Supporting FRC Team 7790
+                Empowering STEM Education
               </h3>
               <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
-                A portion of all proceeds from our web design projects directly supports Baywatch Robotics (FRC Team 7790), helping us fund competition fees, materials, and travel expenses.
+                Your partnership with us directly supports Baywatch Robotics (FRC Team 7790). Every project contributes to fostering innovation and developing future technology leaders through competitive robotics, helping cover essential costs for equipment, competition fees, and team development.
               </p>
             </div>
             

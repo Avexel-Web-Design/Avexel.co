@@ -101,31 +101,52 @@ const Portfolio = () => {
       <div className="absolute bottom-1/3 left-1/5 w-64 h-64 border border-white/5 animate-spin-slow-reverse"></div>
       
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-12 reveal stagger-reveal">
-          {/* Reduced mb-16 to mb-12 */}
+        <div className="max-w-4xl mx-auto text-center mb-12 reveal">
           <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Our Work</span>
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             Featured Projects
           </h2>
           <p className="text-lg text-gray-300">
-            Check out what we've built so far as student developers
+            Take a look at some of the websites we've crafted for local businesses while supporting our robotics journey.
           </p>
         </div>
-        
-        <div className="max-w-6xl mx-auto space-y-16">
-          {/* Reduced space-y-24 to space-y-16 */}
-          {/* Baywatch Robotics */}
+
+        <div className="grid gap-8 reveal">
           <ProjectCard
-            title="Baywatch Robotics"
-            description="Our main project! We created a comprehensive website for our FRC Team 7790, featuring information about our robot designs, team members, sponsors, and competition details. This site helps us connect with other teams and potential sponsors."
-            image="/src/assets/images/baywatchLogo.png"
-            tags={["Robotics", "Team Website", "FRC"]}
-            websiteUrl="https://FRC7790.com"
-            caseStudyUrl="#"
-            orientation="right"
-            teamName="FRC Team 7790 Project"
+            title="Local Bakery Website"
+            description="A modern, mobile-first website for a beloved local bakery. We implemented online ordering, a dynamic menu system, and integrated social media to help grow their digital presence and streamline customer orders."
+            tags={["React", "TailwindCSS", "Firebase"]}
+            image="/path/to/image.jpg"
+            link="https://example.com"
           />
-          
+
+          <ProjectCard
+            title="Community Sports Club"
+            description="Revamped the digital home of a local sports club with a focus on event scheduling, membership management, and real-time facility booking. The new system helped increase member engagement by 40%."
+            tags={["Next.js", "Stripe", "MongoDB"]}
+            image="/path/to/image.jpg"
+            link="https://example.com"
+          />
+
+          <ProjectCard
+            title="Automotive Service Center"
+            description="Created an intuitive website featuring online appointment booking, service history tracking, and automated maintenance reminders. The platform helped reduce phone calls by 60% while improving customer satisfaction."
+            tags={["React", "Node.js", "PostgreSQL"]}
+            image="/path/to/image.jpg"
+            link="https://example.com"
+          />
+        </div>
+
+        <div className="text-center mt-12 reveal">
+          <p className="text-gray-300 mb-8">
+            Every project supports our robotics team while delivering value to local businesses. Want to be our next success story?
+          </p>
+          <a
+            href="#contact"
+            className="inline-block px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300"
+          >
+            Start Your Project
+          </a>
         </div>
       </div>
     </section>

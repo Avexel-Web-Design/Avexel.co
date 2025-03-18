@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import useScrollReveal from '../hooks/useScrollReveal';
 import Monogram from './Monogram';
 
@@ -26,6 +26,37 @@ const FormInput = ({ type = "text", name, placeholder, required = false }) => (
 
 const Contact = () => {
   useScrollReveal();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Here you would typically send the form data to your backend
+      // For now, let's just simulate a submission
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      alert('Thank you for your message! We will get back to you soon.');
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      alert('There was an error sending your message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section id="contact" className="py-32 bg-black relative overflow-hidden scroll-mt-24">
@@ -34,146 +65,114 @@ const Contact = () => {
       <div className="absolute bottom-1/4 left-1/5 w-48 h-48 border border-white/5 animate-spin-slow-reverse"></div>
       
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16 reveal stagger-reveal">
-          <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Get In Touch</span>
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            Contact Us
-          </h2>
-          <p className="text-lg text-gray-300">
-            Have a website project idea? Want to support our FRC team? We'd love to hear from you!
-          </p>
-        </div>
-        
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto reveal">
-          {/* Contact Information */}
-          <div className="relative group">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
-            <div className="relative h-full glass-morphism p-8 lg:p-12 rounded-xl">
-              <div className="space-y-8">
-                <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                  Contact Info
-                </h3>
-                
-                <ContactInfo
-                  icon="fa-envelope"
-                  title="Email Us"
-                  content="contact@avexel.co"
-                />
-                
-                <ContactInfo
-                  icon="fa-map-marker-alt"
-                  title="School"
-                  content="Harbor Springs High School, Michigan"
-                />
-                
-                <ContactInfo
-                  icon="fa-clock"
-                  title="Response Time"
-                  content="We'll respond after school hours, usually within 24 hours"
-                />
-                
-                {/* Team Members */}
-                <div className="pt-8 space-y-4">
-                  <p className="text-white font-medium mb-4">Our Student Team:</p>
-                  
-                  <div className="flex flex-col sm:flex-row gap-4 justify-between">
-                    <div className="flex items-center gap-3">
-                      <Monogram name="Ryan Latimer" size="xs" />
-                      <div>
-                        <p className="text-sm font-medium text-white">Ryan Latimer</p>
-                        <p className="text-xs text-gray-400">Student Developer</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-3">
-                      <Monogram name="Gavin Moceri" size="xs" />
-                      <div>
-                        <p className="text-sm font-medium text-white">Gavin Moceri</p>
-                        <p className="text-xs text-gray-400">Student Developer</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-3">
-                      <Monogram name="Conner Breckenfeld" size="xs" />
-                      <div>
-                        <p className="text-sm font-medium text-white">Conner Breckenfeld</p>
-                        <p className="text-xs text-gray-400">Student Designer</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12 reveal">
+            <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Get In Touch</span>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+              Let's Build Something Amazing
+            </h2>
+            <p className="text-lg text-gray-300">
+              Ready to elevate your online presence? We're here to help turn your vision into reality while supporting STEM education.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-12 reveal">
+            <div className="glass-morphism p-8 rounded-xl border border-white/5">
+              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+                Why Work With Us
+              </h3>
+              <ul className="space-y-4 text-gray-300">
+                <li className="flex items-start gap-3">
+                  <i className="fas fa-check-circle text-primary-400 mt-1"></i>
+                  <span>Professional web development with a purpose – supporting STEM education</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <i className="fas fa-check-circle text-primary-400 mt-1"></i>
+                  <span>Flexible scheduling that works around your business hours</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <i className="fas fa-check-circle text-primary-400 mt-1"></i>
+                  <span>Direct communication with our development team throughout the project</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <i className="fas fa-check-circle text-primary-400 mt-1"></i>
+                  <span>Ongoing support to ensure your website continues to serve your needs</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="glass-morphism p-8 rounded-xl border border-white/5">
+              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+                Let's Connect
+              </h3>
+              <p className="text-gray-300 mb-6">
+                Have questions or ready to start? Drop us a message, and we'll get back to you within 24 hours. We're excited to learn about your project!
+              </p>
+              <div className="space-y-4">
+                <a href="mailto:contact@avexel.com" className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
+                  <i className="fas fa-envelope text-primary-400"></i>
+                  <span>contact@avexel.com</span>
+                </a>
+                <a href="tel:+1234567890" className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
+                  <i className="fas fa-phone text-primary-400"></i>
+                  <span>(123) 456-7890</span>
+                </a>
               </div>
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="relative group">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
-            <div className="relative glass-morphism p-8 lg:p-12 rounded-xl">
-              <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                Send a Message
-              </h3>
-              
-              <form action="https://formsubmit.co/contact@avexel.co" method="POST" className="space-y-6">
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <FormInput
-                      name="name"
-                      placeholder="Your Name"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <FormInput
-                      type="email"
-                      name="email"
-                      placeholder="Your Email"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <FormInput
-                    name="subject"
-                    placeholder="Subject"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <textarea
-                    name="message"
-                    rows="6"
-                    placeholder="Your Message"
-                    required
-                    className="w-full px-4 py-3 bg-dark/50 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all duration-300 placeholder-gray-500 resize-none"
-                  ></textarea>
-                </div>
-                
-                <div className="pt-2">
-                  <p className="text-xs text-gray-400 mb-4">
-                    All messages will be read by our student team members. We'll respond as soon as we can.
-                  </p>
-                </div>
-
-                <div>
-                  <button
-                    type="submit"
-                    className="group relative inline-flex w-full items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg text-white font-semibold overflow-hidden"
-                  >
-                    <span className="absolute inset-0 bg-gradient-to-r from-secondary-500 to-primary-500 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></span>
-                    <span className="relative flex items-center gap-2">
-                      Send Message
-                      <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none">
-                        <path d="M13 5L20 12M20 12L13 19M20 12H4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </span>
-                  </button>
-                </div>
-              </form>
+          <form className="glass-morphism p-8 rounded-xl border border-white/5 reveal" onSubmit={handleSubmit}>
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors"
+                  placeholder="Your name"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors"
+                  placeholder="your@email.com"
+                  required
+                />
+              </div>
             </div>
-          </div>
+
+            <div className="mb-6">
+              <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                rows="4"
+                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors"
+                placeholder="Tell us about your project..."
+                required
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? 'Sending...' : 'Send Message'}
+            </button>
+          </form>
         </div>
       </div>
     </section>

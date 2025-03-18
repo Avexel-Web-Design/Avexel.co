@@ -51,15 +51,79 @@ const About = () => {
       <div className="absolute bottom-1/3 right-1/3 w-96 h-96 border border-white/5 animate-spin-slow"></div>
       
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-12 reveal stagger-reveal">
-          {/* Reduced mb-16 to mb-12 */}
-          <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Our Story</span>
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            About Us
-          </h2>
-          <p className="text-lg text-gray-300">
-            High school students passionate about robotics and web development
-          </p>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12 reveal">
+            <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">Who We Are</span>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+              Student Developers. Real Solutions.
+            </h2>
+            <p className="text-lg text-gray-300">
+              We're more than just a web development team – we're students passionate about technology and innovation, putting our skills to work while supporting STEM education.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 reveal">
+            <div className="glass-morphism p-8 rounded-xl border border-white/5">
+              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+                Our Story
+              </h3>
+              <p className="text-gray-400 leading-relaxed">
+                Born from the innovative spirit of FRC Team 7790, we bridge the gap between robotics and web development. Our journey began with a simple idea: to transform our coding passion into meaningful projects while generating support for our robotics program.
+              </p>
+              <p className="text-gray-400 leading-relaxed mt-4">
+                Today, we're proud to offer professional web development services that not only meet our clients' needs but also fuel the next generation of STEM leaders.
+              </p>
+            </div>
+
+            <div className="glass-morphism p-8 rounded-xl border border-white/5">
+              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+                Our Mission
+              </h3>
+              <p className="text-gray-400 leading-relaxed">
+                We're committed to delivering exceptional web solutions while fostering STEM education. Each project we undertake serves a dual purpose: providing value to our clients and supporting our robotics team's growth and development.
+              </p>
+              <p className="text-gray-400 leading-relaxed mt-4">
+                By choosing us, you're not just getting a website – you're investing in the future of technology and education.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-12 reveal">
+            <div className="glass-morphism p-8 rounded-xl border border-white/5">
+              <h3 className="text-2xl font-bold mb-6 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+                Why Choose Us
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="mb-4">
+                    <i className="fas fa-code text-3xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
+                  </div>
+                  <h4 className="font-bold mb-2">Modern Technology</h4>
+                  <p className="text-gray-400">
+                    We leverage cutting-edge tools and frameworks to build fast, responsive, and secure websites that stand out.
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="mb-4">
+                    <i className="fas fa-heart text-3xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
+                  </div>
+                  <h4 className="font-bold mb-2">Passion for Excellence</h4>
+                  <p className="text-gray-400">
+                    Our competitive robotics background drives us to pursue perfection in every project we undertake.
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="mb-4">
+                    <i className="fas fa-hands-helping text-3xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
+                  </div>
+                  <h4 className="font-bold mb-2">Impact</h4>
+                  <p className="text-gray-400">
+                    Your project directly supports STEM education and helps cultivate tomorrow's technology leaders.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         
         {/* Team Section */}

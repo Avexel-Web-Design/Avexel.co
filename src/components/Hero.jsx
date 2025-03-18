@@ -73,6 +73,44 @@ const Hero = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(139,92,246,0.08),transparent_50%)]"></div>
       </div>
 
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-5xl lg:text-7xl font-bold mb-6 tracking-tight reveal stagger-reveal">
+            <span className="block">Websites that</span>
+            <span className="block bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+              Make a Difference
+            </span>
+          </h1>
+          
+          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto reveal stagger-reveal">
+            Student developers creating modern web solutions while powering the next generation of STEM innovation through FRC Team 7790.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 reveal stagger-reveal">
+            <a 
+              href="#contact" 
+              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300"
+            >
+              Start Your Project
+            </a>
+            
+            <a 
+              href="#portfolio" 
+              className="w-full sm:w-auto px-8 py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300"
+            >
+              View Our Work
+            </a>
+          </div>
+          
+          <div className="mt-16 reveal">
+            <p className="text-gray-400 mb-6">Trusted by local businesses</p>
+            <div className="flex flex-wrap justify-center items-center gap-8 opacity-60">
+              {/* Add your client logos here */}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 lg:px-8 py-12 md:py-16 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-4 items-center">
           {/* Hero Text */}
@@ -203,7 +241,7 @@ const Hero = () => {
       <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
       
       {/* Animation keyframes */}
-      <style jsx>{`
+      <style>{`
         @keyframes draw {
           to {
             stroke-dashoffset: 0;
@@ -269,26 +307,6 @@ const Hero = () => {
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @media (prefers-reduced-motion: reduce) {
-          .draw-path {
-            animation: none;
-            stroke-dashoffset: 0;
-          }
-          
-          .typing-cursor {
-            animation: none;
-          }
-          
-          .animate-slide-up,
-          .animate-fade-in,
-          .animate-pulse-slow,
-          .animate-bounce-slow {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-          }
         }
       `}</style>
     </section>
