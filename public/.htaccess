@@ -1,0 +1,30 @@
+# Enable CORS
+Header set Access-Control-Allow-Origin "*"
+
+# Set MIME type for WOFF2 fonts
+AddType font/woff2 .woff2
+
+# Handle font files
+<FilesMatch "\.(woff2)$">
+    Header set Access-Control-Allow-Origin "*"
+</FilesMatch>
+
+# Enable rewrite engine
+RewriteEngine On
+RewriteBase /
+
+# Handle direct font requests
+RewriteCond %{REQUEST_URI} ^/fonts/
+RewriteRule ^(.*)$ /assets/fonts/$1 [L]
+
+# Don't rewrite files or directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rewrite everything else to index.html
+RewriteRule ^ index.html [L]
+
+# Security headers
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "DENY"
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
