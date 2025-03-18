@@ -72,7 +72,7 @@ const Contact = () => {
               Let's Build Something Amazing
             </h2>
             <p className="text-lg text-gray-300">
-              Ready to elevate your online presence? We're here to help turn your vision into reality while supporting STEM education.
+              Ready to elevate your online presence? We're here to help turn your vision into reality while supporting STEM.
             </p>
           </div>
 
@@ -84,11 +84,11 @@ const Contact = () => {
               <ul className="space-y-4 text-gray-300">
                 <li className="flex items-start gap-3">
                   <i className="fas fa-check-circle text-primary-400 mt-1"></i>
-                  <span>Professional web development with a purpose – supporting STEM education</span>
+                  <span>Professional web development with a purpose – supporting STEM, innovation, and creation.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <i className="fas fa-check-circle text-primary-400 mt-1"></i>
-                  <span>Flexible scheduling that works around your business hours</span>
+                  <span>Flexible scheduling so that getting a website made is no hassle nor drag on your business.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <i className="fas fa-check-circle text-primary-400 mt-1"></i>
@@ -115,7 +115,7 @@ const Contact = () => {
                 </a>
                 <a href="tel:+1234567890" className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors">
                   <i className="fas fa-phone text-primary-400"></i>
-                  <span>(123) 456-7890</span>
+                  <span>(231)-373-8360</span>
                 </a>
               </div>
             </div>

@@ -58,7 +58,7 @@ const About = () => {
               Student Developers. Real Solutions.
             </h2>
             <p className="text-lg text-gray-300">
-              We're more than just a web development team – we're students passionate about technology and innovation, putting our skills to work while supporting STEM education.
+              We're more than just a web development team – we're students passionate about technology and innovation, putting our skills to work while supporting innovation.
             </p>
           </div>
 
@@ -68,10 +68,10 @@ const About = () => {
                 Our Story
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                Born from the innovative spirit of FRC Team 7790, we bridge the gap between robotics and web development. Our journey began with a simple idea: to transform our coding passion into meaningful projects while generating support for our robotics program.
+                Created from the innovation of FRC Team 7790, we bridge the gap between robotics and web development. Our journey began with a simple idea: to transform our coding passion into meaningful projects while providing a means of support for our robotics program.
               </p>
               <p className="text-gray-400 leading-relaxed mt-4">
-                Today, we're proud to offer professional web development services that not only meet our clients' needs but also fuel the next generation of STEM leaders.
+                Today, we're proud to offer professional web development services that not only meet our clients' needs but also fuel the next generation of STEM leaders, and support something meaningful.
               </p>
             </div>
 
@@ -80,10 +80,10 @@ const About = () => {
                 Our Mission
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                We're committed to delivering exceptional web solutions while fostering STEM education. Each project we undertake serves a dual purpose: providing value to our clients and supporting our robotics team's growth and development.
+                We're committed to delivering exceptional web solutions while supporting the future. Each project we undertake serves a dual purpose: providing value to our clients and supporting our robotics team's growth and development.
               </p>
               <p className="text-gray-400 leading-relaxed mt-4">
-                By choosing us, you're not just getting a website – you're investing in the future of technology and education.
+                By choosing us, you're not just getting a website – you're investing in the future.
               </p>
             </div>
           </div>
@@ -135,19 +135,19 @@ const About = () => {
             <TeamMemberCard 
               name="Ryan Latimer"
               role="Lead Developer"
-              description="Specializing in React and modern JavaScript frameworks. Focused on building scalable web applications and mentoring fellow team members in software development best practices."
+              description=""
             />
             
             <TeamMemberCard 
               name="Gavin Moceri"
-              role="Backend Developer"
-              description="Experienced in Node.js and database architecture. Passionate about creating efficient server-side solutions and implementing secure authentication systems."
+              role="Lead Developer"
+              description=""
             />
             
             <TeamMemberCard 
               name="Conner Breckenfeld"
               role="UI/UX Designer"
-              description="Brings a detail-oriented approach to user interface design. Skilled in Figma and modern design systems, focusing on creating intuitive and accessible web experiences."
+              description=""
             />
           </div>
         </div>
@@ -160,35 +160,7 @@ const About = () => {
           <p className="text-lg text-gray-300 leading-relaxed mb-8">
             We started Avexel as a side project to support our FRC Team 7790 while helping businesses in our community establish their online presence. As high school students passionate about technology, we're using our skills to make websites that matter.
           </p>
-          
-          <div className="space-y-4">
-            <div className="flex items-start gap-4 group">
-              <div className="w-8 h-8 rounded-full bg-primary-500/10 flex items-center justify-center mt-1 ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
-                <i className="fas fa-paint-brush text-xs bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
-              </div>
-              <div className="flex-1 glass-morphism p-4 rounded-xl group-hover:shadow-neon transition-all duration-300">
-                <p className="text-gray-300">We create simple, user-friendly websites that help businesses connect with their customers.</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-4 group">
-              <div className="w-8 h-8 rounded-full bg-primary-500/10 flex items-center justify-center mt-1 ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
-                <i className="fas fa-code text-xs bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
-              </div>
-              <div className="flex-1 glass-morphism p-4 rounded-xl group-hover:shadow-neon transition-all duration-300">
-                <p className="text-gray-300">We apply the problem-solving skills we've learned in robotics to build effective digital solutions.</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-4 group">
-              <div className="w-8 h-8 rounded-full bg-primary-500/10 flex items-center justify-center mt-1 ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
-                <i className="fas fa-users text-xs bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
-              </div>
-              <div className="flex-1 glass-morphism p-4 rounded-xl group-hover:shadow-neon transition-all duration-300">
-                <p className="text-gray-300">A portion of our proceeds goes directly to supporting Team 7790 Baywatch Robotics.</p>
-              </div>
-            </div>
-          </div>
+
         </div>
         
         {/* Timeline Section */}

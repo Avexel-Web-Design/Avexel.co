@@ -79,7 +79,7 @@ const Services = () => {
             Services We Provide
           </h2>
           <p className="text-lg text-gray-300">
-            Professional web solutions crafted by passionate student developers, supporting the next generation of STEM leaders at FRC Team 7790
+            Professional web solutions crafted by passionate student developers, supporting the future of FRC Team 7790.
           </p>
         </div>
 
@@ -93,7 +93,7 @@ const Services = () => {
           <ServiceCard 
             icon="fa-paint-brush"
             title="Web Design"
-            description="Every pixel matters. We create distinctive, purpose-driven designs that align with your brand identity and business goals. Our approach combines modern aesthetics with intuitive navigation to keep your visitors engaged and coming back."
+            description="Every pixel matters. We create distinctive, purpose-driven designs that align with your brand identity and business goals. Our approach ensures that your website is meaningful to you and to your audience, ensuring commitment to what matters most to you."
           />
           
           <ServiceCard 
@@ -106,7 +106,7 @@ const Services = () => {
           <ServiceCard 
             icon="fa-tools"
             title="Website Maintenance"
-            description="Keep your digital presence running smoothly with our reliable maintenance services. We handle everything from security updates and performance optimization to content updates, letting you focus on what matters most - running your business."
+            description="Keep your digital presence running smoothly with our reliable maintenance services. We handle everything from security updates and performance optimization to content updates, letting you focus on what matters most."
           />
         </div>
         
@@ -156,7 +156,7 @@ const Services = () => {
           <div className="relative glass-morphism p-8 lg:p-12 rounded-xl border border-white/5">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                Empowering STEM Education
+                Empowering Innovation
               </h3>
               <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
                 Your partnership with us directly supports Baywatch Robotics (FRC Team 7790). Every project contributes to fostering innovation and developing future technology leaders through competitive robotics, helping cover essential costs for equipment, competition fees, and team development.
