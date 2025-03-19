@@ -67,7 +67,7 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 sm:w-10 sm:h-10 relative">
               <img 
-                src="/Logo-nobg-sm.png"
+                src="./Logo-nobg-sm.png"
                 alt="Logo" 
                 className="w-full h-full object-contain"
               />
