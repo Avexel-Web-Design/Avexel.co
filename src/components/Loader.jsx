@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import logo from '../assets/images/Logo-nobg-sm.png';
+// Use public directory reference for consistent loading
+// import logo from '../assets/images/Logo-nobg-sm.png';
 
 const Loader = () => {
   const [progress, setProgress] = useState(0);
@@ -52,8 +53,8 @@ const Loader = () => {
               <div className="absolute inset-0 rounded-full bg-gradient-radial from-primary-500/20 to-transparent blur-2xl animate-pulse-slow"></div>
             </div>
             <img 
-              src={logo}
-              alt="Logo"
+              src="/Logo-nobg-sm.png" 
+              alt="Avexel Logo" 
               className="relative w-24 h-24 mx-auto animate-float"
             />
           </div>
