@@ -24,7 +24,8 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         { from: 'src/sitemap.xml', to: '' },
-        { from: 'src/robots.txt', to: '' }
+        { from: 'src/robots.txt', to: '' },
+        { from: 'src/manifest.json', to: '' }
       ]
     })
   ],

@@ -1,4 +1,4 @@
-sUser-agent: *
+User-agent: *
 Allow: /
 
-Sitemap: https://www.avecxel.com/sitemap.xml
+Sitemap: https://www.avexel.com/sitemap.xml
