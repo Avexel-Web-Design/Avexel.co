@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   base: './',  // Changed from '/' to './' for relative paths
   build: {
-    outDir: 'build',
+    outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: true,
     emptyOutDir: true,
