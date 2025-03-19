@@ -9,13 +9,13 @@
       "type": "image/x-icon"
     },
     {
-      "src": "/assets/images/Logo-nobg-sm.png",
+      "src": "/Logo-nobg-sm.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "/assets/images/Logo.png",
+      "src": "/Logo.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
