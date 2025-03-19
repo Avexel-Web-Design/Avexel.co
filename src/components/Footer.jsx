@@ -1,7 +1,6 @@
 // src/components/Footer.jsx
 import React from 'react';
 import { HashLink } from 'react-router-hash-link';
-import logo from '../assets/images/Logo-nobg-sm.png';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -13,7 +12,7 @@ const Footer = () => {
           {/* Logo and Description */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <img src={logo} alt="Avexel" className="w-10 h-10" />
+              <img src="/Logo-nobg-sm.png" alt="Avexel" className="w-10 h-10" />
               <span className="text-xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
                 Avexel
               </span>
