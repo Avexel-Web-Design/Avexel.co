@@ -4,18 +4,18 @@
   "description": "Transform your online presence with innovative web design and development solutions.",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "./favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "Logo-nobg-sm.png",
+      "src": "./Logo-nobg-sm.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "Logo.png",
+      "src": "./Logo.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"

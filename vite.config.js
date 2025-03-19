@@ -13,9 +13,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name.endsWith('.woff2')) {
+          // Put font files in fonts directory
+          if (/\.(woff2?|ttf|eot|otf)$/.test(assetInfo.name)) {
             return 'fonts/[name][extname]';
           }
+          // Other assets go to assets directory with hash
           return 'assets/[name]-[hash][extname]';
         }
       }

@@ -88,7 +88,7 @@ const Navbar = () => {
                 <div className="relative w-10 h-10 transition-all duration-500 group-hover:scale-110">
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-500/30 to-secondary-500/30 animate-pulse-slow"></div>
                   <img 
-                    src="./Logo-nobg-sm.png" 
+                    src={process.env.PUBLIC_URL + '/Logo-nobg-sm.png'}
                     alt="" 
                     className="relative w-full h-full drop-shadow-glow" 
                   />
@@ -139,7 +139,7 @@ const Navbar = () => {
               >
                 <div className="relative w-8 h-8 transition-all duration-500 group-hover:scale-110">
                   <img 
-                    src="./Logo-nobg-sm.png" 
+                    src={process.env.PUBLIC_URL + '/Logo-nobg-sm.png'}
                     alt="" 
                     className="relative w-full h-full drop-shadow-glow" 
                   />

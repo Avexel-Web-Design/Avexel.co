@@ -53,7 +53,7 @@ const Loader = () => {
               <div className="absolute inset-0 rounded-full bg-gradient-radial from-primary-500/20 to-transparent blur-2xl animate-pulse-slow"></div>
             </div>
             <img 
-              src="./Logo-nobg-sm.png" 
+              src={process.env.PUBLIC_URL + '/Logo-nobg-sm.png'}
               alt="Avexel Logo" 
               className="relative w-24 h-24 mx-auto animate-float"
             />
