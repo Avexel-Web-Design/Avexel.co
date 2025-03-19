@@ -2,14 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
+    <!-- Fix favicon path for GitHub Pages by removing leading slash -->
+    <link rel="icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Portfolio website showcasing creative web development and design work" />
     <meta name="theme-color" content="#0f172a" />
-    <link rel="manifest" href="/manifest.json" />
+    <!-- Fix manifest path -->
+    <link rel="manifest" href="manifest.json" />
     
-    <!-- Preload critical assets -->
-    <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Fix preload path for font -->
+    <link rel="preload" href="fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin />
     
     <!-- Preconnect to external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -20,6 +22,7 @@
   <body class="bg-dark antialiased">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- Fix source file path -->
+    <script type="module" src="src/main.jsx"></script>
   </body>
 </html>
