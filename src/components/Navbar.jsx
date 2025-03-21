@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { HashLink } from 'react-router-hash-link';
 import MobileMenu from './MobileMenu';
-import logo from '../assets/images/Logo-nobg-sm.png';
+// Import the logo image
+import logoImage from '/Logo-nobg-sm.png';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -89,14 +90,11 @@ const Navbar = () => {
                 <div className="relative w-10 h-10 transition-all duration-500 group-hover:scale-110">
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-500/30 to-secondary-500/30 animate-pulse-slow"></div>
                   <img 
-                    src={logo} 
-                    alt="" 
+                    src={logoImage}
+                    alt="Avexel" 
                     className="relative w-full h-full drop-shadow-glow" 
                   />
                 </div>
-                <span className="text-lg font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                  Avexel
-                </span>
               </HashLink>
               
               <div className="ml-8 flex items-center gap-1 relative">
@@ -140,8 +138,8 @@ const Navbar = () => {
               >
                 <div className="relative w-8 h-8 transition-all duration-500 group-hover:scale-110">
                   <img 
-                    src={logo} 
-                    alt="" 
+                    src={logoImage}
+                    alt="Avexel" 
                     className="relative w-full h-full drop-shadow-glow" 
                   />
                 </div>

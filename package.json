@@ -23,7 +23,9 @@
         "dev": "vite",
         "start": "vite",
         "build": "vite build",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d dist"
     },
     "browserslist": {
         "production": [
@@ -37,6 +39,9 @@
             "last 1 safari version"
         ]
     },
-
-    "homepage": "https://avexel.co"
+    "homepage": "https://avexel.co",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/avexel-web-design/Portfolio.git"
+    }
 }

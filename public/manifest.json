@@ -4,24 +4,24 @@
   "description": "Transform your online presence with innovative web design and development solutions.",
   "icons": [
     {
-      "src": "/favicon.ico",
+      "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "/assets/images/Logo-nobg-sm.png",
+      "src": "Logo-nobg-sm.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "/assets/images/Logo.png",
+      "src": "Logo.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
     }
   ],
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "theme_color": "#121212",
   "background_color": "#121212",
@@ -29,7 +29,7 @@
   "categories": ["business", "productivity", "web development"],
   "screenshots": [
     {
-      "src": "./screenshots/desktop.png",
+      "src": "screenshots/desktop.png",
       "sizes": "1920x1080",
       "type": "image/png",
       "platform": "wide",
@@ -39,14 +39,14 @@
   "shortcuts": [
     {
       "name": "Contact Us",
-      "url": "./#contact",
+      "url": "#contact",
       "description": "Quickly reach out to our team"
     },
     {
       "name": "Portfolio",
-      "url": "./#work",
+      "url": "#work",
       "description": "View our latest work"
     }
   ],
-  "scope": "/"
+  "scope": "./"
 }

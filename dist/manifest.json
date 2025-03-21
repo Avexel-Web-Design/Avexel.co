@@ -9,13 +9,13 @@
       "type": "image/x-icon"
     },
     {
-      "src": "./src/assets/images/Logo-nobg-sm.png",
+      "src": "Logo-nobg-sm.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "./src/assets/images/Logo.png",
+      "src": "Logo.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
@@ -29,7 +29,7 @@
   "categories": ["business", "productivity", "web development"],
   "screenshots": [
     {
-      "src": "./screenshots/desktop.png",
+      "src": "screenshots/desktop.png",
       "sizes": "1920x1080",
       "type": "image/png",
       "platform": "wide",
@@ -39,13 +39,14 @@
   "shortcuts": [
     {
       "name": "Contact Us",
-      "url": "./#contact",
+      "url": "#contact",
       "description": "Quickly reach out to our team"
     },
     {
       "name": "Portfolio",
-      "url": "./#work",
+      "url": "#work",
       "description": "View our latest work"
     }
-  ]
+  ],
+  "scope": "./"
 }

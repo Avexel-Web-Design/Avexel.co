@@ -2,26 +2,29 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Avexel - Page Redirect</title>
-  <script type="text/javascript">
+  <title>Avexel - Creative Digital Experiences</title>
+  <!-- Fix favicon links for GitHub Pages -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="favicon.ico">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
     // Single Page Apps for GitHub Pages
-    // MIT License
-    // https://github.com/rafgraph/spa-github-pages
-    var pathSegmentsToKeep = 0; // Changed to 0 for custom domain
+    // MIT License: https://github.com/rafgraph/spa-github-pages
+    var pathSegmentsToKeep = 0;
 
     var l = window.location;
-    var segmentCount = l.pathname.split('/').length;
-    var redirectTo = l.protocol + '//' + l.hostname + 
-      (l.port ? ':' + l.port : '') +
+    l.replace(
+      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
       l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
       l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
       (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-      l.hash;
-    
-    window.location.replace(redirectTo);
+      l.hash
+    );
   </script>
 </head>
 <body>
-  Redirecting...
+  Redirecting to the homepage...
 </body>
 </html>

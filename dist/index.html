@@ -2,45 +2,57 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" href="./favicon.ico" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#121212" />
-  <meta name="description" content="Avexel - Creating exceptional digital experiences through innovative web design and development. Transform your online presence with our creative solutions." />
+  <meta name="description" content="Avexel - Creating websites and digital experiences that make a difference by contributing to the things that matter." />
   
   <!-- Open Graph / Social Media Meta Tags -->
-  <meta property="og:title" content="Avexel - Creative Digital Experiences" />
+  <meta property="og:title" content="Avexel - Websites that Matter" />
   <meta property="og:description" content="Transform your online presence with innovative web design and development solutions." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://avexel.co" />
-  <meta property="og:image" content="./src/assets/images/Logo.png" />
+  <meta property="og:image" content="Logo.png" />
   
   <!-- Preload Critical Assets -->
-  <link rel="preload" href="./fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
   
-  <link rel="manifest" href="./manifest.json" />
+  <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   
-  <title>Avexel - Creative Digital Experiences</title>
+  <!-- GitHub Pages SPA routing fix -->
   <script type="text/javascript">
     // Single Page Apps for GitHub Pages
+    // MIT License: https://github.com/rafgraph/spa-github-pages
     (function(l) {
       if (l.search[1] === '/' ) {
         var decoded = l.search.slice(1).split('&').map(function(s) { 
           return s.replace(/~and~/g, '&')
         }).join('?');
         window.history.replaceState(null, null,
-            l.pathname.slice(0, -1) + decoded + l.hash
+            l.pathname + decoded + l.hash
         );
       }
     }(window.location))
   </script>
-  <script type="module" crossorigin src="/assets/index-B6SwZTxe.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-C3Iji-iD.css">
+  
+  <!-- React DevTools -->
+  <script>
+    if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined') {
+      window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = { isDisabled: true };
+    }
+  </script>
+  
+  <title>Avexel - Websites that Matter</title>
+  <script type="module" crossorigin src="./assets/index-BminIQgZ.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Cxizu80o.css">
 </head>
 <body class="bg-dark antialiased">
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+  <div id="root"></div>
 </body>
 </html>

@@ -1,26 +1,39 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: './',
+  base: './', // Relative paths for GitHub Pages
+  publicDir: 'public', // Explicitly set the public directory
   build: {
-    outDir: 'build',
+    outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: true,
     emptyOutDir: true,
     rollupOptions: {
       output: {
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name.endsWith('.woff2')) {
+          // Put font files in fonts directory
+          if (/\.(woff2?|ttf|eot|otf)$/.test(assetInfo.name)) {
             return 'fonts/[name][extname]';
           }
+          // Other assets go to assets directory with hash
           return 'assets/[name]-[hash][extname]';
-        }
+        },
+        // Move fonts to the fonts directory
+        manualChunks: undefined
       }
     }
   },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'), // Add path alias for easier imports
+    }
+  },
+  // Copy fonts from public to dist during build
+  assetsInclude: ['**/*.woff2'],
   server: {
     headers: {
       'Access-Control-Allow-Origin': '*',
