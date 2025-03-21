@@ -47,7 +47,7 @@ const Navbar = () => {
       setScrolled(currentScroll > 50);
       
       // Determine active section based on scroll position
-      const sections = ['home', 'capabilities', 'about', 'services', 'work', 'contact'];
+      const sections = ['home', 'services', 'about', 'capabilities', 'work', 'contact'];
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i]);
         if (section && window.scrollY >= section.offsetTop - 200) {
@@ -109,7 +109,7 @@ const Navbar = () => {
                 />
                 
                 {/* Tab links */}
-                {['home', 'capabilities', 'about', 'services', 'work', 'contact'].map((tab) => (
+                {['home', 'services', 'about', 'capabilities', 'work', 'contact'].map((tab) => (
                   <TabLink
                     key={tab}
                     to={tab === 'home' ? '#' : `#${tab}`}
