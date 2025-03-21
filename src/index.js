@@ -2,4 +2,4 @@
 // The main entry point is now main.jsx
 
 // Simply re-export everything from main.jsx
-import './main.jsx';
+import "./main.jsx";
