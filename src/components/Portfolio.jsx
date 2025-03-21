@@ -239,7 +239,7 @@ const Portfolio = () => {
         </div>
 
         <div className="grid gap-12 reveal">
-          .
+          
           <ProjectCard
             title="FRC Team 7790 Website"
             description="An interactive website for Baywatch Robotics showcasing our team, robot designs, competition history, and STEM outreach programs. Features include a team member directory, sponsorship information, and resources for aspiring robotics enthusiasts."
