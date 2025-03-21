@@ -34,9 +34,9 @@ function HomePage() {
             <div className="text-xl text-white/70">Loading Avexel...</div>
           </div>}>
             <Hero />
-            <Capabilities />
-            <About />
             <Services />
+            <About />
+            <Capabilities />
             <Portfolio />
             <Contact />
           </Suspense>
