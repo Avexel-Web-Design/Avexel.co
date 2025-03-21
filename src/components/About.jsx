@@ -69,10 +69,10 @@ const About = () => {
                 Our Story
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                Created from the innovation of FRC Team 7790, we bridge the gap between robotics and web development. Our journey began with a simple idea: to transform our coding passion into meaningful projects while providing a means of support for our robotics program.
+                Avexel represents the intersection of competitive robotics and professional web development. What began as a vision to channel our technical expertise into meaningful digital solutions has evolved into something greater.
               </p>
               <p className="text-gray-400 leading-relaxed mt-4">
-                Today, we're proud to offer professional web development services that not only meet our clients' needs but also fuel the next generation of STEM leaders, and support something meaningful.
+                Today, we blend our engineering mindset with creative design to deliver websites that truly perform. Each project we complete not only serves our clients but also helps sustain the STEM education around us.
               </p>
             </div>
 
@@ -81,10 +81,10 @@ const About = () => {
                 Our Mission
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                We're committed to delivering exceptional web solutions while supporting the future. Each project we undertake serves a dual purpose: providing value to our clients and supporting our robotics team's growth and development.
+                We're dedicated to crafting exceptional digital experiences with purpose. Every line of code we write serves two essential goals: delivering outstanding value to our clients and supporting the next generation of technology innovators.
               </p>
               <p className="text-gray-400 leading-relaxed mt-4">
-                By choosing us, you're not just getting a website – you're investing in the future.
+                When you partner with Avexel, you're not just launching a website—you're helping fuel technological education and innovation that extends far beyond your project.
               </p>
             </div>
           </div>
