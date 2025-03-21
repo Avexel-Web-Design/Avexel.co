@@ -25,7 +25,7 @@ const Hero = () => {
           </h1>
           
           <p className="text-base xs:text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-10 max-w-3xl mx-auto">
-            Student developers creating modern web solutions while powering the next generation of STEM innovation through FRC Team 7790.
+            Student developers creating modern web solutions while powering the next generation of STEM innovation through FIRST® Robotics Team 7790.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
