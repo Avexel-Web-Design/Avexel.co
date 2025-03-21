@@ -130,7 +130,7 @@ const About = () => {
         
         {/* Team Section */}
         <div className="mb-16 reveal">
-          <h3 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Our Team</h3>
+          <h3 className="text-3xl mt-5 font-bold mb-8 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">Our Team</h3>
           <div className="grid md:grid-cols-3 gap-8">
             <TeamMemberCard 
               name="Ryan Latimer"
@@ -150,16 +150,6 @@ const About = () => {
               description="Design team member bringing creative vision to both robot design and digital interfaces. Focused on creating accessible, visually engaging web experiences."
             />
           </div>
-        </div>
-        
-        {/* Origin Story Section - Fixed */}
-        <div className="max-w-3xl mx-auto text-center mb-12 reveal">
-          <h3 className="text-3xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            Our Origin Story
-          </h3>
-          <p className="text-lg text-gray-300 leading-relaxed mb-8">
-            We started Avexel as a student initiative from Baywatch Robotics (FRC Team 7790), based in Harbor Springs, Michigan. Our team competes in the FIRST Robotics Competition, where we design, build, and program robots for international competitions. To support our robotics endeavors and apply our technical skills, we're now creating professional websites for local businesses.
-          </p>
         </div>
         
         {/* Timeline Section - Reverted to original */}
