@@ -199,6 +199,10 @@ const Portfolio = () => {
           <a
             href="#contact"
             className="inline-block px-10 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300 shadow-primary-500/10"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+            }}
           >
             Start Your Project
           </a>
