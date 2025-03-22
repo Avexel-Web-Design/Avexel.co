@@ -35,6 +35,14 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
     closeMenu();
   };
 
+  // Add a console log to verify when closeMenu is called
+  const handleCloseMenu = (e) => {
+    // Stop propagation to prevent conflicts with backdrop click
+    if (e) e.stopPropagation();
+    console.log("Closing menu");
+    closeMenu();
+  };
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -64,22 +72,33 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
           exit={{ opacity: 0 }}
         >
           {/* Backdrop with blur and gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-black/95 to-gray-900/90 backdrop-blur-lg" />
+          <div 
+            className="absolute inset-0 bg-gradient-to-br from-black/95 to-gray-900/90 backdrop-blur-lg" 
+            onClick={handleCloseMenu} // Allow clicking backdrop to close menu
+          />
           
           {/* Decorative elements */}
           <div className="absolute top-20 left-10 w-32 h-32 bg-primary-500/20 rounded-full blur-3xl" />
           <div className="absolute bottom-20 right-10 w-40 h-40 bg-secondary-500/20 rounded-full blur-3xl" />
           
-          {/* Close button */}
+          {/* Enhanced Close button */}
           <motion.button
-            onClick={closeMenu}
-            className="absolute top-6 right-6 text-white w-10 h-10 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all z-10"
+            onClick={handleCloseMenu}
+            className="absolute top-6 right-6 text-white w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all z-50 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-opacity-50"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             aria-label="Close menu"
+            title="Close menu"
           >
             <i className="fas fa-times text-xl"></i>
           </motion.button>
+          
+          {/* Close overlay - adds another way to close the menu by clicking anywhere */}
+          <div 
+            className="absolute inset-0 z-0"
+            onClick={handleCloseMenu}
+            aria-hidden="true"
+          ></div>
           
           <div className="h-full flex flex-col items-center justify-center p-8 relative z-10">
             <motion.nav 
