@@ -45,6 +45,17 @@ const glowingBorderStyles = `
     filter: blur(0.5rem);
     opacity: 0.5;
   }
+  
+  /* Glass morphism styling - without glowing borders */
+  .glass-morphism {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.75);
+  }
+  
+  .glass-morphism > div {
+    position: relative;
+    z-index: 1;
+  }
 `;
 
 const ServiceCard = ({ icon, title, description, comingSoon = false }) => {
