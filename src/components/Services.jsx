@@ -1,56 +1,115 @@
 import React from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
 
+// Updated glowing border with positioning fixes and reduced blur
+const glowingBorderStyles = `
+  @property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes spin {
+    from {
+      --angle: 0deg;
+    }
+    to {
+      --angle: 360deg;
+    }
+  }
+
+  .service-card {
+    position: relative;
+  }
+
+  .service-card::after, 
+  .service-card::before {
+    content: '';
+    position: absolute;
+    height: calc(100% + 6px);
+    width: calc(100% + 6px);
+    background-image: conic-gradient(from var(--angle), 
+      #1902a4, /* blue-500 */
+      #ba60dc, /* indigo-600 */
+      #1902a4  /* blue-500 */
+    );
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    border-radius: 12px;
+    animation: 3s spin linear infinite;
+  }
+
+  .service-card::before {
+    filter: blur(0.5rem);
+    opacity: 0.5;
+  }
+  
+  /* Glass morphism styling - without glowing borders */
+  .glass-morphism {
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.75);
+  }
+  
+  .glass-morphism > div {
+    position: relative;
+    z-index: 1;
+  }
+`;
+
 const ServiceCard = ({ icon, title, description, comingSoon = false }) => {
   return (
-    <div className="group relative">
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
-      <div className="relative flex flex-col h-full bg-dark backdrop-blur-sm p-8 rounded-xl border border-white/5 transition-all duration-500 group-hover:translate-y-[-2px]">
-        <div className="mb-6 relative">
-          <div className="absolute inset-0 bg-gradient-radial from-primary-500/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 animate-pulse-slow transition-opacity duration-300"></div>
-          <div className="relative w-16 h-16 rounded-xl bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
-            <i
-              className={`fas ${icon} text-3xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent`}
-            ></i>
+    <>
+      <style dangerouslySetInnerHTML={{ __html: glowingBorderStyles }} />
+      <div className="group relative service-card">
+        <div className="relative flex flex-col h-full bg-dark backdrop-blur-sm p-8 rounded-xl border border-white/5 transition-colors duration-300">
+          <div className="mb-6 relative">
+            <div className="absolute inset-0 bg-gradient-radial from-primary-500/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 animate-pulse-slow transition-opacity duration-300"></div>
+            <div className="relative w-16 h-16 rounded-xl bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
+              <i
+                className={`fas ${icon} text-3xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent`}
+              ></i>
+            </div>
           </div>
-        </div>
 
-        <div className="flex-grow">
-          <div className="flex items-center gap-3 mb-4">
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-              {title}
-            </h3>
-            {comingSoon && (
-              <span className="px-2.5 py-0.5 text-xs font-semibold bg-secondary-500/10 text-secondary-400 rounded-full border border-secondary-500/20">
-                Coming Soon
-              </span>
-            )}
+          <div className="flex-grow">
+            <div className="flex items-center gap-3 mb-4">
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+                {title}
+              </h3>
+              {comingSoon && (
+                <span className="px-2.5 py-0.5 text-xs font-semibold bg-secondary-500/10 text-secondary-400 rounded-full border border-secondary-500/20">
+                  Coming Soon
+                </span>
+              )}
+            </div>
+            <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+              {description}
+            </p>
           </div>
-          <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
-            {description}
-          </p>
-        </div>
 
-        <div className="mt-6 pt-6 border-t border-white/5">
-          <div className="flex items-center text-primary-400 group-hover:text-primary-300 transition-colors duration-300">
-            <span className="mr-2 font-medium">Learn more</span>
-            <svg
-              className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <path
-                d="M13 5L20 12M20 12L13 19M20 12H4"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          <div className="mt-6 pt-6 border-t border-white/5">
+            <div className="flex items-center text-primary-400 group-hover:text-primary-300 transition-colors duration-300">
+              <span className="mr-2 font-medium">Learn more</span>
+              <svg
+                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M13 5L20 12M20 12L13 19M20 12H4"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

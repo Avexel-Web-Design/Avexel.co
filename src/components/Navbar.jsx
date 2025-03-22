@@ -151,8 +151,11 @@ const Navbar = () => {
               <HashLink
                 smooth
                 to="#"
-                className="flex items-center space-x-2 group"
-                onClick={closeMenu}
+                className="flex items-center space-x-2 group w-full justify-center"
+                onClick={() => {
+                  setMenuOpen(!menuOpen);
+                  document.body.style.overflow = !menuOpen ? "hidden" : "";
+                }}
               >
                 <div className="relative w-8 h-8 transition-all duration-500 group-hover:scale-110">
                   <img
@@ -166,35 +169,7 @@ const Navbar = () => {
                 </span>
               </HashLink>
 
-              {/* Mobile Menu Button */}
-              <button
-                className="relative w-10 h-10 focus:outline-none group"
-                onClick={() => {
-                  setMenuOpen(!menuOpen);
-                  document.body.style.overflow = !menuOpen ? "hidden" : "";
-                }}
-                aria-label="Toggle menu"
-              >
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-5">
-                  <span
-                    className={`absolute w-6 h-0.5 bg-gradient-to-r from-primary-400 to-secondary-400 transform transition-all duration-300 ${
-                      menuOpen ? "top-2 -rotate-45" : "top-0"
-                    }`}
-                  ></span>
-                  <span
-                    className={`absolute w-6 h-0.5 bg-white top-2 transition-all duration-300 ${
-                      menuOpen
-                        ? "opacity-0 scale-x-0"
-                        : "opacity-100 scale-x-100"
-                    }`}
-                  ></span>
-                  <span
-                    className={`absolute w-6 h-0.5 bg-gradient-to-r from-secondary-400 to-primary-400 transform transition-all duration-300 ${
-                      menuOpen ? "top-2 rotate-45" : "top-4"
-                    }`}
-                  ></span>
-                </div>
-              </button>
+              {/* Removed hamburger button */}
             </div>
           </div>
         </div>
