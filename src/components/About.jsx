@@ -65,9 +65,9 @@ const About = () => {
               Student Developers. Real Solutions.
             </h2>
             <p className="text-lg text-gray-300">
-              We're more than just a web development team – we're students
+              We're more than just a web development team – we're Harbor Springs High School students
               passionate about technology and innovation, putting our skills to
-              work while supporting innovation.
+              work while supporting STEM education in Northern Michigan.
             </p>
           </div>
 
@@ -195,8 +195,8 @@ const About = () => {
             />
             <TimelineItem
               year="Present"
-              title="Exapnsion"
-              description="We are continuing to expand our robotits teams website, our business, and our impact to meaningful ideas."
+              title="Expansion"
+              description="We are continuing to expand our robotics teams website, our business, and our impact to meaningful ideas."
             />
           </div>
         </div>

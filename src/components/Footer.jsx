@@ -20,8 +20,8 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-gray-400 max-w-md">
-              A student-led initiative by FRC Team 7790 members creating
-              websites to fund our robotics activities while helping local
+              A Harbor Springs student-led initiative by FRC Team 7790 members creating
+              websites to fund our robotics activities while helping Northern Michigan
               businesses build their online presence.
             </p>
           </div>
@@ -86,7 +86,7 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <i className="fas fa-map-marker-alt text-primary-400 mt-1"></i>
                 <span className="text-gray-400">
-                  Harbor Springs High School, Michigan
+                  Harbor Springs High School, 327 E Bluff Dr, Harbor Springs, MI 49740
                 </span>
               </li>
               <li>
@@ -114,7 +114,7 @@ const Footer = () => {
             </div>
             <div className="flex items-center gap-4 text-sm">
               <span className="text-gray-500">Created by</span>
-              <span className="text-primary-400">FRC Team 7790</span>
+              <span className="text-primary-400">Harbor Springs FRC Team 7790</span>
               <span className="text-gray-500">students</span>
             </div>
           </div>

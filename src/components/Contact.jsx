@@ -91,8 +91,8 @@ const Contact = () => {
               Let's Build Something Amazing
             </h2>
             <p className="text-lg text-gray-300">
-              Ready to elevate your online presence? We're here to help turn
-              your vision into reality while supporting STEM.
+              Ready to elevate your online presence with a local Harbor Springs team? We're here to help turn
+              your vision into reality while supporting STEM education in Northern Michigan.
             </p>
           </div>
 
@@ -139,7 +139,7 @@ const Contact = () => {
               </h3>
               <p className="text-gray-300 mb-6">
                 Have questions or ready to start? Drop us a message, and we'll
-                get back to you within 24 hours. We're excited to learn about
+                get back to you within 24 hours. Our Harbor Springs student team is excited to learn about
                 your project!
               </p>
               <div className="space-y-4">

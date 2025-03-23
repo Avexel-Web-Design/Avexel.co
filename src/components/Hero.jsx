@@ -28,7 +28,7 @@ const Hero = () => {
           </h1>
 
           <p className="text-base xs:text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-10 max-w-3xl mx-auto">
-            Student developers creating modern web solutions while powering the
+            Harbor Springs student developers creating websites while powering the
             next generation of STEM innovation through FIRST® Robotics Team
             7790.
           </p>
