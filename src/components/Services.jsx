@@ -162,7 +162,7 @@ const Services = () => {
           </h2>
           <p className="text-lg text-gray-300">
             Professional web solutions crafted by passionate student developers,
-            supporting the future of FRC Team 7790.
+            supporting the future of FIRST Robotics Team 7790.
           </p>
         </div>
 
