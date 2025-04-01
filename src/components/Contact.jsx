@@ -37,6 +37,7 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
+  const [formStatus, setFormStatus] = useState({ show: false, message: "", isError: false });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,16 +51,43 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const formElement = e.target;
+    const formData = new FormData(formElement);
+    
     try {
-      // Here you would typically send the form data to your backend
-      // For now, let's just simulate a submission
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      alert("Thank you for your message! We will get back to you soon.");
-      setFormData({ name: "", email: "", message: "" });
+      const response = await fetch("https://formsubmit.co/contact@avexel.com", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        },
+      });
+      
+      if (response.ok) {
+        setFormStatus({
+          show: true,
+          message: "Thank you for your message! We will get back to you soon.",
+          isError: false
+        });
+        formElement.reset();
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        throw new Error("Form submission failed");
+      }
     } catch (error) {
-      alert("There was an error sending your message. Please try again.");
+      console.error("Error submitting form:", error);
+      setFormStatus({
+        show: true,
+        message: "There was an error sending your message. Please try again.",
+        isError: true
+      });
     } finally {
       setIsSubmitting(false);
+      
+      // Hide the status message after 5 seconds
+      setTimeout(() => {
+        setFormStatus(prev => ({ ...prev, show: false }));
+      }, 5000);
     }
   };
 
@@ -172,7 +200,13 @@ const Contact = () => {
           <form
             className="glass-morphism p-8 rounded-xl border border-white/5 reveal"
             onSubmit={handleSubmit}
+            method="POST"
           >
+            <input type="hidden" name="_subject" value="New contact from Avexel website!" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_template" value="box" />
+            <input type="hidden" name="_next" value={window.location.href} />
+            
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div>
                 <label
@@ -238,6 +272,12 @@ const Contact = () => {
             >
               {isSubmitting ? "Sending..." : "Send Message"}
             </button>
+            
+            {formStatus.show && (
+              <div className={`mt-4 p-3 rounded-lg ${formStatus.isError ? 'bg-red-500/20 text-red-200' : 'bg-green-500/20 text-green-200'}`}>
+                {formStatus.message}
+              </div>
+            )}
           </form>
         </div>
       </div>
