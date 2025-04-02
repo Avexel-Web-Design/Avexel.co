@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
 import Monogram from "./Monogram";
+import { useForm, ValidationError } from '@formspree/react';
 
 const ContactInfo = ({ icon, title, content }) => (
   <div className="flex items-start gap-4 group">
@@ -30,67 +31,11 @@ const FormInput = ({ type = "text", name, placeholder, required = false }) => (
 
 const Contact = () => {
   useScrollReveal();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
-  const [formStatus, setFormStatus] = useState({ show: false, message: "", isError: false });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    const formElement = e.target;
-    const formData = new FormData(formElement);
-    
-    try {
-      const response = await fetch("https://formsubmit.co/contact@avexel.com", {
-        method: "POST",
-        body: formData,
-        headers: {
-          'Accept': 'application/json'
-        },
-      });
-      
-      if (response.ok) {
-        setFormStatus({
-          show: true,
-          message: "Thank you for your message! We will get back to you soon.",
-          isError: false
-        });
-        formElement.reset();
-        setFormData({ name: "", email: "", message: "" });
-      } else {
-        throw new Error("Form submission failed");
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setFormStatus({
-        show: true,
-        message: "There was an error sending your message. Please try again.",
-        isError: true
-      });
-    } finally {
-      setIsSubmitting(false);
-      
-      // Hide the status message after 5 seconds
-      setTimeout(() => {
-        setFormStatus(prev => ({ ...prev, show: false }));
-      }, 5000);
-    }
-  };
-
+  
+  // Use Formspree's useForm hook with your form ID
+  const [state, handleSubmit] = useForm("xvgkwonw");
+  
   const handleEmailClick = (e) => {
     e.preventDefault();
     const email = "contact@avexel.com";
@@ -200,13 +145,7 @@ const Contact = () => {
           <form
             className="glass-morphism p-8 rounded-xl border border-white/5 reveal"
             onSubmit={handleSubmit}
-            method="POST"
           >
-            <input type="hidden" name="_subject" value="New contact from Avexel website!" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_template" value="box" />
-            <input type="hidden" name="_next" value={window.location.href} />
-            
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div>
                 <label
@@ -219,11 +158,15 @@ const Contact = () => {
                   type="text"
                   id="name"
                   name="name"
-                  value={formData.name}
-                  onChange={handleChange}
                   className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors"
                   placeholder="Your name"
                   required
+                />
+                <ValidationError 
+                  prefix="Name" 
+                  field="name"
+                  errors={state.errors}
+                  className="text-red-400 text-sm mt-1"
                 />
               </div>
               <div>
@@ -237,11 +180,15 @@ const Contact = () => {
                   type="email"
                   id="email"
                   name="email"
-                  value={formData.email}
-                  onChange={handleChange}
                   className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors"
                   placeholder="your@email.com"
                   required
+                />
+                <ValidationError 
+                  prefix="Email" 
+                  field="email"
+                  errors={state.errors}
+                  className="text-red-400 text-sm mt-1"
                 />
               </div>
             </div>
@@ -256,28 +203,37 @@ const Contact = () => {
               <textarea
                 id="message"
                 name="message"
-                value={formData.message}
-                onChange={handleChange}
                 rows="4"
                 className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors"
                 placeholder="Tell us about your project..."
                 required
               ></textarea>
+              <ValidationError 
+                prefix="Message" 
+                field="message"
+                errors={state.errors}
+                className="text-red-400 text-sm mt-1"
+              />
             </div>
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={state.submitting}
               className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Sending..." : "Send Message"}
+              {state.submitting ? "Sending..." : "Send Message"}
             </button>
             
-            {formStatus.show && (
-              <div className={`mt-4 p-3 rounded-lg ${formStatus.isError ? 'bg-red-500/20 text-red-200' : 'bg-green-500/20 text-green-200'}`}>
-                {formStatus.message}
+            {state.succeeded && (
+              <div className="mt-4 p-3 rounded-lg bg-green-500/20 text-green-200">
+                Thank you for your message! We will get back to you soon.
               </div>
             )}
+            
+            <ValidationError 
+              errors={state.errors}
+              className="mt-4 p-3 rounded-lg bg-red-500/20 text-red-200"
+            />
           </form>
         </div>
       </div>
