@@ -84,6 +84,15 @@ const Footer = () => {
                 </a>
               </li>
               <li className="flex items-start gap-3">
+                <i className="fas fa-phone-alt text-primary-400 mt-1"></i>
+                <a
+                  href="tel:+12313738360"
+                  className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
+                >
+                  +1 (231) 373-8360
+                </a>
+              </li>
+              <li className="flex items-start gap-3">
                 <i className="fas fa-map-marker-alt text-primary-400 mt-1"></i>
                 <span className="text-gray-400">
                   Harbor Springs High School, 327 E Bluff Dr, Harbor Springs, MI 49740
