@@ -7,7 +7,7 @@
   font-weight: 100 900;
   font-display: swap;
   font-style: normal;
-  src: url("./fonts/inter-var.woff2") format("woff2");
+  src: url("/fonts/inter-var.woff2") format("woff2");
 }
 
 /* Reset default styles */
@@ -84,8 +84,8 @@
   font-family: "Inter";
   font-style: normal;
   font-weight: 100 900;
-  font-display: optional;
-  src: url("./fonts/inter-var.woff2") format("woff2");
+  font-display: swap;
+  src: url("/fonts/inter-var.woff2") format("woff2");
 }
 
 /* Animation classes for Hero section */
