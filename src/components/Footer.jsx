@@ -1,8 +1,8 @@
 // src/components/Footer.jsx
-import React from 'react';
-import { HashLink } from 'react-router-hash-link';
+import React from "react";
+import { HashLink } from "react-router-hash-link";
 // Import the logo image
-import logoImage from '/Logo-nobg-sm.png';
+import logoImage from "/Logo-nobg-sm.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -20,7 +20,9 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-gray-400 max-w-md">
-              A student-led initiative by FRC Team 7790 members creating websites to fund our robotics activities while helping local businesses build their online presence.
+              A Harbor Springs student-led initiative by FRC Team 7790 members creating
+              websites to fund our robotics activities while helping Northern Michigan
+              businesses build their online presence.
             </p>
           </div>
 
@@ -29,27 +31,27 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-white">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <HashLink 
-                  smooth 
-                  to="#about" 
+                <HashLink
+                  smooth
+                  to="#about"
                   className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
                 >
                   Our Team
                 </HashLink>
               </li>
               <li>
-                <HashLink 
-                  smooth 
-                  to="#services" 
+                <HashLink
+                  smooth
+                  to="#services"
                   className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
                 >
                   Services
                 </HashLink>
               </li>
               <li>
-                <HashLink 
-                  smooth 
-                  to="#work" 
+                <HashLink
+                  smooth
+                  to="#work"
                   className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
                 >
                   Projects
@@ -74,27 +76,39 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <i className="fas fa-envelope-open text-primary-400 mt-1"></i>
-                <a href="mailto:contact@avexel.co" className="text-gray-400 hover:text-primary-400 transition-colors duration-300">
+                <a
+                  href="mailto:contact@avexel.co"
+                  className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
+                >
                   contact@avexel.co
+                </a>
+              </li>
+              <li className="flex items-start gap-3">
+                <i className="fas fa-phone-alt text-primary-400 mt-1"></i>
+                <a
+                  href="tel:+12313738360"
+                  className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
+                >
+                  +1 (231) 373-8360
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <i className="fas fa-map-marker-alt text-primary-400 mt-1"></i>
                 <span className="text-gray-400">
-                  Harbor Springs High School, Michigan
+                  Harbor Springs High School, 327 E Bluff Dr, Harbor Springs, MI 49740
                 </span>
               </li>
               <li>
                 <div className="flex items-center gap-4 pt-2">
-                  <a 
-                    href="https://github.com/avexel-web-design" 
-                    target="_blank" 
+                  <a
+                    href="https://github.com/avexel-web-design"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-400 hover:text-primary-400 transition-colors duration-300"
                     aria-label="GitHub"
                   >
                     <i className="fab fa-github text-xl"></i>
-                  </a>     
+                  </a>
                 </div>
               </li>
             </ul>
@@ -109,9 +123,7 @@ const Footer = () => {
             </div>
             <div className="flex items-center gap-4 text-sm">
               <span className="text-gray-500">Created by</span>
-              <span className="text-primary-400">
-                FRC Team 7790
-              </span>
+              <span className="text-primary-400">Harbor Springs FRC Team 7790</span>
               <span className="text-gray-500">students</span>
             </div>
           </div>

@@ -1,19 +1,22 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
 const useIntersectionObserver = (options = {}) => {
   const targetRef = useRef(null);
-  
+
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('animate-in');
-        observer.unobserve(entry.target);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animate-in");
+          observer.unobserve(entry.target);
+        }
+      },
+      {
+        threshold: options.threshold || 0.1,
+        rootMargin: options.rootMargin || "0px",
+        ...options,
       }
-    }, {
-      threshold: options.threshold || 0.1,
-      rootMargin: options.rootMargin || '0px',
-      ...options
-    });
+    );
 
     const current = targetRef.current;
     if (current) {
@@ -28,6 +31,6 @@ const useIntersectionObserver = (options = {}) => {
   }, [options.threshold, options.rootMargin]);
 
   return targetRef;
-}
+};
 
 export default useIntersectionObserver;

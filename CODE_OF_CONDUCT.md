@@ -50,6 +50,7 @@ This Code of Conduct applies to:
 Report violations to: conduct@avexel.co
 
 All reports will be:
+
 - Reviewed promptly
 - Kept confidential
 - Investigated thoroughly
@@ -60,15 +61,18 @@ All reports will be:
 Project maintainers will follow these Community Impact Guidelines:
 
 1. **Correction**
+
    - First-time incidents
    - Private, written warning
 
 2. **Warning**
+
    - Second incidents
    - Public warning
    - Specified behavior changes
 
 3. **Temporary Ban**
+
    - Serious violations
    - Temporary ban from interaction
    - Clear conditions for return
