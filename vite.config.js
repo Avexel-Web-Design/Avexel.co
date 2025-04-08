@@ -25,7 +25,8 @@ export default defineConfig({
         // Move fonts to the fonts directory
         manualChunks: undefined
       }
-    }
+    },
+    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.svg'],
   },
   resolve: {
     alias: {
