@@ -1,14 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@font-face {
-  font-family: "Inter var";
-  font-weight: 100 900;
-  font-display: swap;
-  font-style: normal;
-  src: url("./fonts/inter-var.woff2") format("woff2");
-}
 
 /* Reset default styles */
 * {
@@ -23,7 +17,7 @@
   }
 
   body {
-    font-family: "Inter var", system-ui, -apple-system, BlinkMacSystemFont,
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
       "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -77,15 +71,6 @@
   .container {
     @apply max-w-[1280px] mx-auto;
   }
-}
-
-/* Font optimization for performance */
-@font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: optional;
-  src: url("./fonts/inter-var.woff2") format("woff2");
 }
 
 /* Animation classes for Hero section */

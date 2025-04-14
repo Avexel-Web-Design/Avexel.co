@@ -15,7 +15,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         assetFileNames: (assetInfo) => {
-          // Put font files in fonts directory
+          // Preserve original font path structure
           if (/\.(woff2?|ttf|eot|otf)$/.test(assetInfo.name)) {
             return 'fonts/[name][extname]';
           }
@@ -25,15 +25,14 @@ export default defineConfig({
         // Move fonts to the fonts directory
         manualChunks: undefined
       }
-    }
+    },
+    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.svg'],
   },
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'), // Add path alias for easier imports
     }
   },
-  // Copy fonts from public to dist during build
-  assetsInclude: ['**/*.woff2'],
   server: {
     headers: {
       'Access-Control-Allow-Origin': '*',
