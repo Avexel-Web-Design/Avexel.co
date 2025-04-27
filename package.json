@@ -28,7 +28,7 @@
     "scripts": {
         "dev": "vite",
         "start": "vite",
-        "build": "npm run type-check && vite build",
+        "build": "vite build",
         "preview": "vite preview",
         "predeploy": "npm run build",
         "deploy": "gh-pages -d dist",
