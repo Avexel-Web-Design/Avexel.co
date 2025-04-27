@@ -28,9 +28,9 @@ const Hero = () => {
           </h1>
 
           <p className="text-base xs:text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-10 max-w-3xl mx-auto">
-            Harbor Springs student developers creating websites while powering the
-            next generation of STEM innovation through FIRST® Robotics Competition Team
-            7790.
+            Local Harbor Springs students creating websites for local businesses, causes,
+            and efforts. We make an innovative and creative web prescense for you, and you
+            support the world of innovation and STEM in our community.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
