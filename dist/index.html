@@ -30,18 +30,14 @@
       type="font/woff2"
       crossorigin="anonymous"
     />
+    <!-- Load Google Font directly -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
     <link rel="manifest" href="manifest.json" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
-
 
     <!-- GitHub Pages SPA routing fix -->
     <script type="text/javascript">
@@ -73,8 +69,8 @@
     </script>
 
     <title>Avexel - Websites that Matter</title>
-    <script type="module" crossorigin src="./assets/index-CUppGtyN.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-ZJ6q3Qed.css">
+    <script type="module" crossorigin src="./assets/index-DfdwhqRc.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DpL3RFUa.css">
   </head>
   <body class="bg-dark antialiased">
       <!-- Cloudflare Web Analytics -->
@@ -82,5 +78,20 @@
       <!-- End Cloudflare Web Analytics -->
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <!-- Load non-critical CSS asynchronously -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      media="print" onload="this.media='all'"
+    />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+      media="print" onload="this.media='all'"
+     />
+     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></noscript>
   </body>
 </html>
