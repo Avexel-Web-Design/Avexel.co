@@ -28,10 +28,11 @@
     "scripts": {
         "dev": "vite",
         "start": "vite",
-        "build": "vite build",
+        "build": "npm run type-check && vite build",
         "preview": "vite preview",
         "predeploy": "npm run build",
-        "deploy": "gh-pages -d dist"
+        "deploy": "gh-pages -d dist",
+        "type-check": "tsc --noEmit"
     },
     "browserslist": {
         "production": [
