@@ -2,7 +2,7 @@
 import React from "react";
 import { HashLink } from "react-router-hash-link";
 // Import the logo image
-import logoImage from "/Logo-nobg-sm.png";
+import logoImage from "../assets/images/Logo-nobg-sm.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();

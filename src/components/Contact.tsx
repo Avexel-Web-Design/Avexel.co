@@ -64,8 +64,7 @@ const Contact = () => {
               Let's Build Something Amazing
             </h2>
             <p className="text-lg text-gray-300">
-              Ready to elevate your online presence with a local Harbor Springs team? We're here to help turn
-              your vision into reality while supporting STEM education in Northern Michigan.
+              Decided you want to work with us to empower your business? We are thrilled to work with you, and are ready to build something wonderful together.
             </p>
           </div>
 
@@ -78,22 +77,19 @@ const Contact = () => {
                 <li className="flex items-start gap-3">
                   <i className="fas fa-check-circle text-primary-400 mt-1"></i>
                   <span>
-                    Professional web development with a purpose – supporting
-                    STEM, innovation, and creation.
+                    We offer professional services for a fraction of the cost, all the while being real people in your community not some far off corporate monolith.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <i className="fas fa-check-circle text-primary-400 mt-1"></i>
                   <span>
-                    Flexible scheduling so that getting a website made is no
-                    hassle nor drag on your business.
+                    Building a website shouldn't be a hassle to you. We're students, we have time to be flexible and work around your schedule to do what's best for you.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <i className="fas fa-check-circle text-primary-400 mt-1"></i>
                   <span>
-                    Direct communication with our development team throughout
-                    the project
+                    Throughout the whole process, you won't be speaking with just a representative. Our team is small and personal, so you'll be working directly with the person whos building your website.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -112,8 +108,7 @@ const Contact = () => {
               </h3>
               <p className="text-gray-300 mb-6">
                 Have questions or ready to start? Drop us a message, and we'll
-                get back to you within 24 hours. Our Harbor Springs student team is excited to learn about
-                your project!
+                get back to you within 24 hours. We can't wait to hear from you!
               </p>
               <div className="space-y-4">
                 <a
@@ -203,7 +198,7 @@ const Contact = () => {
               <textarea
                 id="message"
                 name="message"
-                rows="4"
+                rows={4}
                 className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors"
                 placeholder="Tell us about your project..."
                 required
