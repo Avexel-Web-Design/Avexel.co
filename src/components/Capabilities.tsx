@@ -78,9 +78,7 @@ const Capabilities = () => {
               Our Technical Expertise
             </h2>
             <p className="text-lg text-gray-300">
-              From responsive design to seamless functionality, we bring
-              together the best modern web technologies to create exceptional
-              digital experiences.
+              We bring together creativity and innovation to build websites that are functional, beautiful, and tailored to your needs. Our team is dedicated to creating exactly what you envision.
             </p>
           </div>
 
@@ -90,9 +88,9 @@ const Capabilities = () => {
                 Frontend Development
               </h3>
               <p className="text-gray-400 mb-6">
-                We craft beautiful, responsive interfaces that work flawlessly
+                We craft beautiful interfaces that work flawlessly
                 across all devices. Our websites don't just look good – they
-                provide an intuitive experience that keeps users coming back.
+                provide an intuitive experience that engages users, and delivers information clearly.
               </p>
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
@@ -122,8 +120,7 @@ const Capabilities = () => {
               </h3>
               <p className="text-gray-400 mb-6">
                 We build robust, secure backends that power your website's
-                features. From user authentication to data management, we ensure
-                everything runs smoothly behind the scenes.
+                features. From admin panels, user logins, emails, newsletters, and eCommerce platforms, we provide everything you need to create a fully functional digital portal for your business.
               </p>
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
@@ -186,7 +183,7 @@ const Capabilities = () => {
               </h3>
               <p className="text-gray-400 mb-6">
                 We go beyond just building websites. Our comprehensive services
-                ensure your online presence is complete and effective.
+                ensure that building your online presence is simple to maintain.
               </p>
               <div className="space-y-3">
                 <div className="flex items-center gap-2">

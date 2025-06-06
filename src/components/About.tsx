@@ -66,8 +66,7 @@ const About = () => {
             </h2>
             <p className="text-lg text-gray-300">
               We're more than just a web development team – we're Harbor Springs High School students
-              passionate about technology and innovation, putting our skills to
-              work while supporting STEM education in Northern Michigan.
+              passionate about technology and innovation.
             </p>
           </div>
 
@@ -78,10 +77,7 @@ const About = () => {
                 Our Story
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                Avexel represents the intersection of competitive robotics and
-                professional web development. What began as a vision to channel
-                our technical expertise into meaningful digital solutions has
-                evolved into something greater.
+                Our business began as a way to raise money to further our local FIRST® Robotics Team. Now its become so much more. From building charity websites for local causes to creating innovative solutions to businesses who otherwise would not have the oppurtunity to create a website, we are dedicated to making a difference in our community through technology.
               </p>
               <p className="text-gray-400 leading-relaxed mt-4">
                 Today, we blend our engineering mindset with creative design to
@@ -97,14 +93,11 @@ const About = () => {
               </h3>
               <p className="text-gray-400 leading-relaxed">
                 We're dedicated to crafting exceptional digital experiences with
-                purpose. Every line of code we write serves two essential goals:
-                delivering outstanding value to our clients and supporting the
-                next generation of technology innovators.
+                purpose. Everything we do it so serve you and further your business and to support our local robotics team. Our mission is to build websites better, faster, and cheaper than anyone else, while doing it with a passion and real cause behind it. We aren't a corporation who wants your money and your data, trapping you into subscriptions and fees. We are people who want to help you and your business succeed.
               </p>
               <p className="text-gray-400 leading-relaxed mt-4">
                 When you partner with Avexel, you're not just launching a
-                website—you're helping fuel technological education and
-                innovation that extends far beyond your project.
+                website—you're supporting real causes, and partnering with a team of people who care.
               </p>
             </div>
           </div>
@@ -122,18 +115,16 @@ const About = () => {
                   </div>
                   <h4 className="font-bold mb-2">Modern Technology</h4>
                   <p className="text-gray-400">
-                    We leverage cutting-edge tools and frameworks to build fast,
-                    responsive, and secure websites that stand out.
+                    We leverage cutting-edge tools so that your website is up to date, and stays that way. We work to ensure that even though our end may be complicated, your website is easy to use and maintain so that you can focus on your business.
                   </p>
                 </div>
                 <div className="text-center">
                   <div className="mb-4">
                     <i className="fas fa-heart text-3xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent"></i>
                   </div>
-                  <h4 className="font-bold mb-2">Passion for Excellence</h4>
+                  <h4 className="font-bold mb-2">Low Cost</h4>
                   <p className="text-gray-400">
-                    Our competitive robotics background drives us to pursue
-                    perfection in every project we undertake.
+                    The web development industry has become bloated by high costs that are justified by arbitrary ideas. We don't do that. This isn't for the money. This is to make a difference. Our websites are and always will be affordable to anyone who wants one, because a web presence shouldn't only be for those who can afford it.
                   </p>
                 </div>
                 <div className="text-center">

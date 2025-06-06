@@ -161,8 +161,7 @@ const Services = () => {
             Services We Provide
           </h2>
           <p className="text-lg text-gray-300">
-            Professional web solutions crafted by passionate student developers,
-            supporting the future of FIRST Robotics Team 7790.
+            Professional web solutions crafted by passionate student developers, for the lowest prices and of the highest quality.
           </p>
         </div>
 
@@ -189,7 +188,7 @@ const Services = () => {
           <ServiceCard
             icon="fa-tools"
             title="Website Maintenance"
-            description="Keep your digital presence running smoothly with our reliable maintenance services. We handle everything from security updates and performance optimization to content updates, letting you focus on what matters most."
+            description="Not everyone has the time or expertise to be a programmer. We offer ongoing support and maintenance services to keep your website up to date. We also provide an easy way for you to make changes to your site in seconds without ever touching code."
           />
         </div>
 
@@ -210,25 +209,25 @@ const Services = () => {
               <ProcessStep
                 number="1"
                 title="Discovery & Planning"
-                description="We begin with an in-depth conversation to understand your vision, goals, and requirements. Our flexible scheduling ensures we can meet at a time that works best for you, whether after school or on weekends."
+                description="We begin by getting to know you, and your business. We are people, and we value personal connections. We want to make sure that our partnership is everything you want it to be. "
               />
 
               <ProcessStep
                 number="2"
                 title="Design & Collaboration"
-                description="We transform your ideas into visual concepts, creating mockups that align with your brand. Through collaborative feedback, we refine the design until it perfectly matches your vision."
+                description="We'll prototype an idea of a design, and initiate and ongoing dialouge with you to ensure that what we do fits with what you want. We value your input, and will never say no to your ideas. You are the one who knows your business best, and we want to make sure that the website you get, is the one thats best for you."
               />
 
               <ProcessStep
                 number="3"
                 title="Development & Quality Assurance"
-                description="Our development team brings your website to life, implementing modern best practices and rigorous testing across all devices and browsers to ensure a flawless user experience."
+                description="We are addicted to quality and perfection. Our team will work tirelessly to bring you a website that is not only funcitonal and fitting for your website, but one that is flawless and long-lasting."
               />
 
               <ProcessStep
                 number="4"
                 title="Launch & Ongoing Support"
-                description="Once your site meets our quality standards, we guide you through the launch process and provide comprehensive training. We remain available for support, ensuring your continued success in the digital space."
+                description="Once your website is ready and live, we don't just disappear. We offer ongoing to support to ensure your site remains up-to-date, and provide ways for you to make changes to your site without needing to know how to code."
               />
             </div>
           </div>
@@ -246,7 +245,7 @@ const Services = () => {
                 (FRC Team 7790), a competitive high school robotics team from
                 Harbor Springs, Michigan. Your project helps fund our robot
                 parts, competition registration fees, travel expenses, and STEM
-                outreach activities in our community.
+                outreach activities in our community. Our team is comprised solely of members of this team. Members who know that your support is what allows us to excel, and what has allowed us in the past to compete at an international level.
               </p>
             </div>
 
