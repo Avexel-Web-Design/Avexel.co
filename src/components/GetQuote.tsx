@@ -56,20 +56,6 @@ const websitePresets = [
       'Booking System'
     ],
     included: ['responsive', 'seo', 'contact', 'social', 'cms', 'blog', 'newsletter', 'analytics', 'ecommerce', 'payments', 'accounts', 'booking', 'subscription', 'paywall']
-  },
-  {
-    id: 'enterprise',
-    name: 'Enterprise Package',
-    description: 'Advanced solutions that are very doubtfully necessary.',
-    basePrice: '$$$ A Lot. Get a real quote.',
-    features: [
-      'Everything in E-commerce',
-      'Custom Database Solutions (If you need to store lots of data)',
-      'Advanced User Management (If your users are very special)',
-      'API Integrations (If you need to connect to other closed systems)',
-      'Multi-language Support (If you serve to a wide variety of global customers)',
-    ],
-    included: ['responsive', 'seo', 'contact', 'social', 'cms', 'blog', 'newsletter', 'analytics', 'ecommerce', 'payments', 'accounts', 'database', 'multilang', 'api']
   }
 ];
 
