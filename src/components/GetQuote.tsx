@@ -14,7 +14,7 @@ const websitePresets = [
     id: 'starter',
     name: 'Starter Package',
     description: 'Perfect for small businesses and personal brands',
-    basePrice: 500,
+    basePrice: 175,
     features: [
       'Professional Design',
       'Mobile Responsive',
@@ -28,7 +28,7 @@ const websitePresets = [
     id: 'business',
     name: 'Business Package',
     description: 'Ideal for growing businesses with content needs',
-    basePrice: 1200,
+    basePrice: 500,
     features: [
       'Everything in Starter',
       'Content Management System',
@@ -43,31 +43,33 @@ const websitePresets = [
     id: 'ecommerce',
     name: 'E-commerce Package',
     description: 'Complete online store solution',
-    basePrice: 2500,
+    basePrice: 800,
     features: [
       'Everything in Business',
       'Online Store Setup',
+      'Subscription Management',
+      'Paywalled Content',
       'Payment Processing',
       'Inventory Management',
       'Customer Accounts',
-      'Order Management'
+      'Order Management',
+      'Booking System'
     ],
-    included: ['responsive', 'seo', 'contact', 'social', 'cms', 'blog', 'newsletter', 'analytics', 'ecommerce', 'payments', 'accounts']
+    included: ['responsive', 'seo', 'contact', 'social', 'cms', 'blog', 'newsletter', 'analytics', 'ecommerce', 'payments', 'accounts', 'booking', 'subscription', 'paywall']
   },
   {
     id: 'enterprise',
     name: 'Enterprise Package',
-    description: 'Advanced solutions for complex business needs',
-    basePrice: 4500,
+    description: 'Advanced solutions that are very doubtfully necessary.',
+    basePrice: '$$$ A Lot. Get a real quote.',
     features: [
       'Everything in E-commerce',
-      'Custom Database Solutions',
-      'Advanced User Management',
-      'API Integrations',
-      'Multi-language Support',
-      'Booking System'
+      'Custom Database Solutions (If you need to store lots of data)',
+      'Advanced User Management (If your users are very special)',
+      'API Integrations (If you need to connect to other closed systems)',
+      'Multi-language Support (If you serve to a wide variety of global customers)',
     ],
-    included: ['responsive', 'seo', 'contact', 'social', 'cms', 'blog', 'newsletter', 'analytics', 'ecommerce', 'payments', 'accounts', 'database', 'booking', 'multilang', 'api']
+    included: ['responsive', 'seo', 'contact', 'social', 'cms', 'blog', 'newsletter', 'analytics', 'ecommerce', 'payments', 'accounts', 'database', 'multilang', 'api']
   }
 ];
 
@@ -77,36 +79,45 @@ const customFeatures = [
     id: 'responsive', 
     name: 'Mobile Responsive Design', 
     price: 0, 
-    description: 'Works perfectly on all devices',
+    description: 'Make your website look great on small screens too',
     category: 'Essential',
     required: true
   },
   { 
     id: 'seo', 
     name: 'SEO Optimization', 
-    price: 150, 
-    description: 'Search engine optimization setup',
-    category: 'Marketing'
+    price: 0, 
+    description: 'Make your website show up in searches',
+    category: 'Essential',
+    required: true
+  },
+    { 
+    id: 'analytics', 
+    name: 'Analytics & Tracking', 
+    price: 0, 
+    description: 'Get Information about your visitors, and why they\'re there',
+    category: 'Essential',
+    required: true
   },
   { 
     id: 'contact', 
     name: 'Contact Forms', 
-    price: 75, 
-    description: 'Custom contact and inquiry forms',
+    price: 25, 
+    description: 'Your customers can contact you',
     category: 'Essential'
+  },
+    { 
+    id: 'blog', 
+    name: 'Blog/News System', 
+    price: 75, 
+    description: 'Platform for your blog (does not include a no-code way to write posts)',
+    category: 'Content'
   },
   { 
     id: 'cms', 
     name: 'Content Management System', 
-    price: 400, 
-    description: 'Easy content editing without code',
-    category: 'Content'
-  },
-  { 
-    id: 'blog', 
-    name: 'Blog/News System', 
-    price: 300, 
-    description: 'Integrated blogging platform',
+    price: 350, 
+    description: 'Write new content and edit existing pages easily',
     category: 'Content'
   },
   { 
@@ -119,64 +130,71 @@ const customFeatures = [
   { 
     id: 'payments', 
     name: 'Payment Processing', 
-    price: 200, 
-    description: 'Secure payment gateway integration',
+    price: 150, 
+    description: 'Let your customes pay for your products',
+    category: 'E-commerce'
+  },
+  {
+    id: 'subscription', 
+    name: 'Subscription Management', 
+    price: 50, 
+    description: 'Manage recurring payments and subscriptions',
+    category: 'E-commerce'
+  },
+  { 
+    id: 'paywall', 
+    name: 'Paywalled Content', 
+    price: 100, 
+    description: 'Prevent people from freely accessing content.',
     category: 'E-commerce'
   },
   { 
     id: 'accounts', 
     name: 'User Accounts', 
-    price: 350, 
+    price: 400, 
     description: 'Customer registration and login',
     category: 'Advanced'
   },
   { 
     id: 'booking', 
     name: 'Booking System', 
-    price: 500, 
+    price: 200, 
     description: 'Online appointment/reservation system',
-    category: 'Advanced'
+    category: 'E-Commerce'
   },
   { 
     id: 'newsletter', 
     name: 'Email Marketing', 
-    price: 150, 
+    price: 75, 
     description: 'Newsletter signup and automation',
     category: 'Marketing'
   },
   { 
     id: 'social', 
     name: 'Social Media Integration', 
-    price: 100, 
+    price: 150, 
     description: 'Social feeds and sharing buttons',
     category: 'Marketing'
   },
   { 
-    id: 'analytics', 
-    name: 'Analytics & Tracking', 
-    price: 100, 
-    description: 'Google Analytics and performance tracking',
-    category: 'Marketing'
-  },
-  { 
     id: 'database', 
-    name: 'Custom Database', 
-    price: 600, 
-    description: 'Custom data storage solutions',
-    category: 'Advanced'
+    name: 'Databases', 
+    price: 50, 
+    description: 'Store information about users, products, and everything else',
+    category: 'Essential'
   },
   { 
     id: 'api', 
     name: 'API Integrations', 
     price: 400, 
-    description: 'Third-party service integrations',
+    description: 'Provide real time information from other platforms.',
     category: 'Advanced'
   },
   { 
     id: 'multilang', 
-    name: 'Multi-language Support', 
+    name: 'Multi-language Support (Spanish)', 
     price: 350, 
-    description: 'Support for multiple languages',
+    description: 'Support for multiple languages (Spanish only. Unless you\'re okay with questionable translations)',
     category: 'Advanced'
   }
 ];
@@ -194,7 +212,7 @@ const GetQuote: React.FC = () => {
   
   const [formData, setFormData] = useState<QuoteFormData>({
     selectedPreset: '',
-    customFeatures: ['responsive'], // Always include responsive
+    customFeatures: ['responsive', 'seo', 'analytics'], // Always include all required features
     numberOfPages: '',
     buildType: 'preset'
   });
@@ -210,7 +228,7 @@ const GetQuote: React.FC = () => {
       const preset = websitePresets.find(p => p.id === formData.selectedPreset);
       if (!preset) return 0;
       
-      basePrice = preset.basePrice;
+      basePrice = typeof preset.basePrice === 'number' ? preset.basePrice : 0;
       includedFeatures = preset.included;
     } else if (formData.buildType === 'custom') {
       // Calculate custom build price
@@ -244,7 +262,7 @@ const GetQuote: React.FC = () => {
       ...prev,
       buildType: type,
       selectedPreset: '',
-      customFeatures: ['responsive'] // Reset but keep responsive
+      customFeatures: ['responsive', 'seo', 'analytics'] // Reset but keep all required features
     }));
   };
 
@@ -529,7 +547,7 @@ const GetQuote: React.FC = () => {
                   )}
                   
                   <div className="mt-6 text-xs text-gray-500 text-center">
-                    <p>This is an estimate. Final pricing may vary based on specific requirements and complexity.</p>
+                    <p>This is an estimate. Final pricing may vary based on specific requirements and complexity. This also does not include 3rd Party fees and payments required to host your website, the domain, and fees for larger than usual databases and higher than usual user interaction with the website. This can include, large levels of user accounts, lots of contacting via email, or other things. The payment processing has a 2.9% + 30 cents fee that is pretty typical of that service. All web hosting and database storage is done exclusively through CloudFlare unless you want to pay more, have a lower quality product, and annoy the developers. These are not all of the ways you could end up paying more, but these are the most likely. Also keep in mind that while it seems like you are more likely to end up paying more, there is also a rather high probability that you pay much less than the automated quote says. If you are genuinely interested in our services, we encourage you to reach out for a more accurate quote, and so that we can do whats best for you.</p>
                   </div>
                 </div>
               </div>
