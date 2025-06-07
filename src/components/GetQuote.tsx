@@ -178,20 +178,6 @@ const customFeatures = [
     price: 350, 
     description: 'Support for multiple languages',
     category: 'Advanced'
-  },
-  { 
-    id: 'hosting', 
-    name: 'Premium Hosting (1 year)', 
-    price: 200, 
-    description: 'Fast, secure hosting included',
-    category: 'Services'
-  },
-  { 
-    id: 'maintenance', 
-    name: 'Maintenance Plan (1 year)', 
-    price: 300, 
-    description: 'Updates, backups, and support',
-    category: 'Services'
   }
 ];
 
@@ -215,7 +201,6 @@ const GetQuote: React.FC = () => {
 
   const [estimatedPrice, setEstimatedPrice] = useState(0);
   const [showQuote, setShowQuote] = useState(false);
-  const [isCalculating, setIsCalculating] = useState(false);
 
   const calculatePrice = () => {
     let basePrice = 0;
@@ -413,7 +398,7 @@ const GetQuote: React.FC = () => {
                 {formData.buildType === 'custom' && (
                   <div className="space-y-6">
                     <h3 className="text-2xl font-semibold text-white">Select Your Features</h3>
-                    {['Essential', 'Content', 'E-commerce', 'Marketing', 'Advanced', 'Services'].map(category => {
+                    {['Essential', 'Content', 'E-commerce', 'Marketing', 'Advanced'].map(category => {
                       const categoryFeatures = customFeatures.filter(f => f.category === category);
                       if (categoryFeatures.length === 0) return null;
                       
@@ -496,12 +481,7 @@ const GetQuote: React.FC = () => {
                 <div className="sticky top-8">
                   <h3 className="text-2xl font-semibold text-white mb-6">Your Quote</h3>
                   
-                  {isCalculating ? (
-                    <div className="bg-gradient-to-br from-primary-500/10 to-secondary-500/10 border border-primary-500/20 rounded-xl p-6 text-center">
-                      <div className="animate-spin w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-                      <p className="text-gray-400">Calculating your quote...</p>
-                    </div>
-                  ) : showQuote ? (
+                  {showQuote ? (
                     <div className="bg-gradient-to-br from-primary-500/10 to-secondary-500/10 border border-primary-500/20 rounded-xl p-6 space-y-4 animate-fade-in">
                       <div className="text-center">
                         <div className="text-sm text-gray-400 mb-2">Estimated Price</div>
