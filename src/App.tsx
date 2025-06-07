@@ -10,6 +10,7 @@ const Capabilities = lazy(() => import("./components/Capabilities"));
 const About = lazy(() => import("./components/About"));
 const Services = lazy(() => import("./components/Services"));
 const Portfolio = lazy(() => import("./components/Portfolio"));
+const GetQuote = lazy(() => import("./components/GetQuote"));
 const Contact = lazy(() => import("./components/Contact"));
 const Footer = lazy(() => import("./components/Footer"));
 
@@ -42,6 +43,7 @@ function HomePage() {
             <About />
             <Capabilities />
             <Portfolio />
+            <GetQuote />
             <Contact />
           </Suspense>
         </div>

@@ -36,8 +36,16 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <HashLink
               smooth
-              to="#contact"
+              to="#quote"
               className="w-full sm:w-auto px-6 xs:px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300"
+            >
+              Get Your Quote
+            </HashLink>
+
+            <HashLink
+              smooth
+              to="#contact"
+              className="w-full sm:w-auto px-6 xs:px-8 sm:px-10 py-3 sm:py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300"
             >
               Start Your Project
             </HashLink>
@@ -45,7 +53,7 @@ const Hero = () => {
             <HashLink
               smooth
               to="#work"
-              className="w-full sm:w-auto px-6 xs:px-8 sm:px-10 py-3 sm:py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300 mt-3 sm:mt-0"
+              className="w-full sm:w-auto px-6 xs:px-8 sm:px-10 py-3 sm:py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300"
             >
               View Our Work
             </HashLink>
