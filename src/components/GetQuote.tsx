@@ -109,21 +109,15 @@ const customFeatures = [
     { 
     id: 'blog', 
     name: 'Blog/News System', 
-    price: 75, 
-    description: 'Platform for your blog (does not include a no-code way to write posts)',
+    price: 375, 
+    description: 'Platform for your blog including a no code way to write content.',
     category: 'Content'
   },
-  { 
-    id: 'cms', 
-    name: 'Content Management System', 
-    price: 350, 
-    description: 'Write new content and edit existing pages easily',
-    category: 'Content'
-  },
+
   { 
     id: 'ecommerce', 
     name: 'E-commerce Store', 
-    price: 800, 
+    price: 600, 
     description: 'Complete online store functionality',
     category: 'E-commerce'
   },
