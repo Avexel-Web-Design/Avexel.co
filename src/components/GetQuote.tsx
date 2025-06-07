@@ -153,7 +153,7 @@ const customFeatures = [
     name: 'User Accounts', 
     price: 400, 
     description: 'Customer registration and login',
-    category: 'Advanced'
+    category: 'E-commerce'
   },
   { 
     id: 'booking', 
