@@ -77,14 +77,6 @@ const customFeatures = [
     category: 'Essential',
     required: true
   },
-    { 
-    id: 'analytics', 
-    name: 'Analytics & Tracking', 
-    price: 0, 
-    description: 'Get Information about your visitors, and why they\'re there',
-    category: 'Essential',
-    required: true
-  },
   { 
     id: 'contact', 
     name: 'Contact Forms', 
@@ -158,9 +150,9 @@ const customFeatures = [
   },
   { 
     id: 'database', 
-    name: 'Databases', 
-    price: 50, 
-    description: 'Store information about users, products, and everything else',
+    name: 'Databases and Admin Panel', 
+    price: 75, 
+    description: 'Store information about users, products, and have a way to view and manage it',
     category: 'Essential'
   },
   { 
