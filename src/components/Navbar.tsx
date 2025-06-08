@@ -28,11 +28,15 @@ const Navbar = () => {
   useEffect(() => {
     const currentTab = hoveredTab || activeTab;
     const tabElement = tabRefs.current[currentTab]?.current;
+    const navElement = navRef.current;
 
-    if (tabElement) {
+    if (tabElement && navElement) {
+      const navRect = navElement.getBoundingClientRect();
+      const tabRect = tabElement.getBoundingClientRect();
+      
       setHighlightStyle({
-        left: tabElement.offsetLeft,
-        width: tabElement.offsetWidth,
+        left: tabRect.left - navRect.left - tabElement.parentElement.offsetLeft,
+        width: tabRect.width,
         opacity: 1,
       });
     }
@@ -105,10 +109,10 @@ const Navbar = () => {
                 </div>
               </HashLink>
 
-              <div className="ml-8 flex items-center gap-1 relative">
+              <div className="ml-8 flex items-center gap-0 relative">
                 {/* Moving highlight element */}
                 <div
-                  className="absolute top-0 rounded-full bg-gradient-to-r from-primary-500/80 to-secondary-500/80 h-10 shadow-lg transition-all duration-300 ease-out -z-0"
+                  className="absolute top-0 rounded-full bg-gradient-to-r from-primary-500/80 to-secondary-500/80 h-10 shadow-lg transition-all duration-200 ease-out -z-0"
                   style={{
                     left: `${highlightStyle.left}px`,
                     width: `${highlightStyle.width}px`,
