@@ -61,6 +61,14 @@ const websitePresets = [
 
 // Individual features for custom builds
 const customFeatures = [
+  {
+    id: 'base',
+    name: 'Base Website Creation',
+    price: 75,
+    description: 'The basic setup for your website including hosting, domain setup, and content',
+    category: 'Essential',
+    required: true
+  },
   { 
     id: 'responsive', 
     name: 'Mobile Responsive Design', 
