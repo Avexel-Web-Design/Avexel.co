@@ -71,7 +71,7 @@ const customFeatures = [
   },
   { 
     id: 'responsive', 
-    name: 'Mobile Responsive Design', 
+    name: 'Mobile Responsive Design',
     price: 0, 
     description: 'Make your website look great on small screens too',
     category: 'Essential',
