@@ -180,11 +180,11 @@ const customFeatures = [
 ];
 
 const pageRanges = [
-  { value: '1-5', label: '1-5 Pages', multiplier: 1 },
-  { value: '6-15', label: '6-15 Pages', multiplier: 1 },
-  { value: '16-30', label: '16-30 Pages', multiplier: 1 },
-  { value: '31-50', label: '31-50 Pages', multiplier: (7377.90/2697.00) },
-  { value: '50+', label: '50+ Pages', multiplier: (7790/2697.00) }
+  { value: '1-5', label: '1-5 Pages', multiplier: 1.14 },
+  { value: '6-15', label: '6-15 Pages', multiplier: 1.25 },
+  { value: '16-30', label: '16-30 Pages', multiplier: 1.40 },
+  { value: '31-50', label: '31-50 Pages', multiplier: 2.74 },
+  { value: '50+', label: '50+ Pages', multiplier: 2.89 }
 ];
 
 const GetQuote: React.FC = () => {
@@ -218,13 +218,26 @@ const GetQuote: React.FC = () => {
           basePrice += feature.price;
         }
       });
-    }
-
-    // Apply page multiplier
+    }    // Apply page multiplier and target exact prices
     if (formData.numberOfPages) {
       const pageRange = pageRanges.find(range => range.value === formData.numberOfPages);
       if (pageRange) {
-        basePrice *= pageRange.multiplier;
+        // Target prices for each page range when all features are selected (basePrice ≈ 2697)
+        const targetPrices = {
+          '1-5': 3077.90,
+          '6-15': 3377.90,
+          '16-30': 3779.00,
+          '31-50': 7377.90,
+          '50+': 7790.00
+        };
+        
+        // Calculate the multiplier needed to reach target price
+        const targetPrice = targetPrices[formData.numberOfPages as keyof typeof targetPrices];
+        if (targetPrice) {
+          basePrice = targetPrice * (basePrice / 2697.00); // Scale proportionally from base price
+        } else {
+          basePrice = basePrice * pageRange.multiplier;
+        }
       }
     }
 
