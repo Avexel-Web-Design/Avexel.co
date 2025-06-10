@@ -1,6 +1,8 @@
 import React from "react";
 import { HashLink } from "react-router-hash-link";
 import useScrollReveal from "../hooks/useScrollReveal";
+import WebsiteWireframe from "./WebsiteWireframe";
+import AnimatedOrb from "./AnimatedOrb";
 
 const Hero = () => {
   useScrollReveal();
@@ -15,6 +17,21 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-secondary-500/3 to-primary-500/5 animate-pulse-slow"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(56,189,248,0.08),transparent_50%)]"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(139,92,246,0.08),transparent_50%)]"></div>
+
+        {/* Wireframe Background */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-full max-w-4xl h-full max-h-96">
+            <WebsiteWireframe />
+          </div>
+        </div>
+      </div>
+
+      {/* Floating Orbs */}
+      <div className="absolute top-1/4 left-1/6 opacity-30">
+        <AnimatedOrb size="sm" hue={220} hoverIntensity={0.1} forceHoverState={true} />
+      </div>
+      <div className="absolute bottom-1/3 right-1/5 opacity-20">
+        <AnimatedOrb size="md" hue={260} hoverIntensity={0.15} forceHoverState={true} />
       </div>
 
       {/* Centered content with improved impact */}

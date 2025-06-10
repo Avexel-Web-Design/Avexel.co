@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
+import PixelCard from "./PixelCard";
+import AnimatedOrb from "./AnimatedOrb";
 
 const ProjectCard = ({
   title,
@@ -35,7 +37,6 @@ const ProjectCard = ({
       if (currentElement) observer.disconnect();
     };
   }, [title]);
-
   return (
     <div
       id={`project-${title.replace(/\s+/g, "-").toLowerCase()}`}
@@ -50,7 +51,7 @@ const ProjectCard = ({
         <div className="absolute inset-0 bg-gradient-to-r from-secondary-500 to-primary-500 rounded-2xl opacity-70 animate-pulse-slow"></div>
       </div>
 
-      <div className="relative bg-dark/70 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden shadow-2xl group-hover:border-white/20 transition-all duration-500">
+      <PixelCard className="bg-dark/70 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden shadow-2xl group-hover:border-white/20 transition-all duration-500">
         <div className="flex flex-col md:flex-row md:items-stretch gap-6 md:gap-10 p-6 sm:p-8 lg:p-10">
           {/* Enhanced image section - improved image display */}
           <div
@@ -206,7 +207,7 @@ const ProjectCard = ({
             </div>
           </div>
         </div>
-      </div>
+      </PixelCard>
     </div>
   );
 };
@@ -224,6 +225,14 @@ const Portfolio = () => {
       <div className="absolute top-1/4 right-1/4 w-72 h-72 border border-white/5 rounded-full animate-spin-slow"></div>
       <div className="absolute bottom-1/3 left-1/5 w-64 h-64 border border-white/5 animate-spin-slow-reverse"></div>
 
+      {/* Floating Orbs */}
+      <div className="absolute top-1/6 left-1/12 opacity-15">
+        <AnimatedOrb size="sm" hue={230} hoverIntensity={0.1} />
+      </div>
+      <div className="absolute bottom-1/4 right-1/10 opacity-20">
+        <AnimatedOrb size="md" hue={270} hoverIntensity={0.15} />
+      </div>
+
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center mb-16 reveal">
           <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">
@@ -239,13 +248,13 @@ const Portfolio = () => {
         </div>
 
         <div className="grid gap-12 reveal">
-          
           <ProjectCard
             title="FRC Team 7790 Website"
             description="An interactive website for Baywatch Robotics showcasing our team, robot designs, competition history, and STEM outreach programs. Features include a team member directory, sponsorship information, and resources for aspiring robotics enthusiasts."
             tags={[]}
             image="/baywatchLogo.png"
             websiteUrl="https://frc7790.com"
+            caseStudyUrl=""
             teamName="Baywatch Robotics"
           />
           {/* Placeholder for future projects */}

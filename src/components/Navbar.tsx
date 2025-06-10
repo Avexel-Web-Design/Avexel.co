@@ -190,7 +190,17 @@ const Navbar = () => {
 };
 
 // Tab link component with improved design for sliding highlight
-const TabLink = ({
+interface TabLinkProps {
+  to: string;
+  label: string;
+  tabRef: React.RefObject<any>;
+  isActive: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+  onClick: () => void;
+}
+
+const TabLink: React.FC<TabLinkProps> = ({
   to,
   label,
   tabRef,
