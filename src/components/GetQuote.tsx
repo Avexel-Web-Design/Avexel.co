@@ -14,7 +14,7 @@ const websitePresets = [
     id: 'starter',
     name: 'Starter Package',
     description: 'Perfect for small businesses and personal brands',
-    basePrice: 175,
+    basePrice: 177.90,
     features: [
       'Professional Design',
       'Mobile Responsive',
@@ -28,7 +28,7 @@ const websitePresets = [
     id: 'business',
     name: 'Business Package',
     description: 'Ideal for growing businesses with content needs',
-    basePrice: 500,
+    basePrice: 477.90,
     features: [
       'Everything in Starter',
       'Content Management System',
@@ -43,7 +43,7 @@ const websitePresets = [
     id: 'ecommerce',
     name: 'E-commerce Package',
     description: 'Complete online store solution',
-    basePrice: 800,
+    basePrice: 779.0,
     features: [
       'Everything in Business',
       'Online Store Setup',
@@ -64,7 +64,7 @@ const customFeatures = [
   {
     id: 'base',
     name: 'Base Website Creation',
-    price: 75,
+    price: 77.90,
     description: 'The basic setup for your website including hosting, domain setup, and content',
     category: 'Essential',
     required: true
@@ -88,14 +88,14 @@ const customFeatures = [
   { 
     id: 'contact', 
     name: 'Contact Forms', 
-    price: 25, 
+    price: 27.79, 
     description: 'Your customers can contact you',
     category: 'Essential'
   },
-    { 
+  { 
     id: 'blog', 
     name: 'Blog/News System', 
-    price: 375, 
+    price: 377.90, 
     description: 'Platform for your blog including a no code way to write content.',
     category: 'Content'
   },
@@ -103,77 +103,77 @@ const customFeatures = [
   { 
     id: 'ecommerce', 
     name: 'E-commerce Store', 
-    price: 600, 
+    price: 577.90, 
     description: 'Complete online store functionality',
     category: 'E-commerce'
   },
   { 
     id: 'payments', 
     name: 'Payment Processing', 
-    price: 150, 
+    price: 177.90, 
     description: 'Let your customes pay for your products',
     category: 'E-commerce'
   },
   {
     id: 'subscription', 
     name: 'Subscription Management', 
-    price: 50, 
+    price: 77.90, 
     description: 'Manage recurring payments and subscriptions',
     category: 'E-commerce'
   },
   { 
     id: 'paywall', 
     name: 'Paywalled Content', 
-    price: 100, 
+    price: 90, 
     description: 'Prevent people from freely accessing content.',
     category: 'E-commerce'
   },
   { 
     id: 'accounts', 
     name: 'User Accounts', 
-    price: 400, 
+    price: 377.90, 
     description: 'Customer registration and login',
     category: 'E-commerce'
   },
   { 
     id: 'booking', 
     name: 'Booking System', 
-    price: 200, 
+    price: 177.90, 
     description: 'Online appointment/reservation system',
     category: 'E-Commerce'
   },
   { 
     id: 'newsletter', 
     name: 'Email Marketing', 
-    price: 75, 
+    price: 77.90, 
     description: 'Newsletter signup and automation',
     category: 'Marketing'
   },
   { 
     id: 'social', 
     name: 'Social Media Integration', 
-    price: 150, 
+    price: 177.90, 
     description: 'Social feeds and sharing buttons',
     category: 'Marketing'
   },
   { 
     id: 'database', 
     name: 'Databases and Admin Panel', 
-    price: 75, 
+    price: 77.90, 
     description: 'Store information about users, products, and have a way to view and manage it',
     category: 'Essential'
   },
   { 
     id: 'api', 
     name: 'API Integrations', 
-    price: 400, 
+    price: 377.90, 
     description: 'Provide real time information from other platforms.',
     category: 'Advanced'
   },
   { 
     id: 'multilang', 
     name: 'Multi-language Support (Spanish)', 
-    price: 350, 
+    price: 277.90, 
     description: 'Support for multiple languages (Spanish only. Unless you\'re okay with questionable translations)',
     category: 'Advanced'
   }
@@ -181,10 +181,10 @@ const customFeatures = [
 
 const pageRanges = [
   { value: '1-5', label: '1-5 Pages', multiplier: 1 },
-  { value: '6-15', label: '6-15 Pages', multiplier: 1.3 },
-  { value: '16-30', label: '16-30 Pages', multiplier: 1.8 },
-  { value: '31-50', label: '31-50 Pages', multiplier: 2.2 },
-  { value: '50+', label: '50+ Pages', multiplier: 2.8 }
+  { value: '6-15', label: '6-15 Pages', multiplier: 1 },
+  { value: '16-30', label: '16-30 Pages', multiplier: 1 },
+  { value: '31-50', label: '31-50 Pages', multiplier: (7377.90/2697.00) },
+  { value: '50+', label: '50+ Pages', multiplier: (7790/2697.00) }
 ];
 
 const GetQuote: React.FC = () => {
@@ -374,7 +374,7 @@ const GetQuote: React.FC = () => {
                           <div className="flex justify-between items-start mb-4">
                             <h4 className="text-xl font-semibold text-white">{preset.name}</h4>
                             <span className="text-lg font-bold text-primary-400">
-                              ${preset.basePrice.toLocaleString()}
+                              ${preset.basePrice.toFixed(2)}
                             </span>
                           </div>
                           <p className="text-gray-400 mb-4">{preset.description}</p>
@@ -438,7 +438,7 @@ const GetQuote: React.FC = () => {
                                   </div>
                                 </div>
                                 <span className="text-sm font-medium text-gray-300 ml-4">
-                                  {feature.price === 0 ? 'Free' : `+$${feature.price.toLocaleString()}`}
+                                  {feature.price === 0 ? 'Free' : `+$${feature.price.toFixed(2)}`}
                                 </span>
                               </label>
                             ))}
@@ -484,7 +484,7 @@ const GetQuote: React.FC = () => {
                       <div className="text-center">
                         <div className="text-sm text-gray-400 mb-2">Estimated Price</div>
                         <div className="text-4xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent animate-pulse-price">
-                          ${estimatedPrice.toLocaleString()}
+                          ${estimatedPrice.toFixed(2)}
                         </div>
                         <div className="text-sm text-gray-500 mt-2">*Starting estimate</div>
                       </div>
