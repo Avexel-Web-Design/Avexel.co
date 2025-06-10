@@ -189,8 +189,9 @@ const About = () => {
             Our Journey
           </h3>
           
-          <div className="max-w-4xl mx-auto">
-            <AnimatedStepper
+          <div className="max-w-4xl mx-auto">            <AnimatedStepper
+              autoPlay={true}
+              autoPlayInterval={5000}
               steps={[
                 {
                   title: "The Beginning",

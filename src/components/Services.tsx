@@ -206,8 +206,8 @@ const Services = () => {
             Our Approach
           </h3>
 
-          <div className="relative">
-            <AnimatedStepper
+          <div className="relative">            <AnimatedStepper
+              autoPlay={false}
               steps={[
                 {
                   title: "Discovery & Planning",

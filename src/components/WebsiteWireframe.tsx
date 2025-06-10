@@ -1,10 +1,9 @@
 import React from "react";
 
 const WebsiteWireframe: React.FC = () => {
-  return (
-    <svg
+  return (    <svg
       viewBox="0 0 400 300"
-      className="absolute inset-0 w-full h-full opacity-5 text-primary-400"
+      className="absolute inset-0 w-full h-full opacity-15 text-primary-400"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

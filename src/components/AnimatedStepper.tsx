@@ -7,15 +7,36 @@ interface AnimatedStepperProps {
   }>;
   className?: string;
   onStepChange?: (step: number) => void;
+  autoPlay?: boolean;
+  autoPlayInterval?: number;
 }
 
 const AnimatedStepper: React.FC<AnimatedStepperProps> = ({
   steps,
   className = "",
-  onStepChange
+  onStepChange,
+  autoPlay = true,
+  autoPlayInterval = 4000
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (!autoPlay || isPaused) return;
+
+    const interval = setInterval(() => {
+      setCurrentStep((prev) => {
+        const nextStep = (prev + 1) % steps.length;
+        setDirection(1);
+        onStepChange?.(nextStep);
+        return nextStep;
+      });
+    }, autoPlayInterval);
+
+    return () => clearInterval(interval);
+  }, [autoPlay, autoPlayInterval, isPaused, steps.length, onStepChange]);
 
   const updateStep = (newStep: number) => {
     if (newStep >= 0 && newStep < steps.length) {
@@ -129,6 +150,8 @@ const AnimatedStepper: React.FC<AnimatedStepperProps> = ({
             min-height: 200px;
             display: flex;
             flex-direction: column;
+            position: relative;
+            overflow: hidden;
           }
 
           .stepper-nav {
@@ -178,20 +201,134 @@ const AnimatedStepper: React.FC<AnimatedStepperProps> = ({
             cursor: not-allowed;
           }
 
+          .pause-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 2rem;
+            height: 2rem;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .pause-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+          }
+
           @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
           }
 
+          @keyframes slideInRight {
+            from {
+              opacity: 0;
+              transform: translateX(50px);
+            }
+            to {
+              opacity: 1;
+              transform: translateX(0);
+            }
+          }
+
+          @keyframes slideInLeft {
+            from {
+              opacity: 0;
+              transform: translateX(-50px);
+            }
+            to {
+              opacity: 1;
+              transform: translateX(0);
+            }
+          }
+
+          @keyframes slideOutRight {
+            from {
+              opacity: 1;
+              transform: translateX(0);
+            }
+            to {
+              opacity: 0;
+              transform: translateX(50px);
+            }
+          }
+
+          @keyframes slideOutLeft {
+            from {
+              opacity: 1;
+              transform: translateX(0);
+            }
+            to {
+              opacity: 0;
+              transform: translateX(-50px);
+            }
+          }
+
           .fade-slide-content {
             opacity: 1;
             transform: translateX(0);
-            transition: opacity 0.4s ease, transform 0.4s ease;
+            animation: slideInRight 0.6s ease-out;
+          }
+
+          .fade-slide-content.slide-left {
+            animation: slideInLeft 0.6s ease-out;
+          }
+
+          .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+            border-radius: 0 0 2rem 2rem;
+            transition: width 0.1s linear;
           }
         `
       }} />
       
-      <div className={`stepper-container ${className}`}>
+      <div 
+        className={`stepper-container ${className}`}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Pause/Play Button */}
+        {autoPlay && (
+          <button
+            className="pause-btn"
+            onClick={() => setIsPaused(!isPaused)}
+            title={isPaused ? "Resume" : "Pause"}
+          >
+            {isPaused ? (
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            ) : (
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+              </svg>
+            )}
+          </button>
+        )}
+
+        {/* Progress Bar */}
+        {autoPlay && !isPaused && (
+          <div 
+            className="progress-bar"
+            style={{ 
+              width: `${((currentStep + 1) / steps.length) * 100}%`,
+              animation: `progressAnimation ${autoPlayInterval}ms linear infinite`
+            }}
+          />
+        )}
+
         {/* Step Indicators */}
         <div className="step-indicator-row">
           {steps.map((_, index) => {
@@ -233,7 +370,10 @@ const AnimatedStepper: React.FC<AnimatedStepperProps> = ({
 
         {/* Step Content */}
         <div className="step-content">
-          <div key={currentStep} className="fade-slide-content">
+          <div 
+            key={currentStep} 
+            className={`fade-slide-content ${direction === -1 ? 'slide-left' : ''}`}
+          >
             <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
               {steps[currentStep]?.title}
             </h3>
@@ -262,6 +402,15 @@ const AnimatedStepper: React.FC<AnimatedStepperProps> = ({
           </button>
         </div>
       </div>
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes progressAnimation {
+            0% { width: 0%; }
+            100% { width: ${((currentStep + 1) / steps.length) * 100}%; }
+          }
+        `
+      }} />
     </>
   );
 };
