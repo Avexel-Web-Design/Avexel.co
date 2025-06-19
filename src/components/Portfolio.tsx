@@ -64,14 +64,12 @@ const ProjectCard = ({
                 className={`absolute inset-0 bg-gradient-to-t from-dark/60 via-dark/20 to-transparent ${
                   isHovered ? "opacity-0" : "opacity-50"
                 } transition-opacity duration-300 z-10`}
-              ></div>
-
-              {/* Simple image presentation */}
-              <div className="absolute inset-0 overflow-hidden flex items-center justify-center p-4">
+              ></div>              {/* Simple image presentation */}
+              <div className="absolute inset-0 overflow-hidden">
                 <img
                   src={image}
                   alt={title}
-                  className={`max-w-full max-h-full w-auto h-auto object-contain transition-all duration-500 ease-out ${
+                  className={`w-full h-full object-cover transition-all duration-500 ease-out ${
                     isHovered
                       ? "scale-105"
                       : "scale-100"
@@ -222,15 +220,21 @@ const Portfolio = () => {
 
         <div className="grid gap-12 reveal">
           <ProjectCard
-            title="FRC Team 7790 Website"
+            title="FRC Team 7790"
             description="An interactive website for Baywatch Robotics showcasing our team, robot designs, competition history, and STEM outreach programs. Features include a team member directory, sponsorship information, and resources for aspiring robotics enthusiasts."
             tags={[]}
             image="/baywatchLogo.png"
             websiteUrl="https://frc7790.com"
             caseStudyUrl=""
-            teamName="Baywatch Robotics"
           />
-          {/* Placeholder for future projects */}
+          <ProjectCard
+            title="Nadia Elmagrabi"
+            description="A transformative spiritual wellness website offering Human Design readings and Past Life Regression therapy. Features elegant design with service packages and client testimonials to help visitors discover their soul's blueprint and authentic path."
+            tags={[]}
+            image="/Nadia.jpg"
+            websiteUrl="https://nadia-elmagrabi.pages.dev"
+            caseStudyUrl=""
+          />
           <div className="relative glass-morphism p-10 rounded-xl border border-white/5 text-center reveal">
             <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
               Your Project Could Be Next
