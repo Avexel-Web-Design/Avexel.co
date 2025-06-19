@@ -189,10 +189,9 @@ const pageRanges = [
 
 const GetQuote: React.FC = () => {
   useScrollReveal();
-  
-  const [formData, setFormData] = useState<QuoteFormData>({
+    const [formData, setFormData] = useState<QuoteFormData>({
     selectedPreset: '',
-    customFeatures: ['responsive', 'seo', 'analytics'], // Always include all required features
+    customFeatures: ['base', 'responsive', 'seo'], // Always include all required features
     numberOfPages: '',
     buildType: 'preset'
   });
@@ -222,11 +221,11 @@ const GetQuote: React.FC = () => {
     if (formData.numberOfPages) {
       const pageRange = pageRanges.find(range => range.value === formData.numberOfPages);
       if (pageRange) {
-        // Target prices for each page range when all features are selected (basePrice ≈ 2697)
+        // Target prices for each page range when all features are selected (basePrice ≈ 2774.69)
         const targetPrices = {
           '1-5': 3077.90,
           '6-15': 3377.90,
-          '16-30': 3779.00,
+          '16-30': 3767.79,
           '31-50': 7377.90,
           '50+': 7790.00
         };
@@ -234,14 +233,13 @@ const GetQuote: React.FC = () => {
         // Calculate the multiplier needed to reach target price
         const targetPrice = targetPrices[formData.numberOfPages as keyof typeof targetPrices];
         if (targetPrice) {
-          basePrice = targetPrice * (basePrice / 2697.00); // Scale proportionally from base price
+          basePrice = targetPrice * (basePrice / 2774.69); // Scale proportionally from base price
         } else {
           basePrice = basePrice * pageRange.multiplier;
-        }
-      }
+        }      }
     }
 
-    return Math.round(basePrice);
+    return basePrice;
   };
 
   useEffect(() => {
@@ -249,13 +247,12 @@ const GetQuote: React.FC = () => {
     setEstimatedPrice(price);
     setShowQuote(price > 0);
   }, [formData]);
-
   const handleBuildTypeChange = (type: 'preset' | 'custom') => {
     setFormData(prev => ({
       ...prev,
       buildType: type,
       selectedPreset: '',
-      customFeatures: ['responsive', 'seo', 'analytics'] // Reset but keep all required features
+      customFeatures: ['base', 'responsive', 'seo'] // Reset but keep all required features
     }));
   };
 
@@ -265,9 +262,9 @@ const GetQuote: React.FC = () => {
       selectedPreset: presetId
     }));
   };
-
   const handleCustomFeatureToggle = (featureId: string) => {
-    if (featureId === 'responsive') return; // Can't remove responsive
+    const feature = customFeatures.find(f => f.id === featureId);
+    if (feature?.required) return; // Can't remove any required features
 
     setFormData(prev => ({
       ...prev,
