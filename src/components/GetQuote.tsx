@@ -179,6 +179,8 @@ const customFeatures = [
   }
 ];
 
+// The multiplier property in each page range is used to scale the base price according to the number of pages selected.
+// These multipliers are chosen to approximate the increased development effort and complexity for larger websites.
 const pageRanges = [
   { value: '1-5', label: '1-5 Pages', multiplier: 1.14 },
   { value: '6-15', label: '6-15 Pages', multiplier: 1.25 },
@@ -216,27 +218,66 @@ const GetQuote: React.FC = () => {
         if (feature) {
           basePrice += feature.price;
         }
-      });
-    }    // Apply page multiplier and target exact prices
+      });    }    // Apply page multiplier and target exact prices
     if (formData.numberOfPages) {
       const pageRange = pageRanges.find(range => range.value === formData.numberOfPages);
       if (pageRange) {
-        // Target prices for each page range when all features are selected (basePrice ≈ 2774.69)
-        const targetPrices = {
-          '1-5': 3077.90,
-          '6-15': 3377.90,
-          '16-30': 3767.79,
-          '31-50': 7377.90,
-          '50+': 7790.00
-        };
-        
-        // Calculate the multiplier needed to reach target price
-        const targetPrice = targetPrices[formData.numberOfPages as keyof typeof targetPrices];
-        if (targetPrice) {
-          basePrice = targetPrice * (basePrice / 2774.69); // Scale proportionally from base price
+        if (formData.buildType === 'preset' && formData.selectedPreset) {
+          // Package-specific target prices
+          const packageTargetPrices = {
+            starter: {
+              '1-5': 177.90,
+              '6-15': 217.79,
+              '16-30': 277.90,
+              '31-50': 457.79,
+              '50+': 477.90
+            },
+            business: {
+              '1-5': 477.90,
+              '6-15': 527.90,
+              '16-30': 677.90,
+              '31-50': 1177.90,
+              '50+': 1377.90
+            },
+            ecommerce: {
+              '1-5': 779.00,
+              '6-15': 877.90,
+              '16-30': 977.90,
+              '31-50': 1779.00,
+              '50+': 1977.90
+            }
+          };
+          
+          const packagePrices = packageTargetPrices[formData.selectedPreset as keyof typeof packageTargetPrices];
+          if (packagePrices) {
+            const targetPrice = packagePrices[formData.numberOfPages as keyof typeof packagePrices];
+            if (targetPrice) {
+              basePrice = targetPrice;
+            } else {
+              basePrice = basePrice * pageRange.multiplier;
+            }
+          } else {
+            basePrice = basePrice * pageRange.multiplier;
+          }
         } else {
-          basePrice = basePrice * pageRange.multiplier;
-        }      }
+          // Custom build target prices (original logic)
+          const customTargetPrices = {
+            '1-5': 3077.90,
+            '6-15': 3377.90,
+            '16-30': 3767.79,
+            '31-50': 7377.90,
+            '50+': 7790.00
+          };
+          
+          // Calculate the multiplier needed to reach target price
+          const targetPrice = customTargetPrices[formData.numberOfPages as keyof typeof customTargetPrices];
+          if (targetPrice) {
+            basePrice = targetPrice * (basePrice / 2774.69); // Scale proportionally from base price
+          } else {
+            basePrice = basePrice * pageRange.multiplier;
+          }
+        }
+      }
     }
 
     return basePrice;
