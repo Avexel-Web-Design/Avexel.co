@@ -2,62 +2,11 @@ import React, { useState, useEffect } from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
 
 interface QuoteFormData {
-  selectedPreset: string;
   customFeatures: string[];
   numberOfPages: string;
-  buildType: 'preset' | 'custom';
 }
 
-// Preset packages with included features
-const websitePresets = [
-  {
-    id: 'starter',
-    name: 'Starter Package',
-    description: 'Perfect for small businesses and personal brands',
-    basePrice: 177.90,
-    features: [
-      'Professional Design',
-      'Mobile Responsive',
-      'Contact Forms',
-      'Basic SEO Setup',
-      'Social Media Links'
-    ],
-    included: ['responsive', 'seo', 'contact', 'social']
-  },
-  {
-    id: 'business',
-    name: 'Business Package',
-    description: 'Ideal for growing businesses with content needs',
-    basePrice: 477.90,
-    features: [
-      'Everything in Starter',
-      'Content Management System',
-      'Blog/News Section',
-      'Email Newsletter Setup',
-      'Analytics Integration',
-      'Advanced SEO'
-    ],
-    included: ['responsive', 'seo', 'contact', 'social', 'cms', 'blog', 'newsletter', 'analytics']
-  },
-  {
-    id: 'ecommerce',
-    name: 'E-commerce Package',
-    description: 'Complete online store solution',
-    basePrice: 779.0,
-    features: [
-      'Everything in Business',
-      'Online Store Setup',
-      'Subscription Management',
-      'Paywalled Content',
-      'Payment Processing',
-      'Inventory Management',
-      'Customer Accounts',
-      'Order Management',
-      'Booking System'
-    ],
-    included: ['responsive', 'seo', 'contact', 'social', 'cms', 'blog', 'newsletter', 'analytics', 'ecommerce', 'payments', 'accounts', 'booking', 'subscription', 'paywall']
-  }
-];
+
 
 // Individual features for custom builds
 const customFeatures = [
@@ -191,11 +140,9 @@ const pageRanges = [
 
 const GetQuote: React.FC = () => {
   useScrollReveal();
-    const [formData, setFormData] = useState<QuoteFormData>({
-    selectedPreset: '',
+  const [formData, setFormData] = useState<QuoteFormData>({
     customFeatures: ['base', 'responsive', 'seo'], // Always include all required features
-    numberOfPages: '',
-    buildType: 'preset'
+    numberOfPages: ''
   });
 
   const [estimatedPrice, setEstimatedPrice] = useState(0);
@@ -203,79 +150,34 @@ const GetQuote: React.FC = () => {
 
   const calculatePrice = () => {
     let basePrice = 0;
-    let includedFeatures: string[] = [];
 
-    if (formData.buildType === 'preset' && formData.selectedPreset) {
-      const preset = websitePresets.find(p => p.id === formData.selectedPreset);
-      if (!preset) return 0;
-      
-      basePrice = typeof preset.basePrice === 'number' ? preset.basePrice : 0;
-      includedFeatures = preset.included;
-    } else if (formData.buildType === 'custom') {
-      // Calculate custom build price
-      formData.customFeatures.forEach(featureId => {
-        const feature = customFeatures.find(f => f.id === featureId);
-        if (feature) {
-          basePrice += feature.price;
-        }
-      });    }    // Apply page multiplier and target exact prices
+    // Calculate custom build price
+    formData.customFeatures.forEach(featureId => {
+      const feature = customFeatures.find(f => f.id === featureId);
+      if (feature) {
+        basePrice += feature.price;
+      }
+    });
+
+    // Apply page multiplier and target exact prices
     if (formData.numberOfPages) {
       const pageRange = pageRanges.find(range => range.value === formData.numberOfPages);
       if (pageRange) {
-        if (formData.buildType === 'preset' && formData.selectedPreset) {
-          // Package-specific target prices
-          const packageTargetPrices = {
-            starter: {
-              '1-5': 177.90,
-              '6-15': 217.79,
-              '16-30': 277.90,
-              '31-50': 457.79,
-              '50+': 477.90
-            },
-            business: {
-              '1-5': 477.90,
-              '6-15': 527.90,
-              '16-30': 677.90,
-              '31-50': 1177.90,
-              '50+': 1377.90
-            },
-            ecommerce: {
-              '1-5': 779.00,
-              '6-15': 877.90,
-              '16-30': 977.90,
-              '31-50': 1779.00,
-              '50+': 1977.90
-            }
-          };
-          
-          const packagePrices = packageTargetPrices[formData.selectedPreset as keyof typeof packageTargetPrices];
-          if (packagePrices) {
-            const targetPrice = packagePrices[formData.numberOfPages as keyof typeof packagePrices];
-            if (targetPrice) {
-              basePrice = targetPrice;
-            } else {
-              basePrice = basePrice * pageRange.multiplier;
-            }
-          } else {
-            basePrice = basePrice * pageRange.multiplier;
-          }
+        // Custom build target prices
+        const customTargetPrices = {
+          '1-5': 3077.90,
+          '6-15': 3377.90,
+          '16-30': 3767.79,
+          '31-50': 7377.90,
+          '50+': 7790.00
+        };
+        
+        // Calculate the multiplier needed to reach target price
+        const targetPrice = customTargetPrices[formData.numberOfPages as keyof typeof customTargetPrices];
+        if (targetPrice) {
+          basePrice = targetPrice * (basePrice / 2774.69); // Scale proportionally from base price
         } else {
-          // Custom build target prices (original logic)
-          const customTargetPrices = {
-            '1-5': 3077.90,
-            '6-15': 3377.90,
-            '16-30': 3767.79,
-            '31-50': 7377.90,
-            '50+': 7790.00
-          };
-          
-          // Calculate the multiplier needed to reach target price
-          const targetPrice = customTargetPrices[formData.numberOfPages as keyof typeof customTargetPrices];
-          if (targetPrice) {
-            basePrice = targetPrice * (basePrice / 2774.69); // Scale proportionally from base price
-          } else {
-            basePrice = basePrice * pageRange.multiplier;
-          }
+          basePrice = basePrice * pageRange.multiplier;
         }
       }
     }
@@ -288,21 +190,6 @@ const GetQuote: React.FC = () => {
     setEstimatedPrice(price);
     setShowQuote(price > 0);
   }, [formData]);
-  const handleBuildTypeChange = (type: 'preset' | 'custom') => {
-    setFormData(prev => ({
-      ...prev,
-      buildType: type,
-      selectedPreset: '',
-      customFeatures: ['base', 'responsive', 'seo'] // Reset but keep all required features
-    }));
-  };
-
-  const handlePresetChange = (presetId: string) => {
-    setFormData(prev => ({
-      ...prev,
-      selectedPreset: presetId
-    }));
-  };
   const handleCustomFeatureToggle = (featureId: string) => {
     const feature = customFeatures.find(f => f.id === featureId);
     if (feature?.required) return; // Can't remove any required features
@@ -323,15 +210,10 @@ const GetQuote: React.FC = () => {
   };
 
   const getSelectedFeatures = () => {
-    if (formData.buildType === 'preset' && formData.selectedPreset) {
-      const preset = websitePresets.find(p => p.id === formData.selectedPreset);
-      return preset ? preset.features : [];
-    } else {
-      return formData.customFeatures.map(featureId => {
-        const feature = customFeatures.find(f => f.id === featureId);
-        return feature ? feature.name : '';
-      }).filter(Boolean);
-    }
+    return formData.customFeatures.map(featureId => {
+      const feature = customFeatures.find(f => f.id === featureId);
+      return feature ? feature.name : '';
+    }).filter(Boolean);
   };
 
   const handleGetQuote = () => {
@@ -372,7 +254,7 @@ const GetQuote: React.FC = () => {
             </span>
           </h2>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Choose from our curated packages or build a custom solution that perfectly fits your needs.
+            Build a custom solution that perfectly fits your needs.
           </p>
         </div>
 
@@ -381,124 +263,60 @@ const GetQuote: React.FC = () => {
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 lg:gap-12">
               {/* Build Type Selection */}
               <div className="xl:col-span-2 space-y-8">
-                {/* Preset vs Custom Toggle */}
-                <div className="flex flex-col sm:flex-row gap-4 p-1 bg-dark/50 rounded-xl border border-white/10">
-                  <button
-                    onClick={() => handleBuildTypeChange('preset')}
-                    className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all duration-300 ${
-                      formData.buildType === 'preset'
-                        ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg'
-                        : 'text-gray-400 hover:text-white hover:bg-white/5'
-                    }`}
-                  >
-                    <i className="fas fa-layer-group mr-2"></i>
-                    Choose Package
-                  </button>
-                  <button
-                    onClick={() => handleBuildTypeChange('custom')}
-                    className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all duration-300 ${
-                      formData.buildType === 'custom'
-                        ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white shadow-lg'
-                        : 'text-gray-400 hover:text-white hover:bg-white/5'
-                    }`}
-                  >
-                    <i className="fas fa-cogs mr-2"></i>
-                    Build Custom
-                  </button>
-                </div>
-
-                {/* Preset Selection */}
-                {formData.buildType === 'preset' && (
-                  <div className="space-y-6">
-                    <h3 className="text-2xl font-semibold text-white">Choose Your Package</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {websitePresets.map(preset => (
-                        <div
-                          key={preset.id}
-                          onClick={() => handlePresetChange(preset.id)}
-                          className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
-                            formData.selectedPreset === preset.id
-                              ? 'border-primary-500 bg-primary-500/10'
-                              : 'border-white/10 bg-dark/20 hover:border-white/30 hover:bg-dark/40'
-                          }`}
-                        >
-                          <div className="flex justify-between items-start mb-4">
-                            <h4 className="text-xl font-semibold text-white">{preset.name}</h4>
-                            <span className="text-lg font-bold text-primary-400">
-                              ${preset.basePrice.toFixed(2)}
-                            </span>
-                          </div>
-                          <p className="text-gray-400 mb-4">{preset.description}</p>
-                          <ul className="space-y-2">
-                            {preset.features.map((feature, index) => (
-                              <li key={index} className="flex items-center text-sm text-gray-300">
-                                <i className="fas fa-check text-primary-400 mr-2 text-xs"></i>
-                                {feature}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
                 {/* Custom Feature Selection */}
-                {formData.buildType === 'custom' && (
-                  <div className="space-y-6">
-                    <h3 className="text-2xl font-semibold text-white">Select Your Features</h3>
-                    {['Essential', 'Content', 'E-commerce', 'Marketing', 'Advanced'].map(category => {
-                      const categoryFeatures = customFeatures.filter(f => f.category === category);
-                      if (categoryFeatures.length === 0) return null;
-                      
-                      return (
-                        <div key={category} className="space-y-3">
-                          <h4 className="text-lg font-medium text-white border-b border-white/20 pb-2">
-                            {category}
-                          </h4>
-                          <div className="grid grid-cols-1 gap-3">
-                            {categoryFeatures.map(feature => (
-                              <label
-                                key={feature.id}
-                                className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all duration-200 ${
-                                  feature.required
-                                    ? 'border-primary-500/50 bg-primary-500/5 cursor-not-allowed'
-                                    : formData.customFeatures.includes(feature.id)
-                                    ? 'border-primary-500 bg-primary-500/10'
-                                    : 'border-white/10 bg-dark/20 hover:border-white/30 hover:bg-dark/40'
-                                }`}
-                              >
-                                <div className="flex items-center space-x-3 flex-1">
-                                  <input
-                                    type="checkbox"
-                                    checked={formData.customFeatures.includes(feature.id)}
-                                    onChange={() => handleCustomFeatureToggle(feature.id)}
-                                    disabled={feature.required}
-                                    className="w-4 h-4 text-primary-500 bg-dark/50 border-white/20 rounded focus:ring-primary-500 focus:ring-2"
-                                  />
-                                  <div className="flex-1">
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-white font-medium">{feature.name}</span>
-                                      {feature.required && (
-                                        <span className="text-xs bg-primary-500/20 text-primary-400 px-2 py-1 rounded">
-                                          Required
-                                        </span>
-                                      )}
-                                    </div>
-                                    <p className="text-sm text-gray-400 mt-1">{feature.description}</p>
+                <div className="space-y-6">
+                  <h3 className="text-2xl font-semibold text-white">Select Your Features</h3>
+                  {['Essential', 'Content', 'E-commerce', 'Marketing', 'Advanced'].map(category => {
+                    const categoryFeatures = customFeatures.filter(f => f.category === category);
+                    if (categoryFeatures.length === 0) return null;
+                    
+                    return (
+                      <div key={category} className="space-y-3">
+                        <h4 className="text-lg font-medium text-white border-b border-white/20 pb-2">
+                          {category}
+                        </h4>
+                        <div className="grid grid-cols-1 gap-3">
+                          {categoryFeatures.map(feature => (
+                            <label
+                              key={feature.id}
+                              className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all duration-200 ${
+                                feature.required
+                                  ? 'border-primary-500/50 bg-primary-500/5 cursor-not-allowed'
+                                  : formData.customFeatures.includes(feature.id)
+                                  ? 'border-primary-500 bg-primary-500/10'
+                                  : 'border-white/10 bg-dark/20 hover:border-white/30 hover:bg-dark/40'
+                              }`}
+                            >
+                              <div className="flex items-center space-x-3 flex-1">
+                                <input
+                                  type="checkbox"
+                                  checked={formData.customFeatures.includes(feature.id)}
+                                  onChange={() => handleCustomFeatureToggle(feature.id)}
+                                  disabled={feature.required}
+                                  className="w-4 h-4 text-primary-500 bg-dark/50 border-white/20 rounded focus:ring-primary-500 focus:ring-2"
+                                />
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-white font-medium">{feature.name}</span>
+                                    {feature.required && (
+                                      <span className="text-xs bg-primary-500/20 text-primary-400 px-2 py-1 rounded">
+                                        Required
+                                      </span>
+                                    )}
                                   </div>
+                                  <p className="text-sm text-gray-400 mt-1">{feature.description}</p>
                                 </div>
-                                <span className="text-sm font-medium text-gray-300 ml-4">
-                                  {feature.price === 0 ? 'Free' : `+$${feature.price.toFixed(2)}`}
-                                </span>
-                              </label>
-                            ))}
-                          </div>
+                              </div>
+                              <span className="text-sm font-medium text-gray-300 ml-4">
+                                {feature.price === 0 ? 'Free' : `+$${feature.price.toFixed(2)}`}
+                              </span>
+                            </label>
+                          ))}
                         </div>
-                      );
-                    })}
-                  </div>
-                )}
+                      </div>
+                    );
+                  })}
+                </div>
 
                 {/* Project Details */}
                 <div className="space-y-6 pt-6 border-t border-white/10">
@@ -569,10 +387,7 @@ const GetQuote: React.FC = () => {
                     <div className="bg-dark/30 border border-white/10 rounded-xl p-6 text-center">
                       <i className="fas fa-calculator text-4xl text-gray-500 mb-4"></i>
                       <p className="text-gray-400">
-                        {formData.buildType === 'preset' 
-                          ? 'Select a package to see pricing'
-                          : 'Select features to see pricing'
-                        }
+                        Select features to see pricing
                       </p>
                     </div>
                   )}
