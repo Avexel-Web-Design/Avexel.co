@@ -244,6 +244,15 @@ const Portfolio = () => {
             caseStudyUrl=""
             teamName="Harbor Soccer Inc."
           />
+          <ProjectCard
+            title="Northland Surveying & Mapping"
+            description="A professional website for Northern Michigan's trusted surveying company, showcasing boundary surveys, topographic mapping, and construction layout services. Features detailed service descriptions, professional credentials, and contact information for clients across the Northern Lower Peninsula and Eastern Upper Peninsula."
+            tags={["Professional Services", "Surveying"]}
+            image="/NorthlandLogo.png"
+            websiteUrl="https://northlandsm.com"
+            caseStudyUrl=""
+            teamName="Neil Holshoe"
+          />
           <div className="relative glass-morphism p-10 rounded-xl border border-white/5 text-center reveal">
             <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
               Your Project Could Be Next
