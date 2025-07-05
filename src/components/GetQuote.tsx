@@ -127,13 +127,6 @@ const customFeatures = [
     category: 'Marketing'
   },
   { 
-    id: 'chat', 
-    name: 'Live Chat Support', 
-    price: 127.90, 
-    description: 'Automated customer support chat',
-    category: 'Marketing'
-  },
-  { 
     id: 'database', 
     name: 'Custom Database & Admin Panel', 
     price: 77.90, 
@@ -203,7 +196,7 @@ const GetQuote: React.FC = () => {
         // Calculate the multiplier needed to reach target price
         const targetPrice = customTargetPrices[formData.numberOfPages as keyof typeof customTargetPrices];
         if (targetPrice) {
-          basePrice = targetPrice * (basePrice / 3194.08); // Scale proportionally from base price
+          basePrice = targetPrice * (basePrice / 3066.18); // Scale proportionally from base price
         } else {
           basePrice = basePrice * pageRange.multiplier;
         }
@@ -388,7 +381,7 @@ const GetQuote: React.FC = () => {
                       
                       <div className="border-t border-white/10 pt-4">
                         <h4 className="text-lg font-semibold text-white mb-3">Includes:</h4>
-                        <ul className="space-y-2 text-sm text-gray-300 max-h-48 overflow-y-auto">
+                        <ul className="space-y-2 text-sm text-gray-300">
                           {getSelectedFeatures().map((feature, index) => (
                             <li key={index} className="flex items-center">
                               <i className="fas fa-check text-primary-400 mr-2"></i>
