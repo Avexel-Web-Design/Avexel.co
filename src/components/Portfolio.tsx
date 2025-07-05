@@ -222,7 +222,7 @@ const Portfolio = () => {
           <ProjectCard
             title="FRC Team 7790"
             description="An interactive website for Baywatch Robotics showcasing our team, robot designs, competition history, and STEM outreach programs. Features include a team member directory, sponsorship information, and resources for aspiring robotics enthusiasts."
-            tags={[]}
+            tags={["Charity", "STEM", "Community", "Robotics"]}
             image="/baywatchLogo.png"
             websiteUrl="https://frc7790.com"
             caseStudyUrl=""
@@ -234,6 +234,24 @@ const Portfolio = () => {
             image="/Nadia.jpg"
             websiteUrl="https://nadia-elmagrabi.pages.dev"
             caseStudyUrl=""
+          />
+          <ProjectCard
+            title="Harbor Soccer Inc."
+            description="A comprehensive website for Harbor Springs' youth soccer organization, featuring recreational and travel soccer programs for ages 4-18. Includes registration systems, team rosters, event calendars, sponsorship opportunities, and referee recruitment. Supporting the mission to promote soccer and enhance each child's skill development in a fun, safe environment."
+            tags={["Non-Profit", "Youth Sports", "Community", "501(c)3"]}
+            image="/HarborSoccerLogo.png"
+            websiteUrl="https://harborsoccerinc.com"
+            caseStudyUrl=""
+            teamName="Harbor Soccer Inc."
+          />
+          <ProjectCard
+            title="Northland Surveying & Mapping"
+            description="A professional website for Northern Michigan's trusted surveying company, showcasing boundary surveys, topographic mapping, and construction layout services. Features detailed service descriptions, professional credentials, and contact information for clients across the Northern Lower Peninsula and Eastern Upper Peninsula."
+            tags={["Professional Services", "Surveying"]}
+            image="/NorthlandLogo.png"
+            websiteUrl="https://northlandsm.com"
+            caseStudyUrl=""
+            teamName="Neil Holshoe"
           />
           <div className="relative glass-morphism p-10 rounded-xl border border-white/5 text-center reveal">
             <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
