@@ -242,7 +242,6 @@ const Portfolio = () => {
             image="/HarborSoccerLogo.png"
             websiteUrl="https://harborsoccerinc.com"
             caseStudyUrl=""
-            teamName="Harbor Soccer Inc."
           />
           <ProjectCard
             title="Northland Surveying & Mapping"
@@ -251,7 +250,6 @@ const Portfolio = () => {
             image="/NorthlandLogo.png"
             websiteUrl="https://northlandsm.com"
             caseStudyUrl=""
-            teamName="Neil Holshoe"
           />
           <div className="relative glass-morphism p-10 rounded-xl border border-white/5 text-center reveal">
             <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
