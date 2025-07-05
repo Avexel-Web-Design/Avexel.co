@@ -22,7 +22,7 @@ const customFeatures = [
     id: 'responsive', 
     name: 'Mobile Responsive Design',
     price: 0, 
-    description: 'Make your website look great on small screens too',
+    description: 'Make your website look great on all devices',
     category: 'Essential',
     required: true
   },
@@ -35,32 +35,60 @@ const customFeatures = [
     required: true
   },
   { 
+    id: 'security', 
+    name: 'Security Features', 
+    price: 0, 
+    description: 'SSL certificates and basic security protection',
+    category: 'Essential',
+    required: true
+  },
+  { 
+    id: 'analytics', 
+    name: 'Analytics Setup', 
+    price: 47.79, 
+    description: 'Google Analytics and Cloudflare tracking',
+    category: 'Essential'
+  },
+  { 
     id: 'contact', 
     name: 'Contact Forms', 
     price: 27.79, 
-    description: 'Your customers can contact you',
+    description: 'Let your customers contact you',
     category: 'Essential'
   },
   { 
     id: 'blog', 
     name: 'Blog/News System', 
     price: 377.90, 
-    description: 'Platform for your blog including a no code way to write content.',
+    description: 'Platform for your blog including a no code way to write content',
     category: 'Content'
   },
-
+  { 
+    id: 'booking', 
+    name: 'Booking System', 
+    price: 177.90, 
+    description: 'Online appointment/reservation system',
+    category: 'Content'
+  },
+  { 
+    id: 'crm', 
+    name: 'Customer Relationship Management', 
+    price: 277.90, 
+    description: 'Customer data management and tracking',
+    category: 'Content'
+  },
   { 
     id: 'ecommerce', 
     name: 'E-commerce Store', 
-    price: 577.90, 
-    description: 'Complete online store functionality',
+    price: 377.90, 
+    description: 'Online store with product catalog and shopping cart',
     category: 'E-commerce'
   },
   { 
     id: 'payments', 
     name: 'Payment Processing', 
     price: 177.90, 
-    description: 'Let your customes pay for your products',
+    description: 'Accept payments from customers (required for e-commerce)',
     category: 'E-commerce'
   },
   {
@@ -71,10 +99,10 @@ const customFeatures = [
     category: 'E-commerce'
   },
   { 
-    id: 'paywall', 
-    name: 'Paywalled Content', 
-    price: 90, 
-    description: 'Prevent people from freely accessing content.',
+    id: 'inventory', 
+    name: 'Inventory Management', 
+    price: 177.90, 
+    description: 'Stock tracking and product management',
     category: 'E-commerce'
   },
   { 
@@ -83,13 +111,6 @@ const customFeatures = [
     price: 377.90, 
     description: 'Customer registration and login',
     category: 'E-commerce'
-  },
-  { 
-    id: 'booking', 
-    name: 'Booking System', 
-    price: 177.90, 
-    description: 'Online appointment/reservation system',
-    category: 'E-Commerce'
   },
   { 
     id: 'newsletter', 
@@ -106,26 +127,33 @@ const customFeatures = [
     category: 'Marketing'
   },
   { 
+    id: 'chat', 
+    name: 'Live Chat Support', 
+    price: 127.90, 
+    description: 'Automated customer support chat',
+    category: 'Marketing'
+  },
+  { 
     id: 'database', 
-    name: 'Databases and Admin Panel', 
+    name: 'Custom Database & Admin Panel', 
     price: 77.90, 
-    description: 'Store information about users, products, and have a way to view and manage it',
-    category: 'Essential'
+    description: 'Store information and manage it with an admin panel',
+    category: 'Advanced'
   },
   { 
     id: 'api', 
     name: 'API Integrations', 
     price: 377.90, 
-    description: 'Provide real time information from other platforms.',
+    description: 'Provide real time information from other platforms',
     category: 'Advanced'
   },
   { 
     id: 'multilang', 
-    name: 'Multi-language Support (Spanish)', 
-    price: 277.90, 
+    name: 'Multi-language Support', 
+    price: 177.90, 
     description: 'Support for multiple languages (Spanish only. Unless you\'re okay with questionable translations)',
     category: 'Advanced'
-  }
+  },
 ];
 
 // The multiplier property in each page range is used to scale the base price according to the number of pages selected.
@@ -141,7 +169,7 @@ const pageRanges = [
 const GetQuote: React.FC = () => {
   useScrollReveal();
   const [formData, setFormData] = useState<QuoteFormData>({
-    customFeatures: ['base', 'responsive', 'seo'], // Always include all required features
+    customFeatures: ['base', 'responsive', 'seo', 'security'], // Always include all required features
     numberOfPages: ''
   });
 
@@ -165,8 +193,8 @@ const GetQuote: React.FC = () => {
       if (pageRange) {
         // Custom build target prices
         const customTargetPrices = {
-          '1-5': 3077.90,
-          '6-15': 3377.90,
+          '1-5': 3277.90,
+          '6-15': 3477.90,
           '16-30': 3767.79,
           '31-50': 7377.90,
           '50+': 7790.00
@@ -175,7 +203,7 @@ const GetQuote: React.FC = () => {
         // Calculate the multiplier needed to reach target price
         const targetPrice = customTargetPrices[formData.numberOfPages as keyof typeof customTargetPrices];
         if (targetPrice) {
-          basePrice = targetPrice * (basePrice / 2774.69); // Scale proportionally from base price
+          basePrice = targetPrice * (basePrice / 3194.08); // Scale proportionally from base price
         } else {
           basePrice = basePrice * pageRange.multiplier;
         }
@@ -266,7 +294,7 @@ const GetQuote: React.FC = () => {
                 {/* Custom Feature Selection */}
                 <div className="space-y-6">
                   <h3 className="text-2xl font-semibold text-white">Select Your Features</h3>
-                  {['Essential', 'Content', 'E-commerce', 'Marketing', 'Advanced'].map(category => {
+                  {['Essential', 'Content', 'E-commerce', 'Business Tools', 'Marketing', 'Advanced'].map(category => {
                     const categoryFeatures = customFeatures.filter(f => f.category === category);
                     if (categoryFeatures.length === 0) return null;
                     
