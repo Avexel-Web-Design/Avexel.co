@@ -168,6 +168,21 @@ const GetQuote: React.FC = () => {
 
   const [estimatedPrice, setEstimatedPrice] = useState(0);
   const [showQuote, setShowQuote] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+    'Essential': true, // Keep Essential expanded by default since it has required features
+    'Content': false,
+    'E-commerce': false,
+    'Business Tools': false,
+    'Marketing': false,
+    'Advanced': false
+  });
+
+  const toggleSection = (section: string) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
 
   const calculatePrice = () => {
     let basePrice = 0;
@@ -286,53 +301,81 @@ const GetQuote: React.FC = () => {
               <div className="xl:col-span-2 space-y-8">
                 {/* Custom Feature Selection */}
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-semibold text-white">Select Your Features</h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-2xl font-semibold text-white">Select Your Features</h3>
+                    <div className="text-sm text-gray-400">
+                      {formData.customFeatures.length} feature{formData.customFeatures.length !== 1 ? 's' : ''} selected
+                    </div>
+                  </div>
                   {['Essential', 'Content', 'E-commerce', 'Business Tools', 'Marketing', 'Advanced'].map(category => {
                     const categoryFeatures = customFeatures.filter(f => f.category === category);
                     if (categoryFeatures.length === 0) return null;
                     
+                    const isExpanded = expandedSections[category];
+                    const selectedCount = categoryFeatures.filter(f => formData.customFeatures.includes(f.id)).length;
+                    
                     return (
-                      <div key={category} className="space-y-3">
-                        <h4 className="text-lg font-medium text-white border-b border-white/20 pb-2">
-                          {category}
-                        </h4>
-                        <div className="grid grid-cols-1 gap-3">
-                          {categoryFeatures.map(feature => (
-                            <label
-                              key={feature.id}
-                              className={`flex items-center justify-between p-4 rounded-lg border cursor-pointer transition-all duration-200 ${
-                                feature.required
-                                  ? 'border-primary-500/50 bg-primary-500/5 cursor-not-allowed'
-                                  : formData.customFeatures.includes(feature.id)
-                                  ? 'border-primary-500 bg-primary-500/10'
-                                  : 'border-white/10 bg-dark/20 hover:border-white/30 hover:bg-dark/40'
-                              }`}
-                            >
-                              <div className="flex items-center space-x-3 flex-1">
-                                <input
-                                  type="checkbox"
-                                  checked={formData.customFeatures.includes(feature.id)}
-                                  onChange={() => handleCustomFeatureToggle(feature.id)}
-                                  disabled={feature.required}
-                                  className="w-4 h-4 text-primary-500 bg-dark/50 border-white/20 rounded focus:ring-primary-500 focus:ring-2"
-                                />
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2">
-                                    <span className="text-white font-medium">{feature.name}</span>
-                                    {feature.required && (
-                                      <span className="text-xs bg-primary-500/20 text-primary-400 px-2 py-1 rounded">
-                                        Required
-                                      </span>
-                                    )}
-                                  </div>
-                                  <p className="text-sm text-gray-400 mt-1">{feature.description}</p>
-                                </div>
-                              </div>
-                              <span className="text-sm font-medium text-gray-300 ml-4">
-                                {feature.price === 0 ? 'Free' : `+$${feature.price.toFixed(2)}`}
+                      <div key={category} className="border border-white/10 rounded-lg overflow-hidden bg-dark/20">
+                        <button
+                          onClick={() => toggleSection(category)}
+                          className="w-full flex items-center justify-between p-4 text-left hover:bg-white/5 transition-colors duration-200"
+                        >
+                          <div className="flex items-center gap-3">
+                            <h4 className="text-lg font-medium text-white">
+                              {category}
+                            </h4>
+                            {selectedCount > 0 && (
+                              <span className="bg-primary-500/20 text-primary-400 text-xs px-2 py-1 rounded-full">
+                                {selectedCount} selected
                               </span>
-                            </label>
-                          ))}
+                            )}
+                          </div>
+                          <i className={`fas fa-chevron-down text-gray-400 transition-transform duration-200 ${
+                            isExpanded ? 'rotate-180' : ''
+                          }`}></i>
+                        </button>
+                        
+                        <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                          isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+                        }`}>
+                          <div className="p-4 pt-0 space-y-3 border-t border-white/10">
+                            {categoryFeatures.map(feature => (
+                              <label
+                                key={feature.id}
+                                className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all duration-200 ${
+                                  feature.required
+                                    ? 'border-primary-500/50 bg-primary-500/5 cursor-not-allowed'
+                                    : formData.customFeatures.includes(feature.id)
+                                    ? 'border-primary-500 bg-primary-500/10'
+                                    : 'border-white/10 bg-dark/20 hover:border-white/30 hover:bg-dark/40'
+                                }`}
+                              >
+                                <div className="flex items-center space-x-3 flex-1">
+                                  <input
+                                    type="checkbox"
+                                    checked={formData.customFeatures.includes(feature.id)}
+                                    onChange={() => handleCustomFeatureToggle(feature.id)}
+                                    disabled={feature.required}
+                                    className="w-4 h-4 text-primary-500 bg-dark/50 border-white/20 rounded focus:ring-primary-500 focus:ring-2"
+                                  />
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-white font-medium">{feature.name}</span>
+                                      {feature.required && (
+                                        <span className="text-xs bg-primary-500/20 text-primary-400 px-2 py-1 rounded">
+                                          Required
+                                        </span>
+                                      )}
+                                    </div>
+                                    <p className="text-sm text-gray-400 mt-1">{feature.description}</p>
+                                  </div>
+                                </div>
+                                <span className="text-sm font-medium text-gray-300 ml-4">
+                                  {feature.price === 0 ? 'Free' : `+$${feature.price.toFixed(2)}`}
+                                </span>
+                              </label>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     );
