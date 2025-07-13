@@ -45,14 +45,14 @@ const customFeatures = [
   { 
     id: 'analytics', 
     name: 'Analytics Setup', 
-    price: 47.79, 
+    price: 27.79, 
     description: 'Google Analytics and Cloudflare tracking',
     category: 'Essential'
   },
   { 
     id: 'contact', 
     name: 'Contact Forms', 
-    price: 27.79, 
+    price: 47.79, 
     description: 'Let your customers contact you',
     category: 'Essential'
   },
