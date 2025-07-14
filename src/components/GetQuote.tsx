@@ -456,8 +456,24 @@ const GetQuote: React.FC = () => {
                     </div>
                   )}
                   
-                  <div className="mt-6 text-xs text-gray-500 text-center">
-                    <p>This is an estimate. Final pricing may vary based on specific requirements and complexity. This also does not include 3rd Party fees and payments required to host your website, the domain, and fees for larger than usual databases and higher than usual user interaction with the website. This can include, large levels of user accounts, lots of contacting via email, or other things. The payment processing has a 2.9% + 30 cents fee that is pretty typical of that service. All web hosting and database storage is done exclusively through CloudFlare unless you want to pay more, have a lower quality product, and annoy the developers. These are not all of the ways you could end up paying more, but these are the most likely. Also keep in mind that while it seems like you are more likely to end up paying more, there is also a rather high probability that you pay much less than the automated quote says. If you are genuinely interested in our services, we encourage you to reach out for a more accurate quote, and so that we can do whats best for you.</p>
+                  <div className="mt-6 space-y-4">
+                    {/* Payment Structure */}
+                    <div className="bg-gradient-to-r from-primary-500/5 to-secondary-500/5 border border-primary-500/20 rounded-lg p-4">
+                      <h4 className="text-sm font-semibold text-primary-400 mb-2 flex items-center gap-2">
+                        <i className="fas fa-credit-card"></i>
+                        Payment Structure
+                      </h4>
+                      <div className="text-xs text-gray-300 space-y-1">
+                        <p>• <strong>Initial website development:</strong> One-time payment upon project completion</p>
+                        <p>• <strong>Content updates:</strong> Billed hourly at $25/hour for future modifications</p>
+                        <p>• <strong>Bug fixes:</strong> Provided at no additional cost as part of our quality guarantee</p>
+                      </div>
+                    </div>
+
+                    {/* Pricing Disclaimer */}
+                    <div className="text-xs text-gray-500 text-center">
+                      <p>This is an estimate. Final pricing may vary based on specific requirements and complexity. This also does not include 3rd Party fees and payments required to host your website, the domain, and fees for larger than usual databases and higher than usual user interaction with the website. This can include, large levels of user accounts, lots of contacting via email, or other things. The payment processing has a 2.9% + 30 cents fee that is pretty typical of that service. All web hosting and database storage is done exclusively through CloudFlare unless you want to pay more, have a lower quality product, and annoy the developers. These are not all of the ways you could end up paying more, but these are the most likely. Also keep in mind that while it seems like you are more likely to end up paying more, there is also a rather high probability that you pay much less than the automated quote says. If you are genuinely interested in our services, we encourage you to reach out for a more accurate quote, and so that we can do whats best for you.</p>
+                    </div>
                   </div>
                 </div>
               </div>
