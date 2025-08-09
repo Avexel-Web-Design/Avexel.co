@@ -75,7 +75,7 @@ const Contact = () => {
   
   const handleEmailClick = (e) => {
     e.preventDefault();
-    const email = "contact@avexel.com";
+    const email = "contact@avexel.co";
     navigator.clipboard.writeText(email).then(() => {
       setShowCopied(true);
       setTimeout(() => setShowCopied(false), 2000); // Hide after 2 seconds
@@ -161,14 +161,14 @@ const Contact = () => {
               </p>
               <div className="space-y-4">
                 <a
-                  href="mailto:contact@avexel.com"
+                  href="mailto:contact@avexel.co"
                   onClick={handleEmailClick}
                   className="group flex items-center gap-3 text-gray-300 hover:text-white transition-colors relative"
                 >
                   <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <i className="fas fa-envelope text-primary-400 group-hover:scale-110 transition-transform duration-300"></i>
                   </div>
-                  <span className="group-hover:text-primary-300 transition-colors duration-300">contact@avexel.com</span>
+                  <span className="group-hover:text-primary-300 transition-colors duration-300">contact@avexel.co</span>
                   <span
                     className={`absolute -top-8 left-0 px-2 py-1 text-sm bg-primary-500 text-white rounded-md transition-opacity duration-200 ${
                       showCopied ? "opacity-100" : "opacity-0"
