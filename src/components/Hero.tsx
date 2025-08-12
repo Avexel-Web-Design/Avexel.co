@@ -46,7 +46,7 @@ const Hero = () => {
 
           <p className="text-base xs:text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-10 max-w-3xl mx-auto">
             Local Harbor Springs students creating websites for local businesses, causes,
-            and efforts. We create an innovative web precesnce for you while
+            and efforts. We create an innovative web presence for you while
             supporting the world of innovation and STEM in our community.
           </p>
 
