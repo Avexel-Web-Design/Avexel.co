@@ -51,7 +51,7 @@ function App() {
       <main className="relative">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/communications-guide" element={<CommunicationsGuide />} />
+          <Route path="/communications" element={<CommunicationsGuide />} />
         </Routes>
       </main>      <div className="relative z-10">
         <Footer />
