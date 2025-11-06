@@ -24,9 +24,9 @@
 
 **Avexel Web Design** is a student-led web development initiative run by members of FRC Team 7790 (Baywatch Robotics) from Harbor Springs High School, Michigan. Our team consists of:
 
-- **Ryan Latimer** - Lead Developer (React/Frontend specialist)
-- **Gavin Moceri** - Technical Lead (Backend/Architecture specialist)
-- **Conner Breckenfeld** - Design Specialist (UI/UX focus)
+- **Ryan Latimer** - Lead Developer
+- **Gavin Moceri** - Lead Developer
+- **Conner Breckenfeld** - Communications Specialist
 
 ### Our Mission
 We create exceptional digital experiences while funding our robotics activities and supporting local businesses. Every project directly supports STEM education and helps cultivate tomorrow's technology leaders.

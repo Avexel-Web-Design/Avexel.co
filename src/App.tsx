@@ -9,6 +9,7 @@ import Portfolio from "./components/Portfolio";
 import GetQuote from "./components/GetQuote";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import CommunicationsGuide from "./components/CommunicationsGuide";
 import "./App.css";
 import "./assets/styles/main.css";
 
@@ -50,6 +51,7 @@ function App() {
       <main className="relative">
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/communications-guide" element={<CommunicationsGuide />} />
         </Routes>
       </main>      <div className="relative z-10">
         <Footer />
