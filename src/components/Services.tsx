@@ -1,5 +1,8 @@
 import React from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
+import AnimatedStepper from "./AnimatedStepper";
+import PixelCard from "./PixelCard";
+import AnimatedOrb from "./AnimatedOrb";
 
 // Updated glowing border with positioning fixes and reduced blur
 const glowingBorderStyles = `
@@ -62,24 +65,24 @@ const ServiceCard = ({ icon, title, description, comingSoon = false }) => {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: glowingBorderStyles }} />
-      <div className="group relative service-card">
+      <PixelCard className="group service-card h-full">
         <div className="relative flex flex-col h-full bg-dark backdrop-blur-sm p-8 rounded-xl border border-white/5 transition-colors duration-300">
           <div className="mb-6 relative">
             <div className="absolute inset-0 bg-gradient-radial from-primary-500/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 animate-pulse-slow transition-opacity duration-300"></div>
-            <div className="relative w-16 h-16 rounded-xl bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
+            <div className="relative w-16 h-16 rounded-xl bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12">
               <i
-                className={`fas ${icon} text-3xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent`}
+                className={`fas ${icon} text-3xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300`}
               ></i>
             </div>
           </div>
 
           <div className="flex-grow">
             <div className="flex items-center gap-3 mb-4">
-              <h3 className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
                 {title}
               </h3>
               {comingSoon && (
-                <span className="px-2.5 py-0.5 text-xs font-semibold bg-secondary-500/10 text-secondary-400 rounded-full border border-secondary-500/20">
+                <span className="px-2.5 py-0.5 text-xs font-semibold bg-secondary-500/10 text-secondary-400 rounded-full border border-secondary-500/20 animate-pulse">
                   Coming Soon
                 </span>
               )}
@@ -93,7 +96,7 @@ const ServiceCard = ({ icon, title, description, comingSoon = false }) => {
             <div className="flex items-center text-primary-400 group-hover:text-primary-300 transition-colors duration-300">
               <span className="mr-2 font-medium">Learn more</span>
               <svg
-                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-2 group-hover:scale-110"
                 viewBox="0 0 24 24"
                 fill="none"
               >
@@ -108,7 +111,7 @@ const ServiceCard = ({ icon, title, description, comingSoon = false }) => {
             </div>
           </div>
         </div>
-      </div>
+      </PixelCard>
     </>
   );
 };
@@ -146,11 +149,18 @@ const Services = () => {
     <section
       id="services"
       className="py-20 bg-black relative overflow-hidden scroll-mt-16"
-    >
-      {/* Decorative Background Elements */}
+    >      {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-1/3 bg-grid-pattern opacity-5"></div>
       <div className="absolute top-1/4 right-1/6 w-64 h-64 border border-white/5 animate-spin-slow"></div>
       <div className="absolute bottom-1/3 left-1/5 w-48 h-48 border border-white/5 rounded-full animate-spin-slow-reverse"></div>
+
+      {/* Floating Orbs */}
+      <div className="absolute top-1/3 left-1/12 opacity-15">
+        <AnimatedOrb size="sm" hue={220} hoverIntensity={0.1} />
+      </div>
+      <div className="absolute bottom-1/4 right-1/8 opacity-20">
+        <AnimatedOrb size="md" hue={260} hoverIntensity={0.15} />
+      </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-12 reveal stagger-reveal">
@@ -161,8 +171,7 @@ const Services = () => {
             Services We Provide
           </h2>
           <p className="text-lg text-gray-300">
-            Professional web solutions crafted by passionate student developers,
-            supporting the future of FIRST Robotics Team 7790.
+            Professional web solutions crafted by passionate student developers, for the lowest prices and of the highest quality.
           </p>
         </div>
 
@@ -189,48 +198,76 @@ const Services = () => {
           <ServiceCard
             icon="fa-tools"
             title="Website Maintenance"
-            description="Keep your digital presence running smoothly with our reliable maintenance services. We handle everything from security updates and performance optimization to content updates, letting you focus on what matters most."
+            description="Not everyone has the time or expertise to be a programmer. We offer ongoing support and maintenance services to keep your website up to date. We also provide an easy way for you to make changes to your site in seconds without ever touching code."
           />
-        </div>
-
-        {/* Process Section */}
+        </div>        {/* Process Section with Enhanced Stepper */}
         <div className="mt-20 reveal">
           <h3 className="text-3xl font-bold mb-16 text-center bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             Our Approach
           </h3>
 
-          <div className="relative glass-morphism p-8 lg:p-12 rounded-xl border border-white/5">
-            {/* Decorative background for process section */}
-            <div className="absolute inset-0 overflow-hidden rounded-xl">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-primary-500/5 to-transparent opacity-60 blur-xl"></div>
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-radial from-secondary-500/5 to-transparent opacity-60 blur-xl"></div>
-            </div>
-
-            <div className="relative z-10 space-y-12">
-              <ProcessStep
-                number="1"
-                title="Discovery & Planning"
-                description="We begin with an in-depth conversation to understand your vision, goals, and requirements. Our flexible scheduling ensures we can meet at a time that works best for you, whether after school or on weekends."
-              />
-
-              <ProcessStep
-                number="2"
-                title="Design & Collaboration"
-                description="We transform your ideas into visual concepts, creating mockups that align with your brand. Through collaborative feedback, we refine the design until it perfectly matches your vision."
-              />
-
-              <ProcessStep
-                number="3"
-                title="Development & Quality Assurance"
-                description="Our development team brings your website to life, implementing modern best practices and rigorous testing across all devices and browsers to ensure a flawless user experience."
-              />
-
-              <ProcessStep
-                number="4"
-                title="Launch & Ongoing Support"
-                description="Once your site meets our quality standards, we guide you through the launch process and provide comprehensive training. We remain available for support, ensuring your continued success in the digital space."
-              />
-            </div>
+          <div className="relative">            <AnimatedStepper
+              autoPlay={false}
+              steps={[
+                {
+                  title: "Discovery & Planning",
+                  content: (
+                    <div className="space-y-4">
+                      <p className="text-gray-300 leading-relaxed">
+                        We begin by getting to know you and your business. We are people, and we value personal connections. We want to make sure that our partnership is everything you want it to be.
+                      </p>
+                      <div className="flex items-center gap-2 text-primary-400">
+                        <i className="fas fa-lightbulb"></i>
+                        <span className="text-sm">Understanding your vision and goals</span>
+                      </div>
+                    </div>
+                  )
+                },
+                {
+                  title: "Design & Collaboration",
+                  content: (
+                    <div className="space-y-4">
+                      <p className="text-gray-300 leading-relaxed">
+                        We'll prototype an idea of a design, and initiate an ongoing dialogue with you to ensure that what we do fits with what you want. We value your input, and will never say no to your ideas.
+                      </p>
+                      <div className="flex items-center gap-2 text-primary-400">
+                        <i className="fas fa-palette"></i>
+                        <span className="text-sm">Collaborative design process</span>
+                      </div>
+                    </div>
+                  )
+                },
+                {
+                  title: "Development & Quality Assurance",
+                  content: (
+                    <div className="space-y-4">
+                      <p className="text-gray-300 leading-relaxed">
+                        We are addicted to quality and perfection. Our team will work tirelessly to bring you a website that is not only functional and fitting for your business, but one that is flawless and long-lasting.
+                      </p>
+                      <div className="flex items-center gap-2 text-primary-400">
+                        <i className="fas fa-code"></i>
+                        <span className="text-sm">Clean, efficient, and tested code</span>
+                      </div>
+                    </div>
+                  )
+                },
+                {
+                  title: "Launch & Ongoing Support",
+                  content: (
+                    <div className="space-y-4">
+                      <p className="text-gray-300 leading-relaxed">
+                        Once your website is ready and live, we don't just disappear. We offer ongoing support to ensure your site remains up-to-date, and provide ways for you to make changes without needing to know how to code.
+                      </p>
+                      <div className="flex items-center gap-2 text-primary-400">
+                        <i className="fas fa-rocket"></i>
+                        <span className="text-sm">Continued partnership and support</span>
+                      </div>
+                    </div>
+                  )
+                }
+              ]}
+              className="max-w-2xl mx-auto"
+            />
           </div>
         </div>
 
@@ -246,7 +283,7 @@ const Services = () => {
                 (FRC Team 7790), a competitive high school robotics team from
                 Harbor Springs, Michigan. Your project helps fund our robot
                 parts, competition registration fees, travel expenses, and STEM
-                outreach activities in our community.
+                outreach activities in our community. Our team is comprised solely of members of this team. Members who know that your support is what allows us to excel, and what has allowed us in the past to compete at an international level.
               </p>
             </div>
 

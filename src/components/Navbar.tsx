@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { HashLink } from "react-router-hash-link";
 import MobileMenu from "./MobileMenu";
-// Import the logo image
-import logoImage from "/Logo-nobg-sm.png";
-
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -16,6 +13,7 @@ const Navbar = () => {
     about: useRef(null),
     services: useRef(null),
     work: useRef(null),
+    quote: useRef(null),
     contact: useRef(null),
   });
 
@@ -30,11 +28,15 @@ const Navbar = () => {
   useEffect(() => {
     const currentTab = hoveredTab || activeTab;
     const tabElement = tabRefs.current[currentTab]?.current;
+    const navElement = navRef.current;
 
-    if (tabElement) {
+    if (tabElement && navElement) {
+      const navRect = navElement.getBoundingClientRect();
+      const tabRect = tabElement.getBoundingClientRect();
+      
       setHighlightStyle({
-        left: tabElement.offsetLeft,
-        width: tabElement.offsetWidth,
+        left: tabRect.left - navRect.left - tabElement.parentElement.offsetLeft,
+        width: tabRect.width,
         opacity: 1,
       });
     }
@@ -53,6 +55,7 @@ const Navbar = () => {
         "about",
         "capabilities",
         "work",
+        "quote",
         "contact",
       ];
       for (let i = sections.length - 1; i >= 0; i--) {
@@ -99,17 +102,17 @@ const Navbar = () => {
                 <div className="relative w-10 h-10 transition-all duration-500 group-hover:scale-110">
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-500/30 to-secondary-500/30 animate-pulse-slow"></div>
                   <img
-                    src={logoImage}
+                    src="/Logo-nobg-sm.png"
                     alt="Avexel"
                     className="relative w-full h-full drop-shadow-glow"
                   />
                 </div>
               </HashLink>
 
-              <div className="ml-8 flex items-center gap-1 relative">
+              <div className="ml-8 flex items-center gap-0 relative">
                 {/* Moving highlight element */}
                 <div
-                  className="absolute top-0 rounded-full bg-gradient-to-r from-primary-500/80 to-secondary-500/80 h-10 shadow-lg transition-all duration-300 ease-out -z-0"
+                  className="absolute top-0 rounded-full bg-gradient-to-r from-primary-500/80 to-secondary-500/80 h-10 shadow-lg transition-all duration-200 ease-out -z-0"
                   style={{
                     left: `${highlightStyle.left}px`,
                     width: `${highlightStyle.width}px`,
@@ -124,6 +127,7 @@ const Navbar = () => {
                   "about",
                   "capabilities",
                   "work",
+                  "quote",
                   "contact",
                 ].map((tab) => (
                   <TabLink
@@ -159,7 +163,7 @@ const Navbar = () => {
               >
                 <div className="relative w-8 h-8 transition-all duration-500 group-hover:scale-110">
                   <img
-                    src={logoImage}
+                    src="/Logo-nobg-sm.png"
                     alt="Avexel"
                     className="relative w-full h-full drop-shadow-glow"
                   />
@@ -186,7 +190,17 @@ const Navbar = () => {
 };
 
 // Tab link component with improved design for sliding highlight
-const TabLink = ({
+interface TabLinkProps {
+  to: string;
+  label: string;
+  tabRef: React.RefObject<any>;
+  isActive: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+  onClick: () => void;
+}
+
+const TabLink: React.FC<TabLinkProps> = ({
   to,
   label,
   tabRef,

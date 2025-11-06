@@ -1,6 +1,8 @@
 import React from "react";
 import useCounterAnimation from "../hooks/useCounterAnimation";
 import useScrollReveal from "../hooks/useScrollReveal";
+import PixelCard from "./PixelCard";
+import AnimatedOrb from "./AnimatedOrb";
 
 const CapabilityCard = ({
   icon,
@@ -11,46 +13,45 @@ const CapabilityCard = ({
   startValue = 0,
 }) => {
   return (
-    <div className="group relative">
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500"></div>
-      <div className="relative h-full bg-dark backdrop-blur-sm p-8 rounded-xl border border-white/5 transition-all duration-500 group-hover:translate-y-[-2px]">
-        {/* Icon with animated background */}
-        <div className="mb-6 relative">
-          <div className="absolute inset-0 bg-gradient-radial from-primary-500/10 to-transparent rounded-xl animate-pulse-slow"></div>
-          <div className="relative w-16 h-16 mx-auto rounded-xl bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300">
-            <i
-              className={`fas ${icon} text-2xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent`}
-            ></i>
-          </div>
+    <PixelCard className="group h-full p-8 transition-all duration-500 hover:translate-y-[-4px]">
+      {/* Icon with animated background */}
+      <div className="mb-6 relative">
+        <div className="absolute inset-0 bg-gradient-radial from-primary-500/10 to-transparent rounded-xl animate-pulse-slow"></div>
+        <div className="relative w-16 h-16 mx-auto rounded-xl bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-primary-500/50 transition-all duration-300 group-hover:scale-110">
+          <i
+            className={`fas ${icon} text-2xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300`}
+          ></i>
         </div>
+      </div>
 
-        {/* Content */}
-        <div className="text-center space-y-4">
-          <h3 className="text-xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-            {title}
-          </h3>
-          <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
-            {description}
-          </p>
+      {/* Content */}
+      <div className="text-center space-y-4">
+        <h3 className="text-xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
+          {title}
+        </h3>
+        <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
+          {description}
+        </p>
 
-          {/* Statistics with animated counter */}
-          <div className="pt-6">
-            <div className="flex items-center justify-center gap-1">
-              <span
-                className="text-4xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent counter"
-                data-target={target}
-              >
-                {startValue}
-              </span>
-              <span className="text-xl text-primary-400">{suffix}</span>
-            </div>
-            <div className="w-full h-1 mt-3 bg-white/5 rounded-full overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-primary-500 to-secondary-500 w-0 group-hover:w-full transition-all duration-1000 ease-out"></div>
-            </div>
+        {/* Statistics with animated counter */}
+        <div className="pt-6">
+          <div className="flex items-center justify-center gap-1">
+            <span
+              className="text-4xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent counter group-hover:scale-110 transition-transform duration-300"
+              data-target={target}
+            >
+              {startValue}
+            </span>
+            <span className="text-xl text-primary-400 group-hover:scale-110 transition-transform duration-300">
+              {suffix}
+            </span>
+          </div>
+          <div className="w-full h-1 mt-3 bg-white/5 rounded-full overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-primary-500 to-secondary-500 w-0 group-hover:w-full transition-all duration-1000 ease-out"></div>
           </div>
         </div>
       </div>
-    </div>
+    </PixelCard>
   );
 };
 
@@ -68,6 +69,14 @@ const Capabilities = () => {
       <div className="absolute top-1/3 right-1/5 w-72 h-72 border border-white/5 rounded-full animate-spin-slow"></div>
       <div className="absolute bottom-1/4 left-1/6 w-48 h-48 border border-white/5 animate-spin-slow-reverse"></div>
 
+      {/* Floating Orbs */}
+      <div className="absolute top-1/4 left-1/12 opacity-20">
+        <AnimatedOrb size="sm" hue={240} hoverIntensity={0.1} />
+      </div>
+      <div className="absolute bottom-1/3 right-1/12 opacity-15">
+        <AnimatedOrb size="md" hue={280} hoverIntensity={0.2} />
+      </div>
+
       <div className="container mx-auto px-4 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12 reveal">
@@ -78,9 +87,7 @@ const Capabilities = () => {
               Our Technical Expertise
             </h2>
             <p className="text-lg text-gray-300">
-              From responsive design to seamless functionality, we bring
-              together the best modern web technologies to create exceptional
-              digital experiences.
+              We bring together creativity and innovation to build websites that are functional, beautiful, and tailored to your needs. Our team is dedicated to creating exactly what you envision.
             </p>
           </div>
 
@@ -90,9 +97,9 @@ const Capabilities = () => {
                 Frontend Development
               </h3>
               <p className="text-gray-400 mb-6">
-                We craft beautiful, responsive interfaces that work flawlessly
+                We craft beautiful interfaces that work flawlessly
                 across all devices. Our websites don't just look good – they
-                provide an intuitive experience that keeps users coming back.
+                provide an intuitive experience that engages users, and delivers information clearly.
               </p>
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
@@ -122,8 +129,7 @@ const Capabilities = () => {
               </h3>
               <p className="text-gray-400 mb-6">
                 We build robust, secure backends that power your website's
-                features. From user authentication to data management, we ensure
-                everything runs smoothly behind the scenes.
+                features. From admin panels, user logins, emails, newsletters, and eCommerce platforms, we provide everything you need to create a fully functional digital portal for your business.
               </p>
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
@@ -186,7 +192,7 @@ const Capabilities = () => {
               </h3>
               <p className="text-gray-400 mb-6">
                 We go beyond just building websites. Our comprehensive services
-                ensure your online presence is complete and effective.
+                ensure that building your online presence is simple to maintain.
               </p>
               <div className="space-y-3">
                 <div className="flex items-center gap-2">

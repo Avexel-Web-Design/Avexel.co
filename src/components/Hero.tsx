@@ -1,6 +1,8 @@
 import React from "react";
 import { HashLink } from "react-router-hash-link";
 import useScrollReveal from "../hooks/useScrollReveal";
+import WebsiteWireframe from "./WebsiteWireframe";
+import AnimatedOrb from "./AnimatedOrb";
 
 const Hero = () => {
   useScrollReveal();
@@ -15,6 +17,21 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-secondary-500/3 to-primary-500/5 animate-pulse-slow"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(56,189,248,0.08),transparent_50%)]"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(139,92,246,0.08),transparent_50%)]"></div>
+
+        {/* Wireframe Background */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-full max-w-4xl h-full max-h-96">
+            <WebsiteWireframe />
+          </div>
+        </div>
+      </div>
+
+      {/* Floating Orbs */}
+      <div className="absolute top-1/4 left-1/6 opacity-30">
+        <AnimatedOrb size="sm" hue={220} hoverIntensity={0.1} forceHoverState={true} />
+      </div>
+      <div className="absolute bottom-1/3 right-1/5 opacity-20">
+        <AnimatedOrb size="md" hue={260} hoverIntensity={0.15} forceHoverState={true} />
       </div>
 
       {/* Centered content with improved impact */}
@@ -29,15 +46,23 @@ const Hero = () => {
 
           <p className="text-base xs:text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-10 max-w-3xl mx-auto">
             Local Harbor Springs students creating websites for local businesses, causes,
-            and efforts. We make an innovative and creative web prescense for you, and you
-            support the world of innovation and STEM in our community.
+            and efforts. We create an innovative web presence for you while
+            supporting the world of innovation and STEM in our community.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <HashLink
               smooth
-              to="#contact"
+              to="#quote"
               className="w-full sm:w-auto px-6 xs:px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300"
+            >
+              Get Your Quote
+            </HashLink>
+
+            <HashLink
+              smooth
+              to="#contact"
+              className="w-full sm:w-auto px-6 xs:px-8 sm:px-10 py-3 sm:py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300"
             >
               Start Your Project
             </HashLink>
@@ -45,7 +70,7 @@ const Hero = () => {
             <HashLink
               smooth
               to="#work"
-              className="w-full sm:w-auto px-6 xs:px-8 sm:px-10 py-3 sm:py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300 mt-3 sm:mt-0"
+              className="w-full sm:w-auto px-6 xs:px-8 sm:px-10 py-3 sm:py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300"
             >
               View Our Work
             </HashLink>
