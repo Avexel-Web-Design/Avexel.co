@@ -64,11 +64,6 @@ const AnimatedFormInput = ({ type = "text", name, placeholder, required = false,
             }`}
         />
       )}
-
-      {/* Floating particles on focus */}
-      {isFocused && (
-        <div className="absolute -top-1 -right-1 w-2 h-2 bg-neon-blue rounded-full animate-ping"></div>
-      )}
     </div>
   );
 };

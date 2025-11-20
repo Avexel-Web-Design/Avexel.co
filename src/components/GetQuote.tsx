@@ -327,7 +327,7 @@ const GetQuote: React.FC = () => {
 
                         <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
                           }`}>
-                          <div className="p-5 pt-0 space-y-3 border-t border-white/5 mt-2">
+                          <div className="p-5 pt-4 space-y-3 border-t border-white/5">
                             {categoryFeatures.map(feature => (
                               <label
                                 key={feature.id}
@@ -338,6 +338,13 @@ const GetQuote: React.FC = () => {
                                     : 'border-white/5 bg-black/20 hover:border-white/20 hover:bg-white/5'
                                   }`}
                               >
+                                <input
+                                  type="checkbox"
+                                  checked={formData.customFeatures.includes(feature.id)}
+                                  onChange={() => !feature.required && handleCustomFeatureToggle(feature.id)}
+                                  disabled={feature.required}
+                                  className="sr-only"
+                                />
                                 <div className="flex items-center space-x-4 flex-1">
                                   <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors duration-300 ${formData.customFeatures.includes(feature.id)
                                     ? 'bg-neon-purple border-neon-purple'
