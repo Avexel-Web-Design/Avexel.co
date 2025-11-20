@@ -14,6 +14,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   body {
@@ -27,6 +29,12 @@
     @apply bg-dark text-white font-sans antialiased;
     margin: 0;
     overflow-x: hidden;
+    max-width: 100%;
+  }
+
+  #root {
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   #particle-background {
