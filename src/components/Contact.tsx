@@ -1,66 +1,73 @@
 import React, { useState } from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
-import Monogram from "./Monogram";
-import PixelCard from "./PixelCard";
-import AnimatedOrb from "./AnimatedOrb";
+import AnimatedOrb from "./AnimatedOrb"; // Keeping for now if needed, or remove if unused
 import { useForm, ValidationError } from '@formspree/react';
 
-const ContactInfo = ({ icon, title, content }) => (
-  <div className="flex items-start gap-4 group">
-    <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-primary-500/30 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+const ContactInfo = ({ icon, title, content }: { icon: string, title: string, content: React.ReactNode }) => (
+  <div className="flex items-start gap-6 group p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
+    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-purple/10 to-neon-blue/10 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-neon-purple/50 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-lg shadow-black/50">
       <i
-        className={`fas ${icon} text-xl bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300`}
+        className={`fas ${icon} text-2xl bg-gradient-to-r from-neon-purple to-neon-blue bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300`}
       ></i>
     </div>
     <div className="flex-1">
-      <h3 className="text-lg font-semibold text-white mb-1 group-hover:text-primary-300 transition-colors duration-300">{title}</h3>
-      <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
+      <h3 className="text-lg font-bold text-white mb-2 group-hover:text-neon-blue transition-colors duration-300 font-outfit">{title}</h3>
+      <div className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300 leading-relaxed">
         {content}
-      </p>
+      </div>
     </div>
   </div>
 );
 
-const AnimatedFormInput = ({ type = "text", name, placeholder, required = false, rows = null }) => {
+const AnimatedFormInput = ({ type = "text", name, placeholder, required = false, rows = undefined }: { type?: string, name: string, placeholder: string, required?: boolean, rows?: number }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [hasValue, setHasValue] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setHasValue(e.target.value.length > 0);
   };
 
   const Component = rows ? 'textarea' : 'input';
-  
+
   return (
     <div className="relative group">
       {/* Animated background gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-r from-primary-500/20 to-secondary-500/20 rounded-lg blur-xl transition-opacity duration-300 ${isFocused ? 'opacity-100' : 'opacity-0'}`}></div>
-      
+      <div className={`absolute inset-0 bg-gradient-to-r from-neon-purple/20 to-neon-blue/20 rounded-xl blur-xl transition-opacity duration-300 ${isFocused ? 'opacity-100' : 'opacity-0'}`}></div>
+
       {/* Input field */}
-      <Component
-        type={type}
-        name={name}
-        placeholder={placeholder}
-        required={required}
-        rows={rows}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        onChange={handleChange}
-        className={`relative w-full px-4 py-3 bg-white/5 border rounded-lg text-white placeholder-gray-400 focus:outline-none transition-all duration-300 ${
-          isFocused 
-            ? 'border-primary-500 bg-white/10 shadow-lg shadow-primary-500/20' 
-            : 'border-white/10 hover:border-white/20'
-        }`}
-      />
-      
-      {/* Animated border overlay */}
-      <div className={`absolute inset-0 rounded-lg border-2 border-primary-500/50 transition-opacity duration-300 pointer-events-none ${isFocused ? 'opacity-100' : 'opacity-0'}`}>
-        <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg opacity-20 blur"></div>
-      </div>
-      
+      {rows ? (
+        <textarea
+          name={name}
+          placeholder={placeholder}
+          required={required}
+          rows={rows}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          onChange={handleChange}
+          className={`relative w-full px-6 py-4 bg-black/50 border rounded-xl text-white placeholder-gray-500 focus:outline-none transition-all duration-300 resize-none ${isFocused
+              ? 'border-neon-purple bg-black/80 shadow-lg shadow-neon-purple/10'
+              : 'border-white/10 hover:border-white/20'
+            }`}
+        />
+      ) : (
+        <input
+          type={type}
+          name={name}
+          placeholder={placeholder}
+          required={required}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          onChange={handleChange}
+          className={`relative w-full px-6 py-4 bg-black/50 border rounded-xl text-white placeholder-gray-500 focus:outline-none transition-all duration-300 ${isFocused
+              ? 'border-neon-purple bg-black/80 shadow-lg shadow-neon-purple/10'
+              : 'border-white/10 hover:border-white/20'
+            }`}
+        />
+      )}
+
       {/* Floating particles on focus */}
       {isFocused && (
-        <div className="absolute -top-2 -right-2 w-2 h-2 bg-primary-400 rounded-full animate-ping"></div>
+        <div className="absolute -top-1 -right-1 w-2 h-2 bg-neon-blue rounded-full animate-ping"></div>
       )}
     </div>
   );
@@ -69,11 +76,11 @@ const AnimatedFormInput = ({ type = "text", name, placeholder, required = false,
 const Contact = () => {
   useScrollReveal();
   const [showCopied, setShowCopied] = useState(false);
-  
+
   // Use Formspree's useForm hook with your form ID
   const [state, handleSubmit] = useForm("xvgkwonw");
-  
-  const handleEmailClick = (e) => {
+
+  const handleEmailClick = (e: React.MouseEvent) => {
     e.preventDefault();
     const email = "contact@avexel.co";
     navigator.clipboard.writeText(email).then(() => {
@@ -85,216 +92,167 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="py-32 bg-black relative overflow-hidden scroll-mt-24"
+      className="py-32 bg-[#050505] relative overflow-hidden"
     >
       {/* Enhanced Background Elements */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      <div className="absolute top-1/4 right-1/6 w-72 h-72 border border-white/5 rounded-full animate-spin-slow"></div>
-      <div className="absolute bottom-1/4 left-1/5 w-48 h-48 border border-white/5 animate-spin-slow-reverse"></div>
-      
-      {/* Floating Orbs */}
-      <div className="absolute top-1/6 left-1/8 opacity-15">
-        <AnimatedOrb size="sm" hue={210} hoverIntensity={0.1} />
-      </div>
-      <div className="absolute bottom-1/5 right-1/6 opacity-20">
-        <AnimatedOrb size="md" hue={270} hoverIntensity={0.15} />
-      </div>
-      <div className="absolute top-2/3 left-1/3 opacity-10">
-        <AnimatedOrb size="xs" hue={240} hoverIntensity={0.05} />
-      </div>
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-neon-blue/10 rounded-full blur-[100px] animate-pulse-glow pointer-events-none"></div>
+      <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-neon-purple/10 rounded-full blur-[80px] animate-pulse-glow delay-1000 pointer-events-none"></div>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12 reveal">
-            <span className="inline-block text-xs uppercase tracking-widest text-primary-400 font-medium border-b border-primary-500/30 pb-1 mb-4">
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-20 reveal">
+            <span className="inline-block text-sm font-bold text-neon-purple tracking-[0.2em] uppercase mb-4 animate-float">
               Get In Touch
             </span>
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-              Let's Build Something Amazing
+            <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 font-outfit">
+              Let's Build Something <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue">
+                Amazing Together
+              </span>
             </h2>
-            <p className="text-lg text-gray-300">
-              Decided you want to work with us to empower your business? We are thrilled to work with you, and are ready to build something wonderful together.
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+              Ready to start your project? We're here to help you transform your digital presence.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-12 reveal">
-            <PixelCard className="p-8 h-full transition-all duration-500 hover:translate-y-[-4px]">
-              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                Why Work With Us
-              </h3>
-              <ul className="space-y-4 text-gray-300">
-                <li className="flex items-start gap-3 group">
-                  <i className="fas fa-check-circle text-primary-400 mt-1 group-hover:scale-110 transition-transform duration-300"></i>
-                  <span className="group-hover:text-white transition-colors duration-300">
-                    We offer professional services for a fraction of the cost, all the while being real people in your community not some far off corporate monolith.
-                  </span>
-                </li>
-                <li className="flex items-start gap-3 group">
-                  <i className="fas fa-check-circle text-primary-400 mt-1 group-hover:scale-110 transition-transform duration-300"></i>
-                  <span className="group-hover:text-white transition-colors duration-300">
-                    Building a website shouldn't be a hassle to you. We're students, we have time to be flexible and work around your schedule to do what's best for you.
-                  </span>
-                </li>
-                <li className="flex items-start gap-3 group">
-                  <i className="fas fa-check-circle text-primary-400 mt-1 group-hover:scale-110 transition-transform duration-300"></i>
-                  <span className="group-hover:text-white transition-colors duration-300">
-                    Throughout the whole process, you won't be speaking with just a representative. Our team is small and personal, so you'll be working directly with the person whos building your website.
-                  </span>
-                </li>
-                <li className="flex items-start gap-3 group">
-                  <i className="fas fa-check-circle text-primary-400 mt-1 group-hover:scale-110 transition-transform duration-300"></i>
-                  <span className="group-hover:text-white transition-colors duration-300">
-                    Ongoing support to ensure your website continues to serve
-                    your needs
-                  </span>
-                </li>
-              </ul>
-            </PixelCard>
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+            {/* Contact Info & Benefits */}
+            <div className="space-y-12 reveal">
+              <div className="glass-panel p-8 rounded-3xl border border-white/5 relative overflow-hidden group hover:border-neon-purple/30 transition-colors duration-500">
+                <div className="absolute inset-0 bg-gradient-to-br from-neon-purple/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-            <PixelCard className="p-8 h-full transition-all duration-500 hover:translate-y-[-4px]">
-              <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                Let's Connect
-              </h3>
-              <p className="text-gray-300 mb-6">
-                Have questions or ready to start? Drop us a message, and we'll
-                get back to you within 24 hours. We can't wait to hear from you!
-              </p>
-              <div className="space-y-4">
-                <a
-                  href="mailto:contact@avexel.co"
-                  onClick={handleEmailClick}
-                  className="group flex items-center gap-3 text-gray-300 hover:text-white transition-colors relative"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <i className="fas fa-envelope text-primary-400 group-hover:scale-110 transition-transform duration-300"></i>
+                <h3 className="text-2xl font-bold text-white mb-8 font-outfit relative z-10">
+                  Why Work With Us?
+                </h3>
+                <div className="space-y-6 relative z-10">
+                  <div className="flex items-start gap-4">
+                    <div className="w-8 h-8 rounded-full bg-neon-purple/20 flex items-center justify-center flex-shrink-0 mt-1">
+                      <i className="fas fa-check text-neon-purple text-sm"></i>
+                    </div>
+                    <p className="text-gray-300 leading-relaxed">
+                      Professional services at a fraction of the cost, supporting local students.
+                    </p>
                   </div>
-                  <span className="group-hover:text-primary-300 transition-colors duration-300">contact@avexel.co</span>
-                  <span
-                    className={`absolute -top-8 left-0 px-2 py-1 text-sm bg-primary-500 text-white rounded-md transition-opacity duration-200 ${
-                      showCopied ? "opacity-100" : "opacity-0"
-                    }`}
-                  >
-                    Email copied!
-                  </span>
-                </a>
-                <a
-                  href="tel:+1234567890"
-                  className="group flex items-center gap-3 text-gray-300 hover:text-white transition-colors"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500/10 to-secondary-500/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <i className="fas fa-phone text-primary-400 group-hover:scale-110 transition-transform duration-300"></i>
+                  <div className="flex items-start gap-4">
+                    <div className="w-8 h-8 rounded-full bg-neon-blue/20 flex items-center justify-center flex-shrink-0 mt-1">
+                      <i className="fas fa-check text-neon-blue text-sm"></i>
+                    </div>
+                    <p className="text-gray-300 leading-relaxed">
+                      Flexible scheduling to work around your needs.
+                    </p>
                   </div>
-                  <span className="group-hover:text-primary-300 transition-colors duration-300">(231)-373-8360</span>
-                </a>
+                  <div className="flex items-start gap-4">
+                    <div className="w-8 h-8 rounded-full bg-neon-purple/20 flex items-center justify-center flex-shrink-0 mt-1">
+                      <i className="fas fa-check text-neon-purple text-sm"></i>
+                    </div>
+                    <p className="text-gray-300 leading-relaxed">
+                      Direct communication with your developer - no middlemen.
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-8 h-8 rounded-full bg-neon-blue/20 flex items-center justify-center flex-shrink-0 mt-1">
+                      <i className="fas fa-check text-neon-blue text-sm"></i>
+                    </div>
+                    <p className="text-gray-300 leading-relaxed">
+                      Ongoing support to ensure your long-term success.
+                    </p>
+                  </div>
+                </div>
               </div>
-            </PixelCard>
+
+              <div className="glass-panel p-8 rounded-3xl border border-white/5 relative overflow-hidden">
+                <h3 className="text-2xl font-bold text-white mb-8 font-outfit">
+                  Contact Info
+                </h3>
+                <div className="space-y-6">
+                  <a
+                    href="mailto:contact@avexel.co"
+                    onClick={handleEmailClick}
+                    className="flex items-center gap-6 group p-4 rounded-xl hover:bg-white/5 transition-all duration-300 relative overflow-hidden"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-neon-purple/20 transition-colors duration-300">
+                      <i className="fas fa-envelope text-xl text-gray-400 group-hover:text-neon-purple transition-colors duration-300"></i>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500 mb-1">Email Us</div>
+                      <div className="text-lg font-bold text-white group-hover:text-neon-purple transition-colors duration-300">contact@avexel.co</div>
+                    </div>
+                    <span
+                      className={`absolute right-4 top-1/2 -translate-y-1/2 px-3 py-1 text-xs bg-neon-green text-black font-bold rounded-full transition-all duration-300 transform ${showCopied ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
+                        }`}
+                    >
+                      Copied!
+                    </span>
+                  </a>
+
+                  <a
+                    href="tel:+12313738360"
+                    className="flex items-center gap-6 group p-4 rounded-xl hover:bg-white/5 transition-all duration-300"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-neon-blue/20 transition-colors duration-300">
+                      <i className="fas fa-phone text-xl text-gray-400 group-hover:text-neon-blue transition-colors duration-300"></i>
+                    </div>
+                    <div>
+                      <div className="text-sm text-gray-500 mb-1">Call Us</div>
+                      <div className="text-lg font-bold text-white group-hover:text-neon-blue transition-colors duration-300">(231) 373-8360</div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <div className="reveal">
+              <div className="glass-card p-8 md:p-10 rounded-3xl border border-white/10 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-neon-purple/10 to-transparent opacity-50 blur-2xl -mr-20 -mt-20 pointer-events-none"></div>
+
+                <form onSubmit={handleSubmit} className="relative z-10 space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-bold text-gray-400 mb-2 ml-1">Name</label>
+                      <AnimatedFormInput type="text" name="name" placeholder="Your Name" required />
+                      <ValidationError prefix="Name" field="name" errors={state.errors} className="text-red-400 text-xs mt-2 ml-1" />
+                    </div>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-bold text-gray-400 mb-2 ml-1">Email</label>
+                      <AnimatedFormInput type="email" name="email" placeholder="your@email.com" required />
+                      <ValidationError prefix="Email" field="email" errors={state.errors} className="text-red-400 text-xs mt-2 ml-1" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-bold text-gray-400 mb-2 ml-1">Message</label>
+                    <AnimatedFormInput name="message" placeholder="Tell us about your project..." rows={5} required />
+                    <ValidationError prefix="Message" field="message" errors={state.errors} className="text-red-400 text-xs mt-2 ml-1" />
+                  </div>
+
+                  <div className="pt-4">
+                    <button
+                      type="submit"
+                      disabled={state.submitting}
+                      className="w-full py-4 bg-gradient-to-r from-neon-purple to-neon-blue rounded-xl text-white font-bold text-lg hover:shadow-lg hover:shadow-neon-purple/25 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    >
+                      {state.submitting ? (
+                        <span className="flex items-center justify-center gap-2">
+                          <i className="fas fa-spinner fa-spin"></i> Sending...
+                        </span>
+                      ) : (
+                        "Send Message"
+                      )}
+                    </button>
+                  </div>
+
+                  {state.succeeded && (
+                    <div className="p-4 rounded-xl bg-neon-green/10 border border-neon-green/20 text-neon-green text-center animate-fade-in">
+                      <i className="fas fa-check-circle mr-2"></i>
+                      Message sent successfully! We'll be in touch soon.
+                    </div>
+                  )}
+                </form>
+              </div>
+            </div>
           </div>
-
-          <PixelCard className="reveal transition-all duration-500 hover:translate-y-[-2px]">
-            <form
-              className="p-8"
-              onSubmit={handleSubmit}
-            >
-              <div className="grid md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-300 mb-2"
-                  >
-                    Name
-                  </label>
-                  <AnimatedFormInput
-                    type="text"
-                    name="name"
-                    placeholder="Your name"
-                    required
-                  />
-                  <ValidationError 
-                    prefix="Name" 
-                    field="name"
-                    errors={state.errors}
-                    className="text-red-400 text-sm mt-1"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-300 mb-2"
-                  >
-                    Email
-                  </label>
-                  <AnimatedFormInput
-                    type="email"
-                    name="email"
-                    placeholder="your@email.com"
-                    required
-                  />
-                  <ValidationError 
-                    prefix="Email" 
-                    field="email"
-                    errors={state.errors}
-                    className="text-red-400 text-sm mt-1"
-                  />
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-gray-300 mb-2"
-                >
-                  Message
-                </label>
-                <AnimatedFormInput
-                  name="message"
-                  placeholder="Tell us about your project..."
-                  rows={4}
-                  required
-                />
-                <ValidationError 
-                  prefix="Message" 
-                  field="message"
-                  errors={state.errors}
-                  className="text-red-400 text-sm mt-1"
-                />
-              </div>
-
-              <div className="flex justify-center">
-                <button
-                  type="submit"
-                  disabled={state.submitting}
-                  className="group relative px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 hover:shadow-lg hover:shadow-primary-500/30"
-                >
-                  {/* Enhanced gradient overlay */}
-                  <span className="absolute inset-0 bg-gradient-to-r from-secondary-500 to-primary-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                  
-                  {/* Shimmer effect */}
-                  <span className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-40 transition-opacity duration-300">
-                    <span className="absolute inset-0 translate-x-full bg-gradient-to-r from-transparent via-white/70 to-transparent group-hover:animate-shimmer"></span>
-                  </span>
-                  
-                  <span className="relative flex items-center gap-2">
-                    {state.submitting && (
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    )}
-                    {state.submitting ? "Sending..." : "Send Message"}
-                  </span>
-                </button>
-              </div>
-              
-              {state.succeeded && (
-                <div className="mt-6 p-4 rounded-lg bg-green-500/20 text-green-200 text-center animate-fade-in">
-                  <i className="fas fa-check-circle text-green-400 mr-2"></i>
-                  Thank you for your message! We will get back to you soon.
-                </div>
-              )}
-              
-              <ValidationError 
-                errors={state.errors}
-                className="mt-4 p-3 rounded-lg bg-red-500/20 text-red-200"
-              />
-            </form>
-          </PixelCard>
         </div>
       </div>
     </section>

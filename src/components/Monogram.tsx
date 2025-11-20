@@ -6,15 +6,11 @@ import React, { useMemo } from "react";
  *
  * @param {Object} props
  * @param {string} props.name - Full name of the person to generate initials from
- * @param {string} props.bgColorClass - Optional Tailwind color class for the background
- * @param {string} props.textColorClass - Optional Tailwind color class for the text
  * @param {string} props.className - Additional classes to apply
  * @param {string} props.size - Size of the monogram (lg, md, sm)
  */
 const Monogram = ({
   name,
-  bgColorClass = "",
-  textColorClass = "text-white",
   className = "",
   size = "md",
 }) => {
@@ -45,41 +41,25 @@ const Monogram = ({
     }
   }, [size]);
 
-  // Use the same gradient as the rest of the site instead of generating random ones
-  const gradientStyle = useMemo(() => {
-    if (bgColorClass) return {};
-
-    // Match the site's blue-purple gradient
-    return {
-      background: "linear-gradient(135deg, #8b5cf6, #3b82f6)",
-    };
-  }, [bgColorClass]);
-
   return (
     <div
-      className={`relative rounded-full overflow-hidden ${sizeClasses} ${className}`}
+      className={`relative rounded-full overflow-hidden ${sizeClasses} ${className} group`}
       aria-label={`Monogram for ${name}`}
     >
-      {/* Add decorative elements similar to the site's aesthetic */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+      {/* Background with gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-neon-purple to-neon-blue opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
 
-      {/* Main background */}
-      <div
-        className={`absolute inset-0 ${bgColorClass}`}
-        style={gradientStyle}
-      ></div>
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-20 mix-blend-overlay"></div>
 
       {/* Shimmering overlay effect */}
-      <div className="absolute inset-0 bg-gradient-radial from-white/10 to-transparent opacity-40"></div>
+      <div className="absolute inset-0 bg-gradient-radial from-white/20 to-transparent opacity-0 group-hover:opacity-40 transition-opacity duration-300"></div>
 
       {/* Glowing animated ring */}
-      <div className="absolute inset-[-1px] border border-white/20 rounded-full"></div>
-      <div className="absolute inset-[-2px] border border-white/10 rounded-full animate-pulse-slow"></div>
+      <div className="absolute inset-0 border border-white/20 rounded-full"></div>
 
       {/* Initials text */}
-      <div
-        className={`absolute inset-0 flex items-center justify-center font-bold ${textColorClass}`}
-      >
+      <div className="absolute inset-0 flex items-center justify-center font-bold text-white font-outfit tracking-wider">
         {initials}
       </div>
     </div>

@@ -1,112 +1,62 @@
 import React from "react";
 import { HashLink } from "react-router-hash-link";
 import useScrollReveal from "../hooks/useScrollReveal";
-import WebsiteWireframe from "./WebsiteWireframe";
-import AnimatedOrb from "./AnimatedOrb";
 
 const Hero = () => {
   useScrollReveal();
 
   return (
     <section
-      className="relative min-h-[100vh] flex items-center justify-center overflow-hidden pt-28 sm:pt-32 md:pt-28 pb-8 sm:pb-12"
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
       aria-label="Hero section"
     >
-      {/* Enhanced background gradients */}
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 via-secondary-500/3 to-primary-500/5 animate-pulse-slow"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(56,189,248,0.08),transparent_50%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(139,92,246,0.08),transparent_50%)]"></div>
-
-        {/* Wireframe Background */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-full max-w-4xl h-full max-h-96">
-            <WebsiteWireframe />
-          </div>
-        </div>
+      {/* Background Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-600/10 rounded-full blur-[120px] animate-pulse-glow"></div>
       </div>
 
-      {/* Floating Orbs */}
-      <div className="absolute top-1/4 left-1/6 opacity-30">
-        <AnimatedOrb size="sm" hue={220} hoverIntensity={0.1} forceHoverState={true} />
-      </div>
-      <div className="absolute bottom-1/3 right-1/5 opacity-20">
-        <AnimatedOrb size="md" hue={260} hoverIntensity={0.15} forceHoverState={true} />
-      </div>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-5xl mx-auto text-center">
 
-      {/* Centered content with improved impact */}
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 sm:mb-8 tracking-tight leading-tight">
-            <span className="block mb-2">Websites that</span>
-            <span className="block bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+          {/* Main Heading */}
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-8 tracking-tighter leading-[0.9]">
+            <span className="block text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">Websites that</span>
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-neon-purple via-white to-neon-blue neon-text">
               Make a Difference
             </span>
           </h1>
 
-          <p className="text-base xs:text-lg sm:text-xl md:text-2xl text-gray-300 mb-8 sm:mb-10 max-w-3xl mx-auto">
-            Local Harbor Springs students creating websites for local businesses, causes,
-            and efforts. We create an innovative web presence for you while
-            supporting the world of innovation and STEM in our community.
+          <p className="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Local Harbor Springs students creating innovative web experiences.
+            We transform your digital presence while supporting the future of STEM.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <HashLink
               smooth
               to="#quote"
-              className="w-full sm:w-auto px-6 xs:px-8 sm:px-10 py-3 sm:py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-white font-semibold hover:scale-105 hover:shadow-lg transition-all duration-300"
+              className="btn-primary group"
             >
-              Get Your Quote
-            </HashLink>
-
-            <HashLink
-              smooth
-              to="#contact"
-              className="w-full sm:w-auto px-6 xs:px-8 sm:px-10 py-3 sm:py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300"
-            >
-              Start Your Project
+              <span className="relative z-10 flex items-center gap-2">
+                Get Your Quote
+                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </span>
             </HashLink>
 
             <HashLink
               smooth
               to="#work"
-              className="w-full sm:w-auto px-6 xs:px-8 sm:px-10 py-3 sm:py-4 bg-white/5 rounded-full text-white font-semibold hover:bg-white/10 transition-all duration-300"
+              className="px-8 py-3 rounded-full font-semibold text-white border border-white/20 hover:bg-white/10 transition-all duration-300 backdrop-blur-sm"
             >
               View Our Work
             </HashLink>
           </div>
         </div>
       </div>
-
-      {/* Mobile-friendly scroll indicator with better positioning */}
-      <div
-        className="absolute bottom-4 xs:bottom-6 sm:bottom-8 left-0 w-full flex justify-center animate-bounce-slow"
-        aria-hidden="true"
-      >
-        <HashLink
-          smooth
-          to="#work"
-          aria-label="Scroll down"
-          className="text-white/50 hover:text-white/80 transition-colors p-2"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-5 sm:h-6 sm:w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 14l-7 7m0 0l-7-7m7 7V3"
-            />
-          </svg>
-        </HashLink>
-      </div>
-
-      <div className="absolute bottom-0 left-0 w-full h-16 sm:h-20 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
     </section>
   );
 };
