@@ -2,59 +2,56 @@ import React from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
 
 const ProjectCard = ({ title, description, image, tags, websiteUrl, caseStudyUrl }) => (
-  <div className="group relative rounded-3xl overflow-hidden bg-white/5 border border-white/10 hover:border-neon-purple/50 transition-all duration-500">
-    <div className="grid md:grid-cols-2 gap-0">
-      {/* Image Side */}
-      <div className="relative h-64 md:h-auto overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10 md:hidden"></div>
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        />
-      </div>
+  <div className="group relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-neon-purple/50 transition-all duration-500">
+    {/* Image */}
+    <div className="relative aspect-square overflow-hidden">
+      <img
+        src={image}
+        alt={title}
+        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+      />
+    </div>
 
-      {/* Content Side */}
-      <div className="p-8 md:p-10 flex flex-col justify-center relative">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-neon-purple/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+    {/* Content */}
+    <div className="p-6 relative">
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-neon-purple/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
-        <div className="relative z-10">
-          <div className="flex flex-wrap gap-2 mb-4">
-            {tags.map((tag) => (
-              <span key={tag} className="px-3 py-1 text-xs font-bold uppercase tracking-wider text-white/70 bg-white/5 rounded-full">
-                {tag}
-              </span>
-            ))}
-          </div>
+      <div className="relative z-10">
+        <div className="flex flex-wrap gap-2 mb-3">
+          {tags.map((tag) => (
+            <span key={tag} className="px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider text-white/70 bg-white/5 rounded-full">
+              {tag}
+            </span>
+          ))}
+        </div>
 
-          <h3 className="text-3xl font-bold text-white mb-4 group-hover:text-neon-purple transition-colors">
-            {title}
-          </h3>
+        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-neon-purple transition-colors">
+          {title}
+        </h3>
 
-          <p className="text-gray-400 leading-relaxed mb-8">
-            {description}
-          </p>
+        <p className="text-gray-400 text-sm leading-relaxed mb-4">
+          {description}
+        </p>
 
-          <div className="flex flex-wrap gap-4">
-            {websiteUrl && (
-              <a
-                href={websiteUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-white text-black font-bold rounded-full hover:bg-neon-purple hover:text-white transition-colors"
-              >
-                Visit Website
-              </a>
-            )}
-            {caseStudyUrl && (
-              <a
-                href={caseStudyUrl}
-                className="px-6 py-3 border border-white/20 text-white font-bold rounded-full hover:bg-white/10 transition-colors"
-              >
-                View Case Study
-              </a>
-            )}
-          </div>
+        <div className="flex flex-wrap gap-2">
+          {websiteUrl && (
+            <a
+              href={websiteUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 text-sm bg-white text-black font-bold rounded-full hover:bg-neon-purple hover:text-white transition-colors"
+            >
+              Visit Website
+            </a>
+          )}
+          {caseStudyUrl && (
+            <a
+              href={caseStudyUrl}
+              className="px-4 py-2 text-sm border border-white/20 text-white font-bold rounded-full hover:bg-white/10 transition-colors"
+            >
+              Case Study
+            </a>
+          )}
         </div>
       </div>
     </div>
@@ -78,7 +75,7 @@ const Portfolio = () => {
           </p>
         </div>
 
-        <div className="space-y-12">
+        <div className="grid md:grid-cols-2 gap-8">
           <ProjectCard
             title="FRC Team 7790"
             description="An interactive website for Baywatch Robotics showcasing our team, robot designs, competition history, and STEM outreach programs."
@@ -88,11 +85,11 @@ const Portfolio = () => {
             caseStudyUrl=""
           />
           <ProjectCard
-            title="Nadia Elmagrabi"
-            description="A transformative spiritual wellness website offering Human Design readings and Past Life Regression therapy."
-            tags={["Wellness", "Design", "E-Commerce"]}
-            image="/Nadia.jpg"
-            websiteUrl="https://nadia-elmagrabi.pages.dev"
+            title="Detroit Rising Development"
+            description="A professional website for Detroit Rising Development showcasing services and credentials."
+            tags={["Professional", "Business", "Real Estate"]}
+            image="/DetroitRising.png"
+            websiteUrl="https://detroitrisingdevelopment.pages.dev"
             caseStudyUrl=""
           />
           <ProjectCard
@@ -104,11 +101,11 @@ const Portfolio = () => {
             caseStudyUrl=""
           />
           <ProjectCard
-            title="Northland Surveying"
-            description="A professional website for Northern Michigan's trusted surveying company, showcasing services and credentials."
-            tags={["Professional", "Business"]}
-            image="/NorthlandLogo.png"
-            websiteUrl="https://northlandsm.com"
+            title="Nadia Elmagrabi"
+            description="A comprehensive portfolio website for Nadia Elmagrabi, showcasing her portfolio and services."
+            tags={["Portfolio"]}
+            image="/Nadia.jpg"
+            websiteUrl="https://nadia-elmagrabi.pages.dev"
             caseStudyUrl=""
           />
         </div>
