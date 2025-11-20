@@ -36,7 +36,6 @@ const TeamMemberCard = ({ name, role, description }) => (
     <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-purple to-neon-blue rounded-2xl blur opacity-20 group-hover:opacity-75 transition duration-500"></div>
     <div className="glass-card relative flex flex-col h-full p-8 rounded-2xl transition-all duration-500 group-hover:-translate-y-2">
       <div className="relative mb-8 mx-auto group-hover:scale-110 transition-transform duration-300">
-        <Monogram name={name} size="lg" className="mx-auto ring-2 ring-neon-purple/30 group-hover:ring-neon-purple transition-all duration-300" />
         <div className="absolute inset-0 bg-neon-purple/20 blur-xl rounded-full -z-10 group-hover:opacity-100 transition-opacity duration-300 opacity-0"></div>
       </div>
 
@@ -118,8 +117,8 @@ const About = () => {
               <h3 className="text-3xl font-bold text-white text-center mb-12 font-outfit">Why Choose Us</h3>
 
               <div className="grid md:grid-cols-3 gap-12">
-                <div className="text-center group">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-purple/20 to-neon-blue/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ring-1 ring-white/10">
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-purple/20 to-neon-blue/20 flex items-center justify-center hover:scale-110 hover:rotate-6 transition-transform duration-300 ring-1 ring-white/10 will-change-transform">
                     <i className="fas fa-code text-3xl text-white"></i>
                   </div>
                   <h4 className="text-xl font-bold text-white mb-3 font-outfit">Modern Technology</h4>
@@ -128,8 +127,8 @@ const About = () => {
                   </p>
                 </div>
 
-                <div className="text-center group">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-purple/20 to-neon-blue/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ring-1 ring-white/10">
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-purple/20 to-neon-blue/20 flex items-center justify-center hover:scale-110 hover:rotate-6 transition-transform duration-300 ring-1 ring-white/10 will-change-transform">
                     <i className="fas fa-heart text-3xl text-white"></i>
                   </div>
                   <h4 className="text-xl font-bold text-white mb-3 font-outfit">Affordable Quality</h4>
@@ -138,14 +137,16 @@ const About = () => {
                   </p>
                 </div>
 
-                <div className="text-center group">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-purple/20 to-neon-blue/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ring-1 ring-white/10">
+                <div className="text-center flex flex-col items-center gap-6">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-neon-purple/20 to-neon-blue/20 flex items-center justify-center hover:scale-110 hover:rotate-6 transition-transform duration-300 ring-1 ring-white/10 will-change-transform">
                     <i className="fas fa-hands-helping text-3xl text-white"></i>
                   </div>
-                  <h4 className="text-xl font-bold text-white mb-3 font-outfit">Community Impact</h4>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    Your project directly supports STEM education and cultivates tomorrow's technology leaders.
-                  </p>
+                  <div className="flex flex-col gap-3">
+                    <h4 className="text-xl font-bold text-white font-outfit">Community Impact</h4>
+                    <p className="text-gray-400 text-sm leading-relaxed">
+                      We support Baywatch Robotics, promoting STEM education and cultivating tomorrow's technology leaders.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -159,18 +160,18 @@ const About = () => {
             <div className="grid md:grid-cols-3 gap-8">
               <TeamMemberCard
                 name="Ryan Latimer"
-                role="Lead Developer"
-                description="Programming team lead on FRC 7790 with expertise in full-stack development. Specializes in React applications and creating responsive, intuitive user interfaces."
+                role="Chief Operating Officer"
+                description="Oversees operations and client partnerships while actively contributing to development. Combines full-stack coding expertise with business strategy to ensure exceptional project delivery."
               />
               <TeamMemberCard
                 name="Gavin Moceri"
-                role="Technical Lead"
-                description="Robotics software specialist with strong backend development skills. Experience with robot control systems translated into secure, efficient web architecture."
+                role="Chief Technical Officer"
+                description="Drives technical innovation and architecture decisions. Leads development strategy with expertise in modern frameworks and scalable solutions for optimal performance."
               />
               <TeamMemberCard
                 name="Conner Breckenfeld"
-                role="Design Specialist"
-                description="Design team member bringing creative vision to both robot design and digital interfaces. Focused on creating accessible, visually engaging web experiences."
+                role="Chief Information Officer"
+                description="Manages communications, ensuring clear collaboration throughout development. Certified FAA drone pilot and photographer bringing creative visual expertise to projects."
               />
             </div>
           </div>
