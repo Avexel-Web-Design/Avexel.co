@@ -53,7 +53,7 @@ const Capabilities = () => {
   useCounterAnimation();
 
   return (
-    <section id="capabilities" className="py-32 bg-[#050505] relative overflow-hidden">
+    <section id="capabilities" className="py-32 bg-[#050505] relative overflow-hidden snap-start">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
       <div className="absolute top-1/3 left-0 w-[600px] h-[600px] bg-neon-blue/5 rounded-full blur-[120px] animate-pulse-glow pointer-events-none"></div>

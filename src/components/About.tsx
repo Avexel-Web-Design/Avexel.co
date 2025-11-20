@@ -86,9 +86,6 @@ const About = () => {
           {/* Mission & Story Grid */}
           <div className="grid md:grid-cols-2 gap-8 mb-24 reveal">
             <div className="glass-panel p-10 rounded-2xl border border-white/5 hover:border-neon-purple/30 transition-all duration-500 group">
-              <div className="w-12 h-12 rounded-lg bg-neon-purple/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <i className="fas fa-rocket text-2xl text-neon-purple"></i>
-              </div>
               <h3 className="text-2xl font-bold text-white mb-4 font-outfit group-hover:text-neon-purple transition-colors duration-300">
                 Our Story
               </h3>
@@ -101,9 +98,6 @@ const About = () => {
             </div>
 
             <div className="glass-panel p-10 rounded-2xl border border-white/5 hover:border-neon-blue/30 transition-all duration-500 group">
-              <div className="w-12 h-12 rounded-lg bg-neon-blue/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                <i className="fas fa-bullseye text-2xl text-neon-blue"></i>
-              </div>
               <h3 className="text-2xl font-bold text-white mb-4 font-outfit group-hover:text-neon-blue transition-colors duration-300">
                 Our Mission
               </h3>

@@ -45,8 +45,8 @@ const AnimatedFormInput = ({ type = "text", name, placeholder, required = false,
           onBlur={() => setIsFocused(false)}
           onChange={handleChange}
           className={`relative w-full px-6 py-4 bg-black/50 border rounded-xl text-white placeholder-gray-500 focus:outline-none transition-all duration-300 resize-none ${isFocused
-              ? 'border-neon-purple bg-black/80 shadow-lg shadow-neon-purple/10'
-              : 'border-white/10 hover:border-white/20'
+            ? 'border-neon-purple bg-black/80 shadow-lg shadow-neon-purple/10'
+            : 'border-white/10 hover:border-white/20'
             }`}
         />
       ) : (
@@ -59,8 +59,8 @@ const AnimatedFormInput = ({ type = "text", name, placeholder, required = false,
           onBlur={() => setIsFocused(false)}
           onChange={handleChange}
           className={`relative w-full px-6 py-4 bg-black/50 border rounded-xl text-white placeholder-gray-500 focus:outline-none transition-all duration-300 ${isFocused
-              ? 'border-neon-purple bg-black/80 shadow-lg shadow-neon-purple/10'
-              : 'border-white/10 hover:border-white/20'
+            ? 'border-neon-purple bg-black/80 shadow-lg shadow-neon-purple/10'
+            : 'border-white/10 hover:border-white/20'
             }`}
         />
       )}
@@ -92,7 +92,7 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="py-32 bg-[#050505] relative overflow-hidden"
+      className="py-32 bg-[#050505] relative overflow-hidden snap-start"
     >
       {/* Enhanced Background Elements */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>

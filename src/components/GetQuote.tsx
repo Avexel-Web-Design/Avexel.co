@@ -263,7 +263,7 @@ const GetQuote: React.FC = () => {
   };
 
   return (
-    <section id="quote" className="py-32 bg-[#050505] relative overflow-hidden">
+    <section id="quote" className="py-32 bg-[#050505] relative overflow-hidden snap-start">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-neon-purple/5 rounded-full blur-[120px] animate-pulse-glow pointer-events-none"></div>
@@ -332,16 +332,16 @@ const GetQuote: React.FC = () => {
                               <label
                                 key={feature.id}
                                 className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all duration-300 group ${feature.required
-                                    ? 'border-neon-blue/30 bg-neon-blue/5 cursor-not-allowed'
-                                    : formData.customFeatures.includes(feature.id)
-                                      ? 'border-neon-purple/50 bg-neon-purple/10'
-                                      : 'border-white/5 bg-black/20 hover:border-white/20 hover:bg-white/5'
+                                  ? 'border-neon-blue/30 bg-neon-blue/5 cursor-not-allowed'
+                                  : formData.customFeatures.includes(feature.id)
+                                    ? 'border-neon-purple/50 bg-neon-purple/10'
+                                    : 'border-white/5 bg-black/20 hover:border-white/20 hover:bg-white/5'
                                   }`}
                               >
                                 <div className="flex items-center space-x-4 flex-1">
                                   <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors duration-300 ${formData.customFeatures.includes(feature.id)
-                                      ? 'bg-neon-purple border-neon-purple'
-                                      : 'border-gray-500 bg-transparent'
+                                    ? 'bg-neon-purple border-neon-purple'
+                                    : 'border-gray-500 bg-transparent'
                                     }`}>
                                     {formData.customFeatures.includes(feature.id) && (
                                       <i className="fas fa-check text-xs text-white"></i>

@@ -73,19 +73,39 @@ const Services = () => {
   const steps = [
     {
       title: "Discovery & Planning",
-      description: "We begin by getting to know you and your business. We are people, and we value personal connections. We want to make sure that our partnership is everything you want it to be."
+      description: "We begin by getting to know you and your business. We are people, and we value personal connections. We want to make sure that our partnership is everything you want it to be.",
+      deliverables: [
+        "Initial consultation and requirements gathering",
+        "Project timeline and milestone definition",
+        "Competitive analysis and market research"
+      ]
     },
     {
       title: "Design & Collaboration",
-      description: "We'll prototype an idea of a design, and initiate an ongoing dialogue with you to ensure that what we do fits with what you want. We value your input, and will never say no to your ideas."
+      description: "We'll prototype an idea of a design, and initiate an ongoing dialogue with you to ensure that what we do fits with what you want. We value your input, and will never say no to your ideas.",
+      deliverables: [
+        "Wireframes and mockup designs",
+        "Interactive prototypes for feedback",
+        "Brand integration and style guide"
+      ]
     },
     {
       title: "Development & QA",
-      description: "We are addicted to quality and perfection. Our team will work tirelessly to bring you a website that is not only functional and fitting for your business, but one that is flawless."
+      description: "We are addicted to quality and perfection. Our team will work tirelessly to bring you a website that is not only functional and fitting for your business, but one that is flawless.",
+      deliverables: [
+        "Clean, scalable code implementation",
+        "Cross-browser and device testing",
+        "Performance optimization and SEO setup"
+      ]
     },
     {
       title: "Launch & Support",
-      description: "Once your website is ready and live, we don't just disappear. We offer ongoing support to ensure your site remains up-to-date, and provide ways for you to make changes easily."
+      description: "Once your website is ready and live, we don't just disappear. We offer ongoing support to ensure your site remains up-to-date, and provide ways for you to make changes easily.",
+      deliverables: [
+        "Domain setup and deployment",
+        "Training and documentation",
+        "Ongoing maintenance and updates"
+      ]
     }
   ];
 
@@ -192,10 +212,10 @@ const Services = () => {
                         {step.description}
                       </p>
                       <ul className="space-y-4">
-                        {[1, 2, 3].map((i) => (
+                        {step.deliverables.map((deliverable, i) => (
                           <li key={i} className="flex items-center gap-4 text-gray-400">
                             <div className="w-2 h-2 rounded-full bg-neon-blue"></div>
-                            <span>Key phase deliverable or milestone {i}</span>
+                            <span>{deliverable}</span>
                           </li>
                         ))}
                       </ul>
