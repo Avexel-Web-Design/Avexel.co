@@ -58,7 +58,7 @@ const About = () => {
   useScrollReveal();
 
   return (
-    <section id="about" className="py-32 bg-[#050505] relative overflow-hidden">
+    <section id="about" className="py-32 bg-[#050505] relative overflow-hidden snap-start">
       {/* Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
       <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-neon-purple/10 rounded-full blur-[120px] animate-pulse-glow pointer-events-none"></div>

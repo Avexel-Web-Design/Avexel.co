@@ -105,7 +105,7 @@ const Services = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid md:grid-cols-2 gap-6 mb-32">
+        <div className="grid md:grid-cols-2 gap-6 mb-32 snap-start">
           <ServiceCard
             icon="fa-laptop-code"
             title="Website Creation"
