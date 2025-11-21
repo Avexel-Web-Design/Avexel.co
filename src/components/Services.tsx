@@ -110,7 +110,7 @@ const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-32 relative">
+    <section id="services" className="py-32 relative snap-start">
       <div className="container mx-auto px-6 relative z-10">
 
         {/* Header */}
@@ -125,7 +125,7 @@ const Services = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid md:grid-cols-2 gap-6 mb-32 snap-start">
+        <div className="grid md:grid-cols-2 gap-6 mb-32">
           <ServiceCard
             icon="fa-laptop-code"
             title="Website Creation"
@@ -149,86 +149,86 @@ const Services = () => {
           />
         </div>
 
-        {/* Process Section - Diagonal Scroll Journey */}
-        <div ref={containerRef} className="relative h-[500vh] mb-32">
-          {/* Snap Targets */}
-          <div className="absolute inset-0 pointer-events-none">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-[100vh] w-full snap-start"></div>
-            ))}
-          </div>
+      </div>
 
-          <div className="sticky top-0 h-screen overflow-hidden bg-[#050505]">
-            <div
-              className="absolute top-0 left-0 w-full h-full transition-transform duration-100 ease-linear will-change-transform"
-              style={{
-                transform: `translate3d(-${scrollProgress * 400}vw, -${scrollProgress * 400}vh, 0)`
-              }}
-            >
-              {/* Intro Step */}
-              <div className="absolute top-0 left-0 w-screen h-screen flex items-center justify-center p-6">
-                <div className="max-w-4xl text-center">
-                  <span className="text-neon-blue font-bold tracking-widest text-sm uppercase mb-4 block animate-pulse">The Journey</span>
-                  <h3 className="text-6xl md:text-8xl font-bold text-white mb-8 leading-tight">
-                    Our <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue">Approach</span>
-                  </h3>
-                  <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-                    We don't just build websites; we craft digital experiences. Scroll to embark on the journey from concept to reality.
-                  </p>
-                </div>
-              </div>
-
-              {/* Steps */}
-              {steps.map((step, index) => (
-                <div
-                  key={index}
-                  className="absolute w-screen h-screen flex items-center justify-center p-6"
-                  style={{
-                    left: `${(index + 1) * 100}vw`,
-                    top: `${(index + 1) * 100}vh`
-                  }}
-                >
-                  <div className="relative max-w-5xl w-full grid md:grid-cols-2 gap-12 items-center">
-                    {/* Number & Visual */}
-                    <div className={`relative ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'}`}>
-                      <div className="text-[20rem] font-bold text-white/5 absolute -top-20 -left-20 select-none leading-none">
-                        0{index + 1}
-                      </div>
-                      <div className="relative z-10 glass-panel p-12 rounded-3xl border border-white/10 bg-black/50 backdrop-blur-xl">
-                        <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-neon-purple to-neon-blue flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(124,58,237,0.3)]">
-                          <span className="text-4xl font-bold text-white">0{index + 1}</span>
-                        </div>
-                        <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-                          <div className="h-full bg-gradient-to-r from-neon-purple to-neon-blue w-full animate-pulse"></div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className={`${index % 2 === 0 ? 'md:order-2' : 'md:order-1'}`}>
-                      <h4 className="text-4xl md:text-6xl font-bold text-white mb-8">{step.title}</h4>
-                      <p className="text-xl text-gray-300 leading-relaxed mb-8">
-                        {step.description}
-                      </p>
-                      <ul className="space-y-4">
-                        {step.deliverables.map((deliverable, i) => (
-                          <li key={i} className="flex items-center gap-4 text-gray-400">
-                            <div className="w-2 h-2 rounded-full bg-neon-blue"></div>
-                            <span>{deliverable}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* Process Section - Diagonal Scroll Journey */}
+      <div ref={containerRef} className="relative h-[500vh] mb-32">
+        {/* Snap Targets */}
+        <div className="absolute inset-0 pointer-events-none">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-[100vh] w-full snap-start"></div>
+          ))}
         </div>
 
+        <div className="sticky top-0 h-screen overflow-hidden bg-[#050505]">
+          <div
+            className="absolute top-0 left-0 w-full h-full transition-transform duration-100 ease-linear will-change-transform"
+            style={{
+              transform: `translate3d(-${scrollProgress * 400}vw, -${scrollProgress * 400}vh, 0)`
+            }}
+          >
+            {/* Intro Step */}
+            <div className="absolute top-0 left-0 w-screen h-screen flex items-center justify-center p-6">
+              <div className="max-w-4xl text-center">
+                <h3 className="text-6xl md:text-8xl font-bold text-white mb-8 leading-tight">
+                  Our <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue">Approach</span>
+                </h3>
+                <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                  We don't just build websites; we craft digital experiences. Scroll to embark on the journey from concept to reality.
+                </p>
+              </div>
+            </div>
+
+            {/* Steps */}
+            {steps.map((step, index) => (
+              <div
+                key={index}
+                className="absolute w-screen h-screen flex items-center justify-center p-6"
+                style={{
+                  left: `${(index + 1) * 100}vw`,
+                  top: `${(index + 1) * 100}vh`
+                }}
+              >
+                <div className="relative max-w-5xl w-full grid md:grid-cols-2 gap-12 items-center">
+                  {/* Number & Visual */}
+                  <div className={`relative ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'}`}>
+                    <div className="text-[20rem] font-bold text-white/5 absolute -top-20 -left-20 select-none leading-none">
+                      0{index + 1}
+                    </div>
+                    <div className="relative z-10 glass-panel p-12 rounded-3xl border border-white/10 bg-black/50 backdrop-blur-xl">
+                      <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-neon-purple to-neon-blue flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(124,58,237,0.3)]">
+                        <span className="text-4xl font-bold text-white">0{index + 1}</span>
+                      </div>
+                      <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-neon-purple to-neon-blue w-full animate-pulse"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className={`${index % 2 === 0 ? 'md:order-2' : 'md:order-1'}`}>
+                    <h4 className="text-4xl md:text-6xl font-bold text-white mb-8">{step.title}</h4>
+                    <p className="text-xl text-gray-300 leading-relaxed mb-8">
+                      {step.description}
+                    </p>
+                    <ul className="space-y-4">
+                      {step.deliverables.map((deliverable, i) => (
+                        <li key={i} className="flex items-center gap-4 text-gray-400">
+                          <div className="w-2 h-2 rounded-full bg-neon-blue"></div>
+                          <span>{deliverable}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </section>
+
+    </section >
   );
 };
 

@@ -120,7 +120,7 @@ const Capabilities = () => {
             <div className="inline-block p-[1px] rounded-full bg-gradient-to-r from-neon-purple via-white to-neon-blue">
               <a
                 href="#contact"
-                className="block px-10 py-4 bg-black rounded-full text-white font-bold hover:bg-white/10 transition-colors duration-300"
+                className="block px-10 py-4 bg-black rounded-full text-white font-bold hover:bg-white/10 hover:text-black transition-colors duration-300"
               >
                 Start Your Project <i className="fas fa-arrow-right ml-2 text-neon-purple"></i>
               </a>
