@@ -62,9 +62,6 @@ const Capabilities = () => {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-24 reveal">
-            <span className="inline-block text-sm font-bold text-neon-blue tracking-[0.2em] uppercase mb-4 animate-float">
-              What We Do Best
-            </span>
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 font-outfit">
               Our Technical <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple">
