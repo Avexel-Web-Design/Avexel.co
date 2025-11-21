@@ -13,7 +13,7 @@ const CapabilityCard = ({
   return (
     <div className="glass-card p-8 rounded-2xl group hover:-translate-y-2 transition-all duration-500">
       {/* Icon */}
-      <div className="mb-8 relative inline-block">
+      <div className="mb-8 relative group-hover:rotate-6 transition-transform duration-500 inline-block">
         <div className="absolute inset-0 bg-neon-purple/20 blur-xl rounded-full group-hover:bg-neon-purple/40 transition-colors duration-300"></div>
         <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
           <i className={`fas ${icon} text-2xl text-white group-hover:text-neon-purple transition-colors duration-300`}></i>
@@ -80,7 +80,7 @@ const Capabilities = () => {
               title="Frontend Development"
               description="We craft beautiful interfaces that work flawlessly across all devices. Our websites don't just look good – they provide an intuitive experience that engages users."
               target="100"
-              suffix="%"
+              suffix="% Satisfaction"
               startValue={0}
             />
 
@@ -104,10 +104,10 @@ const Capabilities = () => {
 
             <CapabilityCard
               icon="fa-tools"
-              title="Additional Services"
-              description="We go beyond just building websites. Our comprehensive services ensure that building and maintaining your online presence is simple and stress-free."
-              target="24"
-              suffix="/7 Support"
+              title="Mobile Friendly"
+              description="We ensure every site we build is fully optimized for mobile devices, delivering fast, responsive, and intuitive experiences on any screen size."
+              target="100"
+              suffix="% Optimized"
               startValue={0}
             />
           </div>
