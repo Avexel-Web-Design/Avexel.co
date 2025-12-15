@@ -6,7 +6,7 @@ import Capabilities from "./components/Capabilities";
 import About from "./components/About";
 import Services from "./components/Services";
 import Portfolio from "./components/Portfolio";
-import GetQuote from "./components/GetQuote";
+// import GetQuote from "./components/GetQuote";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import CommunicationsGuide from "./components/CommunicationsGuide";
@@ -22,7 +22,7 @@ function HomePage() {
         <About />
         <Capabilities />
         <Portfolio />
-        <GetQuote />
+        {/* <GetQuote /> */}
         <Contact />
       </div>
     </>

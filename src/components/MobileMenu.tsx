@@ -27,7 +27,7 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
     { to: "#about", label: "Team", id: "about", icon: "fas fa-users" },
     { to: "#services", label: "Services", id: "services", icon: "fas fa-cogs" },
     { to: "#work", label: "Work", id: "work", icon: "fas fa-briefcase" },
-    { to: "#quote", label: "Quote", id: "quote", icon: "fas fa-calculator" },
+    // { to: "#quote", label: "Quote", id: "quote", icon: "fas fa-calculator" },
     { to: "#contact", label: "Contact", id: "contact", icon: "fas fa-envelope" },
   ];
 

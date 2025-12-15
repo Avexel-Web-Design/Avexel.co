@@ -15,7 +15,7 @@ const Navbar = () => {
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 50);
 
-    const sections = ["home", "services", "about", "capabilities", "work", "quote", "contact"];
+    const sections = ["home", "services", "about", "capabilities", "work", "contact"];
     const scrollY = window.scrollY;
 
     // Find current section index
@@ -158,7 +158,7 @@ const Navbar = () => {
     { id: "about", label: "Team" },
     { id: "capabilities", label: "Skills" },
     { id: "work", label: "Work" },
-    { id: "quote", label: "Quote" },
+    // { id: "quote", label: "Quote" },
     { id: "contact", label: "Contact" },
   ];
 
