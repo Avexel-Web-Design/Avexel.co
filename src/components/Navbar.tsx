@@ -176,7 +176,14 @@ const Navbar = () => {
           >
             <div className="relative w-10 h-10">
               <div className="absolute inset-0 bg-gradient-to-tr from-neon-purple to-neon-blue rounded-full blur opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <img src="/Logo-nobg-sm.png" alt="Avexel" className="relative w-full h-full object-contain" />
+              <img 
+                src="/Logo-nobg-sm-140.webp" 
+                alt="Avexel" 
+                className="relative w-full h-full object-contain"
+                width="40"
+                height="40"
+                fetchPriority="high"
+              />
             </div>
             <span className="hidden md:block font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
               Avexel

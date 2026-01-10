@@ -153,13 +153,6 @@ const Services = () => {
 
       {/* Process Section - Diagonal Scroll Journey */}
       <div ref={containerRef} className="relative h-[500vh] mb-32">
-        {/* Snap Targets */}
-        <div className="absolute inset-0 pointer-events-none">
-          {[0, 1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-[100vh] w-full snap-start"></div>
-          ))}
-        </div>
-
         <div className="sticky top-0 h-screen overflow-hidden bg-[#050505]">
           <div
             className="absolute top-0 left-0 w-full h-full transition-transform duration-100 ease-linear will-change-transform"

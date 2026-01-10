@@ -22,11 +22,15 @@ export default defineConfig({
           // Other assets go to assets directory with hash
           return 'assets/[name]-[hash][extname]';
         },
-        // Move fonts to the fonts directory
-        manualChunks: undefined
+        // Code splitting for better caching and initial load
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'router': ['react-router-dom', 'react-router-hash-link'],
+          'animation': ['framer-motion'],
+        }
       }
     },
-    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.svg'],
+    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.svg', '**/*.webp'],
   },
   resolve: {
     alias: {

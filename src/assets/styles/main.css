@@ -326,15 +326,10 @@ body {
   filter: drop-shadow(0 0 20px rgba(56, 189, 248, 0.5));
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
+/* Lenis handles smooth scrolling - remove CSS smooth scroll to avoid conflicts */
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  /* Lenis respects this media query automatically */
 }
 
 /* Ensure images don't scale beyond their container */

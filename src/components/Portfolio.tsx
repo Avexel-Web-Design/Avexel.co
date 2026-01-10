@@ -8,6 +8,10 @@ const ProjectCard = ({ title, description, image, tags, websiteUrl, caseStudyUrl
       <img
         src={image}
         alt={title}
+        loading="lazy"
+        decoding="async"
+        width="400"
+        height="400"
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
       />
     </div>
@@ -80,7 +84,7 @@ const Portfolio = () => {
             title="FRC Team 7790"
             description="An interactive website for Baywatch Robotics showcasing our team, robot designs, competition history, and STEM outreach programs."
             tags={["Charity", "STEM", "Robotics"]}
-            image="/baywatchLogo.png"
+            image="/baywatchLogo.webp"
             websiteUrl="https://frc7790.com"
             caseStudyUrl=""
           />
@@ -88,7 +92,7 @@ const Portfolio = () => {
             title="Detroit Rising Development"
             description="A professional website for Detroit Rising Development showcasing services and credentials."
             tags={["Professional", "Business", "Real Estate"]}
-            image="/DetroitRising.png"
+            image="/DetroitRising.webp"
             websiteUrl="https://detroitrisingdevelopment.pages.dev"
             caseStudyUrl=""
           />
@@ -96,7 +100,7 @@ const Portfolio = () => {
             title="Harbor Soccer Inc."
             description="A comprehensive website for Harbor Springs' youth soccer organization, featuring registration systems and event calendars."
             tags={["Non-Profit", "Sports", "Community"]}
-            image="/HarborSoccerLogo.png"
+            image="/HarborSoccerLogo.webp"
             websiteUrl="https://harborsoccerinc.com"
             caseStudyUrl=""
           />
@@ -104,7 +108,7 @@ const Portfolio = () => {
             title="Nadia Elmagrabi"
             description="A comprehensive portfolio website for Nadia Elmagrabi, showcasing her portfolio and services."
             tags={["Portfolio"]}
-            image="/Nadia.jpg"
+            image="/Nadia.webp"
             websiteUrl="https://nadia-elmagrabi.pages.dev"
             caseStudyUrl=""
           />
