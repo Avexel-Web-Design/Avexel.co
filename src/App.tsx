@@ -5,8 +5,6 @@ import "lenis/dist/lenis.css";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Footer from "./components/Footer";
-import "./App.css";
-import "./assets/styles/main.css";
 
 // Lazy load below-fold components
 const Capabilities = lazy(() => import("./components/Capabilities"));
