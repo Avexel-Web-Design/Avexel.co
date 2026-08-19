@@ -55,8 +55,8 @@ const Navbar = () => {
             const end = nextSection.offsetTop - 100;
             const progress = Math.min(Math.max((scrollY - start) / (end - start), 0), 1);
 
-            const currentLink = navRef.current.querySelector(`[data-tab-id="${sections[currentIndex]}"]`) as HTMLElement;
-            const nextLink = navRef.current.querySelector(`[data-tab-id="${sections[currentIndex + 1]}"]`) as HTMLElement;
+            const currentLink = navRef.current.querySelector<HTMLElement>(`[data-tab-id="${sections[currentIndex]}"]`);
+            const nextLink = navRef.current.querySelector<HTMLElement>(`[data-tab-id="${sections[currentIndex + 1]}"]`);
 
             if (currentLink && nextLink) {
               const newLeft = currentLink.offsetLeft + (nextLink.offsetLeft - currentLink.offsetLeft) * progress;
@@ -73,7 +73,7 @@ const Navbar = () => {
         } else {
           // Last section - just snap
           if (navRef.current) {
-            const currentLink = navRef.current.querySelector(`[data-tab-id="${sections[currentIndex]}"]`) as HTMLElement;
+            const currentLink = navRef.current.querySelector<HTMLElement>(`[data-tab-id="${sections[currentIndex]}"]`);
             if (currentLink) {
               setIndicatorStyle({
                 left: currentLink.offsetLeft,
@@ -87,7 +87,7 @@ const Navbar = () => {
       } else {
         // Discrete snapping for manual scroll
         if (navRef.current) {
-          const currentLink = navRef.current.querySelector(`[data-tab-id="${sections[currentIndex]}"]`) as HTMLElement;
+          const currentLink = navRef.current.querySelector<HTMLElement>(`[data-tab-id="${sections[currentIndex]}"]`);
           if (currentLink) {
             setIndicatorStyle({
               left: currentLink.offsetLeft,
@@ -102,7 +102,7 @@ const Navbar = () => {
       // At the very top
       setActiveTab("home");
       if (navRef.current) {
-        const homeLink = navRef.current.querySelector(`[data-tab-id="home"]`) as HTMLElement;
+        const homeLink = navRef.current.querySelector<HTMLElement>(`[data-tab-id="home"]`);
         if (homeLink) {
           setIndicatorStyle({
             left: homeLink.offsetLeft,
@@ -140,7 +140,7 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleLinkClick = (id: string) => {
+  const handleLinkClick = () => {
     isManualScroll.current = true;
     setMenuOpen(false);
 
@@ -172,7 +172,7 @@ const Navbar = () => {
             smooth
             to="#"
             className="flex items-center gap-3 group"
-            onClick={() => handleLinkClick('home')}
+            onClick={handleLinkClick}
           >
             <div className="relative w-10 h-10">
               <div className="absolute inset-0 bg-gradient-to-tr from-neon-purple to-neon-blue rounded-full blur opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -216,7 +216,7 @@ const Navbar = () => {
                   ? "text-white"
                   : "text-gray-400 hover:text-white"
                   }`}
-                onClick={() => handleLinkClick(link.id)}
+                onClick={handleLinkClick}
               >
                 {link.label}
               </HashLink>
@@ -246,7 +246,7 @@ const Navbar = () => {
               smooth
               to={link.id === "home" ? "#" : `#${link.id}`}
               className="text-3xl font-bold text-white/80 hover:text-white hover:scale-110 transition-all duration-300"
-              onClick={() => handleLinkClick(link.id)}
+              onClick={handleLinkClick}
             >
               {link.label}
             </HashLink>

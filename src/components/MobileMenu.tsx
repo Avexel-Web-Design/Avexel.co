@@ -109,7 +109,7 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
               animate="visible"
               exit="exit"
             >
-              {menuLinks.map((link, index) => (
+              {menuLinks.map((link) => (
                 <motion.div
                   key={link.id}
                   variants={itemVariants}

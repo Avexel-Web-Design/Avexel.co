@@ -1,33 +1,9 @@
 import React, { useState } from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
-import AnimatedOrb from "./AnimatedOrb"; // Keeping for now if needed, or remove if unused
 import { useForm, ValidationError } from '@formspree/react';
-
-const ContactInfo = ({ icon, title, content }: { icon: string, title: string, content: React.ReactNode }) => (
-  <div className="flex items-start gap-6 group p-4 rounded-xl hover:bg-white/5 transition-colors duration-300">
-    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-neon-purple/10 to-neon-blue/10 flex items-center justify-center ring-1 ring-white/10 group-hover:ring-neon-purple/50 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-lg shadow-black/50">
-      <i
-        className={`fas ${icon} text-2xl bg-gradient-to-r from-neon-purple to-neon-blue bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300`}
-      ></i>
-    </div>
-    <div className="flex-1">
-      <h3 className="text-lg font-bold text-white mb-2 group-hover:text-neon-blue transition-colors duration-300 font-outfit">{title}</h3>
-      <div className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300 leading-relaxed">
-        {content}
-      </div>
-    </div>
-  </div>
-);
 
 const AnimatedFormInput = ({ type = "text", name, placeholder, required = false, rows = undefined }: { type?: string, name: string, placeholder: string, required?: boolean, rows?: number }) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [hasValue, setHasValue] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setHasValue(e.target.value.length > 0);
-  };
-
-  const Component = rows ? 'textarea' : 'input';
 
   return (
     <div className="relative group">
@@ -43,7 +19,6 @@ const AnimatedFormInput = ({ type = "text", name, placeholder, required = false,
           rows={rows}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          onChange={handleChange}
           className={`relative w-full px-6 py-4 bg-black/50 border rounded-xl text-white placeholder-gray-500 focus:outline-none transition-all duration-300 resize-none ${isFocused
             ? 'border-neon-purple bg-black/80 shadow-lg shadow-neon-purple/10'
             : 'border-white/10 hover:border-white/20'
@@ -57,7 +32,6 @@ const AnimatedFormInput = ({ type = "text", name, placeholder, required = false,
           required={required}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          onChange={handleChange}
           className={`relative w-full px-6 py-4 bg-black/50 border rounded-xl text-white placeholder-gray-500 focus:outline-none transition-all duration-300 ${isFocused
             ? 'border-neon-purple bg-black/80 shadow-lg shadow-neon-purple/10'
             : 'border-white/10 hover:border-white/20'
@@ -70,19 +44,9 @@ const AnimatedFormInput = ({ type = "text", name, placeholder, required = false,
 
 const Contact = () => {
   useScrollReveal();
-  const [showCopied, setShowCopied] = useState(false);
 
   // Use Formspree's useForm hook with your form ID
   const [state, handleSubmit] = useForm("xvgkwonw");
-
-  const handleEmailClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const email = "contact@avexel.co";
-    navigator.clipboard.writeText(email).then(() => {
-      setShowCopied(true);
-      setTimeout(() => setShowCopied(false), 2000); // Hide after 2 seconds
-    });
-  };
 
   return (
     <section

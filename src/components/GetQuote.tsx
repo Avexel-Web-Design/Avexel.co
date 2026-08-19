@@ -3,7 +3,7 @@ import useScrollReveal from "../hooks/useScrollReveal";
 
 interface QuoteFormData {
   customFeatures: string[];
-  numberOfPages: string;
+  numberOfPages: PageRangeValue | "";
 }
 
 // Individual features for custom builds
@@ -153,7 +153,9 @@ const pageRanges = [
   { value: '16-30', label: '16-30 Pages', multiplier: 1.40 },
   { value: '31-50', label: '31-50 Pages', multiplier: 2.74 },
   { value: '50+', label: '50+ Pages', multiplier: 2.89 }
-];
+] as const;
+
+type PageRangeValue = (typeof pageRanges)[number]['value'];
 
 const GetQuote: React.FC = () => {
   useScrollReveal();
@@ -199,9 +201,9 @@ const GetQuote: React.FC = () => {
           '16-30': 3767.79,
           '31-50': 7377.90,
           '50+': 7790.00
-        };
+        } as const satisfies Record<PageRangeValue, number>;
 
-        const targetPrice = customTargetPrices[formData.numberOfPages as keyof typeof customTargetPrices];
+        const targetPrice = customTargetPrices[formData.numberOfPages];
         if (targetPrice) {
           basePrice = targetPrice * (basePrice / 3066.18);
         } else {

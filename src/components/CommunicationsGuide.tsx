@@ -31,8 +31,8 @@ const CommunicationsGuide: React.FC = () => {
   // Smooth scroll to anchor links
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('#')) {
+      const target = e.target;
+      if (target instanceof HTMLElement && target.tagName === 'A' && target.getAttribute('href')?.startsWith('#')) {
         e.preventDefault();
         const id = target.getAttribute('href')?.slice(1);
         const element = document.getElementById(id || '');

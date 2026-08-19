@@ -1,6 +1,5 @@
 import React from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
-import Monogram from "./Monogram";
 
 const TimelineItem = ({ year, title, description, icon }) => (
   <div className="relative pl-8 pb-12 group last:pb-0">
