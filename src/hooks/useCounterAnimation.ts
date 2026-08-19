@@ -27,12 +27,12 @@ const useCounterAnimation = () => {
           const currentValue = Math.round(
             startValue + easedProgress * (target - startValue)
           );
-          counterElement.textContent = currentValue;
+          counterElement.textContent = String(currentValue);
 
           if (progress < 1) {
             requestAnimationFrame(updateCounter);
           } else {
-            counterElement.textContent = target;
+            counterElement.textContent = String(target);
           }
         };
 
