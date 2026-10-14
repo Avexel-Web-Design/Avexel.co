@@ -447,6 +447,14 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+/* Chromium/Brave can fail to paint background-clip:text on plain inline
+   boxes, rendering the text solid instead of gradient. Inline-block forces
+   the span to paint its own background so the gradient clips correctly. */
+span.bg-clip-text.text-transparent,
+span.gradient-text {
+  display: inline-block;
+}
+
 /* Reduce paint operations with transform instead of all */
 .transition-transform-gpu {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
