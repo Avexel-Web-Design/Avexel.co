@@ -439,6 +439,14 @@ body {
   @apply bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent;
 }
 
+/* Explicit text fill keeps gradient lettering transparent in Chromium/Brave. */
+.bg-clip-text.text-transparent,
+.gradient-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* Reduce paint operations with transform instead of all */
 .transition-transform-gpu {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
