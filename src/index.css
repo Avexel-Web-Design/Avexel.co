@@ -439,12 +439,24 @@ body {
   @apply bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent;
 }
 
-/* Explicit text fill keeps gradient lettering transparent in Chromium/Brave. */
+/* Gradient text hardening. Default to a readable solid violet so the text
+   can never degrade to invisible/black if the gradient background is
+   stripped (content modifier, old browser, etc.). */
 .bg-clip-text.text-transparent,
 .gradient-text {
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #a78bfa;
+  -webkit-text-fill-color: #a78bfa;
+}
+
+/* Full gradient technique only where background-clip:text is supported. */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .bg-clip-text.text-transparent,
+  .gradient-text {
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 /* Chromium/Brave can fail to paint background-clip:text on plain inline
