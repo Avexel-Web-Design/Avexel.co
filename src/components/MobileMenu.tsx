@@ -74,7 +74,7 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
         >
           {/* Backdrop with blur and gradient */}
           <div 
-            className="absolute inset-0 bg-gradient-to-br from-black/95 to-gray-900/90 backdrop-blur-lg" 
+            className="absolute inset-0 bg-linear-to-br from-black/95 to-gray-900/90 backdrop-blur-lg" 
             onClick={handleCloseMenu} // Allow clicking backdrop to close menu
           />
           
@@ -85,7 +85,7 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
           {/* Enhanced Close button */}
           <motion.button
             onClick={handleCloseMenu}
-            className="absolute top-6 right-6 text-white w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all z-50 focus:outline-none focus:ring-2 focus:ring-primary-400 focus:ring-opacity-50"
+            className="absolute top-6 right-6 text-white w-12 h-12 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all z-50 focus:outline-hidden focus:ring-2 focus:ring-primary-400/50"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             aria-label="Close menu"
@@ -128,7 +128,7 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
                     {/* Background effect */}
                     {activeTab === link.id && (
                       <motion.div 
-                        className="absolute inset-0 bg-gradient-to-r from-primary-500/20 to-secondary-500/20 rounded-lg"
+                        className="absolute inset-0 bg-linear-to-r from-primary-500/20 to-secondary-500/20 rounded-lg"
                         layoutId="activeBackground"
                       />
                     )}
@@ -138,14 +138,14 @@ const MobileMenu = ({ isOpen, closeMenu, activeTab, setActiveTab }) => {
                     
                     {/* Text with gradient on active */}
                     <span className={activeTab === link.id 
-                      ? "bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent" 
+                      ? "bg-linear-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent" 
                       : ""
                     }>
                       {link.label}
                     </span>
                     
                     {/* Line indicator */}
-                    <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gradient-to-r from-primary-400 to-secondary-400 transition-all duration-300 ${
+                    <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-linear-to-r from-primary-400 to-secondary-400 transition-all duration-300 ${
                       activeTab === link.id ? "w-1/2" : "w-0 group-hover:w-1/4"
                     }`}></span>
                   </HashLink>

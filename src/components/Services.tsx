@@ -117,7 +117,7 @@ const Services = () => {
         <div className="max-w-3xl mx-auto text-center mb-20">
           <span className="text-neon-blue font-bold tracking-widest text-sm uppercase mb-4 block">Our Expertise</span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Services We <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue">Provide</span>
+            Services We <span className="text-transparent bg-clip-text bg-linear-to-r from-neon-purple to-neon-blue">Provide</span>
           </h2>
           <p className="text-gray-400 text-lg">
             Professional web solutions crafted by passionate student developers.
@@ -153,7 +153,7 @@ const Services = () => {
 
       {/* Process Section - Diagonal Scroll Journey */}
       <div ref={containerRef} className="relative h-[500vh] mb-32">
-        <div className="sticky top-0 h-screen overflow-hidden bg-[#050505]">
+        <div className="sticky top-0 h-screen overflow-hidden bg-dark">
           <div
             className="absolute top-0 left-0 w-full h-full transition-transform duration-100 ease-linear will-change-transform"
             style={{
@@ -165,7 +165,7 @@ const Services = () => {
               <div className="max-w-4xl text-center">
                 <h3 className="text-6xl md:text-8xl font-bold text-white mb-8 leading-tight">
                   Our <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue">Approach</span>
+                  <span className="text-transparent bg-clip-text bg-linear-to-r from-neon-purple to-neon-blue">Approach</span>
                 </h3>
                 <p className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
                   We don't just build websites; we craft digital experiences. Scroll to embark on the journey from concept to reality.
@@ -190,11 +190,11 @@ const Services = () => {
                       0{index + 1}
                     </div>
                     <div className="relative z-10 glass-panel p-12 rounded-3xl border border-white/10 bg-black/50 backdrop-blur-xl">
-                      <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-neon-purple to-neon-blue flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(124,58,237,0.3)]">
+                      <div className="w-24 h-24 rounded-2xl bg-linear-to-br from-neon-purple to-neon-blue flex items-center justify-center mb-8 shadow-[0_0_30px_rgba(124,58,237,0.3)]">
                         <span className="text-4xl font-bold text-white">0{index + 1}</span>
                       </div>
                       <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-neon-purple to-neon-blue w-full animate-pulse"></div>
+                        <div className="h-full bg-linear-to-r from-neon-purple to-neon-blue w-full animate-pulse"></div>
                       </div>
                     </div>
                   </div>

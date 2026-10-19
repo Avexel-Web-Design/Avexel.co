@@ -8,7 +8,7 @@ const AnimatedFormInput = ({ type = "text", name, placeholder, required = false,
   return (
     <div className="relative group">
       {/* Animated background gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-r from-neon-purple/20 to-neon-blue/20 rounded-xl blur-xl transition-opacity duration-300 ${isFocused ? 'opacity-100' : 'opacity-0'}`}></div>
+      <div className={`absolute inset-0 bg-linear-to-r from-neon-purple/20 to-neon-blue/20 rounded-xl blur-xl transition-opacity duration-300 ${isFocused ? 'opacity-100' : 'opacity-0'}`}></div>
 
       {/* Input field */}
       {rows ? (
@@ -19,7 +19,7 @@ const AnimatedFormInput = ({ type = "text", name, placeholder, required = false,
           rows={rows}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className={`relative w-full px-6 py-4 bg-black/50 border rounded-xl text-white placeholder-gray-500 focus:outline-none transition-all duration-300 resize-none ${isFocused
+          className={`relative w-full px-6 py-4 bg-black/50 border rounded-xl text-white placeholder-gray-500 focus:outline-hidden transition-all duration-300 resize-none ${isFocused
             ? 'border-neon-purple bg-black/80 shadow-lg shadow-neon-purple/10'
             : 'border-white/10 hover:border-white/20'
             }`}
@@ -32,7 +32,7 @@ const AnimatedFormInput = ({ type = "text", name, placeholder, required = false,
           required={required}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className={`relative w-full px-6 py-4 bg-black/50 border rounded-xl text-white placeholder-gray-500 focus:outline-none transition-all duration-300 ${isFocused
+          className={`relative w-full px-6 py-4 bg-black/50 border rounded-xl text-white placeholder-gray-500 focus:outline-hidden transition-all duration-300 ${isFocused
             ? 'border-neon-purple bg-black/80 shadow-lg shadow-neon-purple/10'
             : 'border-white/10 hover:border-white/20'
             }`}
@@ -51,7 +51,7 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="py-32 bg-[#050505] relative overflow-hidden snap-start"
+      className="py-32 bg-dark relative overflow-hidden snap-start"
     >
       {/* Enhanced Background Elements */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
@@ -66,7 +66,7 @@ const Contact = () => {
             </span>
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 font-outfit">
               Let's Build Something <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-neon-purple to-neon-blue">
                 Amazing Together
               </span>
             </h2>
@@ -105,7 +105,7 @@ const Contact = () => {
                     <button
                       type="submit"
                       disabled={state.submitting}
-                      className="w-full py-4 bg-gradient-to-r from-neon-purple to-neon-blue rounded-xl text-white font-bold text-lg hover:shadow-lg hover:shadow-neon-purple/25 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                      className="w-full py-4 bg-linear-to-r from-neon-purple to-neon-blue rounded-xl text-white font-bold text-lg hover:shadow-lg hover:shadow-neon-purple/25 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                     >
                       {state.submitting ? (
                         <span className="flex items-center justify-center gap-2">

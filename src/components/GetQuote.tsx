@@ -265,7 +265,7 @@ const GetQuote: React.FC = () => {
   };
 
   return (
-    <section id="quote" className="py-32 bg-[#050505] relative overflow-hidden snap-start">
+    <section id="quote" className="py-32 bg-dark relative overflow-hidden snap-start">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-neon-purple/5 rounded-full blur-[120px] animate-pulse-glow pointer-events-none"></div>
@@ -277,7 +277,7 @@ const GetQuote: React.FC = () => {
           </span>
           <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 font-outfit">
             Build Your <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-neon-purple to-neon-blue">
               Custom Solution
             </span>
           </h2>
@@ -361,7 +361,7 @@ const GetQuote: React.FC = () => {
                                     <div className="flex items-center gap-3">
                                       <span className="text-white font-bold font-outfit">{feature.name}</span>
                                       {feature.required && (
-                                        <span className="text-[10px] uppercase tracking-wider bg-neon-blue/20 text-neon-blue px-2 py-1 rounded">
+                                        <span className="text-[10px] uppercase tracking-wider bg-neon-blue/20 text-neon-blue px-2 py-1 rounded-sm">
                                           Required
                                         </span>
                                       )}
@@ -393,7 +393,7 @@ const GetQuote: React.FC = () => {
                       <select
                         value={formData.numberOfPages}
                         onChange={(e) => handleInputChange('numberOfPages', e.target.value)}
-                        className="w-full px-6 py-4 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:border-neon-purple text-white appearance-none cursor-pointer transition-colors duration-300"
+                        className="w-full px-6 py-4 bg-black/50 border border-white/10 rounded-xl focus:outline-hidden focus:border-neon-purple text-white appearance-none cursor-pointer transition-colors duration-300"
                       >
                         <option value="">Select page range</option>
                         {pageRanges.map(range => (
@@ -420,7 +420,7 @@ const GetQuote: React.FC = () => {
                       <div className="space-y-6 relative z-10">
                         <div className="text-center py-6 bg-white/5 rounded-xl border border-white/5">
                           <div className="text-sm text-gray-400 mb-2 uppercase tracking-wider">Estimated Total</div>
-                          <div className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue font-outfit">
+                          <div className="text-5xl font-bold text-transparent bg-clip-text bg-linear-to-r from-neon-purple to-neon-blue font-outfit">
                             ${estimatedPrice.toFixed(2)}
                           </div>
                           <div className="text-xs text-gray-500 mt-2">*Starting estimate</div>
@@ -446,7 +446,7 @@ const GetQuote: React.FC = () => {
 
                         <button
                           onClick={handleGetQuote}
-                          className="w-full py-4 bg-gradient-to-r from-neon-purple to-neon-blue rounded-xl text-white font-bold hover:shadow-lg hover:shadow-neon-purple/25 transition-all duration-300 transform hover:-translate-y-1"
+                          className="w-full py-4 bg-linear-to-r from-neon-purple to-neon-blue rounded-xl text-white font-bold hover:shadow-lg hover:shadow-neon-purple/25 transition-all duration-300 transform hover:-translate-y-1"
                         >
                           Proceed With Quote
                         </button>

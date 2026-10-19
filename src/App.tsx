@@ -86,7 +86,7 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <div className="relative bg-[#050505] text-white min-h-screen selection:bg-primary-500 selection:text-white">
+    <div className="relative bg-dark text-white min-h-screen selection:bg-primary-500 selection:text-white">
       {/* Global Background Elements */}
 
       <div className="relative z-50">

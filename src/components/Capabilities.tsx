@@ -15,7 +15,7 @@ const CapabilityCard = ({
       {/* Icon */}
       <div className="mb-8 relative group-hover:rotate-6 transition-transform duration-500 inline-block">
         <div className="absolute inset-0 bg-neon-purple/20 blur-xl rounded-full group-hover:bg-neon-purple/40 transition-colors duration-300"></div>
-        <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-white/5 to-white/10 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+        <div className="relative w-16 h-16 rounded-2xl bg-linear-to-br from-white/5 to-white/10 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
           <i className={`fas ${icon} text-2xl text-white group-hover:text-neon-purple transition-colors duration-300`}></i>
         </div>
       </div>
@@ -33,7 +33,7 @@ const CapabilityCard = ({
         <div className="pt-6 border-t border-white/5 mt-6">
           <div className="flex items-baseline gap-1">
             <span
-              className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue counter"
+              className="text-4xl font-bold text-transparent bg-clip-text bg-linear-to-r from-neon-purple to-neon-blue counter"
               data-target={target}
             >
               {startValue}
@@ -53,7 +53,7 @@ const Capabilities = () => {
   useCounterAnimation();
 
   return (
-    <section id="capabilities" className="py-32 bg-[#050505] relative overflow-hidden snap-start">
+    <section id="capabilities" className="py-32 bg-dark relative overflow-hidden snap-start">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
       <div className="absolute top-1/3 left-0 w-[600px] h-[600px] bg-neon-blue/5 rounded-full blur-[120px] animate-pulse-glow pointer-events-none"></div>
@@ -64,7 +64,7 @@ const Capabilities = () => {
           <div className="text-center mb-24 reveal">
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 font-outfit">
               Our Technical <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-neon-blue to-neon-purple">
                 Expertise
               </span>
             </h2>
@@ -114,7 +114,7 @@ const Capabilities = () => {
 
           {/* CTA */}
           <div className="text-center mt-20 reveal">
-            <div className="inline-block p-[1px] rounded-full bg-gradient-to-r from-neon-purple via-white to-neon-blue">
+            <div className="inline-block p-px rounded-full bg-linear-to-r from-neon-purple via-white to-neon-blue">
               <a
                 href="#contact"
                 className="block px-10 py-4 bg-black rounded-full text-white font-bold hover:bg-white/10 hover:text-black transition-colors duration-300"

@@ -18,7 +18,7 @@ const ProjectCard = ({ title, description, image, tags, websiteUrl, caseStudyUrl
 
     {/* Content */}
     <div className="p-6 relative">
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-neon-purple/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-linear-to-br from-neon-purple/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
       <div className="relative z-10">
         <div className="flex flex-wrap gap-2 mb-3">
@@ -72,7 +72,7 @@ const Portfolio = () => {
         <div className="max-w-4xl mx-auto text-center mb-20">
           <span className="text-neon-purple font-bold tracking-widest text-sm uppercase mb-4 block">Portfolio</span>
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-white">Projects</span>
+            Featured <span className="text-transparent bg-clip-text bg-linear-to-r from-neon-purple to-white">Projects</span>
           </h2>
           <p className="text-gray-400 text-lg">
             A collection of digital experiences we've crafted.
@@ -115,7 +115,7 @@ const Portfolio = () => {
         </div>
 
         <div className="mt-24 text-center">
-          <div className="inline-block p-1 rounded-full bg-gradient-to-r from-neon-purple to-neon-blue">
+          <div className="inline-block p-1 rounded-full bg-linear-to-r from-neon-purple to-neon-blue">
             <div className="bg-black rounded-full px-8 py-4">
               <p className="text-white text-lg font-medium">
                 Want to see your project here? <a href="#contact" className="text-neon-blue hover:underline ml-2">Let's talk.</a>
