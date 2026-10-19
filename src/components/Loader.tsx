@@ -30,14 +30,14 @@ const Loader = () => {
 
   return (
     <div
-      className={`fixed inset-0 z-[60] bg-dark transition-opacity duration-500 ${
+      className={`fixed inset-0 z-60 bg-dark transition-opacity duration-500 ${
         progress === 100 ? "opacity-0" : "opacity-100"
       }`}
     >
       {/* Creative geometric background */}
       <div className="absolute inset-0">
         {/* Gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-secondary-500/5 to-primary-500/10"></div>
+        <div className="absolute inset-0 bg-linear-to-br from-primary-500/10 via-secondary-500/5 to-primary-500/10"></div>
 
         {/* Animated elements */}
         <div className="absolute top-1/4 right-1/4 w-64 h-64 border border-white/5 rounded-full animate-spin-slow"></div>
@@ -65,14 +65,14 @@ const Loader = () => {
           <div className="relative h-0.5 w-full bg-white/10 rounded-full overflow-hidden">
             <div className="absolute top-0 left-0 bottom-0 w-full h-full bg-grid-pattern opacity-30"></div>
             <div
-              className="relative h-full bg-gradient-to-r from-primary-500 via-secondary-500 to-primary-500 bg-size-200 animate-flowing-gradient transition-all duration-300 ease-out"
+              className="relative h-full bg-linear-to-r from-primary-500 via-secondary-500 to-primary-500 bg-size-200 animate-flowing-gradient transition-all duration-300 ease-out"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
 
           {/* Progress text */}
           <div className="mt-4">
-            <span className="text-sm font-medium bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+            <span className="text-sm font-medium bg-linear-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
               {Math.round(progress)}%
             </span>
           </div>

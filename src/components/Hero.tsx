@@ -22,7 +22,7 @@ const Hero = () => {
           {/* Main Heading */}
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-8 tracking-tighter leading-[0.9]">
             <span className="block text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">Websites that</span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-neon-purple via-white to-neon-blue neon-text">
+            <span className="block text-transparent bg-clip-text bg-linear-to-r from-neon-purple via-white to-neon-blue neon-text">
               Make a Difference
             </span>
           </h1>

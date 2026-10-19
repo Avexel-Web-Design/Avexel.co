@@ -76,23 +76,23 @@ const CommunicationsGuide: React.FC = () => {
         </div>
 
         {/* Markdown Content */}
-        <div className="bg-gradient-to-br from-gray-900 to-black rounded-2xl shadow-2xl border border-gray-800 overflow-hidden">
+        <div className="bg-linear-to-br from-gray-900 to-black rounded-2xl shadow-2xl border border-gray-800 overflow-hidden">
           <div className="p-8 md:p-12">
             <article className="prose prose-invert prose-xl max-w-none
               prose-headings:text-white prose-headings:font-bold prose-headings:scroll-mt-20
-              prose-h1:text-5xl prose-h1:mb-8 prose-h1:mt-12 prose-h1:border-b-2 prose-h1:border-gray-700 prose-h1:pb-6 first:prose-h1:mt-0
+              prose-h1:text-5xl prose-h1:mb-8 prose-h1:mt-12 prose-h1:border-b-2 prose-h1:border-gray-700 prose-h1:pb-6 prose-h1:first:mt-0
               prose-h2:text-4xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:text-primary-400 prose-h2:border-b prose-h2:border-gray-800 prose-h2:pb-4
               prose-h3:text-3xl prose-h3:mt-12 prose-h3:mb-4 prose-h3:text-primary-300
               prose-h4:text-2xl prose-h4:mt-8 prose-h4:mb-3 prose-h4:text-gray-200
               prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6 prose-p:text-lg
-              prose-a:text-primary-400 prose-a:font-medium prose-a:no-underline prose-a:transition-colors hover:prose-a:text-primary-300
+              prose-a:text-primary-400 prose-a:font-medium prose-a:no-underline prose-a:transition-colors prose-a:hover:text-primary-300
               prose-strong:text-white prose-strong:font-bold
               prose-em:text-gray-400 prose-em:italic
               prose-ul:text-gray-300 prose-ul:my-6 prose-ul:space-y-3
               prose-ol:text-gray-300 prose-ol:my-6 prose-ol:space-y-3
               prose-li:text-lg prose-li:leading-relaxed
               prose-li:marker:text-primary-400
-              prose-code:text-primary-300 prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-base prose-code:font-mono
+              prose-code:text-primary-300 prose-code:bg-gray-800 prose-code:px-2 prose-code:py-1 prose-code:rounded-sm prose-code:text-base prose-code:font-mono
               prose-pre:bg-gray-800 prose-pre:border prose-pre:border-gray-700 prose-pre:rounded-lg prose-pre:p-6 prose-pre:overflow-x-auto
               prose-blockquote:border-l-4 prose-blockquote:border-primary-500 prose-blockquote:bg-gray-800/50 prose-blockquote:text-gray-300 prose-blockquote:italic prose-blockquote:pl-6 prose-blockquote:py-4 prose-blockquote:my-8
               prose-hr:border-gray-700 prose-hr:my-12 prose-hr:border-t-2

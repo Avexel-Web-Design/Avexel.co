@@ -47,7 +47,7 @@ const Monogram = ({
       aria-label={`Monogram for ${name}`}
     >
       {/* Background with gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-neon-purple to-neon-blue opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
+      <div className="absolute inset-0 bg-linear-to-br from-neon-purple to-neon-blue opacity-80 group-hover:opacity-100 transition-opacity duration-300"></div>
 
       {/* Grid pattern overlay */}
       <div className="absolute inset-0 bg-grid-pattern opacity-20 mix-blend-overlay"></div>

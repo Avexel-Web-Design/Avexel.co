@@ -4,7 +4,7 @@ import useScrollReveal from "../hooks/useScrollReveal";
 const TimelineItem = ({ year, title, description, icon }) => (
   <div className="relative pl-8 pb-12 group last:pb-0">
     {/* Vertical Line */}
-    <div className="absolute left-[11px] top-0 bottom-0 w-px bg-gradient-to-b from-neon-purple/50 to-neon-blue/50 group-last:hidden"></div>
+    <div className="absolute left-[11px] top-0 bottom-0 w-px bg-linear-to-b from-neon-purple/50 to-neon-blue/50 group-last:hidden"></div>
 
     {/* Dot */}
     <div className="absolute left-0 top-0 w-6 h-6 rounded-full bg-black border border-neon-purple/50 group-hover:border-neon-purple transition-colors duration-300 flex items-center justify-center z-10">
@@ -14,7 +14,7 @@ const TimelineItem = ({ year, title, description, icon }) => (
     <div className="group-hover:translate-x-2 transition-transform duration-300">
       <div className="flex items-center gap-3 mb-2">
         <span className="text-2xl font-bold text-neon-purple font-outfit">{year}</span>
-        <div className="h-px flex-1 bg-gradient-to-r from-neon-purple/30 to-transparent"></div>
+        <div className="h-px flex-1 bg-linear-to-r from-neon-purple/30 to-transparent"></div>
       </div>
 
       <div className="glass-panel p-6 rounded-xl border border-white/5 hover:border-neon-purple/30 transition-colors duration-300">
@@ -32,7 +32,7 @@ const TimelineItem = ({ year, title, description, icon }) => (
 
 const TeamMemberCard = ({ name, role, description }) => (
   <div className="group relative">
-    <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-purple to-neon-blue rounded-2xl blur opacity-20 group-hover:opacity-75 transition duration-500"></div>
+    <div className="absolute -inset-0.5 bg-linear-to-r from-neon-purple to-neon-blue rounded-2xl blur-sm opacity-20 group-hover:opacity-75 transition duration-500"></div>
     <div className="glass-card relative flex flex-col h-full p-8 rounded-2xl transition-all duration-500 group-hover:-translate-y-2">
       <div className="relative mb-8 mx-auto group-hover:scale-110 transition-transform duration-300">
         <div className="absolute inset-0 bg-neon-purple/20 blur-xl rounded-full -z-10 group-hover:opacity-100 transition-opacity duration-300 opacity-0"></div>
@@ -45,7 +45,7 @@ const TeamMemberCard = ({ name, role, description }) => (
         <p className="text-neon-purple font-medium tracking-wide uppercase text-sm">{role}</p>
       </div>
 
-      <p className="text-gray-400 text-center leading-relaxed flex-grow group-hover:text-gray-300 transition-colors duration-300">
+      <p className="text-gray-400 text-center leading-relaxed grow group-hover:text-gray-300 transition-colors duration-300">
         {description}
       </p>
     </div>
@@ -56,7 +56,7 @@ const About = () => {
   useScrollReveal();
 
   return (
-    <section id="about" className="py-32 bg-[#050505] relative overflow-hidden snap-start">
+    <section id="about" className="py-32 bg-dark relative overflow-hidden snap-start">
       {/* Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
       <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-neon-purple/10 rounded-full blur-[120px] animate-pulse-glow pointer-events-none"></div>
@@ -71,7 +71,7 @@ const About = () => {
             </span>
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-8 font-outfit">
               Student Developers. <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-blue">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-neon-purple to-neon-blue">
                 Real Solutions.
               </span>
             </h2>
@@ -117,7 +117,7 @@ const About = () => {
 
               <div className="grid md:grid-cols-3 gap-12">
                 <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-purple/20 to-neon-blue/20 flex items-center justify-center hover:scale-110 hover:rotate-6 transition-transform duration-300 ring-1 ring-white/10 will-change-transform">
+                  <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-linear-to-br from-neon-purple/20 to-neon-blue/20 flex items-center justify-center hover:scale-110 hover:rotate-6 transition-transform duration-300 ring-1 ring-white/10 will-change-transform">
                     <i className="fas fa-code text-3xl text-white"></i>
                   </div>
                   <h4 className="text-xl font-bold text-white mb-3 font-outfit">Modern Technology</h4>
@@ -127,7 +127,7 @@ const About = () => {
                 </div>
 
                 <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-neon-purple/20 to-neon-blue/20 flex items-center justify-center hover:scale-110 hover:rotate-6 transition-transform duration-300 ring-1 ring-white/10 will-change-transform">
+                  <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-linear-to-br from-neon-purple/20 to-neon-blue/20 flex items-center justify-center hover:scale-110 hover:rotate-6 transition-transform duration-300 ring-1 ring-white/10 will-change-transform">
                     <i className="fas fa-heart text-3xl text-white"></i>
                   </div>
                   <h4 className="text-xl font-bold text-white mb-3 font-outfit">Affordable Quality</h4>
@@ -137,7 +137,7 @@ const About = () => {
                 </div>
 
                 <div className="text-center flex flex-col items-center gap-6">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-neon-purple/20 to-neon-blue/20 flex items-center justify-center hover:scale-110 hover:rotate-6 transition-transform duration-300 ring-1 ring-white/10 will-change-transform">
+                  <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-neon-purple/20 to-neon-blue/20 flex items-center justify-center hover:scale-110 hover:rotate-6 transition-transform duration-300 ring-1 ring-white/10 will-change-transform">
                     <i className="fas fa-hands-helping text-3xl text-white"></i>
                   </div>
                   <div className="flex flex-col gap-3">
