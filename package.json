@@ -18,7 +18,7 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.64.0",
+    "@cloudflare/vite-plugin": "^1.66.0",
     "@oxlint/plugins": "^1.79.0",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^22.15.2",
@@ -30,7 +30,7 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^5.8.3",
     "vite": "^6.4.3",
-    "wrangler": "^4.151.0"
+    "wrangler": "^4.154.0"
   },
   "overrides": {
     "postcss-selector-parser": "7.1.6"
