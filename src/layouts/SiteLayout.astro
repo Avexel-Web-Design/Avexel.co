@@ -1,8 +1,8 @@
 ---
 import '../styles/site.css';
 import Icon from '../components/Icon.astro';
-interface Props { title?: string; description?: string; }
-const { title = 'Avexel | Web design & development', description = 'Custom websites and web applications from a student-led development team in Harbor Springs, Michigan. Avexel projects support Baywatch Robotics.' } = Astro.props;
+interface Props { title?: string; description?: string; immersive?: boolean; }
+const { title = 'Avexel | Web design & development', description = 'Custom websites and web applications from a student-led development team in Harbor Springs, Michigan. Avexel projects support Baywatch Robotics.', immersive = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const navLinks = [
   { id: 'home', label: 'Home' },
@@ -14,13 +14,13 @@ const navLinks = [
 const isHome = Astro.url.pathname === '/';
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" class:list={{ 'immersive-page': immersive }}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#000000" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content={immersive ? '#ffffff' : '#000000'} />
+    <meta name="color-scheme" content={immersive ? 'light' : 'dark'} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="sitemap" href="/sitemap.xml" />
@@ -33,9 +33,9 @@ const isHome = Astro.url.pathname === '/';
     <meta name="twitter:card" content="summary" />
     <title>{title}</title>
   </head>
-  <body>
+  <body class:list={{ immersive }}>
     <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header wrap">
+    {!immersive && <header class="site-header wrap">
       <a class="wordmark" href="/" aria-label="Avexel home"><img src="/Logo-nobg-sm-140.webp" width="35" height="35" alt="" />avexel</a>
       <nav class="desktop-nav" aria-label="Main navigation">
         <span class="nav-indicator" aria-hidden="true"></span>
@@ -47,13 +47,13 @@ const isHome = Astro.url.pathname === '/';
       <nav id="mobile-nav" class="mobile-nav glass" aria-label="Mobile navigation" hidden>
         {navLinks.map(link => <a href={`/#${link.id}`} data-section={link.id} aria-current={isHome && link.id === 'home' ? 'location' : undefined}>{link.label}{link.id === 'contact' && <Icon name="arrowUpRight" />}</a>)}
       </nav>
-    </header>
+    </header>}
     <noscript><nav class="no-js-nav wrap" aria-label="Site navigation">{navLinks.map(link => <a href={`/#${link.id}`}>{link.label}</a>)}</nav><style>.menu-toggle{display:none!important}</style></noscript>
     <main id="main"><slot /></main>
-    <footer class="site-footer wrap">
+    {!immersive && <footer class="site-footer wrap">
       <div class="footer-top"><a class="wordmark" href="/">avexel</a><a href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a></div>
       <div class="footer-bottom"><span>© {new Date().getFullYear()} Avexel Web Design</span><span>Harbor Springs, Michigan</span><div><a href="/communications/">Client guide</a><a href="https://github.com/avexel-web-design" target="_blank" rel="noreferrer">GitHub <Icon name="arrowUpRight" /></a></div></div>
-    </footer>
+    </footer>}
     <script>
       import '../scripts/site';
     </script>

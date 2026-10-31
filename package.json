@@ -5,7 +5,8 @@
   "type": "module",
   "dependencies": {
     "@astrojs/check": "^0.9.12",
-    "astro": "^7.4.4"
+    "astro": "^7.4.4",
+    "gsap": "^3.15.0"
   },
   "devDependencies": {
     "@oxlint/plugins": "^1.79.0",
@@ -35,7 +36,7 @@
     "start": "astro dev",
     "build": "astro build",
     "lint": "oxlint",
-    "test:browser": "node tools/check-site.mjs",
+    "test:browser": "node tools/check-scene.mjs",
     "preview": "astro preview --host 0.0.0.0",
     "tunnel": "lt --port 4321 --local-host 127.0.0.1",
     "predeploy": "npm run build",
