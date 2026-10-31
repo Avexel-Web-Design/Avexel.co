@@ -9,6 +9,19 @@ const projects = [
   { name: 'Baywatch Robotics', type: 'Team website', image: 'baywatch', url: 'https://frc7790.com', description: 'A home for the robots, people, and sponsors behind FIRST Robotics Team 7790.' },
   { name: 'Detroit Rising', type: 'Real estate development', image: 'detroit', url: 'https://detroitrisingdevelopment.pages.dev', description: 'A clear view of a development company’s projects, services, and vision for Detroit.' },
 ];
+const annotations = [
+  { id: 'brand', target: '.demo-brand > span', text: 'A dot is not a personality.' },
+  { id: 'nav', target: '.demo-nav > div', text: 'Three labels. No idea what you actually do.' },
+  { id: 'label', target: '.demo-eyebrow', text: 'Two buzzwords. Zero information.' },
+  { id: 'title', target: '.demo-copy h1', text: 'Could be literally any agency.' },
+  { id: 'description', target: '.demo-description', text: '15 words. Still no idea what you get.' },
+  { id: 'button', target: '.demo-copy > .demo-cta', text: 'What potential? Where?' },
+  { id: 'art', target: '.plus-one', text: 'A plus sign that adds nothing.' },
+  { id: 'caption', target: '.demo-art figcaption', text: '“Excellence.” According to whom?' },
+  { id: 'craft', target: '.art-caption', text: '“Purpose” is not a project brief.' },
+  { id: 'bottom', target: '.demo-bottom > span:first-child', text: 'More filler, but make it uppercase.' },
+  { id: 'navcta', target: '.demo-nav > .demo-cta', text: 'Innovate what, exactly?' },
+];
 ---
 
 <SiteLayout immersive title="Avexel | Our work isn't AI slop.">
@@ -24,21 +37,16 @@ const projects = [
       </div>
 
       <div class="intervention" aria-hidden="true">
-        <div class="statement line-one"><span class="keep-work">Our work</span> <span class="discard-one">does</span><span class="keep-not">n’t</span><span class="discard-one"> look like this.</span></div>
-        <div class="statement line-two"><span class="discard-two">This </span><span class="keep-is">is</span> <span class="keep-slop">AI slop.</span></div>
+        <div class="statement line-one"><span class="keep-work word-space-after">Our work</span><span class="discard-one">does</span><span class="keep-not">n’t</span><span class="discard-one word-space-before">look like this.</span></div>
+        <div class="statement line-two"><span class="discard-two word-space-after">This</span><span class="keep-is word-space-after">is</span><span class="keep-slop">AI slop.</span></div>
       </div>
 
       <div class="annotations" aria-hidden="true">
-        <div class="annotation note-brand"><span>A dot is not a personality.</span><i></i></div>
-        <div class="annotation note-label"><span>Words. So many words.<br />Still no actual information.</span><i></i></div>
-        <div class="annotation note-title"><i></i><span>Could be literally any agency.</span></div>
-        <div class="annotation note-art"><span>Random floating plus signs.<br />They don’t do anything.</span><i></i></div>
-        <div class="annotation note-button"><i></i><span>What potential? Where?</span></div>
-        <div class="annotation note-bottom"><i></i><span>More filler, but make it uppercase.</span></div>
+        <svg class="annotation-connectors" aria-hidden="true">{annotations.map(note => <g data-connector={note.id}><path /><circle r="3.5" /></g>)}</svg>
+        {annotations.map(note => <div class={`annotation note-${note.id}`} data-note={note.id} data-target={note.target}><span>{note.text}</span></div>)}
       </div>
 
       <canvas class="eraser-canvas" aria-hidden="true"></canvas>
-      <div class="eraser-head" aria-hidden="true"><span>DELETE THE DEFAULT.</span></div>
 
       <div class="real-site">
         <header class="real-header"><a href="#home" class="real-wordmark" data-replay aria-label="Avexel, replay introduction">avexel</a><nav aria-label="Main navigation"><button type="button" data-view="work" aria-pressed="true">Work <span>04</span></button><button type="button" data-view="studio" aria-pressed="false">Studio</button><button type="button" data-view="contact" aria-pressed="false">Start a project <Icon name="arrowUpRight" /></button></nav></header>
@@ -70,6 +78,6 @@ const projects = [
       <div class="story-controls"><span class="story-chapter">THE DEFAULT</span><div class="story-track"><span></span></div><button type="button" data-skip>Skip to the good part <span>↗</span></button></div>
     </div>
   </div>
-  <noscript><style>.scroll-story{height:auto}.scene{position:relative;height:auto;overflow:visible}.demo-page,.intervention,.annotations,.eraser-canvas,.eraser-head,.story-controls{display:none}.real-site{position:relative;clip-path:none!important;min-height:100svh}.real-site [inert]{pointer-events:auto}</style><p class="no-script-message">Please enable JavaScript to explore the animated introduction and studio views. Contact us at <a href="mailto:contact@avexel.co">contact@avexel.co</a>.</p></noscript>
+  <noscript><style>.scroll-story{height:auto}.scene{position:relative;height:auto;overflow:visible}.demo-page,.intervention,.annotations,.eraser-canvas,.story-controls{display:none}.real-site{position:relative;clip-path:none!important;min-height:100svh}.real-site [inert]{pointer-events:auto}</style><p class="no-script-message">Please enable JavaScript to explore the animated introduction and studio views. Contact us at <a href="mailto:contact@avexel.co">contact@avexel.co</a>.</p></noscript>
   <script>import '../scripts/scene';</script>
 </SiteLayout>

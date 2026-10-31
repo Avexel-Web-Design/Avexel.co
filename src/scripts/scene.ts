@@ -1,7 +1,8 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Observer } from 'gsap/Observer';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Observer);
 history.scrollRestoration = 'manual';
 
 const story = document.querySelector<HTMLElement>('.scroll-story');
@@ -9,7 +10,6 @@ const scene = document.querySelector<HTMLElement>('.scene');
 const realSite = document.querySelector<HTMLElement>('.real-site');
 if (realSite) realSite.inert = true;
 const canvas = document.querySelector<HTMLCanvasElement>('.eraser-canvas');
-const eraser = document.querySelector<HTMLElement>('.eraser-head');
 const chapter = document.querySelector<HTMLElement>('.story-chapter');
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 const panels = [...document.querySelectorAll<HTMLElement>('[data-panel]')];
@@ -25,6 +25,72 @@ const eraseState = { progress: 0 };
 const storageKey = 'avexel-scene-v1';
 let selectedView = 'work';
 let selectedProject = 0;
+let scrollTarget = 0;
+let dampingActive = false;
+
+function stopDamping() {
+  dampingActive = false;
+  scrollTarget = window.scrollY;
+}
+
+function dampScroll(delta: number) {
+  if (!story || !scene || reduce.matches || !restored) return;
+  const current = window.scrollY;
+  if (!dampingActive || Math.sign(delta) !== Math.sign(scrollTarget - current)) scrollTarget = current;
+  const max = story.offsetHeight - scene.clientHeight;
+  // Limit both speed and queued distance: a fling cannot queue the whole film.
+  scrollTarget = gsap.utils.clamp(0, max, gsap.utils.clamp(current - height * .7, current + height * .7, scrollTarget + gsap.utils.clamp(-height * .35, height * .35, delta * .55)));
+  dampingActive = true;
+}
+
+gsap.ticker.add((_time, deltaMs) => {
+  if (!dampingActive || reduce.matches) return;
+  const current = window.scrollY;
+  const distance = scrollTarget - current;
+  if (Math.abs(distance) < 1) { window.scrollTo(0, scrollTarget); stopDamping(); return; }
+  const dt = Math.min(deltaMs / 1000, .05);
+  const step = gsap.utils.clamp(-height * .8 * dt, height * .8 * dt, distance * (1 - Math.exp(-dt * 7)));
+  // Keep subpixel remainders in the destination; browsers round actual scroll positions.
+  window.scrollTo(0, current + Math.sign(step) * Math.max(1, Math.abs(step)));
+});
+
+if (scene) Observer.create({
+  target: scene, type: 'wheel,touch', preventDefault: true, allowClicks: true,
+  ignoreCheck: event => reduce.matches || Boolean(event && 'ctrlKey' in event && event.ctrlKey) || Boolean(event?.target instanceof Element && event.target.closest('.studio-view, .contact-view, input, textarea, select')),
+  onChangeY: self => dampScroll(self.event.type.startsWith('touch') ? -self.deltaY : self.deltaY),
+});
+
+document.addEventListener('keydown', event => {
+  if (reduce.matches || event.ctrlKey || event.metaKey || event.altKey || event.target instanceof HTMLElement && event.target.closest('input,textarea,select,button,[contenteditable="true"],.studio-view,.contact-view')) return;
+  const delta = new Map([['ArrowDown', 110], ['ArrowUp', -110], ['PageDown', height * .65], ['PageUp', -height * .65], [' ', height * (event.shiftKey ? -.65 : .65)]]).get(event.key);
+  if (delta === undefined) return;
+  event.preventDefault();
+  dampScroll(delta);
+});
+
+function positionAnnotations() {
+  if (!scene) return;
+  const origin = scene.getBoundingClientRect();
+  document.querySelectorAll<HTMLElement>('[data-note]').forEach(note => {
+    const target = document.querySelector<HTMLElement>(note.dataset.target ?? '');
+    const connector = document.querySelector<SVGGElement>(`[data-connector="${note.dataset.note}"]`);
+    if (!target || !connector) return;
+    const label = note.getBoundingClientRect();
+    const rect = target.getBoundingClientRect();
+    if (!label.width || !rect.width || !rect.height) { connector.style.display = 'none'; return; }
+    connector.style.display = '';
+    const labelX = label.left + label.width / 2;
+    const labelY = label.top + label.height / 2;
+    const endX = gsap.utils.clamp(rect.left + 2, rect.right - 2, labelX);
+    const endY = note.dataset.note === 'brand' ? rect.bottom - 6 : gsap.utils.clamp(rect.top + 2, rect.bottom - 2, labelY);
+    const startX = gsap.utils.clamp(label.left, label.right, endX);
+    const startY = gsap.utils.clamp(label.top, label.bottom, endY);
+    connector.querySelector('path')?.setAttribute('d', `M ${startX - origin.left} ${startY - origin.top} L ${endX - origin.left} ${endY - origin.top}`);
+    const dot = connector.querySelector('circle');
+    dot?.setAttribute('cx', String(endX - origin.left));
+    dot?.setAttribute('cy', String(endY - origin.top));
+  });
+}
 
 function showView(view: string, focus = false) {
   if (!panels.some(panel => panel.dataset.panel === view)) return;
@@ -75,8 +141,8 @@ function drawErase(progress: number) {
   const context = canvas?.getContext('2d');
   if (!context || !width || !height) return;
   context.clearRect(0, 0, width, height);
-  if (progress <= 0) { gsap.set(eraser, { opacity: 0 }); return; }
-  if (progress >= 1) { context.fillStyle = '#fff'; context.fillRect(0, 0, width, height); gsap.set(eraser, { opacity: 0 }); return; }
+  if (progress <= 0) return;
+  if (progress >= 1) { context.fillStyle = '#fff'; context.fillRect(0, 0, width, height); return; }
   const { points, band } = erasePoints();
   const lengths = points.slice(1).map((point, i) => Math.hypot(point.x - points[i].x, point.y - points[i].y));
   let remaining = lengths.reduce((sum, length) => sum + length, 0) * progress;
@@ -95,7 +161,6 @@ function drawErase(progress: number) {
   context.lineCap = 'round';
   context.lineJoin = 'round';
   context.stroke();
-  gsap.set(eraser, { x: tip.x - 55, y: tip.y - 30, rotation: -35, opacity: 1 });
 }
 
 function setRevealed(value: boolean) {
@@ -114,6 +179,7 @@ function savePosition() {
 function buildTimeline() {
   if (!story || !scene || !realSite || !canvas) return;
   const oldProgress = timeline?.scrollTrigger?.progress ?? 0;
+  stopDamping();
   timeline?.scrollTrigger?.kill();
   timeline?.revert();
   width = scene.clientWidth;
@@ -122,6 +188,7 @@ function buildTimeline() {
   canvas.width = width * dpr;
   canvas.height = height * dpr;
   canvas.getContext('2d')?.scale(dpr, dpr);
+  positionAnnotations();
   if (reduce.matches) {
     gsap.set(realSite, { clipPath: 'none' });
     setRevealed(true);
@@ -131,6 +198,7 @@ function buildTimeline() {
   drawErase(0);
   gsap.set('.statement', { opacity: 0, y: height * .65 });
   gsap.set('.annotations .annotation', { opacity: 0 });
+  gsap.set('.annotation-connectors g', { opacity: 0 });
   gsap.set(realSite, { clipPath: 'inset(0 0 100% 0)' });
   timeline = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: {
     trigger: story, start: 'top top', end: 'bottom bottom', scrub: true,
@@ -156,11 +224,14 @@ function buildTimeline() {
     .to('.keep-slop', { x: () => mergedPosition('.keep-slop', 3), y: () => mergeY('.keep-slop'), duration: .75, ease: 'power2.inOut' }, 3)
     .to('.intervention', { opacity: 0, y: -30, duration: .5 }, 4.5)
     .to('.demo-page', { opacity: 1, duration: .5 }, 4.5)
-    .to('.annotation', { opacity: 1, stagger: .16, duration: .3 }, 4.9)
     .to(eraseState, { progress: 1, duration: 2.4, onUpdate: () => drawErase(eraseState.progress) }, 6.8)
     .to('.story-controls', { opacity: 0, duration: .2 }, 6.5)
     .to(realSite, { clipPath: 'inset(0 0 0% 0)', duration: 1.25 }, 9.5)
     .to({}, { duration: .2 });
+  document.querySelectorAll<HTMLElement>('[data-note]').forEach((note, index) => {
+    const connector = document.querySelector(`[data-connector="${note.dataset.note}"]`);
+    timeline?.to(connector ? [note, connector] : note, { opacity: 1, duration: .25 }, 4.9 + index * .09);
+  });
   timeline.scrollTrigger?.refresh();
   if (restored && oldProgress > 0) window.scrollTo(0, oldProgress * (story.offsetHeight - height));
 }
@@ -187,6 +258,7 @@ function mergeY(selector: string) {
 
 function goToEnd() {
   if (!story) return;
+  stopDamping();
   window.scrollTo({ top: story.offsetHeight - (scene?.clientHeight ?? window.innerHeight), behavior: 'instant' });
   setRevealed(true);
   showView('work', true);
@@ -196,6 +268,7 @@ document.querySelectorAll('[data-skip]').forEach(button => button.addEventListen
 document.querySelectorAll('[data-replay]').forEach(button => button.addEventListener('click', event => {
   event.preventDefault();
   if (reduce.matches) return;
+  stopDamping();
   history.replaceState(null, '', location.pathname);
   window.scrollTo({ top: 0, behavior: 'instant' });
   setRevealed(false);

@@ -20,6 +20,22 @@ try {
     await page.waitForTimeout(350);
   };
   await page.screenshot({ path: '/tmp/opencode/scene-opening.png' });
+  assert.equal(await page.locator('html').evaluate(element => getComputedStyle(element).scrollbarWidth), 'none');
+  assert.equal(await page.locator('.eraser-head').count(), 0);
+  await page.mouse.move(700, 400);
+  await page.mouse.wheel(0, 12000);
+  await page.waitForTimeout(100);
+  const earlyScroll = await page.evaluate(() => scrollY);
+  assert.ok(earlyScroll > 0 && earlyScroll < 160, 'A large fling must be rate-limited, not jump through the story');
+  await page.waitForTimeout(1800);
+  assert.ok(await page.evaluate(() => scrollY) < 650, 'Queued scroll distance must be bounded');
+  await scrollTo(.23);
+  const spacing = await page.evaluate(() => {
+    const rect = selector => document.querySelector(selector).getBoundingClientRect();
+    return [rect('.line-one .discard-one').left - rect('.keep-work').right, rect('.keep-slop').left - rect('.keep-is').right, rect('.keep-is').left - rect('.discard-two').right];
+  });
+  assert.ok(spacing.every(gap => gap > 6), 'Each word boundary must have explicit visible space');
+  await page.screenshot({ path: '/tmp/opencode/scene-messages.png' });
   await scrollTo(.35);
   const words = await page.locator('.keep-work,.keep-is,.keep-not,.keep-slop').evaluateAll(elements => elements.map(element => {
     const rect = element.getBoundingClientRect();
@@ -35,6 +51,20 @@ try {
   await page.waitForTimeout(450);
   assert.ok(Math.abs(await page.evaluate(() => window.scrollY) - position) < 3, 'Reload should restore the narrative position');
   await scrollTo(.57);
+  const verifyConnectors = async () => {
+    const pointers = await page.locator('[data-note]').evaluateAll(notes => notes.flatMap(note => {
+      if (!note.getBoundingClientRect().width) return [];
+      const rect = document.querySelector(note.dataset.target).getBoundingClientRect();
+      const dot = document.querySelector(`[data-connector="${note.dataset.note}"] circle`);
+      const origin = document.querySelector('.scene').getBoundingClientRect();
+      const x = Number(dot.getAttribute('cx')) + origin.left;
+      const y = Number(dot.getAttribute('cy')) + origin.top;
+      return [{ id: note.dataset.note, inside: x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom }];
+    }));
+    assert.ok(pointers.length >= 8, 'There should be at least eight specific critiques');
+    assert.ok(pointers.every(pointer => pointer.inside), `Pointers must land inside their actual targets: ${JSON.stringify(pointers)}`);
+  };
+  await verifyConnectors();
   await page.screenshot({ path: '/tmp/opencode/scene-annotations.png' });
   await scrollTo(.76);
   await page.screenshot({ path: '/tmp/opencode/scene-erase.png' });
@@ -76,6 +106,10 @@ try {
     assert.ok(layout.width <= width, `Horizontal overflow at ${width}`);
     assert.ok(layout.selector <= layout.footer + 1, `Project controls overlap footer at ${width}`);
     if (width === 390) await page.screenshot({ path: '/tmp/opencode/scene-final-mobile.png' });
+    await scrollTo(.57);
+    await verifyConnectors();
+    if (width === 390) await page.screenshot({ path: '/tmp/opencode/scene-annotations-mobile.png' });
+    await scrollTo(1);
   }
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto(base);
