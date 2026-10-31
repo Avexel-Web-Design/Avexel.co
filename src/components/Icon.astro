@@ -6,4 +6,4 @@ const icons = { arrowUpRight, arrowRight, plus };
 interface Props { name: keyof typeof icons; class?: string; }
 const { name, class: className = '' } = Astro.props;
 ---
-<span class:list={['icon', className]} aria-hidden="true" set:html={icons[name]} />
+<span class:list={['icon', className]} data-icon={name} aria-hidden="true" set:html={icons[name]} />

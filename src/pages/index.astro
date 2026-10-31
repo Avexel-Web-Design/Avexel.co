@@ -62,7 +62,7 @@ const services = [
           <a class="project-image glass" href={project.url} target="_blank" rel="noreferrer" aria-label={`Open ${project.name}`}>
             <img src={`/images/work-${project.image}.webp`} srcset={`/images/work-${project.image}-400.webp 400w, /images/work-${project.image}-800.webp 800w, /images/work-${project.image}.webp ${project.image === 'atlas' || project.image === 'afterimage' ? 1440 : 1200}w`} sizes="(max-width: 767px) 90vw, 45vw" alt={`${project.name} website`} width="1440" height="1000" loading="lazy" decoding="async" />
           </a>
-          <h3><a href={project.url} target="_blank" rel="noreferrer">{project.name} <Icon name="arrowUpRight" /></a></h3>
+          <h3><a href={project.url} target="_blank" rel="noreferrer">{project.name}<Icon name="arrowUpRight" /></a></h3>
           <p>{project.description}</p>
         </article>
       ))}

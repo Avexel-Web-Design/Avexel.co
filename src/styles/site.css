@@ -53,8 +53,10 @@ h3 { letter-spacing: -.025em; }
 [hidden] { display: none !important; }
 .wrap { width: min(1280px, calc(100% - 112px)); margin-inline: auto; }
 .section { padding-block: 88px; border-top: 1px solid var(--line); }
-.icon { display: inline-flex; width: 20px; height: 20px; flex-shrink: 0; vertical-align: middle; }
+.icon { display: inline-flex; width: 20px; height: 20px; flex-shrink: 0; vertical-align: middle; transition: transform .3s ease; }
 .icon svg { width: 100%; height: 100%; fill: currentColor; }
+a:hover > .icon[data-icon="arrowUpRight"],
+button:hover > .icon[data-icon="arrowUpRight"] { transform: rotate(45deg); }
 .glass {
   background: var(--glass);
   border: 1px solid var(--line);
@@ -193,8 +195,8 @@ h3 { letter-spacing: -.025em; }
 .project-image img { width: 100%; height: auto; aspect-ratio: 1.44; object-fit: cover; object-position: top; border-radius: 5px; }
 .project-image:hover { border-color: var(--accent); }
 .project h3 { font-size: 22px; margin: 20px 0 9px; }
-.project h3 a { display: inline-flex; align-items: center; gap: 12px; }
-.project h3 .icon { width: 17px; height: 17px; }
+.project h3 a { display: inline-flex; align-items: center; gap: 9px; }
+.project h3 .icon { width: 16px; height: 16px; position: relative; top: 2px; }
 .project > p { max-width: 490px; font-size: 15px; }
 
 .services-section { display: grid; grid-template-columns: .65fr 1.35fr; gap: 80px; }

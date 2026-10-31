@@ -94,6 +94,17 @@ try {
   assert.equal(await page.locator('.project h3 a[href="https://afterimage.avexel.workers.dev"]').count(), 1);
   assert.equal(await page.locator('a[href*="/quote"], .tags, .wordmark-dot, .glass-sheet, .hero-note').count(), 0);
   assert.equal(await page.locator('.wordmark').first().innerText(), 'avexel');
+  const projectLink = page.locator('.project h3 a').first();
+  const rotation = () => projectLink.locator('.icon').evaluate(element => {
+    const { a, b } = new DOMMatrix(getComputedStyle(element).transform);
+    return Math.round(Math.atan2(b, a) * 180 / Math.PI);
+  });
+  assert.equal(await rotation(), 0);
+  await projectLink.hover();
+  await page.waitForTimeout(400);
+  assert.equal(await rotation(), 45);
+  assert.equal(await page.locator('.hero-actions .text-link .icon').evaluate(element => getComputedStyle(element).transform), 'none');
+  await page.mouse.move(0, 0);
   const removedRoute = await page.request.get(new URL('/quote/', base).href);
   assert.equal(removedRoute.status(), 404);
 
@@ -125,7 +136,7 @@ try {
   assert.ok(await staticPage.locator('.no-js-nav').isVisible());
   assert.equal(await staticPage.locator('form').getAttribute('action'), endpoint);
   assert.deepEqual(errors, []);
-  console.log('Menu, text glow, flat backgrounds, project links, quote removal, contact recovery, reduced motion, and no-JS checks passed.');
+  console.log('Menu, text glow, flat backgrounds, project links, arrow hover, quote removal, contact recovery, reduced motion, and no-JS checks passed.');
 } finally {
   await browser.close();
 }
