@@ -25,47 +25,78 @@ const eraseState = { progress: 0 };
 const storageKey = 'avexel-scene-v1';
 let selectedView = 'work';
 let selectedProject = 0;
-let scrollTarget = 0;
-let dampingActive = false;
+// Every resting point is after a complete animation and before the next one.
+const sceneStops = [
+  { time: 0, duration: 0 },
+  { time: 1.45, duration: .9 },
+  { time: 2.5, duration: .85 },
+  { time: 4.1, duration: 1.15 },
+  { time: 6.25, duration: 1.5 },
+  { time: 9.3, duration: 2.1 },
+  { time: 10.95, duration: 1.35 },
+];
+let activeStep = 0;
+let stepTween: gsap.core.Tween | undefined;
+let lastGestureTime = -Infinity;
 
-function stopDamping() {
-  dampingActive = false;
-  scrollTarget = window.scrollY;
+function stepProgress(index: number) {
+  return sceneStops[index].time / (timeline?.duration() ?? 10.95);
 }
 
-function dampScroll(delta: number) {
-  if (!story || !scene || reduce.matches || !restored) return;
-  const current = window.scrollY;
-  if (!dampingActive || Math.sign(delta) !== Math.sign(scrollTarget - current)) scrollTarget = current;
-  const max = story.offsetHeight - scene.clientHeight;
-  // Limit both speed and queued distance: a fling cannot queue the whole film.
-  scrollTarget = gsap.utils.clamp(0, max, gsap.utils.clamp(current - height * .7, current + height * .7, scrollTarget + gsap.utils.clamp(-height * .35, height * .35, delta * .55)));
-  dampingActive = true;
+function nearestStep(progress: number) {
+  return sceneStops.reduce((best, _stop, index) => Math.abs(stepProgress(index) - progress) < Math.abs(stepProgress(best) - progress) ? index : best, 0);
 }
 
-gsap.ticker.add((_time, deltaMs) => {
-  if (!dampingActive || reduce.matches) return;
-  const current = window.scrollY;
-  const distance = scrollTarget - current;
-  if (Math.abs(distance) < 1) { window.scrollTo(0, scrollTarget); stopDamping(); return; }
-  const dt = Math.min(deltaMs / 1000, .05);
-  const step = gsap.utils.clamp(-height * .8 * dt, height * .8 * dt, distance * (1 - Math.exp(-dt * 7)));
-  // Keep subpixel remainders in the destination; browsers round actual scroll positions.
-  window.scrollTo(0, current + Math.sign(step) * Math.max(1, Math.abs(step)));
-});
+function stopStep() {
+  stepTween?.kill();
+  stepTween = undefined;
+  if (scene) scene.dataset.animating = 'false';
+}
+
+function settleStep(index: number) {
+  activeStep = index;
+  if (story && scene && !reduce.matches) window.scrollTo(0, stepProgress(index) * (story.offsetHeight - scene.clientHeight));
+  ScrollTrigger.update();
+  if (scene) { scene.dataset.step = String(index); scene.dataset.animating = 'false'; }
+  savePosition();
+}
+
+function advanceStep(direction: number) {
+  if (!story || !scene || reduce.matches || !restored || stepTween?.isActive()) return;
+  const currentStep = nearestStep(timeline?.scrollTrigger?.progress ?? 0);
+  const next = gsap.utils.clamp(0, sceneStops.length - 1, currentStep + Math.sign(direction));
+  if (next === currentStep) return;
+  activeStep = next;
+  scene.dataset.animating = 'true';
+  const position = { y: window.scrollY };
+  stepTween = gsap.to(position, {
+    y: stepProgress(next) * (story.offsetHeight - scene.clientHeight),
+    duration: sceneStops[Math.max(currentStep, next)].duration, ease: 'none',
+    onUpdate: () => { window.scrollTo(0, position.y); ScrollTrigger.update(); },
+    onComplete: () => { stepTween = undefined; settleStep(next); },
+  });
+  // A refresh during playback restores the destination, never an unfinished frame.
+  savePosition();
+}
 
 if (scene) Observer.create({
   target: scene, type: 'wheel,touch', preventDefault: true, allowClicks: true,
   ignoreCheck: event => reduce.matches || Boolean(event && 'ctrlKey' in event && event.ctrlKey) || Boolean(event?.target instanceof Element && event.target.closest('.studio-view, .contact-view, input, textarea, select')),
-  onChangeY: self => dampScroll(self.event.type.startsWith('touch') ? -self.deltaY : self.deltaY),
+  tolerance: 12,
+  onChangeY: self => {
+    const now = performance.now();
+    const freshGesture = now - lastGestureTime > 220;
+    lastGestureTime = now;
+    if (freshGesture) advanceStep(self.event.type.startsWith('touch') ? -self.deltaY : self.deltaY);
+  },
 });
 
 document.addEventListener('keydown', event => {
-  if (reduce.matches || event.ctrlKey || event.metaKey || event.altKey || event.target instanceof HTMLElement && event.target.closest('input,textarea,select,button,[contenteditable="true"],.studio-view,.contact-view')) return;
-  const delta = new Map([['ArrowDown', 110], ['ArrowUp', -110], ['PageDown', height * .65], ['PageUp', -height * .65], [' ', height * (event.shiftKey ? -.65 : .65)]]).get(event.key);
+  if (reduce.matches || event.ctrlKey || event.metaKey || event.altKey || event.target instanceof HTMLElement && (event.target.closest('input,textarea,select,[contenteditable="true"],.studio-view,.contact-view') || event.key === ' ' && event.target.closest('button'))) return;
+  const delta = new Map([['ArrowDown', 1], ['ArrowUp', -1], ['PageDown', 1], ['PageUp', -1], [' ', event.shiftKey ? -1 : 1], ['Home', -1], ['End', 1]]).get(event.key);
   if (delta === undefined) return;
   event.preventDefault();
-  dampScroll(delta);
+  if (!event.repeat) advanceStep(delta);
 });
 
 function positionAnnotations() {
@@ -173,13 +204,13 @@ function setRevealed(value: boolean) {
 
 function savePosition() {
   if (!restored) return;
-  try { sessionStorage.setItem(storageKey, JSON.stringify({ progress: timeline?.scrollTrigger?.progress ?? 1, view: selectedView, project: selectedProject, y: window.scrollY })); } catch { /* Storage can be unavailable in private browsing. */ }
+  try { sessionStorage.setItem(storageKey, JSON.stringify({ progress: timeline?.scrollTrigger?.progress ?? 1, step: stepTween?.isActive() ? activeStep : nearestStep(timeline?.scrollTrigger?.progress ?? 1), view: selectedView, project: selectedProject, y: window.scrollY })); } catch { /* Storage can be unavailable in private browsing. */ }
 }
 
 function buildTimeline() {
   if (!story || !scene || !realSite || !canvas) return;
-  const oldProgress = timeline?.scrollTrigger?.progress ?? 0;
-  stopDamping();
+  const previousStep = stepTween?.isActive() ? activeStep : nearestStep(timeline?.scrollTrigger?.progress ?? 0);
+  stopStep();
   timeline?.scrollTrigger?.kill();
   timeline?.revert();
   width = scene.clientWidth;
@@ -233,7 +264,7 @@ function buildTimeline() {
     timeline?.to(connector ? [note, connector] : note, { opacity: 1, duration: .25 }, 4.9 + index * .09);
   });
   timeline.scrollTrigger?.refresh();
-  if (restored && oldProgress > 0) window.scrollTo(0, oldProgress * (story.offsetHeight - height));
+  if (restored) settleStep(previousStep);
 }
 
 // Measure the original glyph positions to bring the actual words together.
@@ -258,20 +289,24 @@ function mergeY(selector: string) {
 
 function goToEnd() {
   if (!story) return;
-  stopDamping();
+  stopStep();
+  activeStep = sceneStops.length - 1;
   window.scrollTo({ top: story.offsetHeight - (scene?.clientHeight ?? window.innerHeight), behavior: 'instant' });
   setRevealed(true);
   showView('work', true);
+  if (scene) scene.dataset.step = String(activeStep);
 }
 
 document.querySelectorAll('[data-skip]').forEach(button => button.addEventListener('click', goToEnd));
 document.querySelectorAll('[data-replay]').forEach(button => button.addEventListener('click', event => {
   event.preventDefault();
   if (reduce.matches) return;
-  stopDamping();
+  stopStep();
+  activeStep = 0;
   history.replaceState(null, '', location.pathname);
   window.scrollTo({ top: 0, behavior: 'instant' });
   setRevealed(false);
+  if (scene) scene.dataset.step = '0';
   document.querySelector<HTMLButtonElement>('[data-skip]')?.focus({ preventScroll: true });
 }));
 
@@ -284,18 +319,18 @@ void Promise.all([document.fonts.ready, pageLoaded]).then(() => {
   buildTimeline();
   const hashViews = new Map([['#contact', 'contact'], ['#studio', 'studio'], ['#about', 'studio'], ['#services', 'studio'], ['#work', 'work']]);
   const hashView = hashViews.get(location.hash);
-  let saved: { progress?: number; view?: string; project?: number } | undefined;
+  let saved: { progress?: number; step?: number; view?: string; project?: number } | undefined;
   try { saved = JSON.parse(sessionStorage.getItem(storageKey) ?? 'null'); } catch { /* Start at the beginning when storage is unavailable. */ }
   const navigation = performance.getEntriesByType('navigation')[0];
   const shouldRestore = navigation instanceof PerformanceNavigationTiming && (navigation.type === 'reload' || navigation.type === 'back_forward');
   if (shouldRestore && saved) {
     if (saved.view) showView(saved.view);
     if (Number.isInteger(saved.project) && saved.project! >= 0 && saved.project! < projects.length) showProject(saved.project!);
-    if (!reduce.matches && story) window.scrollTo(0, (saved.progress ?? 0) * (story.offsetHeight - (scene?.clientHeight ?? window.innerHeight)));
   } else if (hashView) { goToEnd(); showView(hashView); }
   requestAnimationFrame(() => {
     // ScrollTrigger's load refresh completes before the persisted position is applied.
-    if (shouldRestore && saved && !reduce.matches && story) window.scrollTo(0, (saved.progress ?? 0) * (story.offsetHeight - (scene?.clientHeight ?? window.innerHeight)));
+    if (shouldRestore && saved) settleStep(Number.isInteger(saved.step) && saved.step! >= 0 && saved.step! < sceneStops.length ? saved.step! : nearestStep(saved.progress ?? 0));
+    else if (!hashView) settleStep(0);
     ScrollTrigger.update();
     restored = true;
     if (story) story.dataset.ready = 'true';

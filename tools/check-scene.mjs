@@ -26,9 +26,38 @@ try {
   await page.mouse.wheel(0, 12000);
   await page.waitForTimeout(100);
   const earlyScroll = await page.evaluate(() => scrollY);
-  assert.ok(earlyScroll > 0 && earlyScroll < 160, 'A large fling must be rate-limited, not jump through the story');
-  await page.waitForTimeout(1800);
-  assert.ok(await page.evaluate(() => scrollY) < 650, 'Queued scroll distance must be bounded');
+  assert.ok(earlyScroll > 0 && earlyScroll < 250, 'A fling should start a transition, not jump through the story');
+  await page.mouse.wheel(0, 12000);
+  await page.locator('.scene[data-step="1"][data-animating="false"]').waitFor();
+  await page.waitForTimeout(350);
+  const firstStop = await page.evaluate(() => scrollY);
+  const expectedFirst = await page.evaluate(() => 1.45 / 10.95 * (document.querySelector('.scroll-story').offsetHeight - document.querySelector('.scene').clientHeight));
+  assert.ok(Math.abs(firstStop - expectedFirst) < 2, 'A fling and its momentum must finish exactly one animation');
+  assert.equal(await page.locator('.line-one').evaluate(element => getComputedStyle(element).opacity), '1');
+  assert.equal(await page.locator('.line-two').evaluate(element => getComputedStyle(element).opacity), '0');
+  await page.mouse.wheel(0, 100);
+  await page.waitForTimeout(100);
+  await page.reload();
+  await page.locator('.scroll-story[data-ready="true"]').waitFor();
+  assert.equal(await page.locator('.scene').getAttribute('data-step'), '2', 'Refreshing mid-transition should restore its complete destination');
+  assert.equal(await page.locator('.line-two').evaluate(element => getComputedStyle(element).opacity), '1');
+  const gestureStep = async (step, delta) => {
+    await page.mouse.move(700, 400);
+    await page.mouse.wheel(0, delta);
+    await page.locator(`.scene[data-step="${step}"][data-animating="false"]`).waitFor();
+    await page.waitForTimeout(250);
+    const position = await page.evaluate(() => scrollY);
+    await page.waitForTimeout(150);
+    assert.equal(await page.evaluate(() => scrollY), position, 'An animation must stay at its completed state without more input');
+  };
+  for (const step of [3, 4, 5, 6]) await gestureStep(step, 9000);
+  assert.equal(await page.locator('.real-site').evaluate(element => element.inert), false);
+  for (const step of [5, 4, 3, 2, 1, 0]) await gestureStep(step, -9000);
+  await page.locator('.demo-nav [data-skip]').focus();
+  await page.keyboard.press('PageDown');
+  await page.locator('.scene[data-step="1"][data-animating="false"]').waitFor();
+  await page.keyboard.press('ArrowUp');
+  await page.locator('.scene[data-step="0"][data-animating="false"]').waitFor();
   await scrollTo(.23);
   const spacing = await page.evaluate(() => {
     const rect = selector => document.querySelector(selector).getBoundingClientRect();
@@ -36,7 +65,7 @@ try {
   });
   assert.ok(spacing.every(gap => gap > 6), 'Each word boundary must have explicit visible space');
   await page.screenshot({ path: '/tmp/opencode/scene-messages.png' });
-  await scrollTo(.35);
+  await scrollTo(4.1 / 10.95);
   const words = await page.locator('.keep-work,.keep-is,.keep-not,.keep-slop').evaluateAll(elements => elements.map(element => {
     const rect = element.getBoundingClientRect();
     return { text: element.textContent, x: rect.x, y: rect.y, width: rect.width };
@@ -121,5 +150,5 @@ try {
   await page.goto(`${base}/communications/`);
   assert.ok(await page.locator('.site-header').isVisible());
   assert.deepEqual(errors, []);
-  console.log('Scene checks passed: word choreography, scroll restoration, project switching, view restoration, contact success/error, 320–1440px layouts, reduced motion, and client guide.');
+  console.log('Scene checks passed: complete forward/reverse gesture steps, keyboard steps, mid-animation refresh, word choreography, anchored annotations, project switching, contact success/error, 320–1440px layouts, reduced motion, and client guide.');
 } finally { await browser.close(); }

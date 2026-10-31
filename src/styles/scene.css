@@ -34,11 +34,11 @@ body.immersive { background: #fff; color: #171719; }
 .statement span { display: inline-block; word-spacing: .04em; }
 .word-space-after { margin-right: .25em; }
 .word-space-before { margin-left: .25em; }
-.annotations { position: absolute; inset: 0; z-index: 2; pointer-events: none; color: #ff5538; }
+.annotations { position: absolute; inset: 0; z-index: 2; pointer-events: none; color: #ff8267; }
 .annotation { position: absolute; opacity: 0; max-width: 245px; font-size: clamp(12px,1.05vw,16px); font-weight: 450; line-height: 1.35; }
-.annotation span { display: inline-block; background: #171719f5; padding: 7px 10px; border: 1px solid #ff5538; }
+.annotation span { display: inline-block; background: #171719; padding: 7px 10px; border: 1px solid currentColor; }
 .annotation-connectors { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.annotation-connectors g { opacity: 0; }.annotation-connectors path { fill: none; stroke: currentColor; stroke-width: 1.25; }.annotation-connectors circle { fill: currentColor; }
+.annotation-connectors g { opacity: 0; }.annotation-connectors path { fill: none; stroke: currentColor; stroke-width: 1.75; }.annotation-connectors circle { fill: currentColor; }
 .note-brand { left: 17%; top: 4%; }
 .note-nav { left: 40%; top: 12%; }
 .note-label { left: 3%; top: 12%; }
