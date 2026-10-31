@@ -1,6 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Observer } from 'gsap/Observer';
+import { layoutAnnotations } from './annotations';
 
 gsap.registerPlugin(ScrollTrigger, Observer);
 history.scrollRestoration = 'manual';
@@ -61,22 +62,27 @@ function settleStep(index: number) {
   savePosition();
 }
 
-function advanceStep(direction: number) {
-  if (!story || !scene || reduce.matches || !restored || stepTween?.isActive()) return;
-  const currentStep = nearestStep(timeline?.scrollTrigger?.progress ?? 0);
-  const next = gsap.utils.clamp(0, sceneStops.length - 1, currentStep + Math.sign(direction));
-  if (next === currentStep) return;
+function playToStep(next: number, duration: number, onComplete?: () => void) {
+  if (!story || !scene) return;
+  stopStep();
   activeStep = next;
   scene.dataset.animating = 'true';
   const position = { y: window.scrollY };
   stepTween = gsap.to(position, {
     y: stepProgress(next) * (story.offsetHeight - scene.clientHeight),
-    duration: sceneStops[Math.max(currentStep, next)].duration, ease: 'none',
+    duration, ease: 'none',
     onUpdate: () => { window.scrollTo(0, position.y); ScrollTrigger.update(); },
-    onComplete: () => { stepTween = undefined; settleStep(next); },
+    onComplete: () => { stepTween = undefined; settleStep(next); onComplete?.(); },
   });
   // A refresh during playback restores the destination, never an unfinished frame.
   savePosition();
+}
+
+function advanceStep(direction: number) {
+  if (!story || !scene || reduce.matches || !restored || stepTween?.isActive()) return;
+  const currentStep = nearestStep(timeline?.scrollTrigger?.progress ?? 0);
+  const next = gsap.utils.clamp(0, sceneStops.length - 1, currentStep + Math.sign(direction));
+  if (next !== currentStep) playToStep(next, sceneStops[Math.max(currentStep, next)].duration);
 }
 
 if (scene) Observer.create({
@@ -100,27 +106,7 @@ document.addEventListener('keydown', event => {
 });
 
 function positionAnnotations() {
-  if (!scene) return;
-  const origin = scene.getBoundingClientRect();
-  document.querySelectorAll<HTMLElement>('[data-note]').forEach(note => {
-    const target = document.querySelector<HTMLElement>(note.dataset.target ?? '');
-    const connector = document.querySelector<SVGGElement>(`[data-connector="${note.dataset.note}"]`);
-    if (!target || !connector) return;
-    const label = note.getBoundingClientRect();
-    const rect = target.getBoundingClientRect();
-    if (!label.width || !rect.width || !rect.height) { connector.style.display = 'none'; return; }
-    connector.style.display = '';
-    const labelX = label.left + label.width / 2;
-    const labelY = label.top + label.height / 2;
-    const endX = gsap.utils.clamp(rect.left + 2, rect.right - 2, labelX);
-    const endY = note.dataset.note === 'brand' ? rect.bottom - 6 : gsap.utils.clamp(rect.top + 2, rect.bottom - 2, labelY);
-    const startX = gsap.utils.clamp(label.left, label.right, endX);
-    const startY = gsap.utils.clamp(label.top, label.bottom, endY);
-    connector.querySelector('path')?.setAttribute('d', `M ${startX - origin.left} ${startY - origin.top} L ${endX - origin.left} ${endY - origin.top}`);
-    const dot = connector.querySelector('circle');
-    dot?.setAttribute('cx', String(endX - origin.left));
-    dot?.setAttribute('cy', String(endY - origin.top));
-  });
+  if (scene) layoutAnnotations(scene);
 }
 
 function showView(view: string, focus = false) {
@@ -263,7 +249,8 @@ function buildTimeline() {
     const connector = document.querySelector(`[data-connector="${note.dataset.note}"]`);
     timeline?.to(connector ? [note, connector] : note, { opacity: 1, duration: .25 }, 4.9 + index * .09);
   });
-  timeline.scrollTrigger?.refresh();
+  // Refresh viewport measurements too, not only this trigger's cached bounds.
+  ScrollTrigger.refresh();
   if (restored) settleStep(previousStep);
 }
 
@@ -287,27 +274,27 @@ function mergeY(selector: string) {
   return height / 2 - (rect.top + rect.height / 2) + Number(gsap.getProperty(element, 'y'));
 }
 
-function goToEnd() {
+function goToEnd(animate = false) {
   if (!story) return;
-  stopStep();
-  activeStep = sceneStops.length - 1;
-  window.scrollTo({ top: story.offsetHeight - (scene?.clientHeight ?? window.innerHeight), behavior: 'instant' });
-  setRevealed(true);
-  showView('work', true);
-  if (scene) scene.dataset.step = String(activeStep);
+  if (animate && !reduce.matches) {
+    const progress = timeline?.scrollTrigger?.progress ?? 0;
+    playToStep(sceneStops.length - 1, Math.max(.45, (1 - progress) * 1.8), () => showView('work', true));
+  } else {
+    stopStep();
+    settleStep(sceneStops.length - 1);
+    setRevealed(true);
+    showView('work', true);
+  }
 }
 
-document.querySelectorAll('[data-skip]').forEach(button => button.addEventListener('click', goToEnd));
+document.querySelectorAll('[data-skip]').forEach(button => button.addEventListener('click', () => goToEnd(true)));
 document.querySelectorAll('[data-replay]').forEach(button => button.addEventListener('click', event => {
   event.preventDefault();
   if (reduce.matches) return;
-  stopStep();
-  activeStep = 0;
   history.replaceState(null, '', location.pathname);
-  window.scrollTo({ top: 0, behavior: 'instant' });
-  setRevealed(false);
-  if (scene) scene.dataset.step = '0';
-  document.querySelector<HTMLButtonElement>('[data-skip]')?.focus({ preventScroll: true });
+  playToStep(0, Math.max(.45, (timeline?.scrollTrigger?.progress ?? 0) * 1.8), () => {
+    document.querySelector<HTMLButtonElement>('[data-skip]')?.focus({ preventScroll: true });
+  });
 }));
 
 const pageLoaded = new Promise<void>(resolve => {

@@ -22,6 +22,26 @@ try {
   await page.screenshot({ path: '/tmp/opencode/scene-opening.png' });
   assert.equal(await page.locator('html').evaluate(element => getComputedStyle(element).scrollbarWidth), 'none');
   assert.equal(await page.locator('.eraser-head').count(), 0);
+  const verifyFastPlayback = async (button, destination) => {
+    const start = await page.evaluate(() => scrollY);
+    await button.click();
+    assert.equal(await page.locator('.scene').getAttribute('data-animating'), 'true');
+    const samples = await page.evaluate(() => new Promise(resolve => {
+      const positions = [];
+      const tick = () => {
+        positions.push(scrollY);
+        if (document.querySelector('.scene').dataset.animating === 'true') requestAnimationFrame(tick);
+        else resolve(positions);
+      };
+      tick();
+    }));
+    await page.locator(`.scene[data-step="${destination}"][data-animating="false"]`).waitFor();
+    const end = await page.evaluate(() => scrollY);
+    assert.ok(samples.length > 10, 'Fast playback should visibly animate rather than teleport');
+    for (const fraction of [.2, .5, .8]) assert.ok(samples.some(y => Math.abs(y - (start + (end - start) * fraction)) < Math.abs(end - start) * .07), 'Fast playback must traverse the entire sequence');
+  };
+  await verifyFastPlayback(page.locator('.story-controls [data-skip]'), 6);
+  await verifyFastPlayback(page.locator('.real-footer [data-replay]'), 0);
   await page.mouse.move(700, 400);
   await page.mouse.wheel(0, 12000);
   await page.waitForTimeout(100);
@@ -88,10 +108,50 @@ try {
       const origin = document.querySelector('.scene').getBoundingClientRect();
       const x = Number(dot.getAttribute('cx')) + origin.left;
       const y = Number(dot.getAttribute('cy')) + origin.top;
-      return [{ id: note.dataset.note, inside: x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom }];
+      const inside = x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+      const distance = Math.hypot(Math.max(rect.left - x, 0, x - rect.right), Math.max(rect.top - y, 0, y - rect.bottom));
+      return [{ id: note.dataset.note, outside: !inside, distance }];
     }));
     assert.ok(pointers.length >= 8, 'There should be at least eight specific critiques');
-    assert.ok(pointers.every(pointer => pointer.inside), `Pointers must land inside their actual targets: ${JSON.stringify(pointers)}`);
+    assert.ok(pointers.every(pointer => pointer.outside && pointer.distance >= 8 && pointer.distance <= 15), `Dots must sit just outside their targets: ${JSON.stringify(pointers)}`);
+    const overlaps = await page.evaluate(() => {
+      const notes = [...document.querySelectorAll('[data-note]')].filter(note => note.getBoundingClientRect().width);
+      const content = [...document.querySelectorAll('[data-annotation-obstacle]')].flatMap(element => {
+        if (!element.getBoundingClientRect().width) return [];
+        if (element.matches('button,.story-controls')) return [element.getBoundingClientRect()];
+        const boxes = [];
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+        let node;
+        while ((node = walker.nextNode())) {
+          if (!node.textContent.trim()) continue;
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          boxes.push(...range.getClientRects());
+        }
+        return boxes;
+      });
+      const hits = (a, b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+      return notes.flatMap((note, i) => {
+        const rect = note.getBoundingClientRect();
+        const path = document.querySelector(`[data-connector="${note.dataset.note}"] path`);
+        const origin = document.querySelector('.scene').getBoundingClientRect();
+        const obstacles = [...content, ...notes.filter(other => other !== note).map(other => other.getBoundingClientRect())];
+        let lineClips = false;
+        for (let distance = 0; distance <= path.getTotalLength(); distance += 2) {
+          const point = path.getPointAtLength(distance);
+          const x = point.x + origin.left;
+          const y = point.y + origin.top;
+          if (obstacles.some(box => x > box.left + .5 && x < box.right - .5 && y > box.top + .5 && y < box.bottom - .5)) { lineClips = true; break; }
+        }
+        return [
+          ...content.filter(box => hits(rect, box)).map(() => `${note.dataset.note} covers content`),
+          ...notes.slice(i + 1).filter(other => hits(rect, other.getBoundingClientRect())).map(other => `${note.dataset.note} overlaps ${other.dataset.note}`),
+          ...(rect.left < 0 || rect.top < 0 || rect.right > innerWidth || rect.bottom > innerHeight ? [`${note.dataset.note} clips the viewport`] : []),
+          ...(lineClips ? [`${note.dataset.note} connector crosses content`] : []),
+        ];
+      });
+    });
+    assert.deepEqual(overlaps, [], `Annotation labels and lines must avoid occupied space at ${JSON.stringify(page.viewportSize())}`);
   };
   await verifyConnectors();
   await page.screenshot({ path: '/tmp/opencode/scene-annotations.png' });
@@ -122,9 +182,9 @@ try {
   await page.locator('.scroll-story[data-ready="true"]').waitFor();
   await page.waitForTimeout(350);
   assert.ok(await page.locator('[data-panel="contact"]').isVisible(), 'Reload should restore the active view');
-  for (const width of [320, 375, 390, 768, 1024, 1440]) {
-    await page.setViewportSize({ width, height: width < 768 ? 844 : 900 });
-    await page.waitForTimeout(250);
+  for (const [width, height] of [[320, 844], [375, 844], [390, 844], [768, 900], [1024, 900], [1440, 900], [1440, 700], [2000, 1213]]) {
+    await page.setViewportSize({ width, height });
+    await page.waitForFunction(() => document.querySelector('.scene').dataset.annotationSize === `${innerWidth}x${innerHeight}`);
     await scrollTo(1);
     await clickVisible(page.locator('[data-view="work"]'));
     const layout = await page.evaluate(() => {
@@ -150,5 +210,5 @@ try {
   await page.goto(`${base}/communications/`);
   assert.ok(await page.locator('.site-header').isVisible());
   assert.deepEqual(errors, []);
-  console.log('Scene checks passed: complete forward/reverse gesture steps, keyboard steps, mid-animation refresh, word choreography, anchored annotations, project switching, contact success/error, 320–1440px layouts, reduced motion, and client guide.');
+  console.log('Scene checks passed: fast skip/replay playback, forward/reverse gesture steps, keyboard steps, mid-animation refresh, word choreography, collision-free labels and connector paths, outside target dots, project switching, contact success/error, 320–2000px layouts, reduced motion, and client guide.');
 } finally { await browser.close(); }
