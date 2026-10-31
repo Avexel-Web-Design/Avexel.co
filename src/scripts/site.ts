@@ -1,16 +1,3 @@
-const themeButton = document.querySelector<HTMLButtonElement>('.theme-toggle');
-const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
-function currentTheme() { return document.documentElement.dataset.theme ?? (systemTheme.matches ? 'dark' : 'light'); }
-function updateThemeLabel() { themeButton?.setAttribute('aria-label', `Switch to ${currentTheme() === 'dark' ? 'light' : 'dark'} theme`); }
-updateThemeLabel();
-systemTheme.addEventListener('change', updateThemeLabel);
-themeButton?.addEventListener('click', () => {
-  const next = currentTheme() === 'dark' ? 'light' : 'dark';
-  document.documentElement.dataset.theme = next;
-  try { localStorage.setItem('avexel-theme', next); } catch { /* Theme still works when storage is unavailable. */ }
-  updateThemeLabel();
-});
-
 const menuButton = document.querySelector<HTMLButtonElement>('.menu-toggle');
 const mobileNav = document.querySelector<HTMLElement>('#mobile-nav');
 function setMenu(open: boolean) {

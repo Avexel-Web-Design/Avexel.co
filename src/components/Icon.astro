@@ -2,9 +2,7 @@
 import arrowUpRight from '@phosphor-icons/core/assets/regular/arrow-up-right.svg?raw';
 import arrowRight from '@phosphor-icons/core/assets/regular/arrow-right.svg?raw';
 import plus from '@phosphor-icons/core/assets/regular/plus.svg?raw';
-import sun from '@phosphor-icons/core/assets/regular/sun.svg?raw';
-import moon from '@phosphor-icons/core/assets/regular/moon.svg?raw';
-const icons = { arrowUpRight, arrowRight, plus, sun, moon };
+const icons = { arrowUpRight, arrowRight, plus };
 interface Props { name: keyof typeof icons; class?: string; }
 const { name, class: className = '' } = Astro.props;
 ---

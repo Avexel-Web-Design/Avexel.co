@@ -12,7 +12,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#100d15" />
-    <meta name="color-scheme" content="dark light" />
+    <meta name="color-scheme" content="dark" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="sitemap" href="/sitemap.xml" />
@@ -24,9 +24,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:image" content="https://avexel.co/Logo.png" />
     <meta name="twitter:card" content="summary" />
     <title>{title}</title>
-    <script is:inline>
-      try { const theme = localStorage.getItem('avexel-theme'); if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme; } catch {}
-    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -36,7 +33,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         <a href="/#work">Our work</a><a href="/#services">Services</a><a href="/#about">About</a>
       </nav>
       <div class="nav-actions">
-        <button class="theme-toggle" type="button" aria-label="Switch color theme"><Icon name="sun" class="sun-icon" /><Icon name="moon" class="moon-icon" /></button>
         <a href="/#contact" class="button button-small nav-cta">Start a project <Icon name="arrowUpRight" /></a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span></span><span></span></button>
       </div>
@@ -44,7 +40,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         <a href="/#work">Our work</a><a href="/#services">Services</a><a href="/#about">About</a><a href="/#contact">Start a project <Icon name="arrowUpRight" /></a>
       </nav>
     </header>
-    <noscript><nav class="no-js-nav wrap" aria-label="Site navigation"><a href="/#work">Our work</a><a href="/#services">Services</a><a href="/#about">About</a><a href="/#contact">Start a project</a></nav><style>.theme-toggle,.menu-toggle{display:none!important}</style></noscript>
+    <noscript><nav class="no-js-nav wrap" aria-label="Site navigation"><a href="/#work">Our work</a><a href="/#services">Services</a><a href="/#about">About</a><a href="/#contact">Start a project</a></nav><style>.menu-toggle{display:none!important}</style></noscript>
     <main id="main"><slot /></main>
     <footer class="site-footer wrap">
       <div class="footer-top"><a class="wordmark" href="/">avexel</a><a href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a></div>

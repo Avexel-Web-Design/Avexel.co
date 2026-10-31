@@ -28,15 +28,17 @@ try {
           }));
           return {
             width: document.documentElement.scrollWidth,
+            colorScheme: getComputedStyle(document.documentElement).colorScheme,
             brokenImages: [...document.images].filter(image => !image.naturalWidth).map(image => image.src),
           };
         });
         assert.ok(layout.width <= width, `${theme} ${route} overflows at ${width}px`);
+        assert.equal(layout.colorScheme, 'dark');
         assert.deepEqual(layout.brokenImages, [], `Broken images at ${route}`);
       }
     }
   }
-  console.log('Responsive layouts and images passed in both themes, 320–1440px.');
+  console.log('Dark-only layouts and images passed under both device preferences, 320–1440px.');
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(base);
@@ -45,10 +47,9 @@ try {
   assert.ok(await page.locator('#mobile-nav').isVisible());
   await page.keyboard.press('Escape');
   assert.equal(await page.locator('#mobile-nav').isVisible(), false);
-  await page.locator('.theme-toggle').click();
-  const chosenTheme = await page.locator('html').getAttribute('data-theme');
-  await page.reload();
-  assert.equal(await page.locator('html').getAttribute('data-theme'), chosenTheme);
+  assert.equal(await page.locator('.theme-toggle').count(), 0);
+  assert.equal(await page.locator('body').evaluate(element => getComputedStyle(element).backgroundImage), 'none');
+  assert.notEqual(await page.locator('.hero h1 span').evaluate(element => getComputedStyle(element).textShadow), 'none');
 
   assert.equal(await page.locator('.hero-project').getAttribute('href'), 'https://atlas.frc7790.com');
   assert.equal(await page.locator('.projects-grid .project').count(), 4);
@@ -86,7 +87,7 @@ try {
   assert.ok(await staticPage.locator('.no-js-nav').isVisible());
   assert.equal(await staticPage.locator('form').getAttribute('action'), endpoint);
   assert.deepEqual(errors, []);
-  console.log('Menu, themes, project links, quote removal, contact recovery, reduced motion, and no-JS checks passed.');
+  console.log('Menu, text glow, flat backgrounds, project links, quote removal, contact recovery, reduced motion, and no-JS checks passed.');
 } finally {
   await browser.close();
 }

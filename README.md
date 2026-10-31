@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Avexel’s website is built with Astro, TypeScript, and native CSS. Pages are rendered to static HTML; browser JavaScript handles navigation, theme selection, and contact submission.
+Avexel’s website is built with Astro, TypeScript, and native CSS. Pages are rendered to static HTML; browser JavaScript handles navigation and contact submission.
 
 ## Development
 
@@ -48,21 +48,21 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-The checks cover both themes at six screen widths, navigation, project links, removal of the quote route, intercepted contact-form success/failure, reduced motion, and rendering without JavaScript. `CHECK_URL` overrides the test server; `CHROMIUM_PATH` selects an existing browser executable.
+The checks cover the dark-only appearance under both device preferences at six screen widths, navigation, project links, removal of the quote route, intercepted contact-form success/failure, reduced motion, and rendering without JavaScript. `CHECK_URL` overrides the test server; `CHROMIUM_PATH` selects an existing browser executable.
 
 `dist/` is generated and excluded from version control. Cloudflare Workers serves this directory using `wrangler.jsonc`; the existing deployment workflow builds it before deployment. `npm run deploy` explicitly builds and deploys.
 
 ## Editing the site
 
 - `src/pages/index.astro`: homepage content and project links.
-- `src/styles/site.css`: responsive layouts, light/dark tokens, and glass surfaces.
+- `src/styles/site.css`: responsive layouts, dark palette, purple headline glow, and glass surfaces.
 - `src/layouts/SiteLayout.astro`: shared metadata, navigation, and footer.
-- `src/scripts/site.ts`: menu, theme toggle, and contact form behavior.
+- `src/scripts/site.ts`: menu and contact form behavior.
 - `src/pages/communications.astro`: current public client guide. `public/COMMUNICATIONS-GUIDE.md` is the historical internal document.
 
 The contact form uses the existing Formspree endpoint (`xvgkwonw`). It supports native HTML submission if JavaScript is unavailable and enhanced inline success/error feedback otherwise. Integration tests should intercept requests rather than sending test inquiries to the live inbox.
 
-Light/dark mode follows the device by default, with a stored manual override. Motion and transparency preferences are respected.
+The site uses dark mode regardless of device preference. The highlighted hero text has a purple text glow; backgrounds are flat. Motion and transparency preferences are respected.
 
 ## Image sources
 
