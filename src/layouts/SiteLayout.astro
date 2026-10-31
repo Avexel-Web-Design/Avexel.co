@@ -42,7 +42,6 @@ const isHome = Astro.url.pathname === '/';
         {navLinks.map(link => <a href={`/#${link.id}`} data-section={link.id} aria-current={isHome && link.id === 'home' ? 'location' : undefined}>{link.label}</a>)}
       </nav>
       <div class="nav-actions">
-        <a href="/#contact" class="button button-small nav-cta">Start a project <Icon name="arrowUpRight" /></a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span></span><span></span></button>
       </div>
       <nav id="mobile-nav" class="mobile-nav glass" aria-label="Mobile navigation" hidden>

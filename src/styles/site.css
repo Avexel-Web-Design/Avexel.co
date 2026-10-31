@@ -83,7 +83,6 @@ h3 { letter-spacing: -.025em; }
 }
 .button:hover { transform: translateY(-2px); }
 .button:active { transform: scale(.98); }
-.button-small { min-height: 43px; padding: 11px 17px; font-size: 14px; gap: 18px; }
 .text-link { display: inline-flex; align-items: center; gap: 13px; font-size: 15px; }
 .text-link,
 .project h3 a,
@@ -286,7 +285,7 @@ details p { font-size: 15px; padding-bottom: 24px; max-width: 600px; }
   .wordmark { font-size: 29px; }
   .wordmark img { width: 29px; height: 29px; }
   .site-header { display: flex; justify-content: space-between; height: 68px; padding-inline: 18px; }
-  .desktop-nav, .nav-cta { display: none; }
+  .desktop-nav { display: none; }
   .menu-toggle { display: block; }
   .nav-actions { gap: 12px; }
   .hero { gap: 24px; }
@@ -307,7 +306,7 @@ details p { font-size: 15px; padding-bottom: 24px; max-width: 600px; }
 @media (max-width: 767px) {
   .wrap { width: calc(100% - 40px); }
   .site-header { height: 66px; gap: 15px; top: 10px; margin-top: 10px; padding-inline: 16px; }
-  .desktop-nav, .nav-cta { display: none; }
+  .desktop-nav { display: none; }
   .nav-actions { gap: 10px; }
   .menu-toggle { display: block; }
   .hero { grid-template-columns: 1fr; gap: 34px; padding-block: 40px 45px; }
