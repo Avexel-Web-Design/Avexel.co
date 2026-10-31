@@ -40,6 +40,34 @@ try {
   }
   console.log('Dark-only layouts and images passed under both device preferences, 320–1440px.');
 
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto(base);
+  for (const id of ['home', 'work', 'services', 'about', 'contact', 'work', 'home']) {
+    await page.locator(`#${id}`).evaluate(element => element.scrollIntoView({ behavior: 'instant' }));
+    await page.waitForFunction(id => document.querySelector('.desktop-nav a[aria-current="location"]')?.getAttribute('data-section') === id, id);
+    assert.equal(await page.locator('.desktop-nav a[aria-current]').count(), 1);
+    const aligned = await page.evaluate(() => {
+      const active = document.querySelector('.desktop-nav a[aria-current]').getBoundingClientRect();
+      const indicator = document.querySelector('.nav-indicator').getBoundingClientRect();
+      return Math.abs(active.left - indicator.left) < 2 && Math.abs(active.width - indicator.width) < 2;
+    });
+    assert.ok(aligned, `Navigation highlight is misaligned at ${id}`);
+    assert.ok(await page.locator('.desktop-nav').isVisible());
+  }
+  await page.locator('.desktop-nav a[data-section="services"]').focus();
+  await page.keyboard.press('Enter');
+  await page.waitForURL('**/#services');
+  await page.waitForFunction(() => document.querySelector('.desktop-nav a[aria-current]')?.getAttribute('data-section') === 'services');
+  await page.reload();
+  await page.waitForFunction(() => document.querySelector('.desktop-nav a[aria-current]')?.getAttribute('data-section') === 'services');
+  await page.goto(new URL('/communications/', base).href);
+  assert.equal(await page.locator('.desktop-nav a[aria-current]').count(), 0);
+  await page.locator('.desktop-nav a[data-section="work"]').click();
+  await page.waitForURL('**/#work');
+  await page.waitForFunction(() => document.querySelector('.desktop-nav a[aria-current]')?.getAttribute('data-section') === 'work');
+  console.log('Desktop section tracking, highlight alignment, keyboard links, deep links, and cross-page navigation passed.');
+
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(base);
   const menu = page.getByRole('button', { name: 'Open menu' });
@@ -47,6 +75,16 @@ try {
   assert.ok(await page.locator('#mobile-nav').isVisible());
   await page.keyboard.press('Escape');
   assert.equal(await page.locator('#mobile-nav').isVisible(), false);
+  await menu.click();
+  await page.locator('#mobile-nav a[data-section="about"]').click();
+  await page.waitForURL('**/#about');
+  assert.equal(await page.locator('#mobile-nav').isVisible(), false);
+  await menu.click();
+  await page.setViewportSize({ width: 1024, height: 900 });
+  assert.equal(await page.locator('#mobile-nav').isVisible(), false);
+  assert.ok(await page.locator('.desktop-nav').isVisible());
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(base);
   assert.equal(await page.locator('.theme-toggle').count(), 0);
   assert.equal(await page.locator('body').evaluate(element => getComputedStyle(element).backgroundImage), 'none');
   assert.notEqual(await page.locator('.hero h1 span').evaluate(element => getComputedStyle(element).textShadow), 'none');

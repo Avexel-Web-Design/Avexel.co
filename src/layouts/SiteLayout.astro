@@ -4,6 +4,14 @@ import Icon from '../components/Icon.astro';
 interface Props { title?: string; description?: string; }
 const { title = 'Avexel | Web design & development', description = 'Custom websites and web applications from a student-led development team in Harbor Springs, Michigan. Avexel projects support Baywatch Robotics.' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const navLinks = [
+  { id: 'home', label: 'Home' },
+  { id: 'work', label: 'Work' },
+  { id: 'services', label: 'Services' },
+  { id: 'about', label: 'Team' },
+  { id: 'contact', label: 'Contact' },
+];
+const isHome = Astro.url.pathname === '/';
 ---
 <!doctype html>
 <html lang="en">
@@ -30,17 +38,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <header class="site-header wrap">
       <a class="wordmark" href="/" aria-label="Avexel home"><img src="/Logo-nobg-sm-140.webp" width="35" height="35" alt="" />avexel</a>
       <nav class="desktop-nav" aria-label="Main navigation">
-        <a href="/#work">Our work</a><a href="/#services">Services</a><a href="/#about">About</a>
+        <span class="nav-indicator" aria-hidden="true"></span>
+        {navLinks.map(link => <a href={`/#${link.id}`} data-section={link.id} aria-current={isHome && link.id === 'home' ? 'location' : undefined}>{link.label}</a>)}
       </nav>
       <div class="nav-actions">
         <a href="/#contact" class="button button-small nav-cta">Start a project <Icon name="arrowUpRight" /></a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span></span><span></span></button>
       </div>
       <nav id="mobile-nav" class="mobile-nav glass" aria-label="Mobile navigation" hidden>
-        <a href="/#work">Our work</a><a href="/#services">Services</a><a href="/#about">About</a><a href="/#contact">Start a project <Icon name="arrowUpRight" /></a>
+        {navLinks.map(link => <a href={`/#${link.id}`} data-section={link.id} aria-current={isHome && link.id === 'home' ? 'location' : undefined}>{link.label}{link.id === 'contact' && <Icon name="arrowUpRight" />}</a>)}
       </nav>
     </header>
-    <noscript><nav class="no-js-nav wrap" aria-label="Site navigation"><a href="/#work">Our work</a><a href="/#services">Services</a><a href="/#about">About</a><a href="/#contact">Start a project</a></nav><style>.menu-toggle{display:none!important}</style></noscript>
+    <noscript><nav class="no-js-nav wrap" aria-label="Site navigation">{navLinks.map(link => <a href={`/#${link.id}`}>{link.label}</a>)}</nav><style>.menu-toggle{display:none!important}</style></noscript>
     <main id="main"><slot /></main>
     <footer class="site-footer wrap">
       <div class="footer-top"><a class="wordmark" href="/">avexel</a><a href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a></div>

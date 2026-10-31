@@ -8,13 +8,60 @@ function setMenu(open: boolean) {
 }
 menuButton?.addEventListener('click', () => setMenu(menuButton.getAttribute('aria-expanded') !== 'true'));
 mobileNav?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenu(false)));
+mobileNav?.addEventListener('focusout', event => {
+  if (event.relatedTarget instanceof Node && !mobileNav.contains(event.relatedTarget) && !menuButton?.contains(event.relatedTarget)) setMenu(false);
+});
 document.addEventListener('click', event => {
   if (event.target instanceof Node && !mobileNav?.contains(event.target) && !menuButton?.contains(event.target)) setMenu(false);
 });
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && menuButton?.getAttribute('aria-expanded') === 'true') { setMenu(false); menuButton.focus(); }
 });
-window.matchMedia('(min-width: 768px)').addEventListener('change', event => { if (event.matches) setMenu(false); });
+window.matchMedia('(min-width: 1024px)').addEventListener('change', event => { if (event.matches) setMenu(false); });
+
+const desktopNav = document.querySelector<HTMLElement>('.desktop-nav');
+const sectionLinks = [...document.querySelectorAll<HTMLAnchorElement>('a[data-section]')];
+const sections = [...(desktopNav?.querySelectorAll<HTMLAnchorElement>('a[data-section]') ?? [])]
+  .map(link => document.getElementById(link.dataset.section ?? ''))
+  .filter((section): section is HTMLElement => section !== null);
+
+function positionIndicator() {
+  const active = desktopNav?.querySelector<HTMLAnchorElement>('a[aria-current="location"]');
+  if (!desktopNav || !active || desktopNav.offsetWidth === 0) return;
+  desktopNav.style.setProperty('--indicator-x', `${active.offsetLeft}px`);
+  desktopNav.style.setProperty('--indicator-width', `${active.offsetWidth}px`);
+  desktopNav.dataset.indicatorReady = '';
+}
+
+function setActiveSection(id: string) {
+  for (const link of sectionLinks) {
+    if (link.dataset.section === id) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+  }
+  positionIndicator();
+}
+
+let sectionObserver: IntersectionObserver | undefined;
+function observeSections() {
+  if (sections.length === 0) return;
+  sectionObserver?.disconnect();
+  const readingLine = Math.round(window.innerHeight * .18);
+  const current = sections.filter(section => section.getBoundingClientRect().top <= readingLine).at(-1);
+  setActiveSection((current ?? sections[0]).id);
+  sectionObserver = new IntersectionObserver(entries => {
+    const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    const section = visible.at(-1);
+    if (section) setActiveSection(section.target.id);
+  }, { rootMargin: `-${readingLine}px 0px -${Math.round(window.innerHeight * .78)}px 0px`, threshold: 0 });
+  sections.forEach(section => sectionObserver?.observe(section));
+}
+
+if (desktopNav) {
+  new ResizeObserver(positionIndicator).observe(desktopNav);
+  void document.fonts.ready.then(positionIndicator);
+}
+observeSections();
+window.addEventListener('resize', observeSections);
 
 const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
 form?.addEventListener('submit', async event => {

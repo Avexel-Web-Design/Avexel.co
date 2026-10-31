@@ -57,7 +57,7 @@ The checks cover the dark-only appearance under both device preferences at six s
 - `src/pages/index.astro`: homepage content and project links.
 - `src/styles/site.css`: responsive layouts, dark palette, purple headline glow, and glass surfaces.
 - `src/layouts/SiteLayout.astro`: shared metadata, navigation, and footer.
-- `src/scripts/site.ts`: menu and contact form behavior.
+- `src/scripts/site.ts`: menu, active-section navigation, and contact form behavior. The glass navigation pill tracks sections with IntersectionObserver; ResizeObserver keeps its highlight aligned after resizing or font loading.
 - `src/pages/communications.astro`: current public client guide. `public/COMMUNICATIONS-GUIDE.md` is the historical internal document.
 
 The contact form uses the existing Formspree endpoint (`xvgkwonw`). It supports native HTML submission if JavaScript is unavailable and enhanced inline success/error feedback otherwise. Integration tests should intercept requests rather than sending test inquiries to the live inbox.
