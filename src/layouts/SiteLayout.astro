@@ -2,7 +2,7 @@
 import '../styles/site.css';
 import Icon from '../components/Icon.astro';
 interface Props { title?: string; description?: string; }
-const { title = 'Avexel | Thoughtful websites. Real impact.', description = 'Custom websites for businesses and communities. A student-led design and development studio in Harbor Springs, Michigan, supporting Baywatch Robotics.' } = Astro.props;
+const { title = 'Avexel | Web design & development', description = 'Custom websites and web applications from a student-led development team in Harbor Springs, Michigan. Avexel projects support Baywatch Robotics.' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 <!doctype html>
@@ -31,9 +31,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header wrap">
-      <a class="wordmark" href="/" aria-label="Avexel home"><img src="/Logo-nobg-sm-140.webp" width="35" height="35" alt="" />avexel<span class="wordmark-dot">.</span></a>
+      <a class="wordmark" href="/" aria-label="Avexel home"><img src="/Logo-nobg-sm-140.webp" width="35" height="35" alt="" />avexel</a>
       <nav class="desktop-nav" aria-label="Main navigation">
-        <a href="/#work">Our work</a><a href="/#services">What we do</a><a href="/#about">The studio</a>
+        <a href="/#work">Our work</a><a href="/#services">Services</a><a href="/#about">About</a>
       </nav>
       <div class="nav-actions">
         <button class="theme-toggle" type="button" aria-label="Switch color theme"><Icon name="sun" class="sun-icon" /><Icon name="moon" class="moon-icon" /></button>
@@ -41,14 +41,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu"><span></span><span></span></button>
       </div>
       <nav id="mobile-nav" class="mobile-nav glass" aria-label="Mobile navigation" hidden>
-        <a href="/#work">Our work</a><a href="/#services">What we do</a><a href="/#about">The studio</a><a href="/quote/">Build an estimate</a><a href="/#contact">Start a project <Icon name="arrowUpRight" /></a>
+        <a href="/#work">Our work</a><a href="/#services">Services</a><a href="/#about">About</a><a href="/#contact">Start a project <Icon name="arrowUpRight" /></a>
       </nav>
     </header>
-    <noscript><nav class="no-js-nav wrap" aria-label="Site navigation"><a href="/#work">Our work</a><a href="/#services">What we do</a><a href="/#about">The studio</a><a href="/#contact">Start a project</a></nav><style>.theme-toggle,.menu-toggle{display:none!important}</style></noscript>
+    <noscript><nav class="no-js-nav wrap" aria-label="Site navigation"><a href="/#work">Our work</a><a href="/#services">Services</a><a href="/#about">About</a><a href="/#contact">Start a project</a></nav><style>.theme-toggle,.menu-toggle{display:none!important}</style></noscript>
     <main id="main"><slot /></main>
     <footer class="site-footer wrap">
-      <div class="footer-top"><a class="wordmark" href="/">avexel<span class="wordmark-dot">.</span></a><p>Small studio. Thoughtful work. Real impact.</p><a href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a></div>
-      <div class="footer-bottom"><span>© {new Date().getFullYear()} Avexel Web Design</span><span>Made in Harbor Springs, Michigan</span><div><a href="/communications/">Client guide</a><a href="https://github.com/avexel-web-design" target="_blank" rel="noreferrer">GitHub <Icon name="arrowUpRight" /></a></div></div>
+      <div class="footer-top"><a class="wordmark" href="/">avexel</a><a href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a></div>
+      <div class="footer-bottom"><span>© {new Date().getFullYear()} Avexel Web Design</span><span>Harbor Springs, Michigan</span><div><a href="/communications/">Client guide</a><a href="https://github.com/avexel-web-design" target="_blank" rel="noreferrer">GitHub <Icon name="arrowUpRight" /></a></div></div>
     </footer>
     <script>
       import '../scripts/site';

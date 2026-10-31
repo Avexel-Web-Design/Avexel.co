@@ -30,17 +30,6 @@ document.addEventListener('keydown', event => {
 window.matchMedia('(min-width: 768px)').addEventListener('change', event => { if (event.matches) setMenu(false); });
 
 const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
-const estimateField = document.querySelector<HTMLElement>('#estimate-summary-field');
-const estimateInput = document.querySelector<HTMLTextAreaElement>('#estimate-summary');
-try {
-  const estimate = sessionStorage.getItem('avexel-estimate');
-  if (estimate && estimateInput && estimateField) { estimateInput.value = estimate; estimateField.hidden = false; }
-} catch { /* The contact form does not require storage. */ }
-document.querySelector('#clear-estimate')?.addEventListener('click', () => {
-  if (estimateInput) estimateInput.value = '';
-  if (estimateField) estimateField.hidden = true;
-  try { sessionStorage.removeItem('avexel-estimate'); } catch { /* Storage is optional. */ }
-});
 form?.addEventListener('submit', async event => {
   event.preventDefault();
   const submit = form.querySelector<HTMLButtonElement>('button[type=submit]');
@@ -56,10 +45,8 @@ form?.addEventListener('submit', async event => {
   try {
     const response = await fetch(form.action, { method:'POST', body:new FormData(form), headers:{Accept:'application/json'}, signal:controller.signal });
     if (!response.ok) throw new Error('Submission failed');
-    status.textContent = 'Thank you. Your message is with our team. We’ll be in touch by email.';
+    status.textContent = 'Message sent. We’ll reply by email.';
     form.reset();
-    if (estimateField) estimateField.hidden = true;
-    try { sessionStorage.removeItem('avexel-estimate'); } catch { /* Storage is optional. */ }
   } catch {
     status.classList.add('error');
     status.textContent = 'Your message couldn’t be sent. Please try again or email contact@avexel.co. Your message is still here.';

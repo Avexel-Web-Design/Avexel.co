@@ -17,7 +17,7 @@ try {
     await page.emulateMedia({ colorScheme: theme });
     for (const width of [320, 375, 390, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: 900 });
-      for (const route of ['/', '/quote/', '/communications/']) {
+      for (const route of ['/', '/communications/']) {
         const response = await page.goto(new URL(route, base).href);
         assert.equal(response.status(), 200);
         const layout = await page.evaluate(async () => {
@@ -50,16 +50,13 @@ try {
   await page.reload();
   assert.equal(await page.locator('html').getAttribute('data-theme'), chosenTheme);
 
-  await page.goto(new URL('/quote/', base).href);
-  await page.selectOption('#page-range', '1-5');
-  await page.locator('.quote-group').filter({ hasText: 'Commerce' }).locator('summary').click();
-  await page.locator('input[value=ecommerce]').check();
-  assert.ok(await page.locator('input[value=payments]').isChecked());
-  assert.ok(await page.locator('input[value=payments]').isDisabled());
-  assert.equal(await page.locator('#quote-total').innerText(), '$677.46');
-  await page.locator('#share-estimate').click();
-  assert.ok(await page.locator('#estimate-summary-field').isVisible());
-  assert.match(await page.locator('#estimate-summary').inputValue(), /Online store/);
+  assert.equal(await page.locator('.hero-project').getAttribute('href'), 'https://atlas.frc7790.com');
+  assert.equal(await page.locator('.projects-grid .project').count(), 4);
+  assert.equal(await page.locator('.project h3 a[href="https://afterimage.avexel.workers.dev"]').count(), 1);
+  assert.equal(await page.locator('a[href*="/quote"], .tags, .wordmark-dot, .glass-sheet, .hero-note').count(), 0);
+  assert.equal(await page.locator('.wordmark').first().innerText(), 'avexel');
+  const removedRoute = await page.request.get(new URL('/quote/', base).href);
+  assert.equal(removedRoute.status(), 404);
 
   await page.fill('#contact-name', 'Browser test');
   await page.fill('#contact-email', 'test@example.com');
@@ -76,10 +73,9 @@ try {
     return route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' });
   });
   await page.locator('button[type=submit]').click();
-  await page.waitForFunction(() => document.querySelector('.form-status')?.textContent?.includes('Thank you'));
-  assert.match(submitted, /Online store/);
+  await page.waitForFunction(() => document.querySelector('.form-status')?.textContent?.includes('Message sent'));
+  assert.match(submitted, /Intercepted test message/);
   assert.equal(await page.locator('#contact-message').inputValue(), '');
-  assert.equal(await page.locator('#estimate-summary-field').isVisible(), false);
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   assert.equal(await page.locator('.hero-copy').evaluate(element => getComputedStyle(element).animationName), 'none');
@@ -90,7 +86,7 @@ try {
   assert.ok(await staticPage.locator('.no-js-nav').isVisible());
   assert.equal(await staticPage.locator('form').getAttribute('action'), endpoint);
   assert.deepEqual(errors, []);
-  console.log('Menu, themes, pricing, estimate handoff, contact recovery, reduced motion, and no-JS checks passed.');
+  console.log('Menu, themes, project links, quote removal, contact recovery, reduced motion, and no-JS checks passed.');
 } finally {
   await browser.close();
 }

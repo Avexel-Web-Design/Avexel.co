@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Avexel’s website is built with Astro, TypeScript, and native CSS. Pages are rendered to static HTML; the only browser JavaScript handles navigation, theme selection, the estimate builder, and contact submission.
+Avexel’s website is built with Astro, TypeScript, and native CSS. Pages are rendered to static HTML; browser JavaScript handles navigation, theme selection, and contact submission.
 
 ## Development
 
@@ -48,7 +48,7 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-The checks cover both themes at six screen widths, navigation, estimate calculations and handoff, intercepted contact-form success/failure, reduced motion, and rendering without JavaScript. `CHECK_URL` overrides the test server; `CHROMIUM_PATH` selects an existing browser executable.
+The checks cover both themes at six screen widths, navigation, project links, removal of the quote route, intercepted contact-form success/failure, reduced motion, and rendering without JavaScript. `CHECK_URL` overrides the test server; `CHROMIUM_PATH` selects an existing browser executable.
 
 `dist/` is generated and excluded from version control. Cloudflare Workers serves this directory using `wrangler.jsonc`; the existing deployment workflow builds it before deployment. `npm run deploy` explicitly builds and deploys.
 
@@ -57,8 +57,6 @@ The checks cover both themes at six screen widths, navigation, estimate calculat
 - `src/pages/index.astro`: homepage content and project links.
 - `src/styles/site.css`: responsive layouts, light/dark tokens, and glass surfaces.
 - `src/layouts/SiteLayout.astro`: shared metadata, navigation, and footer.
-- `src/data/pricing.ts`: published feature prices and the existing page-count calculation.
-- `src/pages/quote.astro`: estimate builder; selected estimates are carried into the contact form using session storage.
 - `src/scripts/site.ts`: menu, theme toggle, and contact form behavior.
 - `src/pages/communications.astro`: current public client guide. `public/COMMUNICATIONS-GUIDE.md` is the historical internal document.
 
@@ -68,7 +66,7 @@ Light/dark mode follows the device by default, with a stored manual override. Mo
 
 ## Image sources
 
-The project preview images in `public/images/work-*.webp` are captures of the actual linked client websites, taken during the redesign. The shoreline photograph is a locally optimized [Unsplash image](https://images.unsplash.com/photo-1473116763249-2faaef81ccda); it is atmospheric imagery, not a photograph of the Avexel team or a documented Harbor Springs location.
+The project preview images in `public/images/work-*.webp` are captures of the actual linked projects. Atlas and Afterimage were captured from their live sites. Responsive WebP sizes are served according to the display width. The hero uses Atlas; there is no stock background photography.
 
 ## Legal
 
