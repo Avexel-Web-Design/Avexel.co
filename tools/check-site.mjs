@@ -81,6 +81,7 @@ try {
   assert.equal(await page.locator('#mobile-nav').isVisible(), false);
   await menu.click();
   await page.setViewportSize({ width: 1024, height: 900 });
+  await page.locator('#mobile-nav').waitFor({ state: 'hidden' });
   assert.equal(await page.locator('#mobile-nav').isVisible(), false);
   assert.ok(await page.locator('.desktop-nav').isVisible());
   await page.setViewportSize({ width: 390, height: 844 });
