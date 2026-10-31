@@ -33,8 +33,7 @@ const sceneStops = [
   { time: 2.5, duration: .85 },
   { time: 4.1, duration: 1.15 },
   { time: 6.25, duration: 1.5 },
-  { time: 9.3, duration: 2.1 },
-  { time: 10.95, duration: 1.35 },
+  { time: 10.95, duration: 3.3 },
 ];
 let activeStep = 0;
 let stepTween: gsap.core.Tween | undefined;
@@ -215,7 +214,6 @@ function buildTimeline() {
   drawErase(0);
   gsap.set('.statement', { opacity: 0, y: height * .65 });
   gsap.set('.annotations .annotation', { opacity: 0 });
-  gsap.set('.annotation-connectors g', { opacity: 0 });
   gsap.set(realSite, { clipPath: 'inset(0 0 100% 0)' });
   timeline = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: {
     trigger: story, start: 'top top', end: 'bottom bottom', scrub: true,
@@ -246,8 +244,7 @@ function buildTimeline() {
     .to(realSite, { clipPath: 'inset(0 0 0% 0)', duration: 1.25 }, 9.5)
     .to({}, { duration: .2 });
   document.querySelectorAll<HTMLElement>('[data-note]').forEach((note, index) => {
-    const connector = document.querySelector(`[data-connector="${note.dataset.note}"]`);
-    timeline?.to(connector ? [note, connector] : note, { opacity: 1, duration: .25 }, 4.9 + index * .09);
+    timeline?.to(note, { opacity: 1, duration: .25 }, 4.9 + index * .09);
   });
   // Refresh viewport measurements too, not only this trigger's cached bounds.
   ScrollTrigger.refresh();

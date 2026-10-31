@@ -13,7 +13,6 @@ const annotations = [
   { id: 'brand', target: '.demo-brand > span', text: 'A dot is not a personality.' },
   { id: 'nav', target: '.demo-nav > div', text: 'The same menu on a thousand agency sites.' },
   { id: 'label', target: '.demo-eyebrow', text: 'Buzzwords, not information.' },
-  { id: 'title', target: '.demo-copy h1', text: 'Could be literally any agency.' },
   { id: 'description', target: '.demo-description', text: '15 words. Still no idea what you get.' },
   { id: 'button', target: '.demo-copy > .demo-cta', text: 'A slogan where an action should be.' },
   { id: 'art', target: '.plus-one', text: 'A plus sign that adds nothing.' },
@@ -42,7 +41,6 @@ const annotations = [
       </div>
 
       <div class="annotations" aria-hidden="true">
-        <svg class="annotation-connectors" aria-hidden="true">{annotations.map(note => <g data-connector={note.id}><path /><circle r="3.5" /></g>)}</svg>
         {annotations.map(note => <div class={`annotation note-${note.id}`} data-note={note.id} data-target={note.target}><span>{note.text}</span></div>)}
       </div>
 
