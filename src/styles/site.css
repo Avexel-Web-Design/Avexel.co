@@ -174,7 +174,10 @@ button:hover > .icon[data-icon="arrowUpRight"] { transform: rotate(45deg); }
 }
 .hero h1 { font-size: clamp(2.5rem, 4.1vw, 3.8rem); letter-spacing: -.05em; line-height: 1.12; margin-bottom: 25px; }
 .hero h1 span {
-  color: var(--accent);
+  background: linear-gradient(90deg, #b026ff, #ffffff 52%, #3b82f6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   text-shadow: var(--purple-text-glow);
 }
 .hero-copy > p { font-size: 17px; max-width: 390px; }
