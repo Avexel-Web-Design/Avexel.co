@@ -66,7 +66,7 @@ Light/dark mode follows the device by default, with a stored manual override. Mo
 
 ## Image sources
 
-The project preview images in `public/images/work-*.webp` are captures of the actual linked projects. Atlas and Afterimage were captured from their live sites. Responsive WebP sizes are served according to the display width. The hero uses Atlas; there is no stock background photography.
+The project preview images in `public/images/work-*.webp` are captures of the actual linked projects. Atlas is captured with its dark appearance explicitly selected. Detroit Rising is captured after its delayed building animations finish. Responsive WebP sizes are served according to the display width. The hero uses Atlas; there is no stock background photography.
 
 ## Legal
 
