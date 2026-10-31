@@ -1,0 +1,16 @@
+---
+import arrowUpRight from '@phosphor-icons/core/assets/regular/arrow-up-right.svg?raw';
+import arrowRight from '@phosphor-icons/core/assets/regular/arrow-right.svg?raw';
+import plus from '@phosphor-icons/core/assets/regular/plus.svg?raw';
+import check from '@phosphor-icons/core/assets/regular/check.svg?raw';
+import sun from '@phosphor-icons/core/assets/regular/sun.svg?raw';
+import moon from '@phosphor-icons/core/assets/regular/moon.svg?raw';
+import globe from '@phosphor-icons/core/assets/regular/globe.svg?raw';
+import code from '@phosphor-icons/core/assets/regular/code.svg?raw';
+import devices from '@phosphor-icons/core/assets/regular/devices.svg?raw';
+import wrench from '@phosphor-icons/core/assets/regular/wrench.svg?raw';
+const icons = { arrowUpRight, arrowRight, plus, check, sun, moon, globe, code, devices, wrench };
+interface Props { name: keyof typeof icons; class?: string; }
+const { name, class: className = '' } = Astro.props;
+---
+<span class:list={['icon', className]} aria-hidden="true" set:html={icons[name]} />

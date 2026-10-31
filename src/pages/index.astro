@@ -1,0 +1,92 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Icon from '../components/Icon.astro';
+const projects = [
+  { name: 'Baywatch Robotics', type: 'Community / STEM', image: 'baywatch', url: 'https://frc7790.com', description: 'A home for the team that started it all. Robots, competition, and the next generation of engineers.' },
+  { name: 'Detroit Rising Development', type: 'Business / Real estate', image: 'detroit', url: 'https://detroitrisingdevelopment.pages.dev', description: 'A confident digital presence for a company investing in Detroit’s future.' },
+  { name: 'Harbor Soccer Inc.', type: 'Nonprofit / Youth sports', image: 'soccer', url: 'https://harborsoccerinc.com', description: 'Connecting local families to the game, from first registration to the final whistle.' },
+  { name: 'Nadia Elmagrabi', type: 'Personal brand / Wellness', image: 'nadia', url: 'https://nadia-elmagrabi.pages.dev', description: 'A welcoming space to explore a personal practice, services, and a new perspective.' },
+];
+const services = [
+  {number:'01',name:'Design with intention.',text:'A distinctive look, clear content, and an experience that feels right for your business.',tags:['Web design','Brand integration','UX & UI'], icon:'globe' as const},
+  {number:'02',name:'Built to work beautifully.',text:'Custom development with fast pages, thoughtful details, and mobile built in from the start.',tags:['Custom websites','Integrations','Responsive development'],icon:'code' as const},
+  {number:'03',name:'Support beyond launch.',text:'Content changes, maintenance, and a real person to talk to when your website needs something.',tags:['Ongoing maintenance','Content updates','Technical support'],icon:'wrench' as const},
+];
+---
+<SiteLayout>
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="status-dot"></span> Independent web design & development</div>
+      <h1 id="hero-title">A clearer vision.<br /><span>A better website.</span></h1>
+      <p>Thoughtfully designed. Carefully built. Custom websites for businesses and communities ready for what’s next.</p>
+      <div class="hero-actions"><a class="button" href="#contact">Start a project <Icon name="arrowUpRight" /></a><a class="text-link" href="#work">Explore our work <Icon name="arrowRight" /></a></div>
+    </div>
+    <div class="hero-visual" aria-label="Selected Avexel website designs">
+      <div class="glass-sheet sheet-back" aria-hidden="true"></div>
+      <a class="hero-project glass" href="https://frc7790.com" target="_blank" rel="noreferrer">
+        <div class="preview-top"><span><span class="status-dot"></span> Built by Avexel</span><Icon name="arrowUpRight" /></div>
+        <img src="/images/work-baywatch.webp" srcset="/images/work-baywatch-400.webp 400w, /images/work-baywatch-800.webp 800w, /images/work-baywatch.webp 1200w" sizes="(max-width: 767px) 90vw, 42vw" alt="Baywatch Robotics website with bold orange and white typography" width="1200" height="833" fetchpriority="high" />
+        <div class="preview-caption"><span>Baywatch Robotics</span><span>Design + development</span></div>
+      </a>
+      <div class="hero-note glass"><Icon name="devices" /><span>Considered on every screen.<small>From the first tap to the last detail.</small></span></div>
+    </div>
+  </section>
+
+  <div class="principles wrap"><span>Good design is just the beginning.</span><div><span><Icon name="check" /> Mobile-first, always</span><span><Icon name="check" /> Custom code. Yours to keep.</span><span><Icon name="check" /> People, not a support queue</span></div></div>
+
+  <section id="work" class="section work-section wrap" aria-labelledby="work-title">
+    <div class="section-heading"><div><span class="section-index">01 / Selected work</span><h2 id="work-title">Different businesses.<br />Same attention to detail.</h2></div><span class="quiet-label">A few things we’ve put into the world.</span></div>
+    <div class="projects-grid">
+      {projects.map((project,index) => <article class:list={['project', `project-${index + 1}`]}>
+        <a class="project-image glass" href={project.url} target="_blank" rel="noreferrer">
+          <div class="project-browser" aria-hidden="true"><span></span><span></span><span></span><span class="browser-url">{new URL(project.url).hostname}</span><Icon name="arrowUpRight" /></div>
+          <img src={`/images/work-${project.image}.webp`} srcset={`/images/work-${project.image}-400.webp 400w, /images/work-${project.image}-800.webp 800w, /images/work-${project.image}.webp 1200w`} sizes="(max-width: 767px) 90vw, 45vw" alt={`${project.name} website design`} width="1200" height="833" loading="lazy" decoding="async" />
+          <span class="project-open">Visit website <Icon name="arrowUpRight" /></span>
+        </a>
+        <div class="project-meta"><h3><a href={project.url} target="_blank" rel="noreferrer">{project.name}</a></h3><span>{project.type}</span></div><p>{project.description}</p>
+      </article>)}
+    </div>
+  </section>
+
+  <section id="services" class="section services-section wrap" aria-labelledby="services-title">
+    <h2 id="services-title">Everything your website needs.<br /><span>Nothing it doesn’t.</span></h2>
+    <div class="services-list">{services.map(service => <article class="service-row"><span class="service-number">{service.number}</span><div class="service-title"><Icon name={service.icon} /><h3>{service.name}</h3></div><div><p>{service.text}</p><ul class="tags">{service.tags.map(tag => <li>{tag}</li>)}</ul></div></article>)}</div>
+    <div class="estimate-banner glass" id="quote"><div><h3>A clear scope. An honest quote.</h3><p>Explore the features you need, then let’s talk through the details.</p></div><a class="button button-secondary" href="/quote/">Build an estimate <Icon name="arrowUpRight" /></a></div>
+  </section>
+
+  <section class="section process-section wrap" aria-labelledby="process-title">
+    <div class="process-intro"><h2 id="process-title">A good website starts<br />with a conversation.</h2><p>No mystery process. You’ll know what’s happening, have a say in the design, and see your site before it goes live.</p></div>
+    <ol class="process-grid">
+      <li><span>01</span><h3>We listen.</h3><p>Your goals, your audience, your ideas. We define what the site needs to do and agree on a scope.</p></li>
+      <li><span>02</span><h3>We make it tangible.</h3><p>Designs become a working website, with room for your feedback at every meaningful step.</p></li>
+      <li><span>03</span><h3>We get it out there.</h3><p>We test across screens, handle the launch, and stay available as your business grows.</p></li>
+    </ol>
+  </section>
+
+  <section id="about" class="section about-section wrap" aria-labelledby="about-title">
+    <div class="about-art glass"><img src="/images/harbor.webp" alt="Sunlight across the water and a quiet shoreline" width="900" height="1100" loading="lazy" /><div class="location-label glass"><span>Rooted in Northern Michigan.</span><small>Harbor Springs, MI</small></div></div>
+    <div class="about-copy"><span class="section-index">The people behind the pixels</span><h2 id="about-title">Small team.<br />A bigger purpose.</h2><p>We’re a student-led studio from Harbor Springs, Michigan. Avexel began with a simple idea: use what we love to support our FIRST® Robotics team.</p><p>Today, we build for local businesses, nonprofits, and people with something to share. Every project helps support Baywatch Robotics and hands-on STEM education.</p><a class="text-link" href="https://frc7790.com" target="_blank" rel="noreferrer">Meet Baywatch Robotics <Icon name="arrowUpRight" /></a>
+      <div class="team-list"><div><strong>Ryan Latimer</strong><span>Operations & development</span></div><div><strong>Gavin Moceri</strong><span>Technical direction & development</span></div><div><strong>Conner Breckenfeld</strong><span>Communications & creative</span></div></div>
+    </div>
+  </section>
+
+  <section class="section faq-section wrap" aria-labelledby="faq-title"><h2 id="faq-title">A few things<br />you might be wondering.</h2><div class="faq-list">
+    <details><summary>What does a website cost?<Icon name="plus" /></summary><p>It depends on the pages, features, and integrations you need. Our <a href="/quote/">estimate builder</a> gives you a starting point. We’ll agree on a clear scope and final quote before development begins. Third-party costs, such as domains, are separate.</p></details>
+    <details><summary>Will I own my website?<Icon name="plus" /></summary><p>Yes. You own the code and content, and you can host your website wherever you choose. We’ll help you understand how everything works.</p></details>
+    <details><summary>Can you improve my existing site?<Icon name="plus" /></summary><p>Absolutely. Send us your current website and tell us what isn’t working. We can discuss a focused improvement or a complete redesign.</p></details>
+    <details><summary>What happens after launch?<Icon name="plus" /></summary><p>We’re available for content updates, maintenance, and new features. We’ll discuss support and any ongoing costs as part of your project.</p></details>
+  </div></section>
+
+  <section id="contact" class="section contact-section wrap" aria-labelledby="contact-title">
+    <div class="contact-copy"><span class="eyebrow"><span class="status-dot"></span> Let’s make something that matters</span><h2 id="contact-title">Your next chapter<br />starts here.</h2><p>A new idea, an outdated website, or a question you’ve been sitting on. We’d love to hear it.</p><a class="contact-email" href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a><a class="contact-phone" href="tel:+12313738360">(231) 373-8360</a></div>
+    <form class="contact-form glass" action="https://formspree.io/f/xvgkwonw" method="POST" data-contact-form>
+      <div class="form-pair"><div class="field"><label for="contact-name">Your name</label><input id="contact-name" name="name" autocomplete="name" placeholder="Alex Morgan" required maxlength="120" /></div><div class="field"><label for="contact-email">Email address</label><input id="contact-email" name="email" type="email" autocomplete="email" placeholder="alex@yourbusiness.com" required /></div></div>
+      <div class="field"><label for="contact-service">What can we help with?</label><select id="contact-service" name="service"><option>New website</option><option>Website redesign</option><option>Maintenance & updates</option><option>Something else</option></select></div>
+      <div class="field"><label for="contact-message">A little about your project</label><textarea id="contact-message" name="message" rows="4" placeholder="What are you working on? What would you love your website to do?" required maxlength="10000"></textarea></div>
+      <div class="field" id="estimate-summary-field" hidden><label for="estimate-summary">Your estimate</label><textarea id="estimate-summary" name="estimate" rows="4" readonly></textarea><button class="text-link" id="clear-estimate" type="button">Remove estimate</button></div>
+      <div class="honeypot" aria-hidden="true"><label for="website-field">Leave this empty</label><input id="website-field" name="_gotcha" tabindex="-1" autocomplete="off" /></div>
+      <input type="hidden" name="_subject" value="New project inquiry from Avexel" />
+      <button class="button" type="submit">Send message <Icon name="arrowUpRight" /></button><p class="form-note">Straight to our team. No mailing lists, no sales pitch.</p><p class="form-status" role="status" aria-live="polite" tabindex="-1"></p>
+    </form>
+  </section>
+</SiteLayout>

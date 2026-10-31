@@ -13,16 +13,9 @@ AddType font/woff2 .woff2
 RewriteEngine On
 RewriteBase /
 
-# Handle direct font requests
-RewriteCond %{REQUEST_URI} ^/fonts/
-RewriteRule ^(.*)$ /assets/fonts/$1 [L]
-
-# Don't rewrite files or directories
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# Rewrite everything else to index.html
-RewriteRule ^ index.html [L]
+# Astro emits a real HTML file for each route.
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
 
 # Security headers
 Header always set X-Content-Type-Options "nosniff"

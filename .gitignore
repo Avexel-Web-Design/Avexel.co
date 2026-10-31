@@ -8,6 +8,7 @@
 
 # production
 /build
+/dist
 
 # misc
 .DS_Store
@@ -25,3 +26,4 @@ yarn-error.log*
 .dev.vars*
 !.dev.vars.example
 !.env.example
+/.astro/
