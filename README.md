@@ -62,7 +62,7 @@ The checks cover the dark-only appearance under both device preferences at six s
 
 The contact form uses the existing Formspree endpoint (`xvgkwonw`). It supports native HTML submission if JavaScript is unavailable and enhanced inline success/error feedback otherwise. Integration tests should intercept requests rather than sending test inquiries to the live inbox.
 
-The site uses dark mode regardless of device preference. The highlighted hero text has a purple text glow; backgrounds are flat. Motion and transparency preferences are respected.
+The site uses dark mode regardless of device preference, with a flat black background. Purple headline and link text share a glow treatment; purple buttons, the logo, and glass edges use matching localized glows. Motion and transparency preferences are respected.
 
 ## Image sources
 
