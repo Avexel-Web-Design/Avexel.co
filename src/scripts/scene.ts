@@ -1,5 +1,6 @@
 import { gsap } from 'gsap';
 import { layoutAnnotations } from './annotations';
+import { setStackView, warmStack } from './stack';
 
 const story = document.querySelector<HTMLElement>('.scroll-story');
 const scene = document.querySelector<HTMLElement>('.scene');
@@ -24,6 +25,7 @@ let selectedView = 'home';
 let selectedProject = 0;
 let selectedService = 'design';
 let pausedForVisibility = false;
+let viewTransition = 0;
 
 if (realSite) realSite.inert = true;
 
@@ -31,7 +33,7 @@ if (realSite) realSite.inert = true;
 // Set the standard property too so current Chromium gets the same glass effect.
 const reducedTransparency = window.matchMedia('(prefers-reduced-transparency: reduce)');
 function updateGlass() {
-  realSite?.querySelectorAll<HTMLElement>('.glass-surface,.studio-header,.team-emblem,.studio-people,.work-image,.inquiry-form').forEach(element => {
+  realSite?.querySelectorAll<HTMLElement>('.glass-surface,.studio-header').forEach(element => {
     element.style.backdropFilter = reducedTransparency.matches ? 'none' : 'blur(24px)';
   });
 }
@@ -40,15 +42,35 @@ reducedTransparency.addEventListener('change', updateGlass);
 
 function showView(view: string, focus = false) {
   if (!panels.some(panel => panel.dataset.panel === view)) return;
+  const next = panels.find(panel => panel.dataset.panel === view)!;
+  const previous = panels.find(panel => !panel.hidden);
+  const workspace = document.querySelector<HTMLElement>('.stack-workspace');
+  const generation = ++viewTransition;
+  gsap.killTweensOf(panels);
   selectedView = view;
-  panels.forEach(panel => { panel.hidden = panel.dataset.panel !== view; });
+  if (workspace) workspace.dataset.transitioning = focus && !reduce.matches && previous !== next ? 'true' : 'false';
   viewButtons.filter(button => button.closest('nav')).forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === view)));
-  if (focus) {
-    const panel = panels.find(item => item.dataset.panel === view);
-    if (panel && !reduce.matches) gsap.fromTo(panel, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out', clearProps: 'transform,opacity' });
-    const heading = panel?.querySelector<HTMLElement>('h2');
+  setStackView(view, !focus || reduce.matches);
+  const focusHeading = () => {
+    if (generation !== viewTransition) return;
+    if (workspace) workspace.dataset.transitioning = 'false';
+    if (!focus) return;
+    const heading = next.querySelector<HTMLElement>('h2');
     heading?.setAttribute('tabindex', '-1');
     heading?.focus({ preventScroll: true });
+  };
+  const enter = () => {
+    if (generation !== viewTransition) return;
+    panels.forEach(panel => { panel.hidden = panel !== next; panel.inert = false; });
+    if (workspace && focus && previous !== next) workspace.scrollTop = 0;
+    if (focus && !reduce.matches && previous !== next) gsap.fromTo(next, { opacity: 0, x: -70, y: 22, scale: .96, transformOrigin: '0% 50%' }, { opacity: 1, x: 0, y: 0, scale: 1, duration: .72, ease: 'power3.out', clearProps: 'transform,opacity,transformOrigin', onComplete: focusHeading });
+    else { gsap.set(next, { clearProps: 'transform,opacity' }); focusHeading(); }
+  };
+  if (focus && !reduce.matches && previous && previous !== next) {
+    previous.inert = true;
+    gsap.to(previous, { opacity: 0, x: -24, duration: .2, ease: 'power2.in', onComplete: enter });
+  } else {
+    enter();
   }
 }
 
@@ -124,13 +146,16 @@ function drawErase(progress: number) {
 function savePosition(force = true) {
   if (!ready || !force && performance.now() - lastSaved < 200) return;
   lastSaved = performance.now();
-  try { sessionStorage.setItem(storageKey, JSON.stringify({ time: timeline?.time() ?? 18.3, view: selectedView, project: selectedProject, service: selectedService })); } catch { /* Storage can be unavailable in private browsing. */ }
+  const workspace = document.querySelector<HTMLElement>('.stack-workspace');
+  const sheet = panels.find(panel => panel.dataset.panel === selectedView)?.querySelector<HTMLElement>('.stack-sheet');
+  try { sessionStorage.setItem(storageKey, JSON.stringify({ time: timeline?.time() ?? 18.3, view: selectedView, project: selectedProject, service: selectedService, reading: { workspace: workspace?.scrollTop ?? 0, sheet: sheet?.scrollTop ?? 0 } })); } catch { /* Storage can be unavailable in private browsing. */ }
 }
 
 function updateScene() {
   if (!scene || !realSite) return;
   const time = reduce.matches ? 18.3 : timeline?.time() ?? 0;
   const complete = time >= 18.29;
+  if (time >= 8.7) warmStack();
   const phase = complete ? 'complete' : time < 1.8 ? 'default' : time < 3.8 ? 'first-line' : time < 6 ? 'second-line' : time < 8.7 ? 'statement' : time < 14.5 ? 'annotations' : time < 16.85 ? 'erase' : 'reveal';
   scene.dataset.phase = phase;
   scene.dataset.playback = complete ? 'complete' : playbackMode;
@@ -176,6 +201,7 @@ function buildTimeline() {
   canvas.height = height * dpr;
   canvas.getContext('2d')?.scale(dpr, dpr);
   layoutAnnotations(scene);
+  setStackView(selectedView, true);
   if (reduce.matches) { gsap.set(realSite, { '--reveal-edge': `${height + 72}px` }); updateScene(); return; }
   eraseState.progress = 0;
   drawErase(0);
@@ -234,6 +260,7 @@ document.querySelectorAll('[data-replay]').forEach(button => button.addEventList
   fastPlayback = timeline.tweenTo(0, { duration: Math.max(.45, timeline.progress() * 1.8), ease: 'none', onComplete: () => {
     fastPlayback = undefined;
     playbackMode = 'playing';
+    showView('home');
     timeline?.play(0);
     document.querySelector<HTMLButtonElement>('[data-skip]')?.focus({ preventScroll: true });
     savePosition();
@@ -246,9 +273,9 @@ const pageLoaded = new Promise<void>(resolve => {
 });
 void Promise.all([document.fonts.ready, pageLoaded]).then(() => {
   buildTimeline();
-  const hashViews = new Map([['#contact', 'contact'], ['#studio', 'studio'], ['#about', 'studio'], ['#services', 'home'], ['#work', 'work'], ['#brief', 'home'], ['#home', 'home']]);
+  const hashViews = new Map([['#contact', 'contact'], ['#studio', 'studio'], ['#about', 'studio'], ['#services', 'services'], ['#work', 'work'], ['#brief', 'home'], ['#home', 'home']]);
   const hashView = hashViews.get(location.hash);
-  let saved: { time?: number; view?: string; project?: number; service?: string } | undefined;
+  let saved: { time?: number; view?: string; project?: number; service?: string; reading?: { workspace?: number; sheet?: number } } | undefined;
   try { saved = JSON.parse(sessionStorage.getItem(storageKey) ?? 'null'); } catch { /* Start at the beginning if storage is unavailable. */ }
   const navigation = performance.getEntriesByType('navigation')[0];
   const restore = navigation instanceof PerformanceNavigationTiming && (navigation.type === 'reload' || navigation.type === 'back_forward');
@@ -256,6 +283,10 @@ void Promise.all([document.fonts.ready, pageLoaded]).then(() => {
     if (saved.view) showView(saved.view === 'brief' ? 'home' : saved.view);
     if (Number.isInteger(saved.project) && saved.project! >= 0 && saved.project! < projects.length) showProject(saved.project!);
     if (saved.service) showService(saved.service);
+    const workspace = document.querySelector<HTMLElement>('.stack-workspace');
+    const sheet = panels.find(panel => panel.dataset.panel === selectedView)?.querySelector<HTMLElement>('.stack-sheet');
+    if (workspace && Number.isFinite(saved.reading?.workspace)) workspace.scrollTop = saved.reading?.workspace ?? 0;
+    if (sheet && Number.isFinite(saved.reading?.sheet)) sheet.scrollTop = saved.reading?.sheet ?? 0;
     if (Number.isFinite(saved.time)) timeline?.seek(gsap.utils.clamp(0, timeline.duration(), saved.time ?? 0), false);
   } else if (hashView) { goToEnd(); showView(hashView); }
   ready = true;
@@ -276,7 +307,7 @@ window.addEventListener('resize', () => {
   clearTimeout(resizeTimer);
   resizeTimer = window.setTimeout(buildTimeline, 150);
 });
-reduce.addEventListener('change', buildTimeline);
+reduce.addEventListener('change', () => { buildTimeline(); showView(selectedView); });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     pausedForVisibility = Boolean(fastPlayback?.isActive() || timeline?.isActive());
@@ -285,7 +316,8 @@ document.addEventListener('visibilitychange', () => {
   } else if (pausedForVisibility) { pausedForVisibility = false; (fastPlayback ?? timeline)?.resume(); }
 });
 window.addEventListener('pagehide', () => savePosition());
+document.querySelectorAll<HTMLElement>('.stack-workspace,.stack-sheet').forEach(element => element.addEventListener('scroll', () => savePosition(false), { passive: true }));
 window.addEventListener('hashchange', () => {
   const view = location.hash.slice(1);
-  if (['home', 'work', 'studio', 'contact'].includes(view)) { goToEnd(); showView(view); }
+  if (['home', 'services', 'work', 'studio', 'contact'].includes(view)) { goToEnd(); showView(view); }
 });
