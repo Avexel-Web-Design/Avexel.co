@@ -1,7 +1,9 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import Icon from '../components/Icon.astro';
+import FinalStudio from '../components/FinalStudio.astro';
 import '../styles/scene.css';
+import '../styles/studio.css';
 
 const projects = [
   { name: 'Atlas', type: 'Robotics intelligence', image: 'atlas', url: 'https://atlas.frc7790.com', description: 'Competition data, predictions, and scouting. One place for the decisions that happen before the match.' },
@@ -46,33 +48,7 @@ const annotations = [
 
       <canvas class="eraser-canvas" aria-hidden="true"></canvas>
 
-      <div class="real-site">
-        <header class="real-header"><a href="#home" class="real-wordmark" data-replay aria-label="Avexel, replay introduction">avexel</a><nav aria-label="Main navigation"><button type="button" data-view="work" aria-pressed="true">Work <span>04</span></button><button type="button" data-view="studio" aria-pressed="false">Studio</button><button type="button" data-view="contact" aria-pressed="false">Start a project <Icon name="arrowUpRight" /></button></nav></header>
-
-        <section class="canvas-view work-view" data-panel="work" aria-label="Selected work">
-          <div class="work-intro"><h2>Made with<br /><span>a point of view.</span></h2><p>Independent web design & development.<br />Harbor Springs, Michigan. Anywhere online.</p></div>
-          <div class="project-stage">
-            {projects.map((project, i) => <article class:list={['project-slide', { 'is-active': i === 0 }]} data-project={i} hidden={i !== 0}>
-              <a class="project-screen" href={project.url} target="_blank" rel="noreferrer" aria-label={`Visit ${project.name}`}><img src={`/images/work-${project.image}.webp`} alt={`${project.name} website`} width="1440" height="1000" loading={i === 0 ? 'eager' : 'lazy'} /><span class="visit-project">Visit site <Icon name="arrowUpRight" /></span></a>
-              <div class="project-caption"><h3>{project.name}</h3><p>{project.type}</p><span>0{i + 1} / 04</span></div>
-            </article>)}
-          </div>
-          <div class="project-selector" role="group" aria-label="Select a project">{projects.map((project, i) => <button type="button" data-select-project={i} aria-pressed={i === 0}><span>0{i + 1}</span>{project.name}<Icon name="arrowUpRight" /></button>)}</div>
-          <div class="work-foot"><p>Websites. Applications. Nothing off the shelf.</p></div>
-        </section>
-
-        <section class="canvas-view studio-view" data-panel="studio" hidden aria-labelledby="studio-title">
-          <div class="studio-heading"><h2 id="studio-title">Small team.<br />Real people.<br /><span>Our own code.</span></h2><p>We’re a student-led web studio. Our projects help fund Baywatch Robotics and hands-on STEM education. You work directly with the people building your site.</p><a href="https://frc7790.com" target="_blank" rel="noreferrer">Meet the robotics team <Icon name="arrowUpRight" /></a></div>
-          <div class="studio-details"><div class="studio-services"><h3>From first sketch to next update.</h3><p>Design shaped around your content. Custom websites and web applications. Maintenance after launch. You own the code.</p></div><div class="people"><div><h3>Ryan Latimer</h3><p>Operations & development</p></div><div><h3>Gavin Moceri</h3><p>Technical direction & development</p></div><div><h3>Conner Breckenfeld</h3><p>Communications & creative</p></div></div><a href="/communications/">How we work <Icon name="arrowUpRight" /></a></div>
-        </section>
-
-        <section class="canvas-view contact-view" data-panel="contact" hidden aria-labelledby="contact-title">
-          <div class="contact-heading"><h2 id="contact-title">Have something<br /><span>in mind?</span></h2><p>Tell us what you’re making. We’ll talk through the scope, timeline, and cost before development starts.</p><a href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a><a href="tel:+12313738360">(231) 373-8360</a></div>
-          <form class="scene-form" action="https://formspree.io/f/xvgkwonw" method="POST" data-contact-form><div class="form-pair"><div class="field"><label for="contact-name">Your name</label><input id="contact-name" name="name" autocomplete="name" required maxlength="120" /></div><div class="field"><label for="contact-email">Email address</label><input id="contact-email" name="email" type="email" autocomplete="email" required /></div></div><div class="field"><label for="contact-service">What can we help with?</label><select id="contact-service" name="service"><option>New website</option><option>Web application</option><option>Website redesign</option><option>Maintenance & updates</option><option>Something else</option></select></div><div class="field"><label for="contact-message">A little about your project</label><textarea id="contact-message" name="message" rows="3" required maxlength="10000"></textarea></div><div class="honeypot" aria-hidden="true"><label for="website-field">Leave this empty</label><input id="website-field" name="_gotcha" tabindex="-1" autocomplete="off" /></div><input type="hidden" name="_subject" value="New project inquiry from Avexel" /><button type="submit" class="send-message">Send message <Icon name="arrowUpRight" /></button><p class="form-status" role="status" aria-live="polite" tabindex="-1"></p></form>
-        </section>
-
-        <footer class="real-footer"><span>Supporting Baywatch Robotics.</span><button type="button" data-replay>Replay the teardown <span>↺</span></button><span>© {new Date().getFullYear()} Avexel</span></footer>
-      </div>
+      <FinalStudio projects={projects} />
       <div class="story-controls"><span class="story-chapter">THE DEFAULT</span><div class="story-track"><span></span></div><button type="button" data-skip>Skip to the good part <span>↗</span></button></div>
     </div>
   </div>

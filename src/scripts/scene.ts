@@ -1,5 +1,6 @@
 import { gsap } from 'gsap';
 import { layoutAnnotations } from './annotations';
+import { getBriefState, initializeBrief, restoreBrief, type BriefState } from './brief';
 
 const story = document.querySelector<HTMLElement>('.scroll-story');
 const scene = document.querySelector<HTMLElement>('.scene');
@@ -20,7 +21,7 @@ let width = 0;
 let height = 0;
 let ready = false;
 let lastSaved = 0;
-let selectedView = 'work';
+let selectedView = 'brief';
 let selectedProject = 0;
 let pausedForVisibility = false;
 
@@ -30,7 +31,7 @@ function showView(view: string, focus = false) {
   if (!panels.some(panel => panel.dataset.panel === view)) return;
   selectedView = view;
   panels.forEach(panel => { panel.hidden = panel.dataset.panel !== view; });
-  viewButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === view)));
+  viewButtons.filter(button => button.closest('nav')).forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === view)));
   if (focus) {
     const panel = panels.find(item => item.dataset.panel === view);
     if (panel && !reduce.matches) gsap.fromTo(panel, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out', clearProps: 'transform,opacity' });
@@ -50,7 +51,7 @@ function showProject(index: number) {
 viewButtons.forEach(button => button.addEventListener('click', () => {
   const view = button.dataset.view ?? 'work';
   showView(view, true);
-  history.replaceState(null, '', view === 'work' ? location.pathname : `#${view}`);
+  history.replaceState(null, '', view === 'brief' ? location.pathname : `#${view}`);
   savePosition();
 }));
 projectButtons.forEach((button, i) => button.addEventListener('click', () => { showProject(i); savePosition(); }));
@@ -90,7 +91,7 @@ function drawErase(progress: number) {
 function savePosition(force = true) {
   if (!ready || !force && performance.now() - lastSaved < 200) return;
   lastSaved = performance.now();
-  try { sessionStorage.setItem(storageKey, JSON.stringify({ time: timeline?.time() ?? 18.3, view: selectedView, project: selectedProject })); } catch { /* Storage can be unavailable in private browsing. */ }
+  try { sessionStorage.setItem(storageKey, JSON.stringify({ time: timeline?.time() ?? 18.3, view: selectedView, project: selectedProject, brief: getBriefState() })); } catch { /* Storage can be unavailable in private browsing. */ }
 }
 
 function updateScene() {
@@ -178,15 +179,15 @@ function buildTimeline() {
 }
 
 function goToEnd(animate = false) {
-  if (!timeline || reduce.matches) { updateScene(); showView('work', true); return; }
+  if (!timeline || reduce.matches) { updateScene(); showView('brief', true); return; }
   fastPlayback?.kill();
   if (animate) {
     playbackMode = 'fast-forward';
-    fastPlayback = timeline.tweenTo(timeline.duration(), { duration: Math.max(.45, (1 - timeline.progress()) * 1.8), ease: 'none', onComplete: () => { fastPlayback = undefined; updateScene(); showView('work', true); savePosition(); } });
+    fastPlayback = timeline.tweenTo(timeline.duration(), { duration: Math.max(.45, (1 - timeline.progress()) * 1.8), ease: 'none', onComplete: () => { fastPlayback = undefined; updateScene(); showView('brief', true); savePosition(); } });
   } else {
     timeline.pause(timeline.duration(), false);
     updateScene();
-    showView('work', true);
+    showView('brief', true);
   }
 }
 
@@ -212,15 +213,16 @@ const pageLoaded = new Promise<void>(resolve => {
 });
 void Promise.all([document.fonts.ready, pageLoaded]).then(() => {
   buildTimeline();
-  const hashViews = new Map([['#contact', 'contact'], ['#studio', 'studio'], ['#about', 'studio'], ['#services', 'studio'], ['#work', 'work']]);
+  const hashViews = new Map([['#contact', 'contact'], ['#studio', 'studio'], ['#about', 'studio'], ['#services', 'brief'], ['#work', 'work'], ['#brief', 'brief']]);
   const hashView = hashViews.get(location.hash);
-  let saved: { time?: number; view?: string; project?: number } | undefined;
+  let saved: { time?: number; view?: string; project?: number; brief?: BriefState } | undefined;
   try { saved = JSON.parse(sessionStorage.getItem(storageKey) ?? 'null'); } catch { /* Start at the beginning if storage is unavailable. */ }
   const navigation = performance.getEntriesByType('navigation')[0];
   const restore = navigation instanceof PerformanceNavigationTiming && (navigation.type === 'reload' || navigation.type === 'back_forward');
   if (restore && saved) {
     if (saved.view) showView(saved.view);
     if (Number.isInteger(saved.project) && saved.project! >= 0 && saved.project! < projects.length) showProject(saved.project!);
+    if (saved.brief) restoreBrief(saved.brief);
     if (Number.isFinite(saved.time)) timeline?.seek(gsap.utils.clamp(0, timeline.duration(), saved.time ?? 0), false);
   } else if (hashView) { goToEnd(); showView(hashView); }
   ready = true;
@@ -252,5 +254,7 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide', () => savePosition());
 window.addEventListener('hashchange', () => {
   const view = location.hash.slice(1);
-  if (['work', 'studio', 'contact'].includes(view)) { goToEnd(); showView(view); }
+  if (['brief', 'work', 'studio', 'contact'].includes(view)) { goToEnd(); showView(view); }
 });
+
+initializeBrief(() => savePosition());

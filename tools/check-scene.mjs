@@ -124,7 +124,7 @@ try {
   assert.equal(await page.locator('.real-site').evaluate(element => element.inert), false);
   await page.screenshot({ path: '/tmp/opencode/scene-final-desktop.png' });
 
-  await click(page.locator('.real-footer [data-replay]'));
+  await click(page.locator('.studio-footer [data-replay]'));
   assert.equal(await page.locator('.scene').getAttribute('data-playback'), 'rewinding');
   const reverseTime = await time(); await page.waitForTimeout(300);
   assert.ok(await time() < reverseTime, 'Replay should rewind visibly');
@@ -132,10 +132,32 @@ try {
   await click(page.locator('.story-controls [data-skip]'));
   assert.equal(await page.locator('.scene').getAttribute('data-playback'), 'fast-forward');
   await phase('complete');
+  assert.ok(await page.locator('[data-panel="brief"]').isVisible(), 'The reveal should lead with the visitor’s project');
+  await click(page.getByRole('radio', { name: 'Take bookings', exact: true }));
+  await page.getByLabel('Email confirmations', { exact: true }).check();
+  await page.getByLabel('Online payments', { exact: true }).first().check();
+  await click(page.getByRole('button', { name: 'Continue with this', exact: true }));
+  assert.equal(await page.locator('[data-brief-summary]').textContent(), 'Take bookings');
+  assert.equal(await page.locator('[data-goal-field]').inputValue(), 'Take bookings');
+  assert.ok((await page.locator('[data-features-field]').inputValue()).includes('Email confirmations'));
+  await page.locator('#contact-message').fill('Keep this draft while I edit the brief.');
+  await click(page.getByRole('button', { name: 'Edit brief', exact: true }));
+  await page.getByRole('radio', { name: 'Take bookings', exact: true }).focus();
+  await page.keyboard.press('ArrowRight');
+  assert.equal(await page.getByRole('radio', { name: 'Sell online', exact: true }).getAttribute('aria-checked'), 'true');
+  await click(page.getByRole('radio', { name: 'Build an application', exact: true }));
+  await page.getByLabel('User accounts', { exact: true }).check();
+  await click(page.getByRole('button', { name: 'Continue with this', exact: true }));
+  assert.equal(await page.locator('#contact-service').inputValue(), 'Web application');
+  assert.equal(await page.locator('#contact-message').inputValue(), 'Keep this draft while I edit the brief.');
+  await page.reload(); await ready(); await phase('complete');
+  assert.equal(await page.locator('[data-brief-summary]').textContent(), 'Build an application');
+  assert.equal(await page.locator('[data-features-field]').inputValue(), 'User accounts');
+  await click(page.locator('.studio-header [data-view="work"]'));
   for (let i = 0; i < 4; i++) { await click(page.locator(`[data-select-project="${i}"]`)); assert.ok(await page.locator(`[data-project="${i}"]`).isVisible()); }
   await click(page.getByRole('button', { name: 'Studio', exact: true }));
   assert.ok(await page.getByText('Ryan Latimer').isVisible());
-  await click(page.getByRole('button', { name: 'Start a project', exact: true }));
+  await click(page.getByRole('button', { name: 'Contact', exact: true }));
   await page.locator('#contact-name').fill('Browser verification');
   await page.locator('#contact-email').fill('test@example.com');
   await page.locator('#contact-message').fill('Verifying the contact form without sending a real inquiry.');
@@ -144,22 +166,33 @@ try {
   await page.getByText('Your message couldn’t be sent.', { exact: false }).waitFor();
   assert.ok((await page.locator('#contact-message').inputValue()).length > 0);
   await page.unroute('https://formspree.io/**');
-  await page.route('https://formspree.io/**', route => route.fulfill({ status: 200, body: '{}' }));
+  let submission = '';
+  await page.route('https://formspree.io/**', route => { submission = route.request().postData() ?? ''; return route.fulfill({ status: 200, body: '{}' }); });
   await page.getByRole('button', { name: 'Send message' }).click();
   await page.getByText('Message sent. We’ll reply by email.').waitFor();
+  assert.ok(submission.includes('Build an application') && submission.includes('User accounts'), 'The selected goal and features must be submitted with the inquiry');
   await page.reload(); await ready(); await phase('complete');
   assert.ok(await page.locator('[data-panel="contact"]').isVisible(), 'Refresh should retain the active view');
+  await click(page.locator('.studio-header nav [data-view="brief"]'));
+  await click(page.getByRole('radio', { name: 'Improve an existing site', exact: true }));
+  await page.getByLabel('A visual redesign', { exact: true }).check();
+  assert.equal(await page.locator('#contact-service').inputValue(), 'Website redesign');
+  await click(page.getByRole('button', { name: 'Clear choices', exact: true }));
+  assert.equal(await page.getByRole('radio', { name: 'Introduce my business', exact: true }).getAttribute('aria-checked'), 'true');
+  assert.equal(await page.locator('[data-feature]:checked').count(), 0);
 
   // Seed a real saved reading pause in the new document, after pagehide saves the old one.
-  await page.addInitScript(() => sessionStorage.setItem('avexel-autoplay-v1', JSON.stringify({ time: 11, view: 'work', project: 0 })));
+  await page.addInitScript(() => sessionStorage.setItem('avexel-autoplay-v1', JSON.stringify({ time: 11, view: 'brief', project: 0 })));
   for (const [width, height] of [[320, 844], [375, 844], [390, 844], [768, 900], [1024, 900], [1440, 900], [1440, 700], [2000, 1213]]) {
     await page.setViewportSize({ width, height });
     await page.reload(); await ready(); await phase('annotations');
     await verifyCallouts();
     if (width === 390) await page.screenshot({ path: '/tmp/opencode/scene-annotations-mobile.png' });
     await click(page.locator('.story-controls [data-skip]')); await phase('complete');
-    const layout = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, footer: document.querySelector('.real-footer').getBoundingClientRect().top, selector: document.querySelector('.project-selector').getBoundingClientRect().bottom }));
-    assert.ok(layout.width <= width && layout.selector <= layout.footer + 1, `Layout should fit ${width}×${height}`);
+    const layout = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, footer: document.querySelector('.studio-footer').getBoundingClientRect().top, panel: document.querySelector('.brief-view').getBoundingClientRect().bottom, brokenImages: [...document.images].filter(image => image.complete && !image.naturalWidth).map(image => image.src) }));
+    assert.ok(layout.width <= width && layout.panel <= layout.footer + 1, `Layout should fit ${width}×${height}`);
+    assert.deepEqual(layout.brokenImages, []);
+    assert.equal(await page.locator('.studio-shell').innerText().then(text => /\b0[1-4]\b/.test(text)), false, 'The real site should not contain decorative numbered lists');
     if (width === 390) await page.screenshot({ path: '/tmp/opencode/scene-final-mobile.png' });
   }
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -168,5 +201,5 @@ try {
   await page.goto(`${base}/communications/`);
   assert.ok(await page.locator('.site-header').isVisible());
   assert.deepEqual(errors, []);
-  console.log('Passed: automatic timed sequence and reading pauses, scroll independence, refresh restoration, feathered reveal, fast skip/replay, callout layout and centered navigation at 320–2000px, project/view switching, contact success/error, reduced motion, and client guide.');
+  console.log('Passed: autoplay and reading pauses, refresh restoration, feathered reveal, fast skip/replay, callouts at 320–2000px, keyboard goal selection, feature choices, saved briefs, editing without losing drafts, brief metadata submission, clear choices, supporting views, contact success/error, reduced motion, and client guide.');
 } finally { await browser.close(); }
