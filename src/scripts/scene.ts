@@ -1,6 +1,5 @@
 import { gsap } from 'gsap';
 import { layoutAnnotations } from './annotations';
-import { getBriefState, initializeBrief, restoreBrief, type BriefState } from './brief';
 
 const story = document.querySelector<HTMLElement>('.scroll-story');
 const scene = document.querySelector<HTMLElement>('.scene');
@@ -21,11 +20,23 @@ let width = 0;
 let height = 0;
 let ready = false;
 let lastSaved = 0;
-let selectedView = 'brief';
+let selectedView = 'home';
 let selectedProject = 0;
+let selectedService = 'design';
 let pausedForVisibility = false;
 
 if (realSite) realSite.inert = true;
+
+// The CSS compatibility pass can retain only the WebKit-prefixed declaration.
+// Set the standard property too so current Chromium gets the same glass effect.
+const reducedTransparency = window.matchMedia('(prefers-reduced-transparency: reduce)');
+function updateGlass() {
+  realSite?.querySelectorAll<HTMLElement>('.glass-surface,.studio-header,.team-emblem,.studio-people,.work-image,.inquiry-form').forEach(element => {
+    element.style.backdropFilter = reducedTransparency.matches ? 'none' : 'blur(24px)';
+  });
+}
+updateGlass();
+reducedTransparency.addEventListener('change', updateGlass);
 
 function showView(view: string, focus = false) {
   if (!panels.some(panel => panel.dataset.panel === view)) return;
@@ -35,8 +46,9 @@ function showView(view: string, focus = false) {
   if (focus) {
     const panel = panels.find(item => item.dataset.panel === view);
     if (panel && !reduce.matches) gsap.fromTo(panel, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out', clearProps: 'transform,opacity' });
-    panel?.setAttribute('tabindex', '-1');
-    panel?.focus({ preventScroll: true });
+    const heading = panel?.querySelector<HTMLElement>('h2');
+    heading?.setAttribute('tabindex', '-1');
+    heading?.focus({ preventScroll: true });
   }
 }
 
@@ -49,12 +61,33 @@ function showProject(index: number) {
 }
 
 viewButtons.forEach(button => button.addEventListener('click', () => {
-  const view = button.dataset.view ?? 'work';
+  const view = button.dataset.view ?? 'home';
   showView(view, true);
-  history.replaceState(null, '', view === 'brief' ? location.pathname : `#${view}`);
+  history.replaceState(null, '', view === 'home' ? location.pathname : `#${view}`);
   savePosition();
 }));
 projectButtons.forEach((button, i) => button.addEventListener('click', () => { showProject(i); savePosition(); }));
+
+const serviceTabs = [...document.querySelectorAll<HTMLButtonElement>('[data-service-tab]')];
+function showService(id: string, animate = false) {
+  if (!serviceTabs.some(tab => tab.dataset.serviceTab === id)) return;
+  selectedService = id;
+  serviceTabs.forEach(tab => { const active = tab.dataset.serviceTab === id; tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
+  document.querySelectorAll<HTMLElement>('[data-service-panel]').forEach(panel => {
+    panel.hidden = panel.dataset.servicePanel !== id;
+    if (!panel.hidden && animate && !reduce.matches) gsap.fromTo(panel, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .25, clearProps: 'opacity,transform' });
+  });
+}
+serviceTabs.forEach((tab, index) => {
+  tab.addEventListener('click', () => { showService(tab.dataset.serviceTab ?? 'design', true); savePosition(); });
+  tab.addEventListener('keydown', event => {
+    const direction = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+    if (!direction && event.key !== 'Home' && event.key !== 'End') return;
+    event.preventDefault();
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? serviceTabs.length - 1 : (index + direction + serviceTabs.length) % serviceTabs.length;
+    showService(serviceTabs[next].dataset.serviceTab ?? 'design', true); serviceTabs[next].focus(); savePosition();
+  });
+});
 
 // Parallel diagonal passes erase the actual scene from its upper-left corner.
 function drawErase(progress: number) {
@@ -91,7 +124,7 @@ function drawErase(progress: number) {
 function savePosition(force = true) {
   if (!ready || !force && performance.now() - lastSaved < 200) return;
   lastSaved = performance.now();
-  try { sessionStorage.setItem(storageKey, JSON.stringify({ time: timeline?.time() ?? 18.3, view: selectedView, project: selectedProject, brief: getBriefState() })); } catch { /* Storage can be unavailable in private browsing. */ }
+  try { sessionStorage.setItem(storageKey, JSON.stringify({ time: timeline?.time() ?? 18.3, view: selectedView, project: selectedProject, service: selectedService })); } catch { /* Storage can be unavailable in private browsing. */ }
 }
 
 function updateScene() {
@@ -179,15 +212,15 @@ function buildTimeline() {
 }
 
 function goToEnd(animate = false) {
-  if (!timeline || reduce.matches) { updateScene(); showView('brief', true); return; }
+  if (!timeline || reduce.matches) { updateScene(); showView('home', true); return; }
   fastPlayback?.kill();
   if (animate) {
     playbackMode = 'fast-forward';
-    fastPlayback = timeline.tweenTo(timeline.duration(), { duration: Math.max(.45, (1 - timeline.progress()) * 1.8), ease: 'none', onComplete: () => { fastPlayback = undefined; updateScene(); showView('brief', true); savePosition(); } });
+    fastPlayback = timeline.tweenTo(timeline.duration(), { duration: Math.max(.45, (1 - timeline.progress()) * 1.8), ease: 'none', onComplete: () => { fastPlayback = undefined; updateScene(); showView('home', true); savePosition(); } });
   } else {
     timeline.pause(timeline.duration(), false);
     updateScene();
-    showView('brief', true);
+    showView('home', true);
   }
 }
 
@@ -213,16 +246,16 @@ const pageLoaded = new Promise<void>(resolve => {
 });
 void Promise.all([document.fonts.ready, pageLoaded]).then(() => {
   buildTimeline();
-  const hashViews = new Map([['#contact', 'contact'], ['#studio', 'studio'], ['#about', 'studio'], ['#services', 'brief'], ['#work', 'work'], ['#brief', 'brief']]);
+  const hashViews = new Map([['#contact', 'contact'], ['#studio', 'studio'], ['#about', 'studio'], ['#services', 'home'], ['#work', 'work'], ['#brief', 'home'], ['#home', 'home']]);
   const hashView = hashViews.get(location.hash);
-  let saved: { time?: number; view?: string; project?: number; brief?: BriefState } | undefined;
+  let saved: { time?: number; view?: string; project?: number; service?: string } | undefined;
   try { saved = JSON.parse(sessionStorage.getItem(storageKey) ?? 'null'); } catch { /* Start at the beginning if storage is unavailable. */ }
   const navigation = performance.getEntriesByType('navigation')[0];
   const restore = navigation instanceof PerformanceNavigationTiming && (navigation.type === 'reload' || navigation.type === 'back_forward');
   if (restore && saved) {
-    if (saved.view) showView(saved.view);
+    if (saved.view) showView(saved.view === 'brief' ? 'home' : saved.view);
     if (Number.isInteger(saved.project) && saved.project! >= 0 && saved.project! < projects.length) showProject(saved.project!);
-    if (saved.brief) restoreBrief(saved.brief);
+    if (saved.service) showService(saved.service);
     if (Number.isFinite(saved.time)) timeline?.seek(gsap.utils.clamp(0, timeline.duration(), saved.time ?? 0), false);
   } else if (hashView) { goToEnd(); showView(hashView); }
   ready = true;
@@ -254,7 +287,5 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide', () => savePosition());
 window.addEventListener('hashchange', () => {
   const view = location.hash.slice(1);
-  if (['brief', 'work', 'studio', 'contact'].includes(view)) { goToEnd(); showView(view); }
+  if (['home', 'work', 'studio', 'contact'].includes(view)) { goToEnd(); showView(view); }
 });
-
-initializeBrief(() => savePosition());

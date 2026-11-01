@@ -3,40 +3,22 @@ import Icon from './Icon.astro';
 interface Project { name: string; type: string; image: string; url: string; description: string; }
 interface Props { projects: Project[]; }
 const { projects } = Astro.props;
-const goals = [
-  { id: 'introduce', label: 'Introduce my business', first: 'Introduce', second: 'my business', service: 'New website', description: 'Explain what you do, who it’s for, and how to get in touch.', features: ['An enquiry form', 'Project or product photos', 'A map & opening hours'] },
-  { id: 'book', label: 'Take bookings', first: 'Take', second: 'bookings', service: 'New website', description: 'Let people find a time, book your service, and get a confirmation.', features: ['An availability calendar', 'Email confirmations', 'Online payments'] },
-  { id: 'sell', label: 'Sell online', first: 'Sell my', second: 'products', service: 'New website', description: 'Give your products a home, with a clear path from browsing to checkout.', features: ['A product catalogue', 'Online payments', 'Stock management'] },
-  { id: 'app', label: 'Build an application', first: 'Build my', second: 'application', service: 'Web application', description: 'Build a tool around the way your business or organisation actually works.', features: ['User accounts', 'External data & integrations', 'Admin tools'] },
-  { id: 'improve', label: 'Improve an existing site', first: 'Improve my', second: 'website', service: 'Website redesign', description: 'Keep what works. Revisit the design, navigation, or features that don’t.', features: ['A visual redesign', 'A better mobile layout', 'Clearer navigation'] },
+const services = [
+  { id: 'design', label: 'Design', title: 'Website design', description: 'Page structure, navigation, and visual design based on your content and audience.', detail: 'We share the designs with you before development begins.' },
+  { id: 'development', label: 'Development', title: 'Web development', description: 'Custom websites and applications, including forms, booking systems, online stores, and integrations.', detail: 'Built for phones, tablets, and desktops. You own the finished code.' },
+  { id: 'maintenance', label: 'Maintenance', title: 'After launch', description: 'Content updates, bug fixes, and new features for your existing website.', detail: 'We agree on the work and cost before making changes.' },
 ];
 ---
 
 <div class="real-site studio-shell">
   <header class="studio-header">
-    <button type="button" class="studio-wordmark" data-view="brief" aria-label="Avexel home"><span class="brand-joint" aria-hidden="true"></span>AVEXEL</button>
-    <p class="studio-location">Web design & development<br />Harbor Springs, Michigan</p>
-    <nav aria-label="Main navigation"><button type="button" data-view="brief" aria-pressed="true">Your project</button><button type="button" data-view="studio" aria-pressed="false">Studio</button><button type="button" data-view="work" aria-pressed="false">Work</button><button type="button" data-view="contact" aria-pressed="false">Contact <Icon name="arrowUpRight" /></button></nav>
+    <button type="button" class="studio-wordmark" data-view="home" aria-label="Avexel home"><img src="/Logo-nobg-sm-140.webp" width="35" height="35" alt="" />AVEXEL</button>
+    <nav aria-label="Main navigation"><button type="button" data-view="home" aria-pressed="true">Home</button><button type="button" data-view="studio" aria-pressed="false">Studio</button><button type="button" data-view="work" aria-pressed="false">Work</button><button type="button" data-view="contact" aria-pressed="false">Contact <Icon name="arrowUpRight" /></button></nav>
   </header>
 
-  <section class="canvas-view brief-view" data-panel="brief" aria-labelledby="brief-title">
-    <div class="brief-question">
-      <h2 id="brief-title">What should your website do?</h2>
-      <p>Choose a goal, then add any features you need.</p>
-      <div class="goal-choices" role="radiogroup" aria-label="What your website should do">
-        {goals.map((goal, index) => <button type="button" role="radio" aria-checked={index === 0} tabindex={index === 0 ? 0 : -1} data-goal={goal.id} data-service={goal.service}><span>{goal.label}</span><Icon name="arrowRight" /></button>)}
-      </div>
-      <div class="brief-about"><span class="about-rule" aria-hidden="true"></span><p>Custom websites and applications.<br />Built by the people you talk to.</p><button type="button" data-view="studio">Meet the team <Icon name="arrowUpRight" /></button></div>
-    </div>
-    <div class="brief-sheet">
-      <div class="sheet-heading"><span>Your starting point</span><button type="button" data-clear-brief>Clear choices <Icon name="plus" /></button></div>
-      {goals.map((goal, index) => <article class="goal-output" data-goal-panel={goal.id} data-goal-label={goal.label} hidden={index !== 0}>
-        <h3><span>{goal.first}</span><span>{goal.second}</span></h3>
-        <p class="goal-explanation">{goal.description}</p>
-        <fieldset class="feature-choices"><legend>Anything to include?</legend>{goal.features.map(feature => <label><input type="checkbox" data-feature value={feature} /><span>{feature}</span></label>)}</fieldset>
-      </article>)}
-      <button type="button" class="brief-continue" data-view="contact"><span>Continue with this</span><Icon name="arrowUpRight" /></button>
-    </div>
+  <section class="canvas-view home-panel" data-panel="home" aria-labelledby="home-title">
+    <div class="home-copy"><h2 id="home-title">Web design &<br /><span>development</span></h2><p>Custom websites and applications from a student-led team in Harbor Springs, Michigan.</p><div class="home-actions"><button type="button" class="purple-button" data-view="contact">Contact <Icon name="arrowUpRight" /></button><button type="button" class="quiet-button" data-view="work">Work <Icon name="arrowRight" /></button></div></div>
+    <div class="service-stage"><img class="service-brand" src="/Logo-nobg-sm.png" width="500" height="500" alt="" /><div class="service-window glass-surface"><div class="service-tabs" role="tablist" aria-label="Services">{services.map((service, index) => <button type="button" role="tab" id={`service-tab-${service.id}`} aria-controls={`service-${service.id}`} aria-selected={index === 0} tabindex={index === 0 ? 0 : -1} data-service-tab={service.id}>{service.label}</button>)}</div>{services.map((service, index) => <article role="tabpanel" id={`service-${service.id}`} aria-labelledby={`service-tab-${service.id}`} data-service-panel={service.id} hidden={index !== 0}><h3>{service.title}</h3><p>{service.description}</p><p class="service-detail">{service.detail}</p></article>)}</div></div>
   </section>
 
   <section class="canvas-view studio-panel" data-panel="studio" hidden aria-labelledby="studio-title">
@@ -50,12 +32,11 @@ const goals = [
   </section>
 
   <section class="canvas-view inquiry-panel" data-panel="contact" hidden aria-labelledby="contact-title">
-    <div class="inquiry-heading"><h2 id="contact-title">Tell us what<br />you’re planning.</h2><div class="chosen-brief"><div><span>Your starting point</span><button type="button" data-view="brief">Edit brief <Icon name="arrowUpRight" /></button></div><h3 data-brief-summary>Introduce my business</h3><p data-feature-summary>No extra features selected.</p></div><p>We’ll talk through the scope, timeline, and cost with you. No need to have everything figured out.</p><a href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a><a href="tel:+12313738360">(231) 373-8360</a></div>
+    <div class="inquiry-heading"><h2 id="contact-title">Tell us what<br /><span>you’re planning.</span></h2><p>Describe what you need and your timeline. If you have an existing site, include the URL.</p><a href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a><a href="tel:+12313738360">(231) 373-8360</a></div>
     <form class="inquiry-form" action="https://formspree.io/f/xvgkwonw" method="POST" data-contact-form>
       <div class="inquiry-pair"><div class="field"><label for="contact-name">Your name</label><input id="contact-name" name="name" autocomplete="name" required maxlength="120" /></div><div class="field"><label for="contact-email">Email address</label><input id="contact-email" name="email" type="email" autocomplete="email" required /></div></div>
       <div class="field"><label for="contact-service">What can we help with?</label><select id="contact-service" name="service"><option>New website</option><option>Web application</option><option>Website redesign</option><option>Maintenance & updates</option><option>Something else</option></select></div>
       <div class="field"><label for="contact-message">A little about your project</label><textarea id="contact-message" name="message" rows="4" required maxlength="10000"></textarea></div>
-      <input type="hidden" name="website_goal" data-goal-field value="Introduce my business" /><input type="hidden" name="requested_features" data-features-field value="" />
       <div class="honeypot" aria-hidden="true"><label for="website-field">Leave this empty</label><input id="website-field" name="_gotcha" tabindex="-1" autocomplete="off" /></div><input type="hidden" name="_subject" value="New project inquiry from Avexel" />
       <button type="submit" class="inquiry-submit">Send message <Icon name="arrowUpRight" /></button><p class="form-status" role="status" aria-live="polite" tabindex="-1"></p>
     </form>

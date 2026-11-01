@@ -1,8 +1,8 @@
 /* Scene layers: demo 0, intervention 1, critique 2, erase 3, real site 5, controls 6. */
-html.immersive-page { scroll-padding-top: 0; scroll-behavior: auto; color-scheme: light; overflow-anchor: none; scrollbar-width: none; }
+html.immersive-page { scroll-padding-top: 0; scroll-behavior: auto; color-scheme: dark; overflow-anchor: none; scrollbar-width: none; }
 .immersive-page::-webkit-scrollbar,.immersive-page *::-webkit-scrollbar { display: none; width: 0; height: 0; }
 .immersive-page * { scrollbar-width: none; }
-body.immersive { background: #fff; color: #171719; }
+body.immersive { background: #000; color: #f2eef6; }
 .immersive main { padding: 0; }
 .immersive .no-js-nav { display: none; }
 .scroll-story { height: 100svh; }
