@@ -23,6 +23,7 @@ export function layoutAnnotations(scene: HTMLElement) {
   const origin = scene.getBoundingClientRect();
   const bounds = { left: origin.left + 14, top: origin.top + 14, right: origin.right - 14, bottom: origin.bottom - 14 };
   const footer = scene.querySelector<HTMLElement>('.demo-bottom')?.getBoundingClientRect();
+  const header = scene.querySelector<HTMLElement>('.demo-nav')?.getBoundingClientRect();
   const protectedElements = [...scene.querySelectorAll<HTMLElement>('.demo-brand,.demo-nav > div span,.demo-nav > .demo-cta,.demo-eyebrow,.demo-copy h1,.demo-description,.demo-copy > .demo-cta,.demo-art figcaption,.art-caption,.art-plus,.demo-bottom > span,.story-controls')];
   const content = protectedElements.flatMap(element => {
     element.dataset.annotationObstacle = '';
@@ -48,13 +49,14 @@ export function layoutAnnotations(scene: HTMLElement) {
     const width = Math.min(preferred.width, bounds.right - bounds.left);
     const height = preferred.height;
     const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+    const centerY = note.dataset.note === 'brand' ? rect.bottom - 9 : rect.top + rect.height / 2;
+    const gap = note.dataset.note === 'label' || note.dataset.note === 'art' ? 10 : 14;
     const candidates = [
       boxAt(preferred.left, preferred.top, width, height),
-      boxAt(centerX - width / 2, rect.top - height - 14, width, height),
-      boxAt(centerX - width / 2, rect.bottom + 14, width, height),
-      boxAt(rect.right + 14, centerY - height / 2, width, height),
-      boxAt(rect.left - width - 14, centerY - height / 2, width, height),
+      boxAt(centerX - width / 2, rect.top - height - gap, width, height),
+      boxAt(centerX - width / 2, rect.bottom + gap, width, height),
+      boxAt(rect.right + gap, centerY - height / 2, width, height),
+      boxAt(rect.left - width - gap, centerY - height / 2, width, height),
     ];
     if (note.dataset.note === 'bottom' && footer) {
       candidates.unshift(boxAt(rect.right + 14, footer.top + 12, width, height), boxAt(rect.left, footer.top + 12, width, height));
@@ -71,10 +73,13 @@ export function layoutAnnotations(scene: HTMLElement) {
         : rawCandidate;
       if (candidate.left < bounds.left || candidate.right > bounds.right || candidate.top < bounds.top || candidate.bottom > bounds.bottom) continue;
       if (note.dataset.note === 'bottom' && footer && candidate.top < footer.top + 10) continue;
+      if (note.dataset.note === 'nav' && header && candidate.top < header.bottom + 12) continue;
       const collisions = [...content, ...dividers].filter(box => overlaps(candidate, box, 10)).length + occupied.filter(box => overlaps(candidate, box, 14)).length * 5;
       const distance = Math.hypot(Math.max(rect.left - candidate.right, 0, candidate.left - rect.right), Math.max(rect.top - candidate.bottom, 0, candidate.top - rect.bottom));
       const displacement = Math.hypot(candidate.left - preferred.left, candidate.top - preferred.top);
-      const score = collisions * 1000000 + distance * 3 + displacement * .2;
+      const baselineAlignment = note.dataset.note === 'label' && (candidate.left >= rect.right || candidate.right <= rect.left)
+        ? Math.abs((candidate.top + candidate.bottom) / 2 - centerY) * 2 : 0;
+      const score = collisions * 1000000 + distance * 3 + displacement * .2 + baselineAlignment;
       if (score < bestScore) { best = candidate; bestScore = score; }
     }
     note.style.left = `${best.left - origin.left}px`;

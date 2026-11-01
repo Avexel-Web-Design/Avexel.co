@@ -1,15 +1,9 @@
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Observer } from 'gsap/Observer';
 import { layoutAnnotations } from './annotations';
-
-gsap.registerPlugin(ScrollTrigger, Observer);
-history.scrollRestoration = 'manual';
 
 const story = document.querySelector<HTMLElement>('.scroll-story');
 const scene = document.querySelector<HTMLElement>('.scene');
 const realSite = document.querySelector<HTMLElement>('.real-site');
-if (realSite) realSite.inert = true;
 const canvas = document.querySelector<HTMLCanvasElement>('.eraser-canvas');
 const chapter = document.querySelector<HTMLElement>('.story-chapter');
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -17,96 +11,20 @@ const panels = [...document.querySelectorAll<HTMLElement>('[data-panel]')];
 const viewButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-view]')];
 const projectButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-select-project]')];
 const projects = [...document.querySelectorAll<HTMLElement>('[data-project]')];
+const storageKey = 'avexel-autoplay-v1';
+const eraseState = { progress: 0 };
 let timeline: gsap.core.Timeline | undefined;
+let fastPlayback: gsap.core.Tween | undefined;
+let playbackMode = 'playing';
 let width = 0;
 let height = 0;
-let restored = false;
-let isRevealed = false;
-const eraseState = { progress: 0 };
-const storageKey = 'avexel-scene-v1';
+let ready = false;
+let lastSaved = 0;
 let selectedView = 'work';
 let selectedProject = 0;
-// Every resting point is after a complete animation and before the next one.
-const sceneStops = [
-  { time: 0, duration: 0 },
-  { time: 1.45, duration: .9 },
-  { time: 2.5, duration: .85 },
-  { time: 4.1, duration: 1.15 },
-  { time: 6.25, duration: 1.5 },
-  { time: 10.95, duration: 3.3 },
-];
-let activeStep = 0;
-let stepTween: gsap.core.Tween | undefined;
-let lastGestureTime = -Infinity;
+let pausedForVisibility = false;
 
-function stepProgress(index: number) {
-  return sceneStops[index].time / (timeline?.duration() ?? 10.95);
-}
-
-function nearestStep(progress: number) {
-  return sceneStops.reduce((best, _stop, index) => Math.abs(stepProgress(index) - progress) < Math.abs(stepProgress(best) - progress) ? index : best, 0);
-}
-
-function stopStep() {
-  stepTween?.kill();
-  stepTween = undefined;
-  if (scene) scene.dataset.animating = 'false';
-}
-
-function settleStep(index: number) {
-  activeStep = index;
-  if (story && scene && !reduce.matches) window.scrollTo(0, stepProgress(index) * (story.offsetHeight - scene.clientHeight));
-  ScrollTrigger.update();
-  if (scene) { scene.dataset.step = String(index); scene.dataset.animating = 'false'; }
-  savePosition();
-}
-
-function playToStep(next: number, duration: number, onComplete?: () => void) {
-  if (!story || !scene) return;
-  stopStep();
-  activeStep = next;
-  scene.dataset.animating = 'true';
-  const position = { y: window.scrollY };
-  stepTween = gsap.to(position, {
-    y: stepProgress(next) * (story.offsetHeight - scene.clientHeight),
-    duration, ease: 'none',
-    onUpdate: () => { window.scrollTo(0, position.y); ScrollTrigger.update(); },
-    onComplete: () => { stepTween = undefined; settleStep(next); onComplete?.(); },
-  });
-  // A refresh during playback restores the destination, never an unfinished frame.
-  savePosition();
-}
-
-function advanceStep(direction: number) {
-  if (!story || !scene || reduce.matches || !restored || stepTween?.isActive()) return;
-  const currentStep = nearestStep(timeline?.scrollTrigger?.progress ?? 0);
-  const next = gsap.utils.clamp(0, sceneStops.length - 1, currentStep + Math.sign(direction));
-  if (next !== currentStep) playToStep(next, sceneStops[Math.max(currentStep, next)].duration);
-}
-
-if (scene) Observer.create({
-  target: scene, type: 'wheel,touch', preventDefault: true, allowClicks: true,
-  ignoreCheck: event => reduce.matches || Boolean(event && 'ctrlKey' in event && event.ctrlKey) || Boolean(event?.target instanceof Element && event.target.closest('.studio-view, .contact-view, input, textarea, select')),
-  tolerance: 12,
-  onChangeY: self => {
-    const now = performance.now();
-    const freshGesture = now - lastGestureTime > 220;
-    lastGestureTime = now;
-    if (freshGesture) advanceStep(self.event.type.startsWith('touch') ? -self.deltaY : self.deltaY);
-  },
-});
-
-document.addEventListener('keydown', event => {
-  if (reduce.matches || event.ctrlKey || event.metaKey || event.altKey || event.target instanceof HTMLElement && (event.target.closest('input,textarea,select,[contenteditable="true"],.studio-view,.contact-view') || event.key === ' ' && event.target.closest('button'))) return;
-  const delta = new Map([['ArrowDown', 1], ['ArrowUp', -1], ['PageDown', 1], ['PageUp', -1], [' ', event.shiftKey ? -1 : 1], ['Home', -1], ['End', 1]]).get(event.key);
-  if (delta === undefined) return;
-  event.preventDefault();
-  if (!event.repeat) advanceStep(delta);
-});
-
-function positionAnnotations() {
-  if (scene) layoutAnnotations(scene);
-}
+if (realSite) realSite.inert = true;
 
 function showView(view: string, focus = false) {
   if (!panels.some(panel => panel.dataset.panel === view)) return;
@@ -126,7 +44,7 @@ function showProject(index: number) {
   projects.forEach((project, i) => { project.hidden = i !== index; });
   projectButtons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
   const project = projects[index];
-  if (restored && project && !reduce.matches) gsap.fromTo(project, { opacity: .3, y: 8 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out', clearProps: 'transform,opacity' });
+  if (ready && project && !reduce.matches) gsap.fromTo(project, { opacity: .3, y: 8 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out', clearProps: 'transform,opacity' });
 }
 
 viewButtons.forEach(button => button.addEventListener('click', () => {
@@ -137,38 +55,28 @@ viewButtons.forEach(button => button.addEventListener('click', () => {
 }));
 projectButtons.forEach((button, i) => button.addEventListener('click', () => { showProject(i); savePosition(); }));
 
-// The canvas draws the swept area of a zig-zag eraser, not a crossfade.
-// Parallel diagonal passes cover the screen, starting at the upper-left corner.
-function erasePoints() {
-  const points: { x: number; y: number }[] = [];
-  const reach = Math.max(width, height) * 1.6;
-  const band = Math.max(90, Math.min(width, height) * .19);
-  for (let sum = -band; sum <= width + height + band * 2; sum += band * .72) {
-    const a = { x: Math.max(-band, sum - height - band), y: Math.min(height + band, sum + band) };
-    const b = { x: Math.min(width + band, sum + band), y: Math.max(-band, sum - width - band) };
-    if (Math.abs(a.x - b.x) > reach * 2) continue;
-    if (points.length % 4 === 0) points.push(a, b);
-    else points.push(b, a);
-  }
-  return { points, band };
-}
-
+// Parallel diagonal passes erase the actual scene from its upper-left corner.
 function drawErase(progress: number) {
   const context = canvas?.getContext('2d');
   if (!context || !width || !height) return;
   context.clearRect(0, 0, width, height);
   if (progress <= 0) return;
   if (progress >= 1) { context.fillStyle = '#fff'; context.fillRect(0, 0, width, height); return; }
-  const { points, band } = erasePoints();
+  const points: { x: number; y: number }[] = [];
+  const band = Math.max(90, Math.min(width, height) * .19);
+  for (let sum = -band; sum <= width + height + band * 2; sum += band * .72) {
+    const a = { x: Math.max(-band, sum - height - band), y: Math.min(height + band, sum + band) };
+    const b = { x: Math.min(width + band, sum + band), y: Math.max(-band, sum - width - band) };
+    if (points.length % 4 === 0) points.push(a, b);
+    else points.push(b, a);
+  }
   const lengths = points.slice(1).map((point, i) => Math.hypot(point.x - points[i].x, point.y - points[i].y));
   let remaining = lengths.reduce((sum, length) => sum + length, 0) * progress;
   context.beginPath();
   context.moveTo(points[0].x, points[0].y);
-  let tip = points[0];
   for (let i = 0; i < lengths.length; i++) {
     const ratio = Math.min(1, remaining / lengths[i]);
-    tip = { x: points[i].x + (points[i + 1].x - points[i].x) * ratio, y: points[i].y + (points[i + 1].y - points[i].y) * ratio };
-    context.lineTo(tip.x, tip.y);
+    context.lineTo(points[i].x + (points[i + 1].x - points[i].x) * ratio, points[i].y + (points[i + 1].y - points[i].y) * ratio);
     remaining -= lengths[i];
     if (remaining <= 0) break;
   }
@@ -179,90 +87,38 @@ function drawErase(progress: number) {
   context.stroke();
 }
 
-function setRevealed(value: boolean) {
-  if (isRevealed === value && realSite?.inert === !value) return;
-  isRevealed = value;
-  if (realSite) realSite.inert = !value;
+function savePosition(force = true) {
+  if (!ready || !force && performance.now() - lastSaved < 200) return;
+  lastSaved = performance.now();
+  try { sessionStorage.setItem(storageKey, JSON.stringify({ time: timeline?.time() ?? 18.3, view: selectedView, project: selectedProject })); } catch { /* Storage can be unavailable in private browsing. */ }
+}
+
+function updateScene() {
+  if (!scene || !realSite) return;
+  const time = reduce.matches ? 18.3 : timeline?.time() ?? 0;
+  const complete = time >= 18.29;
+  const phase = complete ? 'complete' : time < 1.8 ? 'default' : time < 3.8 ? 'first-line' : time < 6 ? 'second-line' : time < 8.7 ? 'statement' : time < 14.5 ? 'annotations' : time < 16.85 ? 'erase' : 'reveal';
+  scene.dataset.phase = phase;
+  scene.dataset.playback = complete ? 'complete' : playbackMode;
+  scene.dataset.time = time.toFixed(3);
+  realSite.inert = !complete;
   const demo = document.querySelector<HTMLElement>('.demo-page');
-  if (demo) demo.inert = value;
+  const controls = document.querySelector<HTMLElement>('.story-controls');
+  if (demo) demo.inert = time >= 14.25;
+  if (controls) controls.inert = time >= 14.25;
+  if (chapter) chapter.textContent = time < 1.8 ? 'THE DEFAULT' : time < 8.7 ? 'THE REALIZATION' : time < 14.5 ? 'THE TEARDOWN' : time < 16.85 ? 'A CLEAN SLATE' : 'A POINT OF VIEW';
+  gsap.set('.story-track span', { scaleX: time / 18.3 });
+  savePosition(false);
 }
 
-function savePosition() {
-  if (!restored) return;
-  try { sessionStorage.setItem(storageKey, JSON.stringify({ progress: timeline?.scrollTrigger?.progress ?? 1, step: stepTween?.isActive() ? activeStep : nearestStep(timeline?.scrollTrigger?.progress ?? 1), view: selectedView, project: selectedProject, y: window.scrollY })); } catch { /* Storage can be unavailable in private browsing. */ }
-}
-
-function buildTimeline() {
-  if (!story || !scene || !realSite || !canvas) return;
-  const previousStep = stepTween?.isActive() ? activeStep : nearestStep(timeline?.scrollTrigger?.progress ?? 0);
-  stopStep();
-  timeline?.scrollTrigger?.kill();
-  timeline?.revert();
-  width = scene.clientWidth;
-  height = scene.clientHeight;
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = width * dpr;
-  canvas.height = height * dpr;
-  canvas.getContext('2d')?.scale(dpr, dpr);
-  positionAnnotations();
-  if (reduce.matches) {
-    gsap.set(realSite, { clipPath: 'none' });
-    setRevealed(true);
-    return;
-  }
-  eraseState.progress = 0;
-  drawErase(0);
-  gsap.set('.statement', { opacity: 0, y: height * .65 });
-  gsap.set('.annotations .annotation', { opacity: 0 });
-  gsap.set(realSite, { clipPath: 'inset(0 0 100% 0)' });
-  timeline = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: {
-    trigger: story, start: 'top top', end: 'bottom bottom', scrub: true,
-    onUpdate: trigger => {
-      setRevealed(trigger.progress >= .985);
-      const demo = document.querySelector<HTMLElement>('.demo-page');
-      const controls = document.querySelector<HTMLElement>('.story-controls');
-      if (demo) demo.inert = trigger.progress > .6;
-      if (controls) controls.inert = trigger.progress > .62;
-      if (chapter) chapter.textContent = trigger.progress < .12 ? 'THE DEFAULT' : trigger.progress < .46 ? 'THE REALIZATION' : trigger.progress < .65 ? 'THE TEARDOWN' : trigger.progress < .87 ? 'A CLEAN SLATE' : 'A POINT OF VIEW';
-      gsap.set('.story-track span', { scaleX: trigger.progress });
-      savePosition();
-    },
-  } });
-  timeline.to({}, { duration: .6 })
-    .to('.line-one', { opacity: 1, y: 0, duration: .8, ease: 'power2.out' }, .6)
-    .to('.demo-page', { opacity: .3, duration: .7 }, .6)
-    .to('.line-two', { opacity: 1, y: 0, duration: .8, ease: 'power2.out' }, 1.5)
-    .to('.discard-one,.discard-two', { opacity: 0, duration: .4 }, 2.7)
-    .to('.keep-work', { x: () => mergedPosition('.keep-work', 0), y: () => mergeY('.keep-work'), duration: .75, ease: 'power2.inOut' }, 3)
-    .to('.keep-is', { x: () => mergedPosition('.keep-is', 1), y: () => mergeY('.keep-is'), duration: .75, ease: 'power2.inOut' }, 3)
-    .to('.keep-not', { x: () => mergedPosition('.keep-not', 2), y: () => mergeY('.keep-not'), duration: .75, ease: 'power2.inOut' }, 3)
-    .to('.keep-slop', { x: () => mergedPosition('.keep-slop', 3), y: () => mergeY('.keep-slop'), duration: .75, ease: 'power2.inOut' }, 3)
-    .to('.intervention', { opacity: 0, y: -30, duration: .5 }, 4.5)
-    .to('.demo-page', { opacity: 1, duration: .5 }, 4.5)
-    .to(eraseState, { progress: 1, duration: 2.4, onUpdate: () => drawErase(eraseState.progress) }, 6.8)
-    .to('.story-controls', { opacity: 0, duration: .2 }, 6.5)
-    .to(realSite, { clipPath: 'inset(0 0 0% 0)', duration: 1.25 }, 9.5)
-    .to({}, { duration: .2 });
-  document.querySelectorAll<HTMLElement>('[data-note]').forEach((note, index) => {
-    timeline?.to(note, { opacity: 1, duration: .25 }, 4.9 + index * .09);
-  });
-  // Refresh viewport measurements too, not only this trigger's cached bounds.
-  ScrollTrigger.refresh();
-  if (restored) settleStep(previousStep);
-}
-
-// Measure the original glyph positions to bring the actual words together.
-// Spaces are explicit so the final phrase reads “Our work isn’t AI slop.”
 function mergedPosition(selector: string, index: number) {
-  const selectors = ['.keep-work', '.keep-is', '.keep-not', '.keep-slop'];
-  const elements = selectors.map(item => document.querySelector<HTMLElement>(item)!);
+  const elements = ['.keep-work', '.keep-is', '.keep-not', '.keep-slop'].map(item => document.querySelector<HTMLElement>(item)!);
   const widths = elements.map(element => element.offsetWidth);
   const space = (parseFloat(getComputedStyle(elements[0]).fontSize) || 50) * .23;
   const total = widths.reduce((sum, item) => sum + item, 0) + space * 2;
   const before = widths.slice(0, index).reduce((sum, item) => sum + item, 0) + (index > 0 ? space : 0) + (index > 2 ? space : 0);
   const element = document.querySelector<HTMLElement>(selector)!;
-  const rect = element.getBoundingClientRect();
-  return (width - total) / 2 + before - rect.left + Number(gsap.getProperty(element, 'x'));
+  return (width - total) / 2 + before - element.getBoundingClientRect().left + Number(gsap.getProperty(element, 'x'));
 }
 
 function mergeY(selector: string) {
@@ -271,15 +127,65 @@ function mergeY(selector: string) {
   return height / 2 - (rect.top + rect.height / 2) + Number(gsap.getProperty(element, 'y'));
 }
 
+function buildTimeline() {
+  if (!scene || !realSite || !canvas) return;
+  const previousTime = timeline?.time() ?? 0;
+  const resume = !timeline || Boolean((!timeline.paused() || fastPlayback?.isActive()) && previousTime < timeline.duration());
+  fastPlayback?.kill();
+  fastPlayback = undefined;
+  timeline?.revert();
+  timeline = undefined;
+  width = scene.clientWidth;
+  height = scene.clientHeight;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+  canvas.getContext('2d')?.scale(dpr, dpr);
+  layoutAnnotations(scene);
+  if (reduce.matches) { gsap.set(realSite, { '--reveal-edge': `${height + 72}px` }); updateScene(); return; }
+  eraseState.progress = 0;
+  drawErase(0);
+  gsap.set('.statement', { opacity: 0, y: height * .65 });
+  gsap.set('.annotation', { opacity: 0 });
+  gsap.set(realSite, { '--reveal-edge': '0px' });
+  playbackMode = 'playing';
+  timeline = gsap.timeline({ paused: true, defaults: { ease: 'none' }, onUpdate: updateScene, onComplete: () => { updateScene(); savePosition(); } });
+  timeline
+    .addLabel('first-line', 1.8)
+    .to('.line-one', { opacity: 1, y: 0, duration: .85, ease: 'power2.out' }, 'first-line')
+    .to('.demo-page', { opacity: .3, duration: .7 }, 'first-line')
+    .addLabel('second-line', 3.8)
+    .to('.line-two', { opacity: 1, y: 0, duration: .85, ease: 'power2.out' }, 'second-line')
+    .addLabel('merge', 6)
+    .to('.discard-one,.discard-two', { opacity: 0, duration: .3 }, 'merge')
+    .to('.keep-work', { x: () => mergedPosition('.keep-work', 0), y: () => mergeY('.keep-work'), duration: .75, ease: 'power2.inOut' }, 6.3)
+    .to('.keep-is', { x: () => mergedPosition('.keep-is', 1), y: () => mergeY('.keep-is'), duration: .75, ease: 'power2.inOut' }, 6.3)
+    .to('.keep-not', { x: () => mergedPosition('.keep-not', 2), y: () => mergeY('.keep-not'), duration: .75, ease: 'power2.inOut' }, 6.3)
+    .to('.keep-slop', { x: () => mergedPosition('.keep-slop', 3), y: () => mergeY('.keep-slop'), duration: .75, ease: 'power2.inOut' }, 6.3)
+    .addLabel('annotations', 8.7)
+    .to('.intervention', { opacity: 0, y: -30, duration: .45 }, 'annotations')
+    .to('.demo-page', { opacity: 1, duration: .45 }, 'annotations')
+    .to('.annotation', { opacity: 1, duration: .25, stagger: .1 }, 9.1)
+    .to('.story-controls', { opacity: 0, duration: .2 }, 14.25)
+    .addLabel('erase', 14.5)
+    .to(eraseState, { progress: 1, duration: 2.2, onUpdate: () => drawErase(eraseState.progress) }, 'erase')
+    .addLabel('reveal', 16.85)
+    .to(realSite, { '--reveal-edge': `${height + 72}px`, duration: 1.3 }, 'reveal')
+    .to({}, { duration: .15 });
+  timeline.seek(Math.min(previousTime, timeline.duration()), false);
+  updateScene();
+  if (ready && resume && !document.hidden) timeline.play();
+}
+
 function goToEnd(animate = false) {
-  if (!story) return;
-  if (animate && !reduce.matches) {
-    const progress = timeline?.scrollTrigger?.progress ?? 0;
-    playToStep(sceneStops.length - 1, Math.max(.45, (1 - progress) * 1.8), () => showView('work', true));
+  if (!timeline || reduce.matches) { updateScene(); showView('work', true); return; }
+  fastPlayback?.kill();
+  if (animate) {
+    playbackMode = 'fast-forward';
+    fastPlayback = timeline.tweenTo(timeline.duration(), { duration: Math.max(.45, (1 - timeline.progress()) * 1.8), ease: 'none', onComplete: () => { fastPlayback = undefined; updateScene(); showView('work', true); savePosition(); } });
   } else {
-    stopStep();
-    settleStep(sceneStops.length - 1);
-    setRevealed(true);
+    timeline.pause(timeline.duration(), false);
+    updateScene();
     showView('work', true);
   }
 }
@@ -287,52 +193,63 @@ function goToEnd(animate = false) {
 document.querySelectorAll('[data-skip]').forEach(button => button.addEventListener('click', () => goToEnd(true)));
 document.querySelectorAll('[data-replay]').forEach(button => button.addEventListener('click', event => {
   event.preventDefault();
-  if (reduce.matches) return;
+  if (!timeline || reduce.matches) return;
+  fastPlayback?.kill();
   history.replaceState(null, '', location.pathname);
-  playToStep(0, Math.max(.45, (timeline?.scrollTrigger?.progress ?? 0) * 1.8), () => {
+  playbackMode = 'rewinding';
+  fastPlayback = timeline.tweenTo(0, { duration: Math.max(.45, timeline.progress() * 1.8), ease: 'none', onComplete: () => {
+    fastPlayback = undefined;
+    playbackMode = 'playing';
+    timeline?.play(0);
     document.querySelector<HTMLButtonElement>('[data-skip]')?.focus({ preventScroll: true });
-  });
+    savePosition();
+  } });
 }));
 
 const pageLoaded = new Promise<void>(resolve => {
   if (document.readyState === 'complete') resolve();
   else window.addEventListener('load', () => resolve(), { once: true });
 });
-
 void Promise.all([document.fonts.ready, pageLoaded]).then(() => {
   buildTimeline();
   const hashViews = new Map([['#contact', 'contact'], ['#studio', 'studio'], ['#about', 'studio'], ['#services', 'studio'], ['#work', 'work']]);
   const hashView = hashViews.get(location.hash);
-  let saved: { progress?: number; step?: number; view?: string; project?: number } | undefined;
-  try { saved = JSON.parse(sessionStorage.getItem(storageKey) ?? 'null'); } catch { /* Start at the beginning when storage is unavailable. */ }
+  let saved: { time?: number; view?: string; project?: number } | undefined;
+  try { saved = JSON.parse(sessionStorage.getItem(storageKey) ?? 'null'); } catch { /* Start at the beginning if storage is unavailable. */ }
   const navigation = performance.getEntriesByType('navigation')[0];
-  const shouldRestore = navigation instanceof PerformanceNavigationTiming && (navigation.type === 'reload' || navigation.type === 'back_forward');
-  if (shouldRestore && saved) {
+  const restore = navigation instanceof PerformanceNavigationTiming && (navigation.type === 'reload' || navigation.type === 'back_forward');
+  if (restore && saved) {
     if (saved.view) showView(saved.view);
     if (Number.isInteger(saved.project) && saved.project! >= 0 && saved.project! < projects.length) showProject(saved.project!);
+    if (Number.isFinite(saved.time)) timeline?.seek(gsap.utils.clamp(0, timeline.duration(), saved.time ?? 0), false);
   } else if (hashView) { goToEnd(); showView(hashView); }
-  requestAnimationFrame(() => {
-    // ScrollTrigger's load refresh completes before the persisted position is applied.
-    if (shouldRestore && saved) settleStep(Number.isInteger(saved.step) && saved.step! >= 0 && saved.step! < sceneStops.length ? saved.step! : nearestStep(saved.progress ?? 0));
-    else if (!hashView) settleStep(0);
-    ScrollTrigger.update();
-    restored = true;
-    if (story) story.dataset.ready = 'true';
-    savePosition();
-  });
+  ready = true;
+  if (story) story.dataset.ready = 'true';
+  updateScene();
+  if (timeline && timeline.time() < timeline.duration()) {
+    if (document.hidden) pausedForVisibility = true;
+    else timeline.play();
+  }
+  savePosition();
 });
 
 let resizeTimer: number;
 let previousWidth = window.innerWidth;
 window.addEventListener('resize', () => {
-  // Ignore mobile browser chrome height changes; svh keeps the scene stable.
   if (window.innerWidth === previousWidth && window.matchMedia('(max-width: 767px)').matches) return;
   previousWidth = window.innerWidth;
   clearTimeout(resizeTimer);
   resizeTimer = window.setTimeout(buildTimeline, 150);
 });
 reduce.addEventListener('change', buildTimeline);
-window.addEventListener('pagehide', savePosition);
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    pausedForVisibility = Boolean(fastPlayback?.isActive() || timeline?.isActive());
+    (fastPlayback ?? timeline)?.pause();
+    savePosition();
+  } else if (pausedForVisibility) { pausedForVisibility = false; (fastPlayback ?? timeline)?.resume(); }
+});
+window.addEventListener('pagehide', () => savePosition());
 window.addEventListener('hashchange', () => {
   const view = location.hash.slice(1);
   if (['work', 'studio', 'contact'].includes(view)) { goToEnd(); showView(view); }
