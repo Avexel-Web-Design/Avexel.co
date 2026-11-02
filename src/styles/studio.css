@@ -147,7 +147,9 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
 .work-tile[data-expanded=true] .work-description h3 { font-size: 25px; }
 .work-tile[data-expanded=true] .work-description p { display: block; font-size: 14px; line-height: 1.7; max-width: 60ch; margin-top: 10px; }
 .content-workspace:not([data-content-view=home]):not([data-content-view=work]) .work-description { display: none; }
-.content-workspace:not([data-content-view=work]) .work-image > span { display: none; }
+/* Keep the badge laid out in compact views so it can travel with the image
+   into Work; near-zero opacity keeps it unseen. */
+.content-workspace:not([data-content-view=work]) .work-image > span { opacity: .001; pointer-events: none; }
 .contact-tile[data-expanded=true] .contact-methods { display: flex; justify-content: space-between; align-items: baseline; margin: -5px 0 23px; gap: 14px; flex-wrap: wrap; }
 .contact-tile[data-expanded=true] .contact-methods a:first-child { font-size: 25px; letter-spacing: -.025em; }
 .contact-tile[data-expanded=true] .contact-methods a:last-child { display: block; font-size: 13px; color: #bdb0c7; }

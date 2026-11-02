@@ -60,6 +60,9 @@ function nameContent() {
   name('studio-copy', '.studio-tile [data-tile-detail]');
   name('project-controls', '.work-tile [data-tile-detail]');
   name('project-image', '[data-project]:not([hidden]) .work-image');
+  // Separate the badge from the image frame so the picture can resize without
+  // carrying a small label that only belongs to the open Work view.
+  name('project-visit', '[data-project]:not([hidden]) .work-image > span');
   name('project-title', '[data-project]:not([hidden]) .work-description h3');
   name('project-description', '[data-project]:not([hidden]) .work-description p');
   name('email', '.contact-methods a:first-child');
@@ -81,6 +84,7 @@ function cleanup() {
   active?.rounds.forEach(animation => animation.cancel());
   root.classList.remove('studio-motion');
   delete root.dataset.motionPhase;
+  delete root.dataset.motionProjectImage;
   workspace?.style.removeProperty('opacity');
   if (replay) replay.disabled = false;
   if (workspace) { workspace.dataset.transitioning = 'false'; workspace.removeAttribute('aria-busy'); }
@@ -134,9 +138,18 @@ export function morphContent(change: () => void, animate = true, complete?: () =
   const destinationRadii = new Map<string, string>();
   const motion: ActiveMotion = { rounds: [] };
   active = motion;
+  const fromView = workspace.dataset.contentView;
+  const fromImage = Boolean(workspace.querySelector<HTMLElement>('[data-project]:not([hidden]) .work-image')?.getBoundingClientRect().width);
   const transition = document.startViewTransition(async () => {
     if (token !== generation) return;
     change();
+    // The compact card and the open Work view frame the project image at
+    // different proportions. Tell the motion layer to hold the full frame
+    // through the whole move so the picture resizes instead of swapping.
+    const toView = workspace.dataset.contentView;
+    const toImage = Boolean(workspace.querySelector<HTMLElement>('[data-project]:not([hidden]) .work-image')?.getBoundingClientRect().width);
+    root.dataset.motionProjectImage = fromImage && toImage && fromView !== 'work' && toView === 'work' ? 'expanded'
+      : fromImage && toImage && fromView === 'work' && toView !== 'work' ? 'compact' : '';
     const images = [...workspace.querySelectorAll<HTMLImageElement>('img')].filter(image => image.getBoundingClientRect().width && !image.complete);
     await Promise.all(images.map(async image => {
       image.loading = 'eager';

@@ -117,6 +117,33 @@ try {
       await finish();
       assert.equal(await page.locator(`[data-service-tab="${service}"]`).getAttribute('aria-selected'), 'true');
     }
+    // A project shot keeps its full frame for the whole move, so opening and
+    // closing Work resizes one picture instead of cross-fading two crops.
+    for (const [from, to] of [['home', 'work'], ['work', 'home']]) {
+      await setup(from);
+      const preview = await page.locator('[data-project]:not([hidden]) .work-image').boundingBox();
+      const before = pngPixels(await page.screenshot({ scale: 'css', clip: preview }));
+      await navigate(to); await running(); await seek(0);
+      const held = await page.evaluate(() => {
+        const layer = name => getComputedStyle(document.documentElement, `::view-transition-${name}(avx-project-image)`);
+        return { old: layer('old').visibility, fresh: layer('new').visibility, fit: layer('new').objectFit };
+      });
+      const opening = from === 'home';
+      assert.equal(held.old, opening ? 'hidden' : 'visible', `${width}px ${from} → ${to}: hold one project image frame`);
+      assert.equal(held.fresh, opening ? 'visible' : 'hidden', `${width}px ${from} → ${to}: hold one project image frame`);
+      assert.equal(held.fit, 'cover');
+      const start = pngPixels(await page.screenshot({ scale: 'css', clip: preview }));
+      const difference = regionDifference(before, start, { x: 0, y: 0, ...preview });
+      assert.ok(difference < 6, `${width}px ${from} → ${to}: the project image must begin on its resting frame (${difference.toFixed(2)})`);
+      await seek(390);
+      const middle = await page.evaluate(() => {
+        const style = getComputedStyle(document.documentElement, '::view-transition-group(avx-project-image)');
+        return { width: parseFloat(style.width), height: parseFloat(style.height), overflow: style.overflow };
+      });
+      assert.equal(middle.overflow, 'clip');
+      assert.ok(opening ? middle.width > preview.width + 1 : middle.width < preview.width - 1, `${width}px ${from} → ${to}: the project image should resize with the card, not swap`);
+      await finish();
+    }
     await setup('home');
     await navigate('services'); await running(); await seek(260);
     await navigate('work'); await navigate('studio');

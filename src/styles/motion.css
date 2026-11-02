@@ -27,6 +27,15 @@
 :root.studio-motion::view-transition-image-pair(avx-project-image) { width: 100%; height: 100%; }
 :root.studio-motion::view-transition-old(avx-project-image),
 :root.studio-motion::view-transition-new(avx-project-image) { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+/* Opening or closing Work changes how the same shot is framed. Keep the full
+   frame visible for the whole move so the card resizes the picture instead of
+   cross-fading a compact crop into the open one near the end. */
+:root[data-motion-project-image=expanded]::view-transition-old(avx-project-image),
+:root[data-motion-project-image=compact]::view-transition-new(avx-project-image) { visibility: hidden; animation: none; }
+:root[data-motion-project-image=expanded]::view-transition-new(avx-project-image),
+:root[data-motion-project-image=compact]::view-transition-old(avx-project-image) { opacity: 1; animation: none; }
+:root.studio-motion::view-transition-old(avx-project-visit),
+:root.studio-motion::view-transition-old(avx-project-visit):only-child { animation-delay: var(--motion-fade-delay); }
 :root.studio-motion::view-transition-group(avx-services-glass),
 :root.studio-motion::view-transition-group(avx-studio-glass),
 :root.studio-motion::view-transition-group(avx-work-glass),
