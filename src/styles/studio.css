@@ -142,11 +142,9 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
 .plain-link .icon { width: 14px; height: 14px; }
 .studio-roots > p { font-size: 13px; line-height: 1.6; max-width: 58ch; }
 .studio-links { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 10px; }
-.work-choices { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; }
-.work-choices button { position: relative; min-width: 0; min-height: 44px; text-align: left; border: 0; border-radius: 0; background: none; padding: 0 0 10px; font-size: 12px; color: #beafcc; }
-.work-choices button > img { display: block; width: 100%; height: clamp(36px,7vh,72px); object-fit: cover; object-position: top; border: 1px solid var(--studio-line); border-radius: 6px; opacity: .55; transition: opacity .25s,border-color .25s; margin-bottom: 9px; }
+.work-choices { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 0 20px; border-top: 1px solid var(--studio-line); }
+.work-choices button { position: relative; min-width: 0; min-height: 48px; text-align: left; border: 0; border-radius: 0; background: none; padding: 12px 0; font-size: 13px; color: #beafcc; transition: color .25s,text-shadow .25s; }
 .work-choices button > span:not(.project-active-rule) { display: block; line-height: 1.3; }
-.work-choices button:is(:hover,[aria-pressed=true]) > img { opacity: 1; border-color: var(--studio-purple); }
 .project-active-rule { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--studio-purple); box-shadow: 0 0 10px #c58aff90; opacity: 0; }
 .work-choices button[aria-pressed=true] .project-active-rule { opacity: 1; }
 .work-tile[data-expanded=true] .tile-inner { display: grid; grid-template-columns: minmax(0,1fr); grid-template-rows: auto minmax(0,1fr) auto; gap: 0; }
@@ -238,7 +236,7 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
   .service-tabs { gap: 18px; }.service-tabs button { font-size: 12px; }.service-content h3 { font-size: 27px; }.service-content p { font-size: 14px; }.service-content .service-detail { font-size: 12px; }
   .tile-detail > p { font-size: 14px; }.studio-tile[data-expanded=true] .studio-introduction { font-size: 26px; }.studio-people > div { display: block; }.studio-people p { text-align: left; margin-top: 6px; }
   .team-link { font-size: 13px; gap: 12px; }.team-link img { width: 44px; height: 44px; }
-  .work-choices { gap: 9px; }.work-choices button { font-size: 11px; }.work-tile[data-expanded=true] .work-description h3 { font-size: 24px; }
+  .work-choices { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 16px; }.work-choices button { font-size: 12px; min-height: 44px; }.work-tile[data-expanded=true] .work-description h3 { font-size: 24px; }
   .contact-tile[data-expanded=true] .contact-methods a:first-child { font-size: 21px; }
   .inquiry-form input,.inquiry-form select,.inquiry-form textarea { font-size: 16px; }
   .studio-footer { height: 42px; font-size: 10px; }.studio-footer > span:first-child { display: none; }.studio-footer button { font-size: 10px; }
@@ -387,8 +385,6 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
   .work-tile[data-expanded=true] .work-description h3 { font-size: 22px; }
   .work-tile[data-expanded=true] .work-description p { font-size: 12px; line-height: 1.5; margin-top: 5px; }
   .work-tile[data-expanded=true] .tile-detail { margin-top: 16px; }
-  .work-choices button > img { height: 42px; margin-bottom: 7px; }
-  .work-choices button > span:not(.project-active-rule) { min-height: 29px; }
   .contact-tile[data-expanded=true] .contact-methods { margin-bottom: 12px; gap: 6px; }
   .contact-tile[data-expanded=true] .contact-methods a:first-child { font-size: 19px; }
   .contact-tile[data-expanded=true] .contact-methods a:last-child { font-size: 11px; }
@@ -443,7 +439,6 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
   .contact-tile[data-expanded=true] .contact-methods a:last-child { display: none; }
   .contact-tile[data-expanded=true] .contact-methods a:first-child { font-size: 18px; }
   .contact-instructions { font-size: 12px !important; }
-  .work-choices button > img { height: 34px; }
 }
 @media (max-height:620px) and (min-width:768px) {
   .studio-people > div { display: flex; }
@@ -487,5 +482,4 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
   .work-tile[data-expanded=true] .work-description h3 { font-size: 19px; }
   .work-tile[data-expanded=true] .work-description p { font-size: 11px; }
   .work-tile[data-expanded=true] .tile-detail { margin-top: 10px; }
-  .work-choices button > img { height: 28px; }
 }

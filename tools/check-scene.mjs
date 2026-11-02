@@ -199,7 +199,8 @@ try {
   await page.locator('[data-select-project="3"]').focus();
   await page.keyboard.press('Home');
   await page.waitForFunction(() => document.querySelector('.content-workspace').dataset.transitioning === 'false');
-  assert.equal(await page.locator('[data-select-project="0"]').getAttribute('aria-pressed'), 'true', 'Project thumbnails support keyboard navigation');
+  assert.equal(await page.locator('[data-select-project="0"]').getAttribute('aria-pressed'), 'true', 'The text project selector supports keyboard navigation');
+  assert.equal(await page.locator('.work-choices img').count(), 0, 'Project selection should be text-only');
   await click(control('studio'));
   assert.ok(await page.getByText('Ryan Latimer').isVisible());
   await click(control('contact'));
@@ -418,5 +419,5 @@ try {
     await hoverPage.close();
   }
   assert.deepEqual(errors, []);
-  console.log('Passed: viewport-fitted sections at 320–2000px, visible service terms, alumni studio copy, thumbnail projects, custom contact selector, full-aspect previews, native transitions, Replay, refresh restoration, contact success/error, reduced motion, and client guide.');
+  console.log('Passed: viewport-fitted sections at 320–2000px, visible service terms, alumni studio copy, text project selector, custom contact selector, full-aspect previews, native transitions, Replay, refresh restoration, contact success/error, reduced motion, and client guide.');
 } finally { await browser.close(); }
