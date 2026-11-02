@@ -56,8 +56,6 @@ function nameContent() {
   name('service-copy', '[data-service-panel]:not([hidden])');
   name('questions-border', '.service-questions');
   [1, 2, 3].forEach(index => name(`question-${index}`, `.service-questions details:nth-child(${index})`));
-  name('service-action', '.sheet-action');
-  name('team-mark', '.studio-preview > img');
   name('studio-introduction', '.studio-introduction');
   name('studio-copy', '.studio-tile [data-tile-detail]');
   name('project-controls', '.work-tile [data-tile-detail]');

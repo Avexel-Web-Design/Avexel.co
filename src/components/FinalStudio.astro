@@ -24,14 +24,13 @@ const services = [
         <div class="tile-detail" data-tile-detail hidden>
         {services.map((service, index) => <article class="service-content" role="tabpanel" id={`service-${service.id}`} aria-labelledby={`service-tab-${service.id}`} data-service-panel={service.id} hidden={index !== 0}><h3>{service.title}</h3><p>{service.description}</p><p class="service-detail">{service.detail}</p></article>)}
         <div class="service-questions"><details><summary>How does a project run?<Icon name="plus" /></summary><p>We discuss what you need and agree on a scope and quote. After you approve the design, we build, test, and launch the site with you.</p></details><details><summary>Who owns the website?<Icon name="plus" /></summary><p>You own the code and content. You can choose where to host it and who maintains it.</p></details><details><summary>What does it cost?<Icon name="plus" /></summary><p>We quote for the pages, features, and integrations you need. Hosting, domain registration, and third-party services are priced separately.</p></details></div>
-        <div class="sheet-action"><button type="button" class="purple-button" data-view="contact" data-service-contact>Contact <Icon name="arrowUpRight" /></button></div>
         </div></div>
     </section>
 
     <section class="content-tile studio-tile" data-panel="studio" data-layout-piece aria-labelledby="studio-title">
       <div class="tile-material glass-surface" aria-hidden="true"></div>
       <div class="tile-inner"><header class="tile-heading"><h2 id="studio-title"><button type="button" data-view="studio"><span class="tile-label">Studio</span><Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Studio and return home" disabled aria-hidden="true"><Icon name="plus" /></button></header>
-        <div class="studio-preview"><img src="/baywatchLogo.webp" width="72" height="72" alt="Baywatch Robotics" /><p class="studio-introduction">A student-led studio<br />in Harbor Springs.</p></div>
+        <div class="studio-preview"><p class="studio-introduction"><strong>Student-led.</strong><span>Built in Harbor Springs.</span></p></div>
         <div class="tile-detail" data-tile-detail hidden>
         <p>Avexel projects help fund Baywatch Robotics and hands-on STEM education. Clients work directly with the developers building their website.</p><p>We agree on the scope and cost before development begins. You own the finished code and content.</p>
         <div class="studio-people"><div><h3>Ryan Latimer</h3><p>Operations & development</p></div><div><h3>Gavin Moceri</h3><p>Technical direction & development</p></div><div><h3>Conner Breckenfeld</h3><p>Communications & creative</p></div></div>

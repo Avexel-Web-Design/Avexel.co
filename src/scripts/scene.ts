@@ -77,11 +77,6 @@ function warmProject(index: number) {
 
 viewButtons.forEach(button => button.addEventListener('click', () => {
   const view = button.dataset.view ?? 'home';
-  if (view === 'contact' && button.hasAttribute('data-service-contact')) {
-    const field = document.querySelector<HTMLSelectElement>('#contact-service');
-    const services = new Map([['design', 'New website'], ['development', 'Web application'], ['maintenance', 'Maintenance & updates']]);
-    if (field) field.value = services.get(selectedService) ?? 'New website';
-  }
   navigateView(view);
 }));
 projectButtons.forEach((button, i) => {

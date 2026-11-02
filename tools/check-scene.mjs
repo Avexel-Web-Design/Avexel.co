@@ -179,9 +179,11 @@ try {
   assert.equal(await page.evaluate(() => window.exposedUnreadyScene), false, 'No pre-restoration slop frame may be painted on reload');
   assert.ok(await page.locator('[data-service-panel="maintenance"]').isVisible(), 'Refresh should preserve the selected service');
   assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'services');
-  await click(page.locator('[data-service-contact]'));
-  assert.equal(await page.locator('#contact-service').inputValue(), 'Maintenance & updates', 'The service-specific contact action should carry its context into the form');
+  assert.equal(await page.locator('.services-tile [data-view="contact"]').count(), 0, 'Services should not contain a Contact button');
+  await click(control('contact'));
   await click(control('home'));
+  assert.equal(await page.locator('.work-description').first().isVisible(), false, 'Collapsed Work should show only the showcase, not a repeated project title');
+  assert.equal(await page.locator('.studio-preview img').count(), 0, 'The collapsed Studio composition should be typographic, not a small robotics logo beside body copy');
   await click(page.getByRole('tab', { name: 'Development', exact: true }));
   assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'services', 'Overview service labels should expand into the same live service tabs');
   assert.equal(await page.getByRole('tab', { name: 'Development', exact: true }).getAttribute('aria-selected'), 'true');
