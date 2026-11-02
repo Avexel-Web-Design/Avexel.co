@@ -45,11 +45,21 @@ function showView(view: string, focus = false) {
   const next = panels.find(panel => panel.dataset.panel === view)!;
   selectedView = view;
   arrangeContent(view, focus, () => {
-    if (!focus) return;
-    const heading = next.querySelector<HTMLElement>('h2');
-    heading?.setAttribute('tabindex', '-1');
-    heading?.focus({ preventScroll: true });
+    if (focus) {
+      const heading = next.querySelector<HTMLElement>('h2');
+      heading?.setAttribute('tabindex', '-1');
+      heading?.focus({ preventScroll: true });
+    }
+    if (view === 'work') projects.forEach((_, index) => warmProject(index));
+    savePosition();
   });
+}
+
+function navigateView(view: string) {
+  if (view === selectedView) return;
+  showView(view, true);
+  history.pushState({ view }, '', view === 'home' ? location.pathname : `#${view}`);
+  savePosition();
 }
 
 function showProject(index: number) {
@@ -61,6 +71,10 @@ function showProject(index: number) {
   }, ready, undefined, .36);
 }
 
+function warmProject(index: number) {
+  projects[index]?.querySelectorAll<HTMLImageElement>('img').forEach(image => { image.loading = 'eager'; });
+}
+
 viewButtons.forEach(button => button.addEventListener('click', () => {
   const view = button.dataset.view ?? 'home';
   if (view === 'contact' && button.hasAttribute('data-service-contact')) {
@@ -68,17 +82,17 @@ viewButtons.forEach(button => button.addEventListener('click', () => {
     const services = new Map([['design', 'New website'], ['development', 'Web application'], ['maintenance', 'Maintenance & updates']]);
     if (field) field.value = services.get(selectedService) ?? 'New website';
   }
-  showView(view, true);
-  history.replaceState(null, '', view === 'home' ? location.pathname : `#${view}`);
-  savePosition();
+  navigateView(view);
 }));
-projectButtons.forEach((button, i) => button.addEventListener('click', () => { showProject(i); savePosition(); }));
+projectButtons.forEach((button, i) => {
+  button.addEventListener('pointerenter', () => warmProject(i));
+  button.addEventListener('focus', () => warmProject(i));
+  button.addEventListener('click', () => { showProject(i); savePosition(); });
+});
 document.querySelectorAll<HTMLAnchorElement>('.work-image').forEach(link => link.addEventListener('click', event => {
   if (selectedView === 'work' || event.ctrlKey || event.metaKey) return;
   event.preventDefault();
-  showView('work', true);
-  history.replaceState(null, '', '#work');
-  savePosition();
+  navigateView('work');
 }));
 
 const serviceTabs = [...document.querySelectorAll<HTMLButtonElement>('[data-service-tab]')];
@@ -97,7 +111,7 @@ function showService(id: string, animate = false, focus = false) {
 serviceTabs.forEach((tab, index) => {
   tab.addEventListener('click', () => {
     showService(tab.dataset.serviceTab ?? 'design', true);
-    if (selectedView !== 'services') { showView('services', true); history.replaceState(null, '', '#services'); }
+    if (selectedView !== 'services') navigateView('services');
     savePosition();
   });
   tab.addEventListener('keydown', event => {
@@ -114,6 +128,18 @@ realSite?.querySelectorAll<HTMLDetailsElement>('.service-questions details').for
     event.preventDefault();
     morphContent(() => { details.open = !details.open; }, true, undefined, .36);
   });
+});
+
+realSite?.querySelectorAll<HTMLElement>('.content-tile').forEach(card => card.addEventListener('click', event => {
+  if (card.dataset.expanded === 'true' || event.button || event.ctrlKey || event.metaKey) return;
+  const target = event.target;
+  if (target instanceof Element && target.closest('button,a,input,select,textarea,summary')) return;
+  navigateView(card.dataset.panel ?? 'home');
+}));
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !event.defaultPrevented && scene?.dataset.phase === 'complete' && selectedView !== 'home') {
+    event.preventDefault(); navigateView('home');
+  }
 });
 
 // Parallel diagonal passes erase the actual scene from its upper-left corner.
@@ -326,7 +352,12 @@ document.addEventListener('visibilitychange', () => {
 });
 window.addEventListener('pagehide', () => savePosition());
 document.querySelectorAll<HTMLElement>('.content-workspace,.tile-inner').forEach(element => element.addEventListener('scroll', () => savePosition(false), { passive: true }));
-window.addEventListener('hashchange', () => {
-  const view = location.hash.slice(1);
-  if (['home', 'services', 'work', 'studio', 'contact'].includes(view)) { goToEnd(); showView(view); }
-});
+function restoreHistoryView() {
+  const hash = location.hash.slice(1);
+  const view = hash === 'about' ? 'studio' : hash === 'brief' ? 'home' : hash || 'home';
+  if (!['home', 'services', 'work', 'studio', 'contact'].includes(view) || view === selectedView) return;
+  if (scene?.dataset.phase !== 'complete') goToEnd();
+  showView(view, true);
+}
+window.addEventListener('popstate', restoreHistoryView);
+window.addEventListener('hashchange', restoreHistoryView);

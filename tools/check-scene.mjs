@@ -159,7 +159,7 @@ try {
   await control('services').click();
   await page.waitForTimeout(150);
   assert.equal(await page.locator('.content-workspace').getAttribute('data-transitioning'), 'true', 'Content must visibly travel between compositions');
-  assert.ok(await page.locator('.content-morph [data-morph-key="services-glass"]').count() > 0, 'The visible glass must travel on the same timeline as its content');
+  assert.equal(await page.locator('html').getAttribute('data-motion-engine'), 'native', 'Section motion should use browser-managed snapshots, not cloned content');
   await page.screenshot({ path: '/tmp/opencode/content-in-motion.png' });
   await page.waitForFunction(() => document.querySelector('.content-workspace').dataset.transitioning === 'false');
   assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'services');
@@ -222,6 +222,22 @@ try {
   assert.ok(readingPosition > 0);
   await page.reload(); await ready(); await phase('complete');
   assert.ok(Math.abs(await page.locator('.content-workspace').evaluate(element => element.scrollTop) - readingPosition) < 2, 'Refresh should preserve the mobile reading position');
+
+  await page.locator('#contact-message').fill('Keep this draft while moving between views.');
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => document.querySelector('.content-workspace').dataset.transitioning === 'false');
+  assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'home', 'Escape should close the expanded topic');
+  await page.goBack();
+  await page.waitForFunction(() => document.querySelector('.content-workspace').dataset.contentView === 'contact' && document.querySelector('.content-workspace').dataset.transitioning === 'false');
+  assert.equal(await page.locator('#contact-message').inputValue(), 'Keep this draft while moving between views.', 'Browser Back must not recreate the form');
+  assert.equal(await page.locator('.scene').getAttribute('data-phase'), 'complete', 'Browser navigation must not replay the introduction');
+  await page.goForward();
+  await page.waitForFunction(() => document.querySelector('.content-workspace').dataset.contentView === 'home' && document.querySelector('.content-workspace').dataset.transitioning === 'false');
+  await click(page.locator('.studio-preview p'));
+  assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'studio', 'The whole inactive card should open, not only its small label');
+  const closeTarget = await page.locator('.studio-tile .tile-close').boundingBox();
+  assert.ok(closeTarget.width >= 44 && closeTarget.height >= 44, 'Close controls need a comfortable touch target');
+  await click(page.locator('.studio-tile .tile-close'));
 
   // Seed a real saved reading pause in the new document, after pagehide saves the old one.
   await page.addInitScript(() => sessionStorage.setItem('avexel-autoplay-v1', JSON.stringify({ time: 11, view: 'home', project: 0 })));
