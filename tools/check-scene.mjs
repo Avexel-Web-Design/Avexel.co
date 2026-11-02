@@ -372,8 +372,13 @@ try {
       const materials = await hoverPage.locator('.tile-material').evaluateAll(elements => elements.map(element => getComputedStyle(element).backgroundColor));
       assert.equal(new Set(materials).size, 1, 'Every card, including Contact, must use the same glass background');
       assert.equal(await hoverPage.locator('.identity-wordmark > span').evaluate(element => getComputedStyle(element).color), 'rgb(197, 138, 255)', 'The main brand purple must be #C58AFF');
-      assert.ok(await hoverPage.locator('.identity-wordmark > span > svg').isVisible(), 'The wordmark must use the actual CAD letterforms, not a substituted font');
-      assert.equal(await hoverPage.locator('.identity-wordmark > span > svg').getAttribute('viewBox'), '0 0 4435.20393 1000', 'Preserve the exported sketch proportions');
+      const wordmark = hoverPage.locator('.identity-wordmark > span > svg');
+      assert.ok(await wordmark.isVisible(), 'The wordmark must use the actual CAD letterforms, not a substituted font');
+      assert.equal(await wordmark.getAttribute('viewBox'), '0 0 4435.20393 1000', 'Preserve the exported sketch proportions');
+      const mark = pngPixels(await wordmark.screenshot());
+      const counterOffset = (Math.round(.5 * (mark.height - 1)) * mark.width + Math.round(.1031 * (mark.width - 1))) * mark.channels;
+      const counter = [...mark.data.subarray(counterOffset, counterOffset + 3)];
+      assert.ok(counter[2] > 60 && counter[2] > counter[0], 'The A counter must hold glow, not read as a black gap like the logo');
       for (const selector of ['.identity-wordmark > span', '.service-label']) {
         assert.equal(await hoverPage.locator(selector).first().evaluate(element => getComputedStyle(element).backgroundImage), 'none', 'Brand typography should glow without gradients');
       }
