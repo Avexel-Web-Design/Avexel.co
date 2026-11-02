@@ -1,6 +1,7 @@
 import { gsap } from 'gsap';
 import { layoutAnnotations } from './annotations';
 import { arrangeContent, morphContent } from './content-layout';
+import './service-select';
 
 const story = document.querySelector<HTMLElement>('.scroll-story');
 const scene = document.querySelector<HTMLElement>('.scene');
@@ -96,6 +97,13 @@ projectButtons.forEach((button, i) => {
   button.addEventListener('pointerenter', () => warmProject(i));
   button.addEventListener('focus', () => warmProject(i));
   button.addEventListener('click', () => { showProject(i); savePosition(); });
+  button.addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? projects.length - 1
+      : (i + (event.key === 'ArrowRight' ? 1 : -1) + projects.length) % projects.length;
+    showProject(next); projectButtons[next].focus({ preventScroll: true }); savePosition();
+  });
 });
 document.querySelectorAll<HTMLAnchorElement>('.work-image').forEach(link => link.addEventListener('click', event => {
   if (selectedView === 'work' || event.ctrlKey || event.metaKey) return;
@@ -128,13 +136,6 @@ serviceTabs.forEach((tab, index) => {
     event.preventDefault();
     const next = event.key === 'Home' ? 0 : event.key === 'End' ? serviceTabs.length - 1 : (index + direction + serviceTabs.length) % serviceTabs.length;
     showService(serviceTabs[next].dataset.serviceTab ?? 'design', true, true); savePosition();
-  });
-});
-
-realSite?.querySelectorAll<HTMLDetailsElement>('.service-questions details').forEach(details => {
-  details.querySelector('summary')?.addEventListener('click', event => {
-    event.preventDefault();
-    morphContent(() => { details.open = !details.open; }, true, undefined, .36);
   });
 });
 

@@ -54,11 +54,11 @@ function nameContent() {
   // between labels instead of fading one line out and another line in.
   name('service-indicator', '[data-service-tab][aria-selected="true"] .service-active-rule');
   name('service-copy', '[data-service-panel]:not([hidden])');
-  name('questions-border', '.service-questions');
-  [1, 2, 3].forEach(index => name(`question-${index}`, `.service-questions details:nth-child(${index})`));
+  name('service-terms', '.service-terms');
   name('studio-introduction', '.studio-introduction');
   name('studio-copy', '.studio-tile [data-tile-detail]');
   name('project-controls', '.work-tile [data-tile-detail]');
+  name('project-indicator', '[data-select-project][aria-pressed="true"] .project-active-rule');
   name('project-image', '[data-project]:not([hidden]) .work-image');
   // Separate the badge from the image frame so the picture can resize without
   // carrying a small label that only belongs to the open Work view.

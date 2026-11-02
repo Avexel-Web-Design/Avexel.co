@@ -83,7 +83,7 @@ form?.addEventListener('submit', async event => {
     form.reset();
   } catch {
     status.classList.add('error');
-    status.textContent = 'Your message couldn’t be sent. Please try again or email contact@avexel.co. Your message is still here.';
+    status.textContent = 'Your message couldn’t be sent. Please try again.';
   } finally {
     window.clearTimeout(timeout);
     submit.disabled = false;

@@ -167,7 +167,7 @@ try {
   assert.notDeepEqual(await page.locator('[data-panel="services"]').boundingBox(), homeBounds, 'Navigation must physically rearrange the content');
   assert.ok(await page.evaluate(() => [...document.querySelectorAll('[data-layout-piece]')].every((node, index) => node === window.originalContentNodes[index])), 'Navigation must reuse the actual content nodes');
   assert.equal(await page.locator('[data-layout-piece]:visible').count(), 5, 'All content remains part of the composition');
-  await click(page.getByText('Who owns the website?', { exact: true }));
+  assert.equal(await page.locator('.services-tile details').count(), 0, 'Service terms should not be hidden behind accordions');
   assert.ok(await page.getByText('You own the code and content.', { exact: false }).isVisible());
   await click(page.getByRole('tab', { name: 'Development', exact: true }));
   assert.ok(await page.locator('[data-service-panel="development"]').isVisible());
@@ -196,12 +196,29 @@ try {
   assert.equal(await page.locator('[data-panel="work"]').getAttribute('data-expanded'), 'true', 'Rapid navigation must settle on the last requested view');
   await click(control('work'));
   for (let i = 0; i < 4; i++) { await click(page.locator(`[data-select-project="${i}"]`)); assert.ok(await page.locator(`[data-project="${i}"]`).isVisible()); }
+  await page.locator('[data-select-project="3"]').focus();
+  await page.keyboard.press('Home');
+  await page.waitForFunction(() => document.querySelector('.content-workspace').dataset.transitioning === 'false');
+  assert.equal(await page.locator('[data-select-project="0"]').getAttribute('aria-pressed'), 'true', 'Project thumbnails support keyboard navigation');
   await click(control('studio'));
   assert.ok(await page.getByText('Ryan Latimer').isVisible());
   await click(control('contact'));
   await page.locator('#contact-name').fill('Browser verification');
   await page.locator('#contact-email').fill('test@example.com');
-  await page.locator('#contact-service').selectOption('Web application');
+  await page.locator('#contact-service').click();
+  await page.getByRole('option', { name: 'Web application', exact: true }).click();
+  assert.equal(await page.locator('[name="service"]').inputValue(), 'Web application');
+  await page.locator('#contact-service').click();
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#contact-service').getAttribute('aria-expanded'), 'false');
+  assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'contact', 'Escape closes the custom menu before closing Contact');
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('End');
+  assert.equal(await page.locator('#contact-service').getAttribute('aria-activedescendant'), 'inquiry-option-4');
+  await page.keyboard.press('Home');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  assert.equal(await page.locator('[name="service"]').inputValue(), 'Web application', 'The custom selector commits keyboard choices to FormData');
   await page.locator('#contact-message').fill('Verifying the contact form without sending a real inquiry.');
   await page.route('https://formspree.io/**', route => route.fulfill({ status: 500, body: '{}' }));
   await page.getByRole('button', { name: 'Send message' }).click();
@@ -221,10 +238,9 @@ try {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(350);
   await page.locator('.content-workspace').evaluate(element => { element.scrollTop = 120; });
-  const readingPosition = await page.locator('.content-workspace').evaluate(element => element.scrollTop);
-  assert.ok(readingPosition > 0);
+  assert.equal(await page.locator('.content-workspace').evaluate(element => element.scrollTop), 0, 'Expanded mobile sections must not scroll');
   await page.reload(); await ready(); await phase('complete');
-  assert.ok(Math.abs(await page.locator('.content-workspace').evaluate(element => element.scrollTop) - readingPosition) < 2, 'Refresh should preserve the mobile reading position');
+  assert.equal(await page.locator('.content-workspace').evaluate(element => element.scrollTop), 0, 'Refresh must keep the section fitted to the viewport');
 
   await page.locator('#contact-message').fill('Keep this draft while moving between views.');
   await page.keyboard.press('Escape');
@@ -244,11 +260,13 @@ try {
 
   // Seed a real saved reading pause in the new document, after pagehide saves the old one.
   await page.addInitScript(() => sessionStorage.setItem('avexel-autoplay-v1', JSON.stringify({ time: 11, view: 'home', project: 0 })));
-  for (const [width, height] of [[320, 844], [375, 667], [375, 844], [390, 844], [768, 900], [1024, 900], [1440, 900], [1440, 700], [2000, 1213]]) {
+  for (const [width, height] of [[320, 568], [320, 667], [320, 844], [375, 667], [375, 844], [390, 844], [768, 900], [1024, 600], [1024, 900], [1440, 600], [1440, 900], [1440, 700], [2000, 1213]]) {
     console.log(`Checking every content composition at ${width}×${height}`);
     await page.setViewportSize({ width, height });
     await page.reload(); await ready(); await phase('annotations');
-    await verifyCallouts();
+    // Extra short-screen cases exercise the real site only; intro coverage is
+    // unchanged in this content-focused pass.
+    if (height >= 667 && (width >= 375 || height >= 844)) await verifyCallouts();
     if (width === 390) await page.screenshot({ path: '/tmp/opencode/scene-annotations-mobile.png' });
     await click(page.locator('.story-controls [data-skip]')); await phase('complete');
     const layout = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, footer: document.querySelector('.studio-footer').getBoundingClientRect().top, panel: document.querySelector('.content-workspace').getBoundingClientRect().bottom, brokenImages: [...document.images].filter(image => image.complete && !image.naturalWidth).map(image => image.src) }));
@@ -262,9 +280,23 @@ try {
       await page.waitForTimeout(250);
       const fits = await page.locator(`[data-panel="${view}"] .tile-inner`).evaluate(element => {
         const rect = element.getBoundingClientRect();
-        return rect.left >= -1 && rect.right <= innerWidth + 1 && element.scrollWidth <= element.clientWidth + 1;
+        return rect.left >= -1 && rect.right <= innerWidth + 1 && element.scrollWidth <= element.clientWidth + 1 && element.scrollHeight <= element.clientHeight + 1;
       });
       assert.ok(fits, `${view} content must fit at ${width}×${height}`);
+      assert.ok(await page.locator('.content-workspace').evaluate(element => element.scrollHeight <= element.clientHeight + 1), 'The entire composition must fit without scrolling');
+      if (view === 'services') {
+        for (const service of ['design', 'development', 'maintenance']) {
+          await click(page.locator(`[data-service-tab="${service}"]`));
+          assert.ok(await page.locator('.services-tile .tile-inner').evaluate(element => element.scrollHeight <= element.clientHeight + 1), `${service} content must fit without scrolling at ${width}×${height}`);
+        }
+      }
+      if (view === 'contact') {
+        await page.locator('#contact-service').click();
+        const menu = await page.locator('[role="listbox"]').boundingBox();
+        const card = await page.locator('.contact-tile').boundingBox();
+        assert.ok(menu.y >= card.y && menu.y + menu.height <= card.y + card.height, 'The custom dropdown must fit inside Contact without clipping');
+        await page.keyboard.press('Escape');
+      }
       const filledPreview = await page.locator('[data-project]:not([hidden]) .work-image img').evaluate(image => {
         const frame = image.parentElement.getBoundingClientRect();
         const rect = image.getBoundingClientRect();
@@ -386,5 +418,5 @@ try {
     await hoverPage.close();
   }
   assert.deepEqual(errors, []);
-  console.log('Passed: persistent logo/content rearrangement without a navbar, every composition at 320–2000px, no clipped summaries, full-aspect project previews, upward Replay wipe, guarded refresh restoration with delayed JavaScript, autoplay/Skip, service tabs, FAQs, contact success/error, reduced motion, and client guide.');
+  console.log('Passed: viewport-fitted sections at 320–2000px, visible service terms, alumni studio copy, thumbnail projects, custom contact selector, full-aspect previews, native transitions, Replay, refresh restoration, contact success/error, reduced motion, and client guide.');
 } finally { await browser.close(); }

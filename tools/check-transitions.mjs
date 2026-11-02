@@ -141,7 +141,7 @@ try {
         return { width: parseFloat(style.width), height: parseFloat(style.height), overflow: style.overflow };
       });
       assert.equal(middle.overflow, 'clip');
-      assert.ok(opening ? middle.width > preview.width + 1 : middle.width < preview.width - 1, `${width}px ${from} → ${to}: the project image should resize with the card, not swap`);
+      assert.ok(Math.max(Math.abs(middle.width - preview.width), Math.abs(middle.height - preview.height)) > 1, `${width}px ${from} → ${to}: the project image should resize with the card, not swap`);
       await finish();
     }
     await setup('home');
