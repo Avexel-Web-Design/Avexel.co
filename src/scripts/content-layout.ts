@@ -23,6 +23,7 @@ interface Motion {
   layers: Layer[];
   panes: Map<string, HTMLElement>;
   timeline?: gsap.core.Timeline;
+  handingOff?: boolean;
 }
 let motion: Motion | undefined;
 let generation = 0;
@@ -58,6 +59,26 @@ function freeze(source: HTMLElement, shallow: boolean, rect: DOMRect, style: CSS
     copy.setAttribute('style', paintProperties.map(property => `${property}:${paint.getPropertyValue(property)};`).join(''));
     copy.style.transition = 'none'; copy.style.animation = 'none';
     copy.removeAttribute('id');
+    // Computed CSS serializes layout dimensions to rounded decimals. Reflowing
+    // those rounded boxes moves nested baselines by layout units at handoff.
+    // Preserve each painted HTML box instead of laying the frozen tree out again.
+    if (original !== source && original instanceof HTMLElement && original.tagName !== 'BR') {
+      const parent = original.parentElement;
+      let transformed = false;
+      for (let ancestor = original; ancestor !== source; ancestor = ancestor.parentElement!) {
+        if (getComputedStyle(ancestor).transform !== 'none') { transformed = true; break; }
+      }
+      const bounds = original.getBoundingClientRect();
+      if (parent && bounds.width && bounds.height && !transformed) {
+        const parentBounds = parent.getBoundingClientRect();
+        const parentPaint = getComputedStyle(parent);
+        Object.assign(copy.style, { position: 'absolute', inset: 'auto',
+          left: `${bounds.left - parentBounds.left - (parseFloat(parentPaint.borderLeftWidth) || 0)}px`,
+          top: `${bounds.top - parentBounds.top - (parseFloat(parentPaint.borderTopWidth) || 0)}px`,
+          margin: '0px', width: `${bounds.width}px`, height: `${bounds.height}px`,
+          minWidth: '0px', minHeight: '0px', maxWidth: 'none', maxHeight: 'none' });
+      }
+    }
     if (original instanceof HTMLImageElement && copy instanceof HTMLImageElement) {
       copy.removeAttribute('srcset'); copy.removeAttribute('sizes');
       copy.loading = 'eager'; copy.decoding = 'sync';
@@ -67,8 +88,8 @@ function freeze(source: HTMLElement, shallow: boolean, rect: DOMRect, style: CSS
     if (original instanceof HTMLTextAreaElement && copy instanceof HTMLTextAreaElement) copy.value = original.value;
     if (original instanceof HTMLSelectElement && copy instanceof HTMLSelectElement) copy.selectedIndex = original.selectedIndex;
   });
-  const width = parseFloat(style.width) || rect.width;
-  const height = parseFloat(style.height) || rect.height;
+  const width = style.transform === 'none' ? rect.width : parseFloat(style.width) || rect.width;
+  const height = style.transform === 'none' ? rect.height : parseFloat(style.height) || rect.height;
   const [ox, oy] = style.transformOrigin.split(' ').map(Number.parseFloat);
   const matrix = new DOMMatrix(style.transform === 'none' ? undefined : style.transform);
   const corners = [[0, 0], [width, 0], [0, height], [width, height]].map(([x, y]) => matrix.transformPoint(new DOMPoint(x - ox, y - oy)));
@@ -113,6 +134,7 @@ function visuals(): Visual[] {
     add(`service-${id}-rule`, `[data-service-tab="${id}"] .service-active-rule`, true);
   }
   add('service-copy', '[data-service-panel]:not([hidden])');
+  add('questions-border', '.service-questions', true, true);
   [1, 2, 3].forEach(index => add(`question-${index}`, `.service-questions details:nth-child(${index})`));
   add('service-action', '.sheet-action');
   add('team-mark', '.studio-preview > img');
@@ -133,7 +155,7 @@ function clip(rect: DOMRect, origin: DOMRect, radius = 20) {
 }
 
 function currentVisuals(): Visual[] {
-  if (!motion) return visuals();
+  if (!motion || motion.handingOff) return visuals();
   return motion.layers.flatMap(layer => {
     const opacity = Number(getComputedStyle(layer.element).opacity);
     if (opacity < .001) return [];
@@ -152,7 +174,8 @@ export function morphContent(change: () => void, animate = true, complete?: () =
     delete workspace.dataset.morphHidden;
     change(); workspace.dataset.transitioning = 'false'; complete?.(); return;
   }
-  const origin = host.getBoundingClientRect();
+  const origin = workspace.getBoundingClientRect();
+  const hostBounds = host.getBoundingClientRect();
   const before = currentVisuals();
   const oldClips = new Map(pieces.map(piece => {
     const owner = piece.dataset.panel!;
@@ -162,6 +185,12 @@ export function morphContent(change: () => void, animate = true, complete?: () =
   const oldRoot = motion?.root;
   const root = document.createElement('div');
   root.className = 'content-morph'; root.setAttribute('aria-hidden', 'true'); root.inert = true;
+  Object.assign(root.style, { left: `${origin.left - hostBounds.left}px`, top: `${origin.top - hostBounds.top}px`, width: `${origin.width}px`, height: `${origin.height}px` });
+  const workspacePaint = getComputedStyle(workspace);
+  // A mobile scroller has a different raster origin from a non-scrolling layer.
+  // Match both the bounds and the scrolling surface before handing glyphs back.
+  root.style.overflowX = workspacePaint.overflowX;
+  root.style.overflowY = workspacePaint.overflowY;
   root.style.clipPath = clip(workspace.getBoundingClientRect(), origin, 0);
   const next: Motion = { root, layers: [], panes: new Map() };
   const pane = (owner: string) => {
@@ -181,6 +210,7 @@ export function morphContent(change: () => void, animate = true, complete?: () =
     element.style.zIndex = visual.surface ? '0' : '1';
     element.append(visual.node); pane(visual.owner).append(element);
     gsap.set(element, { x: rect.left - origin.left, y: rect.top - origin.top, scaleX: rect.width / width, scaleY: rect.height / height, opacity });
+    element.style.transform = `translate(${rect.left - origin.left}px,${rect.top - origin.top}px) scale(${rect.width / width},${rect.height / height})`;
     const layer = { ...visual, element }; next.layers.push(layer); return layer;
   };
   before.forEach(visual => mount(visual));
@@ -189,9 +219,16 @@ export function morphContent(change: () => void, animate = true, complete?: () =
   change();
   const finish = () => {
     if (token !== generation) return;
-    root.remove(); motion = undefined;
+    // Paint the real destination underneath an opaque, settled visual frame first.
+    // Removing composited text/glass and revealing live DOM in one step flashes
+    // as the browser rebuilds those layers (even when all DOM rectangles match).
+    next.handingOff = true;
     delete workspace.dataset.morphHidden;
-    workspace.dataset.transitioning = 'false'; complete?.();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (token !== generation) return;
+      root.remove(); motion = undefined;
+      workspace.dataset.transitioning = 'false'; complete?.();
+    }));
   };
   const start = () => {
     if (token !== generation) return;
@@ -239,7 +276,14 @@ export function morphContent(change: () => void, animate = true, complete?: () =
         const scale = visual.image ? Math.min(previous.rect.width / visual.rect.width, previous.rect.height / visual.rect.height) : previous.font / visual.font;
         gsap.set(layer.element, { scaleX: scale, scaleY: scale });
       } else if (!previous) gsap.set(layer.element, { y: visual.rect.top - origin.top + 12 });
-      timeline.to(layer.element, { x: visual.rect.left - origin.left, y: visual.rect.top - origin.top, scaleX: 1, scaleY: 1 }, 0);
+      timeline.to(layer.element, { x: visual.rect.left - origin.left, y: visual.rect.top - origin.top, scaleX: 1, scaleY: 1, onComplete: () => {
+        // GSAP rounds serialized transforms; a sub-layout-unit offset changes
+        // text rasterization even though a DOM geometry assertion still passes.
+        // Land in layout coordinates so glyphs use the same paint origin as live text.
+        layer.element.style.left = `${visual.rect.left - origin.left}px`;
+        layer.element.style.top = `${visual.rect.top - origin.top}px`;
+        layer.element.style.transform = 'none';
+      } }, 0);
       timeline.to(layer.element, { opacity: visual.opacity, duration: duration * .25, ease: 'power1.inOut' }, duration * .7);
     });
   };

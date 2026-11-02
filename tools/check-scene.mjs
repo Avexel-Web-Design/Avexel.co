@@ -246,12 +246,19 @@ try {
         return rect.left >= -1 && rect.right <= innerWidth + 1 && element.scrollWidth <= element.clientWidth + 1;
       });
       assert.ok(fits, `${view} content must fit at ${width}×${height}`);
+      const filledPreview = await page.locator('[data-project]:not([hidden]) .work-image img').evaluate(image => {
+        const frame = image.parentElement.getBoundingClientRect();
+        const rect = image.getBoundingClientRect();
+        if (!rect.width || !rect.height) return true;
+        return getComputedStyle(image).objectFit === 'cover' && Math.abs(rect.width - frame.width) <= 2.1 && Math.abs(rect.height - frame.height) <= 2.1;
+      });
+      assert.ok(filledPreview, `Visible Work previews must fill their window in ${view} at ${width}×${height}`);
       const clippedSummaries = await page.locator('.content-tile:not([data-expanded=true]) .tile-inner').evaluateAll(elements => elements.filter(element => element.scrollHeight > element.clientHeight + 1 || element.scrollWidth > element.clientWidth + 1).map(element => element.closest('[data-panel]').dataset.panel));
       assert.deepEqual(clippedSummaries, [], `Collapsed content must have room at ${width}×${height} in ${view}`);
       if (view === 'work') {
         const preview = await page.locator('[data-project]:not([hidden]) .work-image').boundingBox();
         assert.ok(Math.abs(preview.width / preview.height - 1.44) < .02, 'Expanded screenshots must keep their complete, readable aspect ratio');
-        assert.equal(await page.locator('[data-project]:not([hidden]) .work-image img').evaluate(image => getComputedStyle(image).objectFit), 'contain');
+        assert.equal(await page.locator('[data-project]:not([hidden]) .work-image img').evaluate(image => getComputedStyle(image).objectFit), 'cover', 'Project screenshots must fill their frame, not sit inside letterboxing');
       }
       assert.equal(await page.locator('.identity-description').isVisible(), false, 'Both home descriptions disappear in expanded views');
       const overlaps = await page.locator('[data-layout-piece]').evaluateAll(elements => elements.flatMap((element, index) => {

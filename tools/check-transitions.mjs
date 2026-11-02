@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
+import { pngPixels, regionDifference } from './png-pixels.mjs';
 
 const base = process.env.CHECK_URL ?? 'http://localhost:4321';
 const views = ['home', 'services', 'studio', 'work', 'contact'];
@@ -8,6 +9,7 @@ const sources = {
   'brand-control': '.identity-wordmark',
   discipline: '.identity-description p:first-child', introduction: '.identity-description p:last-child',
   'service-copy': '[data-service-panel]:not([hidden])', 'service-action': '.sheet-action',
+  'questions-border': '.service-questions',
   'service-rule': '.service-tabs', 'team-mark': '.studio-preview > img',
   'studio-introduction': '.studio-introduction', 'studio-copy': '.studio-tile [data-tile-detail]',
   'project-controls': '.work-tile [data-tile-detail]',
@@ -101,12 +103,28 @@ try {
       const lastFrame = target.map(item => handoff.find(layer => layer.key === item.key));
       assert.ok(lastFrame.every(Boolean));
       continuous(target, lastFrame, `${width}px ${from} → ${to} end handoff`);
-      await page.clock.runFor(230);
+      await page.clock.runFor(40);
+      assert.equal(await page.locator('.content-morph').count(), 1, 'Sample the raster handoff before the motion layer is retired');
+      const ink = await page.locator('.content-workspace .identity-wordmark > span,.content-workspace .tile-label,.content-workspace .service-label,.content-workspace .studio-introduction,.content-workspace .service-content h3,.content-workspace .service-content p,.content-workspace .studio-people h3,.content-workspace .studio-people p,.content-workspace .contact-methods a,.content-workspace .inquiry-form label,.content-workspace .work-description h3,.content-workspace .work-description p').evaluateAll(elements => elements.filter(element => element.getBoundingClientRect().width).map(element => ({ text: element.textContent, ...element.getBoundingClientRect().toJSON() })));
+      const beforePaintSwap = pngPixels(await page.screenshot());
+      const swapFrames = [beforePaintSwap];
+      for (let frame = 0; frame < 3; frame++) {
+        await page.clock.runFor(16);
+        swapFrames.push(pngPixels(await page.screenshot()));
+      }
+      await page.clock.runFor(142);
+      const afterPaintSwap = pngPixels(await page.screenshot());
+      for (const region of ink) {
+        for (const frame of swapFrames) {
+          const difference = regionDifference(frame, afterPaintSwap, region);
+          assert.ok(difference < .3, `${width}px ${from} → ${to}: rasterized content flashed at handoff (${region.text}: ${difference.toFixed(3)})`);
+        }
+      }
       assert.equal(await page.locator('.content-morph').count(), 0);
       assert.equal(await page.locator('.content-workspace').getAttribute('data-transitioning'), 'false');
       assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), to);
     }
-    for (const interruptionTime of [290, 650]) {
+    for (const interruptionTime of [290, 650, 800]) {
       await setup('home');
       await navigate('services');
       await page.clock.runFor(interruptionTime);
@@ -123,7 +141,7 @@ try {
       await page.locator(`.content-workspace ${selector}`).dispatchEvent('click');
       const painted = await layers();
       continuous(before, before.map(item => painted.find(layer => layer.key === item.key)), `${width}px ${selector}`);
-      await page.clock.runFor(500);
+      await page.clock.runFor(650);
       assert.equal(await page.locator('.content-morph').count(), 0);
     }
     await setup('home');
