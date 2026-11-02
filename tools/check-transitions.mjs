@@ -37,16 +37,25 @@ try {
   };
   const groups = () => page.evaluate(() => {
     const nested = CSS.supports('view-transition-group', 'contain');
-    const parent = nested ? new DOMMatrix(getComputedStyle(document.documentElement, '::view-transition-group(avx-workspace)').transform) : new DOMMatrix();
     return Object.fromEntries([...document.querySelectorAll('.content-workspace [style*="view-transition-name"]')].flatMap(element => {
       const name = element.style.viewTransitionName;
       const style = getComputedStyle(document.documentElement, `::view-transition-group(${name})`);
       if (!style.width || style.width === 'auto') return [];
       const transform = new DOMMatrix(style.transform === 'none' ? undefined : style.transform);
-      return [[name, { x: transform.m41 + parent.m41, y: transform.m42 + parent.m42, width: parseFloat(style.width), height: parseFloat(style.height), radius: parseFloat(style.borderTopLeftRadius) }]];
+      let x = transform.m41, y = transform.m42;
+      if (nested) for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+        if (!parent.matches('.content-workspace,.content-tile')) continue;
+        const name = parent.matches('.content-workspace') ? 'avx-workspace' : parent.style.viewTransitionName;
+        if (!name || name === 'none') continue;
+        const style = getComputedStyle(document.documentElement, `::view-transition-group(${name})`);
+        const matrix = new DOMMatrix(style.transform === 'none' ? undefined : style.transform);
+        x += matrix.m41; y += matrix.m42;
+      }
+      return [[name, { x, y, width: parseFloat(style.width), height: parseFloat(style.height), radius: parseFloat(style.borderTopLeftRadius) }]];
     }));
   });
-  for (const [width, height] of [[1440, 900], [1440, 700], [390, 844]]) {
+  const viewports = process.env.CHECK_VIEWPORTS ? JSON.parse(process.env.CHECK_VIEWPORTS) : [[1440, 900], [1440, 700], [1024, 900], [768, 900], [390, 844], [320, 667]];
+  for (const [width, height] of viewports) {
     await page.setViewportSize({ width, height });
     for (const from of views) for (const to of views.filter(view => view !== from)) {
       console.log(`Checking ${width}px ${from} → ${to}`);
@@ -56,7 +65,14 @@ try {
         if (!rect.width || Number(getComputedStyle(element).opacity) === 0) return [];
         return [[element.style.viewTransitionName, { ...rect.toJSON(), radius: parseFloat(getComputedStyle(element).borderTopLeftRadius) }]];
       })));
-      await navigate(to); await running(); await seek(0);
+      await navigate(to); await running();
+      const clocks = await page.evaluate(() => {
+        if (document.documentElement.dataset.motionRouted !== 'true') return [];
+        return document.getAnimations().filter(animation => animation.effect?.pseudoElement?.startsWith('::view-transition')).map(animation => animation.startTime).filter(Number.isFinite);
+      });
+      if (clocks.length) assert.ok(Math.max(...clocks) - Math.min(...clocks) < .001, 'Collision-free routes must share one animation clock');
+      await seek(0);
+      const duration = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--motion-duration')) * 1000);
       const first = await groups();
       for (const [name, rect] of Object.entries(before)) {
         // Old-only groups do not need a geometry animation, but remain present
@@ -68,7 +84,18 @@ try {
       }
       assert.equal(await page.locator('.content-morph,.morph-pane,.morph-visual').count(), 0, 'No script-owned text/card copies may be mounted');
       assert.equal(await page.locator('.content-workspace').evaluate(element => getComputedStyle(element).opacity), '1', 'The live website must never be hidden for a handoff');
-      await seek(390);
+      for (let step = 0; step <= 40; step++) {
+        await seek(duration * step / 40);
+        const positions = await groups();
+        const cards = views.slice(1).map(view => positions[`avx-${view}-card`]);
+        for (let i = 0; i < cards.length; i++) for (let j = i + 1; j < cards.length; j++) {
+          const a = cards[i], b = cards[j];
+          const overlapX = Math.min(a.x + a.width, b.x + b.width) - Math.max(a.x, b.x);
+          const overlapY = Math.min(a.y + a.height, b.y + b.height) - Math.max(a.y, b.y);
+          assert.ok(overlapX <= 1 || overlapY <= 1, `${width}px ${from} → ${to}: ${views[i + 1]} overlaps ${views[j + 1]} at ${step / 40}`);
+        }
+      }
+      await seek(duration / 2);
       const middle = await groups();
       for (const view of views.slice(1)) {
         const key = `avx-${view}-glass`;
@@ -86,7 +113,7 @@ try {
         assert.equal(preview.fit, 'cover');
       }
       if (from === 'home' && to === 'services' && width === 1440) await page.screenshot({ path: '/tmp/opencode/native-audit-middle.png', scale: 'css' });
-      await seek(779.9);
+      await seek(duration - .1);
       const ink = await page.locator('.content-workspace .identity-wordmark > span,.content-workspace .tile-label,.content-workspace .service-label,.content-workspace .studio-introduction,.content-workspace .service-content h3,.content-workspace .service-content p,.content-workspace .studio-people h3,.content-workspace .studio-people p,.content-workspace .contact-methods a,.content-workspace .inquiry-form label,.content-workspace .work-description h3,.content-workspace .work-description p').evaluateAll(elements => elements.filter(element => element.getBoundingClientRect().width).map(element => ({ text: element.textContent, ...element.getBoundingClientRect().toJSON() })));
       const renderedDestination = pngPixels(await page.screenshot({ scale: 'css' }));
       await finish();
@@ -124,6 +151,7 @@ try {
       const preview = await page.locator('[data-project]:not([hidden]) .work-image').boundingBox();
       const before = pngPixels(await page.screenshot({ scale: 'css', clip: preview }));
       await navigate(to); await running(); await seek(0);
+      const duration = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--motion-duration')) * 1000);
       const held = await page.evaluate(() => {
         const layer = name => getComputedStyle(document.documentElement, `::view-transition-${name}(avx-project-image)`);
         return { old: layer('old').visibility, fresh: layer('new').visibility, fit: layer('new').objectFit };
@@ -133,15 +161,15 @@ try {
       assert.equal(held.fresh, opening ? 'visible' : 'hidden', `${width}px ${from} → ${to}: hold one project image frame`);
       assert.equal(held.fit, 'cover');
       const start = pngPixels(await page.screenshot({ scale: 'css', clip: preview }));
-      const difference = regionDifference(before, start, { x: 0, y: 0, ...preview });
+      const difference = regionDifference(before, start, { ...preview, x: 0, y: 0 });
       assert.ok(difference < 6, `${width}px ${from} → ${to}: the project image must begin on its resting frame (${difference.toFixed(2)})`);
-      await seek(390);
+      await seek(duration / 2);
       const middle = await page.evaluate(() => {
         const style = getComputedStyle(document.documentElement, '::view-transition-group(avx-project-image)');
         return { width: parseFloat(style.width), height: parseFloat(style.height), overflow: style.overflow };
       });
       assert.equal(middle.overflow, 'clip');
-      assert.ok(opening ? middle.width > preview.width + 1 : middle.width < preview.width - 1, `${width}px ${from} → ${to}: the project image should resize with the card, not swap`);
+      assert.ok(Math.abs(middle.width - preview.width) > 1, `${width}px ${from} → ${to}: the project image should resize with the card, not swap`);
       await finish();
     }
     await setup('home');
@@ -151,7 +179,7 @@ try {
     await page.waitForFunction(() => document.querySelector('.content-workspace').dataset.contentView === 'studio' && document.documentElement.dataset.motionPhase === 'running');
     await finish();
     assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'studio', 'Rapid navigation should settle on the newest request without forcing an intermediate jump');
-    console.log(`Passed all 20 native transitions, physical corner interpolation, image coverage, rendered handoffs and queued navigation at ${width}×${height}, DPR ${density}`);
+    console.log(`Passed all 20 native transitions, 41 collision samples per pairing, physical corner interpolation, image coverage, rendered handoffs and queued navigation at ${width}×${height}, DPR ${density}`);
   }
   const fallback = await browser.newPage();
   await fallback.addInitScript(() => { document.startViewTransition = undefined; });

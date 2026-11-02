@@ -1,4 +1,5 @@
 import { gsap } from 'gsap';
+import { planCards, type CardBox, type CardStop } from './card-routing';
 
 const workspace = document.querySelector<HTMLElement>('.content-workspace');
 const pieces = [...document.querySelectorAll<HTMLElement>('[data-layout-piece]')];
@@ -41,6 +42,7 @@ function nameContent() {
   name('introduction', '.identity-description p:last-child');
   for (const view of glassNames) {
     const card = `[data-panel="${view}"]`;
+    name(`${view}-card`, card);
     name(`${view}-glass`, `${card} .tile-material`);
     name(`${view}-label`, `${card} .tile-label`);
     name(`${view}-arrow`, `${card} .tile-heading h2 .icon`);
@@ -85,6 +87,7 @@ function cleanup() {
   root.classList.remove('studio-motion');
   delete root.dataset.motionPhase;
   delete root.dataset.motionProjectImage;
+  delete root.dataset.motionRouted;
   workspace?.style.removeProperty('opacity');
   if (replay) replay.disabled = false;
   if (workspace) { workspace.dataset.transitioning = 'false'; workspace.removeAttribute('aria-busy'); }
@@ -114,7 +117,7 @@ export function morphContent(change: () => void, animate = true, complete?: () =
     if (next) morphContent(() => next.changes.forEach(update => update()), true, next.complete, next.duration);
     else complete?.();
   };
-  if (!document.startViewTransition) {
+  if (!document.startViewTransition || !canAnimateCorners || !CSS.supports('view-transition-group', 'contain')) {
     root.dataset.motionEngine = 'fade';
     const fade = gsap.timeline({ onComplete: done });
     active = { fade, rounds: [] };
@@ -139,6 +142,21 @@ export function morphContent(change: () => void, animate = true, complete?: () =
   const motion: ActiveMotion = { rounds: [] };
   active = motion;
   const fromView = workspace.dataset.contentView;
+  const cardBoxes = (): CardBox[] => glassNames.map(view => {
+    const { x, y, width, height } = workspace.querySelector<HTMLElement>(`[data-panel="${view}"]`)!.getBoundingClientRect();
+    return { x, y, width, height };
+  });
+  const beforeCards = cardBoxes();
+  const contentBoxes = () => new Map([...registered].flatMap(element => {
+    const view = element.closest<HTMLElement>('.content-tile')?.dataset.panel;
+    if (!view) return [];
+    const { x, y, width, height } = element.getBoundingClientRect();
+    return [[element.style.viewTransitionName, { view, x, y, width, height }] as const];
+  }));
+  const beforeContent = contentBoxes();
+  let afterContent = beforeContent;
+  let afterCards = beforeCards;
+  let routes: CardStop[][] | undefined;
   const fromImage = Boolean(workspace.querySelector<HTMLElement>('[data-project]:not([hidden]) .work-image')?.getBoundingClientRect().width);
   const transition = document.startViewTransition(async () => {
     if (token !== generation) return;
@@ -157,27 +175,121 @@ export function morphContent(change: () => void, animate = true, complete?: () =
     }));
     if (token !== generation) return;
     nameContent();
+    afterCards = cardBoxes();
+    afterContent = contentBoxes();
+    if (fromView !== workspace.dataset.contentView && canAnimateCorners && CSS.supports('view-transition-group', 'contain')) {
+      routes = planCards(beforeCards, afterCards, [{ x: bounds.x, y: bounds.y, width: 180, height: 80 }]);
+      if (routes) {
+        duration = 1.6;
+        root.dataset.motionRouted = 'true';
+        root.style.setProperty('--motion-duration', `${duration}s`);
+        root.style.setProperty('--motion-fade-time', `${duration * .18}s`);
+        root.style.setProperty('--motion-fade-delay', `${duration * .78}s`);
+        root.style.setProperty('--motion-enter-delay', `${duration * .78}s`);
+        root.style.setProperty('--motion-clearing-time', `${duration * .22}s`);
+      }
+    }
     glassNames.forEach(view => destinationRadii.set(view, getComputedStyle(workspace.querySelector(`[data-panel="${view}"] .tile-material`)!).borderTopLeftRadius));
   });
   motion.native = transition;
   void transition.ready.then(() => {
     if (token !== generation) return;
     root.dataset.motionPhase = 'running';
+    const nativeAnimations = document.getAnimations();
+    const nativeFrames = new Map(nativeAnimations.flatMap(animation => {
+      if (!(animation.effect instanceof KeyframeEffect) || !animation.effect.pseudoElement?.startsWith('::view-transition-group(')) return [];
+      return [[animation.effect.pseudoElement, animation.effect.getKeyframes()] as const];
+    }));
     // The browser also generates geometry animations for named pieces that did
     // not move. Retain their snapshots/fades, but avoid updating identical
     // transforms and dimensions every frame (especially tabs/project changes).
-    document.getAnimations().forEach(animation => {
+    nativeAnimations.forEach(animation => {
       if (!(animation.effect instanceof KeyframeEffect) || !animation.effect.pseudoElement?.startsWith('::view-transition-group(')) return;
       const frames = animation.effect.getKeyframes();
       if (frames.length !== 2) return;
       if (['transform', 'width', 'height'].every(property => frames[0][property] === frames[1][property])) animation.cancel();
     });
+    if (routes) {
+      // Clear the large home identity before cards travel past it, and only
+      // restore it once the cards are back in their final footprints.
+      for (const animation of nativeAnimations) {
+        if (!(animation.effect instanceof KeyframeEffect) || !['::view-transition-group(avx-wordmark)', '::view-transition-group(avx-brand-mark)'].includes(animation.effect.pseudoElement ?? '')) continue;
+        const frames = animation.effect.getKeyframes();
+        if (frames.length !== 2) continue;
+        const frame = (index: number, offset: number) => ({ transform: frames[index].transform, width: frames[index].width, height: frames[index].height, offset, easing });
+        const keys = fromView === 'home' ? [frame(0, 0), frame(1, .22), frame(1, 1)] : [frame(0, 0), frame(0, .78), frame(1, 1)];
+        motion.rounds.push(root.animate(keys, { duration: duration * 1000, fill: 'both', pseudoElement: animation.effect.pseudoElement! }));
+        animation.cancel();
+      }
+      glassNames.forEach((view, index) => {
+        const pseudoElement = `::view-transition-group(avx-${view}-card)`;
+        nativeAnimations.forEach(animation => {
+          if (animation.effect instanceof KeyframeEffect && animation.effect.pseudoElement === pseudoElement) animation.cancel();
+        });
+        motion.rounds.push(root.animate(routes![index].map(stop => ({
+          offset: stop.offset, transform: `translate(${Math.round(stop.x) - Math.round(bounds.x)}px, ${Math.round(stop.y) - Math.round(bounds.y)}px)`,
+          width: `${stop.width}px`, height: `${stop.height}px`,
+          easing: stop.offset === 0 || stop.offset === .78 ? easing : 'linear',
+        })), { duration: duration * 1000, fill: 'both', pseudoElement }));
+        // Carry every original content layer in the card's local coordinates.
+        // This preserves image resizing and keeps text attached to its card,
+        // rather than letting independently moving snapshots cross its edges.
+        const names = new Set([...beforeContent.keys(), ...afterContent.keys()]);
+        for (const name of names) {
+          const first = beforeContent.get(name), last = afterContent.get(name);
+          if ((first ?? last)?.view !== view || name.endsWith('-card') || name.endsWith('-glass')) continue;
+          const local = (box: CardBox, card: CardBox) => ({
+            x: (box.x - card.x) / card.width,
+            y: (box.y - card.y) / card.height,
+            width: box.width / card.width, height: box.height / card.height,
+          });
+          const start = first ? local(first, beforeCards[index]) : local(last!, afterCards[index]);
+          const end = last ? local(last, afterCards[index]) : start;
+          const pseudoElement = `::view-transition-group(${name})`;
+          const frames = nativeFrames.get(pseudoElement);
+          if (frames?.length === 2) {
+            for (const [point, frame, card] of [[start, frames[0], beforeCards[index]], [end, frames[1], afterCards[index]]] as const) {
+              const matrix = new DOMMatrix(String(frame.transform));
+              point.x = matrix.m41 / card.width; point.y = matrix.m42 / card.height;
+              point.width = parseFloat(String(frame.width)) / card.width;
+              point.height = parseFloat(String(frame.height)) / card.height;
+            }
+          } else {
+            const style = getComputedStyle(root, pseudoElement);
+            const matrix = new DOMMatrix(style.transform === 'none' ? undefined : style.transform);
+            const card = last ? afterCards[index] : beforeCards[index];
+            for (const point of [start, end]) {
+              point.x = matrix.m41 / card.width; point.y = matrix.m42 / card.height;
+              point.width = parseFloat(style.width) / card.width; point.height = parseFloat(style.height) / card.height;
+            }
+          }
+          nativeAnimations.forEach(animation => {
+            if (animation.effect instanceof KeyframeEffect && animation.effect.pseudoElement === pseudoElement) animation.cancel();
+          });
+          motion.rounds.push(root.animate(routes![index].map(stop => {
+            const mix = (key: keyof CardBox) => start[key] + (end[key] - start[key]) * stop.offset;
+            return {
+              offset: stop.offset, transform: `translate(${mix('x') * stop.width}px, ${mix('y') * stop.height}px)`,
+              width: `${mix('width') * stop.width}px`, height: `${mix('height') * stop.height}px`,
+              easing: stop.offset === 0 || stop.offset === .78 ? easing : 'linear',
+            };
+          }), { duration: duration * 1000, fill: 'both', pseudoElement }));
+        }
+      });
+    }
     if (!canAnimateCorners) return;
     for (const view of glassNames) {
-      if (radii.get(view) === destinationRadii.get(view)) continue;
-      motion.rounds.push(root.animate({ borderRadius: [radii.get(view)!, destinationRadii.get(view)!] }, {
-        duration: duration * 1000, easing, fill: 'both', pseudoElement: `::view-transition-group(avx-${view}-glass)`,
+      for (const part of ['glass', 'card']) motion.rounds.push(root.animate({ borderRadius: [radii.get(view)!, destinationRadii.get(view)!] }, {
+        duration: duration * 1000, easing, fill: 'both', pseudoElement: `::view-transition-group(avx-${view}-${part})`,
       }));
+    }
+    // A shared clock is essential: even a small start-time skew could let one
+    // card expand before another has cleared its destination.
+    if (routes) {
+      const startTime = document.timeline.currentTime;
+      document.getAnimations().forEach(animation => {
+        if (animation.effect instanceof KeyframeEffect && animation.effect.pseudoElement?.startsWith('::view-transition')) animation.startTime = startTime;
+      });
     }
   }, () => { /* The browser may skip a capture when the tab becomes hidden. */ });
   void transition.finished.then(done, done);

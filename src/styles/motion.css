@@ -6,6 +6,27 @@
 @supports (view-transition-group: contain) {
   .content-workspace { view-transition-name: avx-workspace; view-transition-group: contain; }
   :root.studio-motion::view-transition-group-children(avx-workspace) { overflow: clip; }
+  .content-tile { view-transition-group: contain; }
+  :root.studio-motion::view-transition-group-children(avx-services-card),
+  :root.studio-motion::view-transition-group-children(avx-studio-card),
+  :root.studio-motion::view-transition-group-children(avx-work-card),
+  :root.studio-motion::view-transition-group-children(avx-contact-card) { overflow: clip; border-radius: inherit; }
+}
+:root.studio-motion::view-transition-group(avx-services-card),
+:root.studio-motion::view-transition-group(avx-studio-card),
+:root.studio-motion::view-transition-group(avx-work-card),
+:root.studio-motion::view-transition-group(avx-contact-card) { border-radius: 20px; }
+/* Child snapshots are clipped to the moving card, including while it makes
+   room for a crossing. Glass remains a live, unscaled CSS surface. */
+:root[data-motion-routed=true]::view-transition-group(avx-services-glass),
+:root[data-motion-routed=true]::view-transition-group(avx-studio-glass),
+:root[data-motion-routed=true]::view-transition-group(avx-work-glass),
+:root[data-motion-routed=true]::view-transition-group(avx-contact-glass) {
+  width: 100%; height: 100%; transform: none; animation: none;
+}
+:root[data-motion-routed=true]::view-transition-old(avx-discipline),
+:root[data-motion-routed=true]::view-transition-old(avx-introduction) {
+  animation-delay: 0s; animation-duration: var(--motion-clearing-time);
 }
 :root.studio-motion::view-transition-group(*) {
   animation-duration: var(--motion-duration);
