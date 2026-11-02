@@ -13,44 +13,43 @@ const services = [
 <div class="real-site studio-shell">
   <header class="studio-header">
     <button type="button" class="studio-wordmark" data-view="home" aria-label="Avexel home"><img src="/Logo-nobg-sm-140.webp" width="32" height="32" alt="" />AVEXEL</button>
-    <span class="studio-location">Harbor Springs, Michigan</span>
-    <nav aria-label="Main navigation"><button type="button" data-view="home" aria-pressed="true">Home</button><button type="button" data-view="services" aria-pressed="false">Services</button><button type="button" data-view="studio" aria-pressed="false">Studio</button><button type="button" data-view="work" aria-pressed="false">Work</button><button type="button" data-view="contact" aria-pressed="false">Contact <Icon name="arrowUpRight" /></button></nav>
+    <nav class="studio-nav glass-surface" aria-label="Main navigation"><button type="button" data-view="home" aria-pressed="true">Home</button><button type="button" data-view="services" aria-pressed="false">Services</button><button type="button" data-view="studio" aria-pressed="false">Studio</button><button type="button" data-view="work" aria-pressed="false">Work</button><button type="button" data-view="contact" aria-pressed="false">Contact <Icon name="arrowUpRight" /></button></nav>
   </header>
 
   <div class="stack-workspace" data-stack-view="home">
     <div class="stack-object" data-stack-object aria-hidden="true"><div class="stack-light"></div><img class="stack-fallback" src="/Logo-nobg-sm.png" width="500" height="500" alt="" /><div class="stack-render" data-stack-render></div></div>
 
     <section class="stack-home" data-panel="home" aria-labelledby="home-title">
-      <div class="home-copy"><h2 id="home-title">AVEXEL</h2><p class="home-discipline">Web design, development<br />& maintenance.</p><p class="home-description">A student-led web studio in Harbor Springs, Michigan.</p><div class="home-actions"><button type="button" class="purple-button" data-view="services">Services <Icon name="arrowRight" /></button><button type="button" class="quiet-button" data-view="contact">Contact <Icon name="arrowUpRight" /></button></div></div>
+      <div class="home-copy"><h2 id="home-title">AVEXEL</h2><p class="home-discipline">Web design, development<br />& maintenance.</p><p class="home-description">Custom websites and applications. You work directly with the developers building them.</p><div class="home-actions"><button type="button" class="purple-button" data-view="services">Services <Icon name="arrowRight" /></button><button type="button" class="quiet-button" data-view="contact">Contact <Icon name="arrowUpRight" /></button></div></div>
       <button type="button" class="home-purpose" data-view="studio">Our projects help fund Baywatch Robotics. <Icon name="arrowUpRight" /></button>
     </section>
 
     <section class="stack-panel services-panel" data-panel="services" hidden aria-labelledby="services-title">
-      <div class="stack-sheet glass-surface"><header class="sheet-heading"><h2 id="services-title">Services</h2><button type="button" data-view="home" aria-label="Back to Avexel home"><Icon name="arrowRight" /></button></header>
+      <div class="stack-sheet glass-surface"><header class="sheet-heading"><h2 id="services-title">Services</h2><button type="button" data-view="home" aria-label="Close Services and return home"><span>Close</span><Icon name="plus" /></button></header>
         <div class="service-tabs" role="tablist" aria-label="Services">{services.map((service, index) => <button type="button" role="tab" id={`service-tab-${service.id}`} aria-controls={`service-${service.id}`} aria-selected={index === 0} tabindex={index === 0 ? 0 : -1} data-service-tab={service.id}>{service.label}</button>)}</div>
         {services.map((service, index) => <article class="service-content" role="tabpanel" id={`service-${service.id}`} aria-labelledby={`service-tab-${service.id}`} data-service-panel={service.id} hidden={index !== 0}><h3>{service.title}</h3><p>{service.description}</p><p class="service-detail">{service.detail}</p></article>)}
         <div class="service-questions"><details><summary>How does a project run?<Icon name="plus" /></summary><p>We discuss what you need and agree on a scope and quote. After you approve the design, we build, test, and launch the site with you.</p></details><details><summary>Who owns the website?<Icon name="plus" /></summary><p>You own the code and content. You can choose where to host it and who maintains it.</p></details><details><summary>What does it cost?<Icon name="plus" /></summary><p>We quote for the pages, features, and integrations you need. Hosting, domain registration, and third-party services are priced separately.</p></details></div>
-        <div class="sheet-action"><span>Tell us what you need.</span><button type="button" class="purple-button" data-view="contact">Contact <Icon name="arrowUpRight" /></button></div>
+        <div class="sheet-action"><button type="button" class="purple-button" data-view="contact" data-service-contact>Contact <Icon name="arrowUpRight" /></button></div>
       </div>
     </section>
 
     <section class="stack-panel studio-panel" data-panel="studio" hidden aria-labelledby="studio-title">
-      <div class="stack-sheet glass-surface"><header class="sheet-heading"><h2 id="studio-title">Studio</h2><button type="button" data-view="home" aria-label="Back to Avexel home"><Icon name="arrowRight" /></button></header>
-        <p class="sheet-lead">Web developers.<br /><span>Robotics teammates.</span></p><p>We’re a student-led web studio in Harbor Springs. Avexel projects help fund Baywatch Robotics and hands-on STEM education.</p><p>You work directly with the developers building your website. We agree on the scope and cost before development begins.</p>
+      <div class="stack-sheet glass-surface"><header class="sheet-heading"><h2 id="studio-title">Studio</h2><button type="button" data-view="home" aria-label="Close Studio and return home"><span>Close</span><Icon name="plus" /></button></header>
+        <p class="sheet-lead">A student-led studio in Harbor Springs.</p><p>Avexel projects help fund Baywatch Robotics and hands-on STEM education. Clients work directly with the developers building their website.</p><p>We agree on the scope and cost before development begins. You own the finished code and content.</p>
         <div class="studio-people"><div><h3>Ryan Latimer</h3><p>Operations & development</p></div><div><h3>Gavin Moceri</h3><p>Technical direction & development</p></div><div><h3>Conner Breckenfeld</h3><p>Communications & creative</p></div></div>
         <a class="team-link" href="https://frc7790.com" target="_blank" rel="noreferrer"><img src="/baywatchLogo.webp" width="72" height="72" alt="Baywatch Robotics" /><span>Meet our robotics team</span><Icon name="arrowUpRight" /></a><a class="plain-link" href="/communications/">Client guide <Icon name="arrowUpRight" /></a>
       </div>
     </section>
 
     <section class="stack-panel work-panel" data-panel="work" hidden aria-labelledby="work-title">
-      <div class="stack-sheet glass-surface"><header class="sheet-heading"><h2 id="work-title">Work</h2><button type="button" data-view="home" aria-label="Back to Avexel home"><Icon name="arrowRight" /></button></header>
+      <div class="stack-sheet glass-surface"><header class="sheet-heading"><h2 id="work-title">Work</h2><button type="button" data-view="home" aria-label="Close Work and return home"><span>Close</span><Icon name="plus" /></button></header>
         <div class="work-choices" role="group" aria-label="Select a project">{projects.map((project, index) => <button type="button" data-select-project={index} aria-pressed={index === 0}>{project.name}</button>)}</div>
         <div class="supporting-projects">{projects.map((project, index) => <article data-project={index} hidden={index !== 0}><a class="work-image" href={project.url} target="_blank" rel="noreferrer" aria-label={`Visit ${project.name}`}><img src={`/images/work-${project.image}.webp`} srcset={`/images/work-${project.image}-400.webp 400w, /images/work-${project.image}-800.webp 800w, /images/work-${project.image}.webp ${project.image === 'atlas' || project.image === 'afterimage' ? 1440 : 1200}w`} sizes="(max-width:767px) 85vw, 55vw" alt={`${project.name} website`} width="1440" height="1000" loading="lazy" /><span>Visit site <Icon name="arrowUpRight" /></span></a><div class="work-description"><h3>{project.name}</h3><p>{project.description}</p></div></article>)}</div>
       </div>
     </section>
 
     <section class="stack-panel inquiry-panel" data-panel="contact" hidden aria-labelledby="contact-title">
-      <div class="stack-sheet glass-surface"><header class="sheet-heading"><h2 id="contact-title">Contact</h2><button type="button" data-view="home" aria-label="Back to Avexel home"><Icon name="arrowRight" /></button></header><p>Describe what you need and your timeline. If you have an existing site, include the URL.</p><div class="contact-methods"><a href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a><a href="tel:+12313738360">(231) 373-8360</a></div>
+      <div class="stack-sheet glass-surface"><header class="sheet-heading"><h2 id="contact-title">Contact</h2><button type="button" data-view="home" aria-label="Close Contact and return home"><span>Close</span><Icon name="plus" /></button></header><p>Describe what you need and your timeline. If you have an existing site, include the URL.</p><div class="contact-methods"><a href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a><a href="tel:+12313738360">(231) 373-8360</a></div>
         <form class="inquiry-form" action="https://formspree.io/f/xvgkwonw" method="POST" data-contact-form>
           <div class="inquiry-pair"><div class="field"><label for="contact-name">Your name</label><input id="contact-name" name="name" autocomplete="name" required maxlength="120" /></div><div class="field"><label for="contact-email">Email address</label><input id="contact-email" name="email" type="email" autocomplete="email" required /></div></div>
           <div class="field"><label for="contact-service">What can we help with?</label><select id="contact-service" name="service"><option>New website</option><option>Web application</option><option>Website redesign</option><option>Maintenance & updates</option><option>Something else</option></select></div>

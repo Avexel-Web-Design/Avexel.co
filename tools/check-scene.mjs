@@ -154,6 +154,8 @@ try {
   await page.reload(); await ready(); await phase('complete');
   assert.ok(await page.locator('[data-service-panel="maintenance"]').isVisible(), 'Refresh should preserve the selected service');
   assert.equal(await page.locator('.stack-workspace').getAttribute('data-stack-view'), 'services');
+  await click(page.locator('[data-service-contact]'));
+  assert.equal(await page.locator('#contact-service').inputValue(), 'Maintenance & updates', 'The service-specific contact action should carry its context into the form');
   for (const view of ['studio', 'contact', 'services', 'work']) await page.locator(`.studio-header nav [data-view="${view}"]`).click();
   await page.waitForFunction(() => document.querySelector('.stack-workspace').dataset.transitioning === 'false');
   assert.ok(await page.locator('[data-panel="work"]').isVisible(), 'Rapid navigation must settle on the last requested view');
@@ -212,6 +214,8 @@ try {
       });
       assert.ok(fits, `${view} content must fit at ${width}×${height}`);
       if (width === 390 || width === 1440 && height === 900) await page.screenshot({ path: `/tmp/opencode/stack-${view}-${width}.png` });
+      await click(page.locator(`[data-panel="${view}"] .sheet-heading [data-view="home"]`));
+      assert.equal(await page.locator('.stack-workspace').getAttribute('data-stack-view'), 'home', 'Closing a sheet should return to the assembled stack');
     }
   }
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -241,5 +245,5 @@ try {
   assert.ok(await fallback.locator('#contact-name').isVisible());
   await fallback.close();
   assert.deepEqual(errors, []);
-  console.log('Passed: live 3D stack and shared renderer, every view at 320–2000px, rapid navigation, autoplay/skip/replay, service tabs, FAQs, reading/view restoration, contact success/error, reduced motion, no-WebGL fallback, and client guide.');
+  console.log('Passed: live 3D stack and shared renderer, every view and Close action at 320–2000px, rapid navigation, autoplay/skip/replay, service tabs and contact context, FAQs, reading/view restoration, contact success/error, reduced motion, no-WebGL fallback, and client guide.');
 } finally { await browser.close(); }

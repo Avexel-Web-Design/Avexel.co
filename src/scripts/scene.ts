@@ -33,7 +33,7 @@ if (realSite) realSite.inert = true;
 // Set the standard property too so current Chromium gets the same glass effect.
 const reducedTransparency = window.matchMedia('(prefers-reduced-transparency: reduce)');
 function updateGlass() {
-  realSite?.querySelectorAll<HTMLElement>('.glass-surface,.studio-header').forEach(element => {
+  realSite?.querySelectorAll<HTMLElement>('.glass-surface').forEach(element => {
     element.style.backdropFilter = reducedTransparency.matches ? 'none' : 'blur(24px)';
   });
 }
@@ -63,12 +63,12 @@ function showView(view: string, focus = false) {
     if (generation !== viewTransition) return;
     panels.forEach(panel => { panel.hidden = panel !== next; panel.inert = false; });
     if (workspace && focus && previous !== next) workspace.scrollTop = 0;
-    if (focus && !reduce.matches && previous !== next) gsap.fromTo(next, { opacity: 0, x: -70, y: 22, scale: .96, transformOrigin: '0% 50%' }, { opacity: 1, x: 0, y: 0, scale: 1, duration: .72, ease: 'power3.out', clearProps: 'transform,opacity,transformOrigin', onComplete: focusHeading });
+    if (focus && !reduce.matches && previous !== next) gsap.fromTo(next, { opacity: 0, x: -42, y: 12, scale: .985, transformOrigin: '0% 50%' }, { opacity: 1, x: 0, y: 0, scale: 1, duration: .56, ease: 'power3.out', clearProps: 'transform,opacity,transformOrigin', onComplete: focusHeading });
     else { gsap.set(next, { clearProps: 'transform,opacity' }); focusHeading(); }
   };
   if (focus && !reduce.matches && previous && previous !== next) {
     previous.inert = true;
-    gsap.to(previous, { opacity: 0, x: -24, duration: .2, ease: 'power2.in', onComplete: enter });
+    gsap.to(previous, { opacity: 0, x: -16, duration: .14, ease: 'power2.in', onComplete: enter });
   } else {
     enter();
   }
@@ -84,6 +84,11 @@ function showProject(index: number) {
 
 viewButtons.forEach(button => button.addEventListener('click', () => {
   const view = button.dataset.view ?? 'home';
+  if (view === 'contact' && button.hasAttribute('data-service-contact')) {
+    const field = document.querySelector<HTMLSelectElement>('#contact-service');
+    const services = new Map([['design', 'New website'], ['development', 'Web application'], ['maintenance', 'Maintenance & updates']]);
+    if (field) field.value = services.get(selectedService) ?? 'New website';
+  }
   showView(view, true);
   history.replaceState(null, '', view === 'home' ? location.pathname : `#${view}`);
   savePosition();

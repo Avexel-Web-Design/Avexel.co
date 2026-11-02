@@ -25,11 +25,11 @@ export function setStackView(view: string, immediate = false) {
   const mobile = matchMedia('(max-width: 767px)').matches;
   const home = view === 'home';
   gsap.to(object, {
-    xPercent: home ? 0 : mobile ? -22 : view === 'work' ? -112 : -87,
-    yPercent: home || !mobile ? 0 : -20,
-    scale: home ? 1 : mobile ? .64 : view === 'work' ? .7 : .91,
-    opacity: home || !mobile ? 1 : .65,
-    duration: immediate || reduce.matches ? 0 : 1.05,
+    xPercent: home || mobile ? 0 : view === 'work' ? -94 : -82,
+    yPercent: home || !mobile ? 0 : -25,
+    scale: home ? 1 : mobile ? .43 : view === 'work' ? .64 : .8,
+    opacity: home || !mobile ? 1 : .85,
+    duration: immediate || reduce.matches ? 0 : .95,
     ease: 'power3.inOut', overwrite: true,
   });
   model?.setView(view, immediate);

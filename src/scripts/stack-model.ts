@@ -16,8 +16,8 @@ export async function createStackModel(host: HTMLElement, initialView = 'home'):
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const send = (message: StackCommand) => worker.postMessage(message);
   const resize = () => {
-    const rect = host.getBoundingClientRect();
-    if (rect.width && rect.height) send({ type: 'resize', width: rect.width, height: rect.height });
+    // CSS camera transforms must not resize (and clear) the drawing buffer.
+    if (host.clientWidth && host.clientHeight) send({ type: 'resize', width: host.clientWidth, height: host.clientHeight });
   };
   const observer = new ResizeObserver(resize);
   observer.observe(host);
@@ -32,8 +32,6 @@ export async function createStackModel(host: HTMLElement, initialView = 'home'):
   window.addEventListener('pagehide', event => { if (!event.persisted) { observer.disconnect(); worker.terminate(); } });
   const controller: StackModel = { setView: (view, immediate = false) => {
     send({ type: 'view', view, immediate, reducedMotion: reduce.matches });
-    // Measure the final display size after the CSS camera move has settled.
-    window.setTimeout(resize, immediate || reduce.matches ? 0 : 1200);
   } };
   return new Promise(resolve => {
     let readyOnce = false;
@@ -51,8 +49,7 @@ export async function createStackModel(host: HTMLElement, initialView = 'home'):
       }
     };
     worker.onerror = () => { fallback(); observer.disconnect(); worker.terminate(); canvas.remove(); resolve(undefined); };
-    const rect = host.getBoundingClientRect();
-    const command: StackCommand = { type: 'init', canvas: offscreen, width: rect.width || 600, height: rect.height || 600, pixelRatio: Math.min(devicePixelRatio, 1.5), view: initialView, reducedMotion: reduce.matches, hidden: document.hidden };
+    const command: StackCommand = { type: 'init', canvas: offscreen, width: host.clientWidth || 600, height: host.clientHeight || 600, pixelRatio: Math.min(devicePixelRatio, 1.5), view: initialView, reducedMotion: reduce.matches, hidden: document.hidden };
     worker.postMessage(command, [offscreen]);
   });
 }
