@@ -10,7 +10,7 @@ try {
   const ready = () => page.locator('.scroll-story[data-ready="true"]').waitFor();
   const phase = name => page.locator(`.scene[data-phase="${name}"]`).waitFor({ timeout: 25000 });
   const time = () => page.locator('.scene').evaluate(element => Number(element.dataset.time));
-  const click = async locator => { await locator.click(); await page.waitForFunction(() => document.querySelector('.stack-workspace')?.dataset.transitioning !== 'true'); await page.waitForTimeout(150); };
+  const click = async locator => { await locator.click(); await page.waitForFunction(() => document.querySelector('.content-workspace')?.dataset.transitioning !== 'true'); await page.waitForTimeout(150); };
 
   const verifyCallouts = async () => {
     assert.equal(await page.locator('.annotation-connectors,[data-connector],[data-note="title"]').count(), 0);
@@ -122,7 +122,7 @@ try {
   await page.screenshot({ path: '/tmp/opencode/scene-reveal.png' });
   await phase('complete');
   assert.equal(await page.locator('.real-site').evaluate(element => element.inert), false);
-  await page.locator('[data-stack-object][data-rendered="true"] canvas').waitFor({ timeout: 20000 });
+  assert.equal(await page.locator('[data-stack-object],.stack-render').count(), 0, 'The 3D logo must be completely removed');
   await page.screenshot({ path: '/tmp/opencode/scene-final-desktop.png' });
 
   await click(page.locator('.studio-footer [data-replay]'));
@@ -135,15 +135,21 @@ try {
   await phase('complete');
   assert.ok(await page.locator('[data-panel="home"]').isVisible());
   assert.equal(await page.locator('[data-goal],[data-feature],[data-brief-summary]').count(), 0, 'The rejected brief builder must be removed');
-  const theme = await page.evaluate(() => ({ background: getComputedStyle(document.querySelector('.studio-shell')).backgroundColor, blur: getComputedStyle(document.querySelector('.stack-sheet')).backdropFilter, glow: getComputedStyle(document.querySelector('.home-copy h2')).textShadow }));
+  const theme = await page.evaluate(() => ({ background: getComputedStyle(document.querySelector('.studio-shell')).backgroundColor, blur: getComputedStyle(document.querySelector('.tile-material')).backdropFilter, glow: getComputedStyle(document.querySelector('.identity-tile h2')).textShadow }));
   assert.equal(theme.background, 'rgb(0, 0, 0)');
   assert.ok(theme.blur.includes('blur') && theme.glow !== 'none', 'Use real glass blur and purple text glow');
-  const homeTransform = await page.locator('[data-stack-object]').evaluate(element => getComputedStyle(element).transform);
-  await click(page.locator('.studio-header nav [data-view="services"]'));
-  await page.waitForTimeout(1000);
-  assert.equal(await page.locator('.stack-workspace').getAttribute('data-stack-view'), 'services');
-  assert.notEqual(await page.locator('[data-stack-object]').evaluate(element => getComputedStyle(element).transform), homeTransform, 'Navigation must physically rearrange the stack');
-  assert.equal(await page.locator('[data-stack-render] canvas').count(), 1, 'Views must share one persistent 3D scene');
+  const homeBounds = await page.locator('[data-panel="services"]').boundingBox();
+  await page.evaluate(() => { window.originalContentNodes = [...document.querySelectorAll('[data-layout-piece]')]; });
+  await page.locator('.studio-header nav [data-view="services"]').click();
+  await page.waitForTimeout(150);
+  assert.equal(await page.locator('.content-workspace').getAttribute('data-transitioning'), 'true', 'Content must visibly travel between compositions');
+  assert.notEqual(await page.locator('.services-tile').evaluate(element => getComputedStyle(element).transform), 'none');
+  await page.screenshot({ path: '/tmp/opencode/content-in-motion.png' });
+  await page.waitForFunction(() => document.querySelector('.content-workspace').dataset.transitioning === 'false');
+  assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'services');
+  assert.notDeepEqual(await page.locator('[data-panel="services"]').boundingBox(), homeBounds, 'Navigation must physically rearrange the content');
+  assert.ok(await page.evaluate(() => [...document.querySelectorAll('[data-layout-piece]')].every((node, index) => node === window.originalContentNodes[index])), 'Navigation must reuse the actual content nodes');
+  assert.equal(await page.locator('[data-layout-piece]:visible').count(), 5, 'All content remains part of the composition');
   await page.getByText('Who owns the website?', { exact: true }).click();
   assert.ok(await page.getByText('You own the code and content.', { exact: false }).isVisible());
   await click(page.getByRole('tab', { name: 'Development', exact: true }));
@@ -153,17 +159,24 @@ try {
   assert.equal(await page.getByRole('tab', { name: 'Maintenance', exact: true }).getAttribute('aria-selected'), 'true');
   await page.reload(); await ready(); await phase('complete');
   assert.ok(await page.locator('[data-service-panel="maintenance"]').isVisible(), 'Refresh should preserve the selected service');
-  assert.equal(await page.locator('.stack-workspace').getAttribute('data-stack-view'), 'services');
+  assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'services');
   await click(page.locator('[data-service-contact]'));
   assert.equal(await page.locator('#contact-service').inputValue(), 'Maintenance & updates', 'The service-specific contact action should carry its context into the form');
+  await click(page.locator('nav [data-view="home"]'));
+  await click(page.getByRole('tab', { name: 'Development', exact: true }));
+  assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'services', 'Overview service labels should expand into the same live service tabs');
+  assert.equal(await page.getByRole('tab', { name: 'Development', exact: true }).getAttribute('aria-selected'), 'true');
+  await click(page.locator('nav [data-view="home"]'));
+  await click(page.locator('[data-project]:not([hidden]) .work-image'));
+  assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'work', 'The small screenshot should expand Work before offering the external site link');
   for (const view of ['studio', 'contact', 'services', 'work']) await page.locator(`.studio-header nav [data-view="${view}"]`).click();
-  await page.waitForFunction(() => document.querySelector('.stack-workspace').dataset.transitioning === 'false');
-  assert.ok(await page.locator('[data-panel="work"]').isVisible(), 'Rapid navigation must settle on the last requested view');
+  await page.waitForFunction(() => document.querySelector('.content-workspace').dataset.transitioning === 'false');
+  assert.equal(await page.locator('[data-panel="work"]').getAttribute('data-expanded'), 'true', 'Rapid navigation must settle on the last requested view');
   await click(page.locator('.studio-header [data-view="work"]'));
   for (let i = 0; i < 4; i++) { await click(page.locator(`[data-select-project="${i}"]`)); assert.ok(await page.locator(`[data-project="${i}"]`).isVisible()); }
-  await click(page.getByRole('button', { name: 'Studio', exact: true }));
+  await click(page.locator('nav [data-view="studio"]'));
   assert.ok(await page.getByText('Ryan Latimer').isVisible());
-  await click(page.getByRole('button', { name: 'Contact', exact: true }));
+  await click(page.locator('nav [data-view="contact"]'));
   await page.locator('#contact-name').fill('Browser verification');
   await page.locator('#contact-email').fill('test@example.com');
   await page.locator('#contact-service').selectOption('Web application');
@@ -185,37 +198,44 @@ try {
   assert.ok(await page.locator('[data-panel="contact"]').isVisible(), 'Refresh should retain the active view');
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(350);
-  await page.locator('.stack-workspace').evaluate(element => { element.scrollTop = 120; });
-  const readingPosition = await page.locator('.stack-workspace').evaluate(element => element.scrollTop);
+  await page.locator('.content-workspace').evaluate(element => { element.scrollTop = 120; });
+  const readingPosition = await page.locator('.content-workspace').evaluate(element => element.scrollTop);
   assert.ok(readingPosition > 0);
   await page.reload(); await ready(); await phase('complete');
-  assert.ok(Math.abs(await page.locator('.stack-workspace').evaluate(element => element.scrollTop) - readingPosition) < 2, 'Refresh should preserve the mobile reading position');
+  assert.ok(Math.abs(await page.locator('.content-workspace').evaluate(element => element.scrollTop) - readingPosition) < 2, 'Refresh should preserve the mobile reading position');
 
   // Seed a real saved reading pause in the new document, after pagehide saves the old one.
   await page.addInitScript(() => sessionStorage.setItem('avexel-autoplay-v1', JSON.stringify({ time: 11, view: 'home', project: 0 })));
   for (const [width, height] of [[320, 844], [375, 667], [375, 844], [390, 844], [768, 900], [1024, 900], [1440, 900], [1440, 700], [2000, 1213]]) {
-    console.log(`Checking every stack view at ${width}×${height}`);
+    console.log(`Checking every content composition at ${width}×${height}`);
     await page.setViewportSize({ width, height });
     await page.reload(); await ready(); await phase('annotations');
     await verifyCallouts();
     if (width === 390) await page.screenshot({ path: '/tmp/opencode/scene-annotations-mobile.png' });
     await click(page.locator('.story-controls [data-skip]')); await phase('complete');
-    const layout = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, footer: document.querySelector('.studio-footer').getBoundingClientRect().top, panel: document.querySelector('.stack-workspace').getBoundingClientRect().bottom, brokenImages: [...document.images].filter(image => image.complete && !image.naturalWidth).map(image => image.src) }));
+    const layout = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, footer: document.querySelector('.studio-footer').getBoundingClientRect().top, panel: document.querySelector('.content-workspace').getBoundingClientRect().bottom, brokenImages: [...document.images].filter(image => image.complete && !image.naturalWidth).map(image => image.src) }));
     assert.ok(layout.width <= width && layout.panel <= layout.footer + 1, `Layout should fit ${width}×${height}`);
     assert.deepEqual(layout.brokenImages, []);
+    assert.ok(await page.locator('.content-workspace').evaluate(element => element.scrollHeight <= element.clientHeight + 1), `The overview should fit without scrolling at ${width}×${height}`);
     assert.equal(await page.locator('.studio-shell').innerText().then(text => /\b0[1-4]\b/.test(text)), false, 'The real site should not contain decorative numbered lists');
     if (width === 390) await page.screenshot({ path: '/tmp/opencode/scene-final-mobile.png' });
     for (const view of ['services', 'studio', 'work', 'contact']) {
       await click(page.locator(`.studio-header nav [data-view="${view}"]`));
       await page.waitForTimeout(250);
-      const fits = await page.locator(`[data-panel="${view}"] .stack-sheet`).evaluate(element => {
+      const fits = await page.locator(`[data-panel="${view}"] .tile-inner`).evaluate(element => {
         const rect = element.getBoundingClientRect();
         return rect.left >= -1 && rect.right <= innerWidth + 1 && element.scrollWidth <= element.clientWidth + 1;
       });
       assert.ok(fits, `${view} content must fit at ${width}×${height}`);
-      if (width === 390 || width === 1440 && height === 900) await page.screenshot({ path: `/tmp/opencode/stack-${view}-${width}.png` });
-      await click(page.locator(`[data-panel="${view}"] .sheet-heading [data-view="home"]`));
-      assert.equal(await page.locator('.stack-workspace').getAttribute('data-stack-view'), 'home', 'Closing a sheet should return to the assembled stack');
+      const overlaps = await page.locator('[data-layout-piece]').evaluateAll(elements => elements.flatMap((element, index) => {
+        const a = element.getBoundingClientRect();
+        return elements.slice(index + 1).filter(other => { const b = other.getBoundingClientRect(); return a.left < b.right - 1 && a.right > b.left + 1 && a.top < b.bottom - 1 && a.bottom > b.top + 1; }).map(other => `${element.dataset.panel}/${other.dataset.panel}`);
+      }));
+      assert.deepEqual(overlaps, [], 'Settled content pieces must not overlap');
+      assert.equal(await page.locator('[data-tile-detail]:not([hidden])').count(), 1);
+      if (width === 390 || width === 1440 && height === 900) await page.screenshot({ path: `/tmp/opencode/content-${view}-${width}.png` });
+      await click(page.locator(`[data-panel="${view}"] .tile-close`));
+      assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'home', 'Closing a topic should restore the overview composition');
     }
   }
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -237,13 +257,12 @@ try {
     };
   });
   await fallback.goto(`${base}/#home`);
-  await fallback.locator('[data-stack-object][data-fallback="true"]').waitFor();
-  assert.ok(await fallback.locator('.stack-fallback').evaluate(image => image.naturalWidth > 0));
+  await fallback.locator('.scene[data-phase="complete"]').waitFor();
   await fallback.locator('.studio-header nav [data-view="services"]').click();
   assert.ok(await fallback.locator('[data-panel="services"]').isVisible(), 'The complete website must still work without WebGL');
   await fallback.locator('.studio-header nav [data-view="contact"]').click();
   assert.ok(await fallback.locator('#contact-name').isVisible());
   await fallback.close();
   assert.deepEqual(errors, []);
-  console.log('Passed: live 3D stack and shared renderer, every view and Close action at 320–2000px, rapid navigation, autoplay/skip/replay, service tabs and contact context, FAQs, reading/view restoration, contact success/error, reduced motion, no-WebGL fallback, and client guide.');
+  console.log('Passed: persistent content nodes and rearrangement, every composition and Close action at 320–2000px, no overlaps, rapid navigation, unchanged autoplay/skip/replay, service tabs and contact context, FAQs, reading/view restoration, contact success/error, reduced motion, no WebGL, and client guide.');
 } finally { await browser.close(); }

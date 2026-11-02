@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { layoutAnnotations } from './annotations';
-import { setStackView, warmStack } from './stack';
+import { arrangeContent } from './content-layout';
 
 const story = document.querySelector<HTMLElement>('.scroll-story');
 const scene = document.querySelector<HTMLElement>('.scene');
@@ -25,7 +25,6 @@ let selectedView = 'home';
 let selectedProject = 0;
 let selectedService = 'design';
 let pausedForVisibility = false;
-let viewTransition = 0;
 
 if (realSite) realSite.inert = true;
 
@@ -43,35 +42,14 @@ reducedTransparency.addEventListener('change', updateGlass);
 function showView(view: string, focus = false) {
   if (!panels.some(panel => panel.dataset.panel === view)) return;
   const next = panels.find(panel => panel.dataset.panel === view)!;
-  const previous = panels.find(panel => !panel.hidden);
-  const workspace = document.querySelector<HTMLElement>('.stack-workspace');
-  const generation = ++viewTransition;
-  gsap.killTweensOf(panels);
   selectedView = view;
-  if (workspace) workspace.dataset.transitioning = focus && !reduce.matches && previous !== next ? 'true' : 'false';
   viewButtons.filter(button => button.closest('nav')).forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === view)));
-  setStackView(view, !focus || reduce.matches);
-  const focusHeading = () => {
-    if (generation !== viewTransition) return;
-    if (workspace) workspace.dataset.transitioning = 'false';
+  arrangeContent(view, focus, () => {
     if (!focus) return;
     const heading = next.querySelector<HTMLElement>('h2');
     heading?.setAttribute('tabindex', '-1');
     heading?.focus({ preventScroll: true });
-  };
-  const enter = () => {
-    if (generation !== viewTransition) return;
-    panels.forEach(panel => { panel.hidden = panel !== next; panel.inert = false; });
-    if (workspace && focus && previous !== next) workspace.scrollTop = 0;
-    if (focus && !reduce.matches && previous !== next) gsap.fromTo(next, { opacity: 0, x: -42, y: 12, scale: .985, transformOrigin: '0% 50%' }, { opacity: 1, x: 0, y: 0, scale: 1, duration: .56, ease: 'power3.out', clearProps: 'transform,opacity,transformOrigin', onComplete: focusHeading });
-    else { gsap.set(next, { clearProps: 'transform,opacity' }); focusHeading(); }
-  };
-  if (focus && !reduce.matches && previous && previous !== next) {
-    previous.inert = true;
-    gsap.to(previous, { opacity: 0, x: -16, duration: .14, ease: 'power2.in', onComplete: enter });
-  } else {
-    enter();
-  }
+  });
 }
 
 function showProject(index: number) {
@@ -94,6 +72,13 @@ viewButtons.forEach(button => button.addEventListener('click', () => {
   savePosition();
 }));
 projectButtons.forEach((button, i) => button.addEventListener('click', () => { showProject(i); savePosition(); }));
+document.querySelectorAll<HTMLAnchorElement>('.work-image').forEach(link => link.addEventListener('click', event => {
+  if (selectedView === 'work' || event.ctrlKey || event.metaKey) return;
+  event.preventDefault();
+  showView('work', true);
+  history.replaceState(null, '', '#work');
+  savePosition();
+}));
 
 const serviceTabs = [...document.querySelectorAll<HTMLButtonElement>('[data-service-tab]')];
 function showService(id: string, animate = false) {
@@ -106,7 +91,11 @@ function showService(id: string, animate = false) {
   });
 }
 serviceTabs.forEach((tab, index) => {
-  tab.addEventListener('click', () => { showService(tab.dataset.serviceTab ?? 'design', true); savePosition(); });
+  tab.addEventListener('click', () => {
+    showService(tab.dataset.serviceTab ?? 'design', true);
+    if (selectedView !== 'services') { showView('services', true); history.replaceState(null, '', '#services'); }
+    savePosition();
+  });
   tab.addEventListener('keydown', event => {
     const direction = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
     if (!direction && event.key !== 'Home' && event.key !== 'End') return;
@@ -151,8 +140,8 @@ function drawErase(progress: number) {
 function savePosition(force = true) {
   if (!ready || !force && performance.now() - lastSaved < 200) return;
   lastSaved = performance.now();
-  const workspace = document.querySelector<HTMLElement>('.stack-workspace');
-  const sheet = panels.find(panel => panel.dataset.panel === selectedView)?.querySelector<HTMLElement>('.stack-sheet');
+  const workspace = document.querySelector<HTMLElement>('.content-workspace');
+  const sheet = panels.find(panel => panel.dataset.panel === selectedView)?.querySelector<HTMLElement>('.tile-inner');
   try { sessionStorage.setItem(storageKey, JSON.stringify({ time: timeline?.time() ?? 18.3, view: selectedView, project: selectedProject, service: selectedService, reading: { workspace: workspace?.scrollTop ?? 0, sheet: sheet?.scrollTop ?? 0 } })); } catch { /* Storage can be unavailable in private browsing. */ }
 }
 
@@ -160,7 +149,6 @@ function updateScene() {
   if (!scene || !realSite) return;
   const time = reduce.matches ? 18.3 : timeline?.time() ?? 0;
   const complete = time >= 18.29;
-  if (time >= 8.7) warmStack();
   const phase = complete ? 'complete' : time < 1.8 ? 'default' : time < 3.8 ? 'first-line' : time < 6 ? 'second-line' : time < 8.7 ? 'statement' : time < 14.5 ? 'annotations' : time < 16.85 ? 'erase' : 'reveal';
   scene.dataset.phase = phase;
   scene.dataset.playback = complete ? 'complete' : playbackMode;
@@ -206,7 +194,7 @@ function buildTimeline() {
   canvas.height = height * dpr;
   canvas.getContext('2d')?.scale(dpr, dpr);
   layoutAnnotations(scene);
-  setStackView(selectedView, true);
+  arrangeContent(selectedView);
   if (reduce.matches) { gsap.set(realSite, { '--reveal-edge': `${height + 72}px` }); updateScene(); return; }
   eraseState.progress = 0;
   drawErase(0);
@@ -288,8 +276,8 @@ void Promise.all([document.fonts.ready, pageLoaded]).then(() => {
     if (saved.view) showView(saved.view === 'brief' ? 'home' : saved.view);
     if (Number.isInteger(saved.project) && saved.project! >= 0 && saved.project! < projects.length) showProject(saved.project!);
     if (saved.service) showService(saved.service);
-    const workspace = document.querySelector<HTMLElement>('.stack-workspace');
-    const sheet = panels.find(panel => panel.dataset.panel === selectedView)?.querySelector<HTMLElement>('.stack-sheet');
+    const workspace = document.querySelector<HTMLElement>('.content-workspace');
+    const sheet = panels.find(panel => panel.dataset.panel === selectedView)?.querySelector<HTMLElement>('.tile-inner');
     if (workspace && Number.isFinite(saved.reading?.workspace)) workspace.scrollTop = saved.reading?.workspace ?? 0;
     if (sheet && Number.isFinite(saved.reading?.sheet)) sheet.scrollTop = saved.reading?.sheet ?? 0;
     if (Number.isFinite(saved.time)) timeline?.seek(gsap.utils.clamp(0, timeline.duration(), saved.time ?? 0), false);
@@ -321,7 +309,7 @@ document.addEventListener('visibilitychange', () => {
   } else if (pausedForVisibility) { pausedForVisibility = false; (fastPlayback ?? timeline)?.resume(); }
 });
 window.addEventListener('pagehide', () => savePosition());
-document.querySelectorAll<HTMLElement>('.stack-workspace,.stack-sheet').forEach(element => element.addEventListener('scroll', () => savePosition(false), { passive: true }));
+document.querySelectorAll<HTMLElement>('.content-workspace,.tile-inner').forEach(element => element.addEventListener('scroll', () => savePosition(false), { passive: true }));
 window.addEventListener('hashchange', () => {
   const view = location.hash.slice(1);
   if (['home', 'services', 'work', 'studio', 'contact'].includes(view)) { goToEnd(); showView(view); }
