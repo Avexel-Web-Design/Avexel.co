@@ -102,6 +102,21 @@ try {
       assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), to);
       assert.equal(await page.locator('.content-workspace').getAttribute('aria-busy'), null);
     }
+    await setup('services');
+    for (const service of ['development', 'maintenance', 'design']) {
+      const start = await page.locator('[data-service-tab][aria-selected="true"] .service-active-rule').boundingBox();
+      await page.locator(`[data-service-tab="${service}"]`).dispatchEvent('click');
+      await running(); await seek(0);
+      const end = await page.locator('[data-service-tab][aria-selected="true"] .service-active-rule').boundingBox();
+      const first = (await groups())['avx-service-indicator'];
+      assert.ok(first && Math.abs(first.x - start.x) <= 1.01, 'The shared tab underline must start at the previous selection');
+      await seek(180);
+      const middle = (await groups())['avx-service-indicator'];
+      assert.ok(Math.abs(middle.x - (start.x + end.x) / 2) <= 1.01, 'The tab underline must slide continuously through the midpoint');
+      assert.ok(Math.abs(middle.width - (start.width + end.width) / 2) <= 1.01, 'The tab underline must resize continuously with its label');
+      await finish();
+      assert.equal(await page.locator(`[data-service-tab="${service}"]`).getAttribute('aria-selected'), 'true');
+    }
     await setup('home');
     await navigate('services'); await running(); await seek(260);
     await navigate('work'); await navigate('studio');

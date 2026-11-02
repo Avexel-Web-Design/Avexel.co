@@ -49,8 +49,10 @@ function nameContent() {
   name('service-rule', '.service-tabs');
   for (const id of ['design', 'development', 'maintenance']) {
     name(`service-${id}`, `[data-service-tab="${id}"] .service-label`);
-    name(`service-${id}-rule`, `[data-service-tab="${id}"] .service-active-rule`);
   }
+  // One visual identity follows the active tab, so its underline travels
+  // between labels instead of fading one line out and another line in.
+  name('service-indicator', '[data-service-tab][aria-selected="true"] .service-active-rule');
   name('service-copy', '[data-service-panel]:not([hidden])');
   name('questions-border', '.service-questions');
   [1, 2, 3].forEach(index => name(`question-${index}`, `.service-questions details:nth-child(${index})`));
