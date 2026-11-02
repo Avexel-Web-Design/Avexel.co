@@ -37,8 +37,19 @@ function verify(before, after, workspace, lane) {
       if (position) assert.ok(stop.offset >= track[position - 1].offset - 1e-9, 'Keyframes never run backwards');
     });
   });
-  // Cards keep real card size and take turns, so a dense sweep of every frame
-  // must stay free of overlaps as well as each individual leg.
+  let concurrent = 0;
+  const travel = plan.tracks[0].filter(stop => stop.offset > plan.settle && stop.offset < plan.open);
+  for (let step = 1; step < travel.length; step++) {
+    const first = travel[step - 1].offset, last = travel[step].offset;
+    const before = plan.tracks.map(track => sample(track, first));
+    const after = plan.tracks.map(track => sample(track, last));
+    concurrent = Math.max(concurrent, before.filter((box, index) => Math.hypot(box.x - after[index].x, box.y - after[index].y) > .01).length);
+    for (let a = 0; a < before.length; a++) for (let b = a + 1; b < before.length; b++) {
+      assert.equal(pathsOverlap(before[a], after[a], before[b], after[b]), false, 'Joint paths stay clear between keyframes too');
+    }
+  }
+  assert.ok(concurrent >= 2, 'Cards must travel together, not one at a time');
+  // Also cover the folding and unfolding phases with a dense frame sweep.
   for (let step = 0; step <= 600; step++) {
     const time = step / 600;
     const boxes = plan.tracks.map(track => sample(track, time));

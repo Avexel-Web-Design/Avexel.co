@@ -99,8 +99,8 @@ function sequence(starts: CardBox[], goals: CardBox[], travel: { width: number; 
  * leaving its open state folds down to card size, inside its own old footprint,
  * at the corner nearest where it is going. The card that is opening waits
  * inside a corner of its new frame and grows once the others have cleared it.
- * Between those two beats the cards take turns moving through free space, so
- * no card ever passes through another one. */
+ * Between those two beats a joint planner moves the cards together through
+ * free space. It checks swept rectangles, not just their waypoint positions. */
 export function planShuffle(before: CardBox[], after: CardBox[], workspace: CardBox, lane?: number): ShufflePlan | undefined {
   const leaving = stageOf(before);
   const entering = stageOf(after);
@@ -161,33 +161,12 @@ function build(starts: CardBox[], goals: CardBox[], moves: Move[], before: CardB
     { ...box, offset: 0, easing },
     { ...starts[index], offset: settle, easing: 'linear' },
   ]);
-  const total = moves.reduce((sum, move) => sum + Math.max(move.length, 1), 0);
-  const window = open - settle - .02;
-  let elapsed = 0;
-  for (const move of moves) {
-    const begin = settle + .01 + (elapsed / total) * window;
-    const span = (Math.max(move.length, 1) / total) * window;
-    const track = tracks[move.index];
-    const size = starts[move.index];
-    // Hold the folded size until this card's turn comes round; otherwise the
-    // interpolation would start drifting as soon as the previous card moved.
-    if (begin > settle + 1e-6) track.push({ ...size, offset: begin, easing: 'linear' });
-    const hold = track.length - 1;
-    let travelled = 0;
-    for (let index = 1; index < move.path.length; index++) {
-      travelled += distance(move.path[index - 1], move.path[index]);
-      track.push({
-        ...at(move.path[index], size.width, size.height),
-        offset: begin + (travelled / Math.max(move.length, .001)) * span,
-        easing: 'linear',
-      });
-    }
-    // A single straight move is eased across its whole length. A detour is
-    // linear between waypoints and only eases as it settles into the slot.
-    if (move.path.length === 2) track[hold].easing = easing;
-    else track[Math.max(hold, track.length - 2)].easing = easing;
-    elapsed += Math.max(move.length, 1);
-  }
+  const frames = together(starts, goals, moves);
+  frames.forEach((boxes, frame) => boxes.forEach((box, index) => {
+    // All cards use the same clock and interpolation within each joint step.
+    // Independent easing could make two safe swept paths collide in between.
+    tracks[index].push({ ...box, offset: settle + .01 + frame / Math.max(1, frames.length - 1) * (open - settle - .02), easing: 'linear' });
+  }));
   tracks.forEach((track, index) => {
     const goal = goals[index];
     const last = track[track.length - 1];
@@ -196,4 +175,85 @@ function build(starts: CardBox[], goals: CardBox[], moves: Move[], before: CardB
     track.push({ ...after[index], offset: 1, easing });
   });
   return tracks;
+}
+
+/** Search the joint progress of the four paths. Advancing multiple cards costs
+ * the same as advancing one, so the shortest choreography favours concurrent
+ * movement instead of reserving the whole workspace for one card at a time. */
+function together(starts: CardBox[], goals: CardBox[], moves: Move[]): CardBox[][] {
+  const paths = starts.map((box, index) => {
+    const move = moves.find(move => move.index === index);
+    if (!move) return [box];
+    const points = [box];
+    for (let leg = 1; leg < move.path.length; leg++) {
+      const first = move.path[leg - 1], last = move.path[leg];
+      const steps = Math.max(1, Math.ceil(distance(first, last) / Math.max(move.length / 12, 1)));
+      for (let step = 1; step <= steps; step++) points.push(at({
+        x: first.x + (last.x - first.x) * step / steps,
+        y: first.y + (last.y - first.y) * step / steps,
+      }, box.width, box.height));
+    }
+    points[points.length - 1] = goals[index];
+    return points;
+  });
+  interface State { progress: number[]; frames: number; previous?: State; }
+  const target = paths.map(path => path.length - 1);
+  const key = (progress: number[]) => progress.join(',');
+  const remaining = (state: State) => Math.max(...target.map((end, index) => end - state.progress[index]));
+  const score = (state: State) => state.frames + remaining(state);
+  const priority = (a: State, b: State) => score(b) - score(a) || remaining(b) - remaining(a);
+  const first: State = { progress: starts.map(() => 0), frames: 0 };
+  const queue = [first], visited = new Map([[key(first.progress), 0]]);
+  const masks = Array.from({ length: (1 << starts.length) - 1 }, (_, index) => index + 1)
+    .sort((a, b) => b.toString(2).replaceAll('0', '').length - a.toString(2).replaceAll('0', '').length);
+  while (queue.length) {
+    const current = queue.pop()!;
+    if (current.frames > visited.get(key(current.progress))!) continue;
+    if (!remaining(current)) {
+      const frames: CardBox[][] = [];
+      for (let state: State | undefined = current; state; state = state.previous) frames.unshift(state.progress.map((step, index) => paths[index][step]));
+      // Relax the joint path like an elastic band. This spreads each movement
+      // across the shared travel window instead of leaving cards parked until
+      // their next discrete search step. Every adjustment is checked on both
+      // adjoining swept segments, so rounded paths cannot cut through a card.
+      for (let pass = 0; pass < 100; pass++) {
+        for (let frame = 1; frame < frames.length - 1; frame++) {
+          for (let index = 0; index < starts.length; index++) {
+            const previous = frames[frame - 1][index], next = frames[frame + 1][index];
+            const original = frames[frame][index];
+            const candidate = { ...original, x: (previous.x + next.x) / 2, y: (previous.y + next.y) / 2 };
+            if (frames[frame].every((box, other) => other === index || (
+              !pathsOverlap(previous, candidate, frames[frame - 1][other], box, 2)
+              && !pathsOverlap(candidate, next, box, frames[frame + 1][other], 2)
+            ))) frames[frame][index] = candidate;
+          }
+        }
+      }
+      return frames;
+    }
+    for (const mask of masks) {
+      const progress = current.progress.map((step, index) => step + ((mask & (1 << index)) && step < target[index] ? 1 : 0));
+      const nextKey = key(progress), frames = current.frames + 1;
+      if ((visited.get(nextKey) ?? Infinity) <= frames) continue;
+      const before = current.progress.map((step, index) => paths[index][step]);
+      const after = progress.map((step, index) => paths[index][step]);
+      let clear = true;
+      for (let a = 0; a < starts.length && clear; a++) for (let b = a + 1; b < starts.length; b++) {
+        if (pathsOverlap(before[a], after[a], before[b], after[b], 2)) { clear = false; break; }
+      }
+      if (!clear) continue;
+      visited.set(nextKey, frames);
+      const state = { progress, frames, previous: current };
+      let low = 0, high = queue.length;
+      while (low < high) {
+        const middle = (low + high) >>> 1;
+        if (priority(queue[middle], state) < 0) low = middle + 1;
+        else high = middle;
+      }
+      queue.splice(low, 0, state);
+    }
+  }
+  // The original visibility routes are feasible in sequence by construction.
+  // Reaching this branch indicates a planner invariant has been broken.
+  throw new Error('No joint card choreography found');
 }
