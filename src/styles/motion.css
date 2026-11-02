@@ -36,7 +36,7 @@
   background: var(--studio-glass);
   border: 1px solid #d5b9ef29;
   border-radius: 20px;
-  box-shadow: inset 0 1px 0 #f0dfff0c;
+  box-shadow: var(--studio-surface-light);
   backdrop-filter: blur(24px);
 }
 :root.studio-motion::view-transition-group(avx-contact-glass) { background: var(--studio-contact-glass); }

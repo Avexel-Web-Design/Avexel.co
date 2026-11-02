@@ -329,6 +329,41 @@ try {
   assert.equal(await bootPage.locator('.scene').getAttribute('data-phase'), 'complete');
   assert.equal(await bootPage.locator('.content-workspace').getAttribute('data-content-view'), 'services');
   await bootPage.close();
+  for (const view of ['home', 'studio', 'work', 'contact']) {
+    const hoverPage = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await hoverPage.goto(`${base}/#${view}`);
+    await hoverPage.locator('.scroll-story[data-ready=true]').waitFor();
+    const arrows = hoverPage.locator('.studio-shell .icon[data-icon="arrowUpRight"]');
+    for (const arrow of await arrows.all()) {
+      if (!await arrow.isVisible()) continue;
+      const target = arrow.locator('xpath=ancestor::*[self::a or self::button][1]');
+      if (!await target.count() || await target.isDisabled()) continue;
+      await hoverPage.mouse.move(0, 0);
+      await target.hover();
+      const rotation = await arrow.evaluate(async element => {
+        await new Promise(requestAnimationFrame);
+        const motion = element.getAnimations().find(animation => animation instanceof CSSTransition && animation.transitionProperty === 'transform');
+        if (!motion) return null;
+        motion.pause(); motion.currentTime = Number(motion.effect.getTiming().duration) / 2;
+        const angle = () => { const matrix = new DOMMatrix(getComputedStyle(element).transform); return Math.atan2(matrix.b, matrix.a) * 180 / Math.PI; };
+        const middle = angle(); motion.finish();
+        return { middle, end: angle() };
+      });
+      assert.ok(rotation && rotation.middle > 0 && rotation.middle < 45, `${view}: diagonal arrows must rotate through intermediate angles, not teleport`);
+      assert.ok(Math.abs(rotation.end - 45) < .01, `${view}: hovered arrow should point right`);
+      await hoverPage.mouse.move(0, 0);
+      await arrow.evaluate(async element => {
+        await new Promise(requestAnimationFrame);
+        element.getAnimations().forEach(animation => animation.finish());
+      });
+    }
+    if (view === 'home') {
+      for (const selector of ['.identity-wordmark > span', '.service-label']) {
+        assert.equal(await hoverPage.locator(selector).first().evaluate(element => getComputedStyle(element).backgroundImage), 'none', 'Brand typography should glow without gradients');
+      }
+    }
+    await hoverPage.close();
+  }
   assert.deepEqual(errors, []);
   console.log('Passed: persistent logo/content rearrangement without a navbar, every composition at 320–2000px, no clipped summaries, full-aspect project previews, upward Replay wipe, guarded refresh restoration with delayed JavaScript, autoplay/Skip, service tabs, FAQs, contact success/error, reduced motion, and client guide.');
 } finally { await browser.close(); }
