@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import wordmark from '../assets/avexel-wordmark.svg?raw';
 interface Project { name: string; type: string; image: string; url: string; description: string; }
 interface Props { projects: Project[]; }
 const { projects } = Astro.props;
@@ -13,7 +14,7 @@ const services = [
 <div class="real-site studio-shell">
   <div class="content-workspace" data-content-view="home" data-transitioning="false">
     <section class="identity-tile" data-panel="home" data-layout-piece aria-labelledby="home-title">
-      <h2 id="home-title"><button type="button" class="identity-wordmark" data-view="home" aria-label="Avexel home"><img src="/Logo-studio.png" width="500" height="500" alt="" /><span>AVEXEL</span></button></h2>
+      <h2 id="home-title"><button type="button" class="identity-wordmark" data-view="home" aria-label="Avexel home"><img src="/Logo-studio.png" width="500" height="500" alt="" /><span aria-hidden="true" set:html={wordmark} /></button></h2>
       <div class="identity-description"><p>Web design, development<br />& maintenance.</p><p>Work directly with the people<br />building your website.</p></div>
     </section>
 

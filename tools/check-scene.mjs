@@ -372,6 +372,8 @@ try {
       const materials = await hoverPage.locator('.tile-material').evaluateAll(elements => elements.map(element => getComputedStyle(element).backgroundColor));
       assert.equal(new Set(materials).size, 1, 'Every card, including Contact, must use the same glass background');
       assert.equal(await hoverPage.locator('.identity-wordmark > span').evaluate(element => getComputedStyle(element).color), 'rgb(197, 138, 255)', 'The main brand purple must be #C58AFF');
+      assert.ok(await hoverPage.locator('.identity-wordmark > span > svg').isVisible(), 'The wordmark must use the actual CAD letterforms, not a substituted font');
+      assert.equal(await hoverPage.locator('.identity-wordmark > span > svg').getAttribute('viewBox'), '0 0 4435.20393 1000', 'Preserve the exported sketch proportions');
       for (const selector of ['.identity-wordmark > span', '.service-label']) {
         assert.equal(await hoverPage.locator(selector).first().evaluate(element => getComputedStyle(element).backgroundImage), 'none', 'Brand typography should glow without gradients');
       }
