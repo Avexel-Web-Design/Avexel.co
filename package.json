@@ -37,6 +37,7 @@
     "build": "astro build",
     "lint": "oxlint",
     "test:browser": "node tools/check-scene.mjs",
+    "test:transitions": "node tools/check-transitions.mjs",
     "preview": "astro preview --host 0.0.0.0",
     "tunnel": "lt --port 4321 --local-host 127.0.0.1",
     "predeploy": "npm run build",

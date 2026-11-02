@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { layoutAnnotations } from './annotations';
-import { arrangeContent } from './content-layout';
+import { arrangeContent, morphContent } from './content-layout';
 
 const story = document.querySelector<HTMLElement>('.scroll-story');
 const scene = document.querySelector<HTMLElement>('.scene');
@@ -53,11 +53,12 @@ function showView(view: string, focus = false) {
 }
 
 function showProject(index: number) {
+  if (selectedProject === index) return;
   selectedProject = index;
-  projects.forEach((project, i) => { project.hidden = i !== index; });
-  projectButtons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
-  const project = projects[index];
-  if (ready && project && !reduce.matches) gsap.fromTo(project, { opacity: .3, y: 8 }, { opacity: 1, y: 0, duration: .3, ease: 'power2.out', clearProps: 'transform,opacity' });
+  morphContent(() => {
+    projects.forEach((project, i) => { project.hidden = i !== index; });
+    projectButtons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
+  }, ready, undefined, .36);
 }
 
 viewButtons.forEach(button => button.addEventListener('click', () => {
@@ -81,14 +82,17 @@ document.querySelectorAll<HTMLAnchorElement>('.work-image').forEach(link => link
 }));
 
 const serviceTabs = [...document.querySelectorAll<HTMLButtonElement>('[data-service-tab]')];
-function showService(id: string, animate = false) {
+function showService(id: string, animate = false, focus = false) {
   if (!serviceTabs.some(tab => tab.dataset.serviceTab === id)) return;
+  if (selectedService === id) return;
   selectedService = id;
-  serviceTabs.forEach(tab => { const active = tab.dataset.serviceTab === id; tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
-  document.querySelectorAll<HTMLElement>('[data-service-panel]').forEach(panel => {
-    panel.hidden = panel.dataset.servicePanel !== id;
-    if (!panel.hidden && animate && !reduce.matches) gsap.fromTo(panel, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: .25, clearProps: 'opacity,transform' });
-  });
+  const update = () => {
+    serviceTabs.forEach(tab => { const active = tab.dataset.serviceTab === id; tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
+    realSite?.querySelectorAll<HTMLElement>('[data-service-panel]').forEach(panel => { panel.hidden = panel.dataset.servicePanel !== id; });
+    if (focus) serviceTabs.find(tab => tab.dataset.serviceTab === id)?.focus({ preventScroll: true });
+  };
+  if (animate && selectedView === 'services') morphContent(update, true, undefined, .36);
+  else update();
 }
 serviceTabs.forEach((tab, index) => {
   tab.addEventListener('click', () => {
@@ -101,7 +105,14 @@ serviceTabs.forEach((tab, index) => {
     if (!direction && event.key !== 'Home' && event.key !== 'End') return;
     event.preventDefault();
     const next = event.key === 'Home' ? 0 : event.key === 'End' ? serviceTabs.length - 1 : (index + direction + serviceTabs.length) % serviceTabs.length;
-    showService(serviceTabs[next].dataset.serviceTab ?? 'design', true); serviceTabs[next].focus(); savePosition();
+    showService(serviceTabs[next].dataset.serviceTab ?? 'design', true, true); savePosition();
+  });
+});
+
+realSite?.querySelectorAll<HTMLDetailsElement>('.service-questions details').forEach(details => {
+  details.querySelector('summary')?.addEventListener('click', event => {
+    event.preventDefault();
+    morphContent(() => { details.open = !details.open; }, true, undefined, .36);
   });
 });
 

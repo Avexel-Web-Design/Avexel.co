@@ -19,8 +19,8 @@ const services = [
 
     <section class="content-tile services-tile" data-panel="services" data-layout-piece aria-labelledby="services-title">
       <div class="tile-material glass-surface" aria-hidden="true"></div>
-      <div class="tile-inner"><header class="tile-heading"><h2 id="services-title"><button type="button" data-view="services">Services <Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Services and return home"><Icon name="plus" /></button></header>
-        <div class="service-tabs" role="tablist" aria-label="Services">{services.map((service, index) => <button type="button" role="tab" id={`service-tab-${service.id}`} aria-controls={`service-${service.id}`} aria-selected={index === 0} tabindex={index === 0 ? 0 : -1} data-service-tab={service.id}>{service.label}</button>)}</div>
+      <div class="tile-inner"><header class="tile-heading"><h2 id="services-title"><button type="button" data-view="services"><span class="tile-label">Services</span><Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Services and return home" disabled aria-hidden="true"><Icon name="plus" /></button></header>
+        <div class="service-tabs" role="tablist" aria-label="Services">{services.map((service, index) => <button type="button" role="tab" id={`service-tab-${service.id}`} aria-controls={`service-${service.id}`} aria-selected={index === 0} tabindex={index === 0 ? 0 : -1} data-service-tab={service.id}><span class="service-label">{service.label}</span><span class="service-active-rule" aria-hidden="true"></span></button>)}</div>
         <div class="tile-detail" data-tile-detail hidden>
         {services.map((service, index) => <article class="service-content" role="tabpanel" id={`service-${service.id}`} aria-labelledby={`service-tab-${service.id}`} data-service-panel={service.id} hidden={index !== 0}><h3>{service.title}</h3><p>{service.description}</p><p class="service-detail">{service.detail}</p></article>)}
         <div class="service-questions"><details><summary>How does a project run?<Icon name="plus" /></summary><p>We discuss what you need and agree on a scope and quote. After you approve the design, we build, test, and launch the site with you.</p></details><details><summary>Who owns the website?<Icon name="plus" /></summary><p>You own the code and content. You can choose where to host it and who maintains it.</p></details><details><summary>What does it cost?<Icon name="plus" /></summary><p>We quote for the pages, features, and integrations you need. Hosting, domain registration, and third-party services are priced separately.</p></details></div>
@@ -30,7 +30,7 @@ const services = [
 
     <section class="content-tile studio-tile" data-panel="studio" data-layout-piece aria-labelledby="studio-title">
       <div class="tile-material glass-surface" aria-hidden="true"></div>
-      <div class="tile-inner"><header class="tile-heading"><h2 id="studio-title"><button type="button" data-view="studio">Studio <Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Studio and return home"><Icon name="plus" /></button></header>
+      <div class="tile-inner"><header class="tile-heading"><h2 id="studio-title"><button type="button" data-view="studio"><span class="tile-label">Studio</span><Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Studio and return home" disabled aria-hidden="true"><Icon name="plus" /></button></header>
         <div class="studio-preview"><img src="/baywatchLogo.webp" width="72" height="72" alt="Baywatch Robotics" /><p class="studio-introduction">A student-led studio<br />in Harbor Springs.</p></div>
         <div class="tile-detail" data-tile-detail hidden>
         <p>Avexel projects help fund Baywatch Robotics and hands-on STEM education. Clients work directly with the developers building their website.</p><p>We agree on the scope and cost before development begins. You own the finished code and content.</p>
@@ -41,7 +41,7 @@ const services = [
 
     <section class="content-tile work-tile" data-panel="work" data-layout-piece aria-labelledby="work-title">
       <div class="tile-material glass-surface" aria-hidden="true"></div>
-      <div class="tile-inner"><header class="tile-heading"><h2 id="work-title"><button type="button" data-view="work">Work <Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Work and return home"><Icon name="plus" /></button></header>
+      <div class="tile-inner"><header class="tile-heading"><h2 id="work-title"><button type="button" data-view="work"><span class="tile-label">Work</span><Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Work and return home" disabled aria-hidden="true"><Icon name="plus" /></button></header>
         <div class="tile-detail" data-tile-detail hidden>
         <div class="work-choices" role="group" aria-label="Select a project">{projects.map((project, index) => <button type="button" data-select-project={index} aria-pressed={index === 0}>{project.name}</button>)}</div>
         </div>
@@ -51,7 +51,7 @@ const services = [
 
     <section class="content-tile contact-tile" data-panel="contact" data-layout-piece aria-labelledby="contact-title">
       <div class="tile-material glass-surface" aria-hidden="true"></div>
-      <div class="tile-inner"><header class="tile-heading"><h2 id="contact-title"><button type="button" data-view="contact">Contact <Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Contact and return home"><Icon name="plus" /></button></header>
+      <div class="tile-inner"><header class="tile-heading"><h2 id="contact-title"><button type="button" data-view="contact"><span class="tile-label">Contact</span><Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Contact and return home" disabled aria-hidden="true"><Icon name="plus" /></button></header>
         <div class="contact-methods"><a href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a><a href="tel:+12313738360">(231) 373-8360</a></div>
         <div class="tile-detail" data-tile-detail hidden><p class="contact-instructions">Describe what you need and your timeline. If you have an existing site, include the URL.</p>
         <form class="inquiry-form" action="https://formspree.io/f/xvgkwonw" method="POST" data-contact-form>
