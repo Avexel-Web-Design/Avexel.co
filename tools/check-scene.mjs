@@ -292,6 +292,12 @@ try {
         }
       }
       if (view === 'contact') {
+        if (width >= 768) assert.ok(await page.locator('.studio-preview').isVisible(), 'The collapsed Studio summary must remain visible beside Contact');
+        const borders = await page.locator('.inquiry-submit').evaluate(element => {
+          const style = getComputedStyle(element);
+          return ['Top', 'Right', 'Bottom', 'Left'].map(side => `${style[`border${side}Width`]} ${style[`border${side}Style`]} ${style[`border${side}Color`]}`);
+        });
+        assert.equal(new Set(borders).size, 1, 'Send message must have the same border on every edge');
         await page.locator('#contact-service').click();
         const menu = await page.locator('[role="listbox"]').boundingBox();
         const card = await page.locator('.contact-tile').boundingBox();

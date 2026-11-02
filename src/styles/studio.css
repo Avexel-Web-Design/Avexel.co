@@ -53,7 +53,7 @@ html[data-motion-engine=fade] .content-workspace[data-transitioning=true] * { po
 .services-tile:not([data-expanded=true]) .service-tabs button { flex-shrink: 0; min-height: 0; padding: 0; font-size: clamp(30px,min(3.4vw,13cqh),52px); line-height: 1.15; letter-spacing: -.04em; color: #d8b6f2; text-shadow: var(--studio-glow); }
 .services-tile:not([data-expanded=true]) .service-tabs button:last-child { color: #a68bbd; }
 .services-tile:not([data-expanded=true]) .service-tabs button:hover { color: #f1dcff; }
-.services-tile:not([data-expanded=true]) .service-active-rule { opacity: 0; }
+.services-tile:not([data-expanded=true]) .service-active-rule { display: none; opacity: 0; }
 .studio-preview { display: flex; align-items: center; gap: 18px; margin-top: 22px; }
 .studio-preview p { font-size: 14px; line-height: 1.65; }
 .work-tile .tile-inner { display: flex; flex-direction: column; }
@@ -86,7 +86,15 @@ html[data-motion-engine=fade] .content-workspace[data-transitioning=true] * { po
 .content-workspace[data-content-view=studio] .work-tile,.content-workspace[data-content-view=contact] .work-tile { grid-column: 1 / 5; grid-row: 4 / 6; }
 .content-workspace[data-content-view=studio] .contact-tile { grid-column: 1 / 5; grid-row: 6; }
 .content-workspace[data-content-view=contact] .studio-tile { grid-column: 1 / 5; grid-row: 6; }
-.content-workspace[data-content-view=contact] .studio-preview { display: none; }
+@media (min-width:768px) {
+  /* Keep Work's height, and share the remaining rail evenly between Services
+     and Studio so both collapsed summaries have room beside Contact. */
+  .content-workspace[data-content-view=contact] { grid-template-rows: 56px repeat(10,minmax(0,1fr)); }
+  .content-workspace[data-content-view=contact] .contact-tile { grid-row: 2 / 12; }
+  .content-workspace[data-content-view=contact] .services-tile { grid-row: 2 / 5; }
+  .content-workspace[data-content-view=contact] .work-tile { grid-row: 5 / 9; }
+  .content-workspace[data-content-view=contact] .studio-tile { grid-row: 9 / 12; }
+}
 .content-workspace[data-content-view=work] .work-tile { grid-column: 1 / 10; grid-row: 2 / 7; }
 .content-workspace[data-content-view=work] .services-tile { grid-column: 10 / 13; grid-row: 2 / 4; }
 .content-workspace[data-content-view=work] .studio-tile { grid-column: 10 / 13; grid-row: 4 / 6; }
@@ -311,8 +319,8 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
 .work-description h3 { color: var(--studio-purple); font-weight: 500; letter-spacing: -.03em; text-shadow: var(--studio-glow); }
 .work-choices button:hover { color: #e9ceff; text-shadow: var(--studio-glow); }
 .work-choices button[aria-pressed=true] { color: var(--studio-purple); text-shadow: var(--studio-glow-soft); }
-.inquiry-submit { font-size: 15px; font-weight: 550; background: var(--studio-purple); box-shadow: 0 0 12px #c58aff90,0 0 36px #c58aff60,0 0 64px #c58aff30,inset 0 1px 0 #ffffff60; }
-.inquiry-submit:hover { background: #d5aaff; box-shadow: 0 0 16px #c58affb3,0 0 42px #c58aff80,0 0 72px #c58aff40; }
+.inquiry-submit { font-size: 15px; font-weight: 550; background: var(--studio-purple); box-shadow: 0 0 12px #c58aff90,0 0 36px #c58aff60,0 0 64px #c58aff30,inset 0 0 0 1px #ffffff60; }
+.inquiry-submit:hover { background: #d5aaff; box-shadow: 0 0 16px #c58affb3,0 0 42px #c58aff80,0 0 72px #c58aff40,inset 0 0 0 1px #ffffff60; }
 .inquiry-form input:focus,.inquiry-form select:focus,.inquiry-form textarea:focus { background: #140c1d; border-color: var(--studio-purple); box-shadow: 0 0 16px #c58aff50; }
 .work-image > span { color: #e9caff; text-shadow: var(--studio-glow); border-top: 1px solid #d7a5ff24; border-left: 1px solid #d7a5ff24; }
 .tile-close { box-shadow: inset 0 1px 0 #ffffff08; }
@@ -445,6 +453,10 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
   .studio-people p { margin: 0; }
   .contact-tile:not([data-expanded=true]) .tile-inner { padding-block: 12px; }
   .contact-tile[data-expanded=true] .tile-inner { padding-block: 14px; }
+  .content-workspace[data-content-view=contact] .services-tile .tile-inner { padding-block: 8px; }
+  .content-workspace[data-content-view=contact] .services-tile .service-tabs { padding-top: 8px; gap: 0; }
+  .content-workspace[data-content-view=contact] .studio-tile .tile-inner { padding-block: 12px; }
+  .content-workspace[data-content-view=contact] .studio-preview { margin-top: 10px; }
   .inquiry-form .field { margin-bottom: 8px; }
 }
 @media (max-height:740px) and (max-width:350px) {
