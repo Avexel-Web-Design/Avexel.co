@@ -6,7 +6,6 @@ const story = document.querySelector<HTMLElement>('.scroll-story');
 const scene = document.querySelector<HTMLElement>('.scene');
 const realSite = document.querySelector<HTMLElement>('.real-site');
 const canvas = document.querySelector<HTMLCanvasElement>('.eraser-canvas');
-const chapter = document.querySelector<HTMLElement>('.story-chapter');
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 const panels = [...document.querySelectorAll<HTMLElement>('[data-panel]')];
 const viewButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-view]')];
@@ -16,6 +15,8 @@ const storageKey = 'avexel-autoplay-v1';
 const eraseState = { progress: 0 };
 let timeline: gsap.core.Timeline | undefined;
 let fastPlayback: gsap.core.Tween | undefined;
+let replayWipe: gsap.core.Tween | undefined;
+let replaying = false;
 let playbackMode = 'playing';
 let width = 0;
 let height = 0;
@@ -43,7 +44,6 @@ function showView(view: string, focus = false) {
   if (!panels.some(panel => panel.dataset.panel === view)) return;
   const next = panels.find(panel => panel.dataset.panel === view)!;
   selectedView = view;
-  viewButtons.filter(button => button.closest('nav')).forEach(button => button.setAttribute('aria-pressed', String(button.dataset.view === view)));
   arrangeContent(view, focus, () => {
     if (!focus) return;
     const heading = next.querySelector<HTMLElement>('h2');
@@ -146,7 +146,7 @@ function savePosition(force = true) {
 }
 
 function updateScene() {
-  if (!scene || !realSite) return;
+  if (!scene || !realSite || replaying) return;
   const time = reduce.matches ? 18.3 : timeline?.time() ?? 0;
   const complete = time >= 18.29;
   const phase = complete ? 'complete' : time < 1.8 ? 'default' : time < 3.8 ? 'first-line' : time < 6 ? 'second-line' : time < 8.7 ? 'statement' : time < 14.5 ? 'annotations' : time < 16.85 ? 'erase' : 'reveal';
@@ -158,8 +158,6 @@ function updateScene() {
   const controls = document.querySelector<HTMLElement>('.story-controls');
   if (demo) demo.inert = time >= 14.25;
   if (controls) controls.inert = time >= 14.25;
-  if (chapter) chapter.textContent = time < 1.8 ? 'THE DEFAULT' : time < 8.7 ? 'THE REALIZATION' : time < 14.5 ? 'THE TEARDOWN' : time < 16.85 ? 'A CLEAN SLATE' : 'A POINT OF VIEW';
-  gsap.set('.story-track span', { scaleX: time / 18.3 });
   savePosition(false);
 }
 
@@ -181,6 +179,7 @@ function mergeY(selector: string) {
 
 function buildTimeline() {
   if (!scene || !realSite || !canvas) return;
+  replayWipe?.progress(1).kill();
   const previousTime = timeline?.time() ?? 0;
   const resume = !timeline || Boolean((!timeline.paused() || fastPlayback?.isActive()) && previousTime < timeline.duration());
   fastPlayback?.kill();
@@ -246,25 +245,29 @@ function goToEnd(animate = false) {
 document.querySelectorAll('[data-skip]').forEach(button => button.addEventListener('click', () => goToEnd(true)));
 document.querySelectorAll('[data-replay]').forEach(button => button.addEventListener('click', event => {
   event.preventDefault();
-  if (!timeline || reduce.matches) return;
+  if (!timeline || !realSite || !scene || reduce.matches || replaying) return;
   fastPlayback?.kill();
   history.replaceState(null, '', location.pathname);
-  playbackMode = 'rewinding';
-  fastPlayback = timeline.tweenTo(0, { duration: Math.max(.45, timeline.progress() * 1.8), ease: 'none', onComplete: () => {
-    fastPlayback = undefined;
+  // Reset the intro underneath the still-visible studio, then wipe upwards.
+  timeline.pause(0, false);
+  replaying = true;
+  realSite.inert = true;
+  scene.dataset.phase = 'replay-wipe';
+  scene.dataset.playback = 'wiping';
+  document.querySelectorAll<HTMLElement>('.demo-page,.story-controls').forEach(element => { element.inert = true; });
+  replayWipe = gsap.fromTo(realSite, { '--reveal-edge': `${height + 72}px` }, { '--reveal-edge': '0px', duration: .85, ease: 'power2.inOut', onComplete: () => {
+    replayWipe = undefined;
+    replaying = false;
     playbackMode = 'playing';
     showView('home');
     timeline?.play(0);
+    updateScene();
     document.querySelector<HTMLButtonElement>('[data-skip]')?.focus({ preventScroll: true });
     savePosition();
   } });
 }));
 
-const pageLoaded = new Promise<void>(resolve => {
-  if (document.readyState === 'complete') resolve();
-  else window.addEventListener('load', () => resolve(), { once: true });
-});
-void Promise.all([document.fonts.ready, pageLoaded]).then(() => {
+void document.fonts.ready.then(() => {
   buildTimeline();
   const hashViews = new Map([['#contact', 'contact'], ['#studio', 'studio'], ['#about', 'studio'], ['#services', 'services'], ['#work', 'work'], ['#brief', 'home'], ['#home', 'home']]);
   const hashView = hashViews.get(location.hash);
@@ -285,6 +288,8 @@ void Promise.all([document.fonts.ready, pageLoaded]).then(() => {
   ready = true;
   if (story) story.dataset.ready = 'true';
   updateScene();
+  // The head boot guard stays in place until the saved frame and layout exist.
+  document.documentElement.removeAttribute('data-scene-boot');
   if (timeline && timeline.time() < timeline.duration()) {
     if (document.hidden) pausedForVisibility = true;
     else timeline.play();
@@ -303,10 +308,10 @@ window.addEventListener('resize', () => {
 reduce.addEventListener('change', () => { buildTimeline(); showView(selectedView); });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    pausedForVisibility = Boolean(fastPlayback?.isActive() || timeline?.isActive());
-    (fastPlayback ?? timeline)?.pause();
+    pausedForVisibility = Boolean(replayWipe?.isActive() || fastPlayback?.isActive() || timeline?.isActive());
+    (replayWipe ?? fastPlayback ?? timeline)?.pause();
     savePosition();
-  } else if (pausedForVisibility) { pausedForVisibility = false; (fastPlayback ?? timeline)?.resume(); }
+  } else if (pausedForVisibility) { pausedForVisibility = false; (replayWipe ?? fastPlayback ?? timeline)?.resume(); }
 });
 window.addEventListener('pagehide', () => savePosition());
 document.querySelectorAll<HTMLElement>('.content-workspace,.tile-inner').forEach(element => element.addEventListener('scroll', () => savePosition(false), { passive: true }));

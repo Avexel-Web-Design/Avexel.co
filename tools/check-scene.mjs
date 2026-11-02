@@ -7,10 +7,21 @@ const errors = [];
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   page.on('pageerror', error => errors.push(error.message));
+  await page.addInitScript(() => {
+    window.exposedUnreadyScene = false;
+    const inspect = () => {
+      const scene = document.querySelector('.scene');
+      if (document.querySelector('.scroll-story')?.dataset.ready === 'true') return;
+      if (scene && getComputedStyle(scene).visibility !== 'hidden') window.exposedUnreadyScene = true;
+      requestAnimationFrame(inspect);
+    };
+    requestAnimationFrame(inspect);
+  });
   const ready = () => page.locator('.scroll-story[data-ready="true"]').waitFor();
   const phase = name => page.locator(`.scene[data-phase="${name}"]`).waitFor({ timeout: 25000 });
   const time = () => page.locator('.scene').evaluate(element => Number(element.dataset.time));
-  const click = async locator => { await locator.click(); await page.waitForFunction(() => document.querySelector('.content-workspace')?.dataset.transitioning !== 'true'); await page.waitForTimeout(150); };
+  const control = (view, target = page) => target.locator(view === 'home' ? '.identity-wordmark' : `[data-panel="${view}"] .tile-heading h2 button`);
+  const click = async locator => { if (!await locator.isDisabled()) await locator.click(); await page.waitForFunction(() => document.querySelector('.content-workspace')?.dataset.transitioning !== 'true'); await page.waitForTimeout(150); };
 
   const verifyCallouts = async () => {
     assert.equal(await page.locator('.annotation-connectors,[data-connector],[data-note="title"]').count(), 0);
@@ -75,6 +86,7 @@ try {
   await ready();
   assert.equal(await page.locator('html').evaluate(element => getComputedStyle(element).scrollbarWidth), 'none');
   assert.equal(await page.locator('.eraser-head').count(), 0);
+  assert.equal(await page.locator('.story-chapter,.story-track,.studio-header,.studio-nav').count(), 0, 'Remove the intro progress strip and redundant studio navigation');
   await page.mouse.move(700, 400);
   await page.mouse.wheel(0, 12000);
   await page.waitForTimeout(250);
@@ -126,9 +138,13 @@ try {
   await page.screenshot({ path: '/tmp/opencode/scene-final-desktop.png' });
 
   await click(page.locator('.studio-footer [data-replay]'));
-  assert.equal(await page.locator('.scene').getAttribute('data-playback'), 'rewinding');
-  const reverseTime = await time(); await page.waitForTimeout(300);
-  assert.ok(await time() < reverseTime, 'Replay should rewind visibly');
+  assert.equal(await page.locator('.scene').getAttribute('data-playback'), 'wiping');
+  const wipeEdge = await page.locator('.real-site').evaluate(element => parseFloat(getComputedStyle(element).getPropertyValue('--reveal-edge')));
+  await page.waitForTimeout(300);
+  assert.ok(await page.locator('.real-site').evaluate(element => parseFloat(getComputedStyle(element).getPropertyValue('--reveal-edge'))) < wipeEdge, 'Replay should wipe upwards');
+  assert.equal(await time(), 0, 'Replay must reset the hidden intro rather than reverse its animations');
+  assert.equal(await page.locator('.demo-page').evaluate(element => getComputedStyle(element).opacity), '1');
+  assert.equal(await page.locator('.line-one').evaluate(element => getComputedStyle(element).opacity), '0');
   await phase('default');
   await click(page.locator('.story-controls [data-skip]'));
   assert.equal(await page.locator('.scene').getAttribute('data-playback'), 'fast-forward');
@@ -140,7 +156,7 @@ try {
   assert.ok(theme.blur.includes('blur') && theme.glow !== 'none', 'Use real glass blur and purple text glow');
   const homeBounds = await page.locator('[data-panel="services"]').boundingBox();
   await page.evaluate(() => { window.originalContentNodes = [...document.querySelectorAll('[data-layout-piece]')]; });
-  await page.locator('.studio-header nav [data-view="services"]').click();
+  await control('services').click();
   await page.waitForTimeout(150);
   assert.equal(await page.locator('.content-workspace').getAttribute('data-transitioning'), 'true', 'Content must visibly travel between compositions');
   assert.notEqual(await page.locator('.services-tile').evaluate(element => getComputedStyle(element).transform), 'none');
@@ -158,25 +174,26 @@ try {
   await page.keyboard.press('ArrowRight');
   assert.equal(await page.getByRole('tab', { name: 'Maintenance', exact: true }).getAttribute('aria-selected'), 'true');
   await page.reload(); await ready(); await phase('complete');
+  assert.equal(await page.evaluate(() => window.exposedUnreadyScene), false, 'No pre-restoration slop frame may be painted on reload');
   assert.ok(await page.locator('[data-service-panel="maintenance"]').isVisible(), 'Refresh should preserve the selected service');
   assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'services');
   await click(page.locator('[data-service-contact]'));
   assert.equal(await page.locator('#contact-service').inputValue(), 'Maintenance & updates', 'The service-specific contact action should carry its context into the form');
-  await click(page.locator('nav [data-view="home"]'));
+  await click(control('home'));
   await click(page.getByRole('tab', { name: 'Development', exact: true }));
   assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'services', 'Overview service labels should expand into the same live service tabs');
   assert.equal(await page.getByRole('tab', { name: 'Development', exact: true }).getAttribute('aria-selected'), 'true');
-  await click(page.locator('nav [data-view="home"]'));
+  await click(control('home'));
   await click(page.locator('[data-project]:not([hidden]) .work-image'));
   assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'work', 'The small screenshot should expand Work before offering the external site link');
-  for (const view of ['studio', 'contact', 'services', 'work']) await page.locator(`.studio-header nav [data-view="${view}"]`).click();
+  for (const view of ['studio', 'contact', 'services', 'work']) await control(view).dispatchEvent('click');
   await page.waitForFunction(() => document.querySelector('.content-workspace').dataset.transitioning === 'false');
   assert.equal(await page.locator('[data-panel="work"]').getAttribute('data-expanded'), 'true', 'Rapid navigation must settle on the last requested view');
-  await click(page.locator('.studio-header [data-view="work"]'));
+  await click(control('work'));
   for (let i = 0; i < 4; i++) { await click(page.locator(`[data-select-project="${i}"]`)); assert.ok(await page.locator(`[data-project="${i}"]`).isVisible()); }
-  await click(page.locator('nav [data-view="studio"]'));
+  await click(control('studio'));
   assert.ok(await page.getByText('Ryan Latimer').isVisible());
-  await click(page.locator('nav [data-view="contact"]'));
+  await click(control('contact'));
   await page.locator('#contact-name').fill('Browser verification');
   await page.locator('#contact-email').fill('test@example.com');
   await page.locator('#contact-service').selectOption('Web application');
@@ -185,8 +202,8 @@ try {
   await page.getByRole('button', { name: 'Send message' }).click();
   await page.getByText('Your message couldn’t be sent.', { exact: false }).waitFor();
   assert.ok((await page.locator('#contact-message').inputValue()).length > 0);
-  await click(page.locator('.studio-header nav [data-view="home"]'));
-  await click(page.locator('.studio-header nav [data-view="contact"]'));
+  await click(control('home'));
+  await click(control('contact'));
   assert.equal(await page.locator('#contact-message').inputValue(), 'Verifying the contact form without sending a real inquiry.');
   await page.unroute('https://formspree.io/**');
   let submission = '';
@@ -220,13 +237,21 @@ try {
     assert.equal(await page.locator('.studio-shell').innerText().then(text => /\b0[1-4]\b/.test(text)), false, 'The real site should not contain decorative numbered lists');
     if (width === 390) await page.screenshot({ path: '/tmp/opencode/scene-final-mobile.png' });
     for (const view of ['services', 'studio', 'work', 'contact']) {
-      await click(page.locator(`.studio-header nav [data-view="${view}"]`));
+      await click(control(view));
       await page.waitForTimeout(250);
       const fits = await page.locator(`[data-panel="${view}"] .tile-inner`).evaluate(element => {
         const rect = element.getBoundingClientRect();
         return rect.left >= -1 && rect.right <= innerWidth + 1 && element.scrollWidth <= element.clientWidth + 1;
       });
       assert.ok(fits, `${view} content must fit at ${width}×${height}`);
+      const clippedSummaries = await page.locator('.content-tile:not([data-expanded=true]) .tile-inner').evaluateAll(elements => elements.filter(element => element.scrollHeight > element.clientHeight + 1 || element.scrollWidth > element.clientWidth + 1).map(element => element.closest('[data-panel]').dataset.panel));
+      assert.deepEqual(clippedSummaries, [], `Collapsed content must have room at ${width}×${height} in ${view}`);
+      if (view === 'work') {
+        const preview = await page.locator('[data-project]:not([hidden]) .work-image').boundingBox();
+        assert.ok(Math.abs(preview.width / preview.height - 1.44) < .02, 'Expanded screenshots must keep their complete, readable aspect ratio');
+        assert.equal(await page.locator('[data-project]:not([hidden]) .work-image img').evaluate(image => getComputedStyle(image).objectFit), 'contain');
+      }
+      assert.equal(await page.locator('.identity-description').isVisible(), false, 'Both home descriptions disappear in expanded views');
       const overlaps = await page.locator('[data-layout-piece]').evaluateAll(elements => elements.flatMap((element, index) => {
         const a = element.getBoundingClientRect();
         return elements.slice(index + 1).filter(other => { const b = other.getBoundingClientRect(); return a.left < b.right - 1 && a.right > b.left + 1 && a.top < b.bottom - 1 && a.bottom > b.top + 1; }).map(other => `${element.dataset.panel}/${other.dataset.panel}`);
@@ -258,11 +283,25 @@ try {
   });
   await fallback.goto(`${base}/#home`);
   await fallback.locator('.scene[data-phase="complete"]').waitFor();
-  await fallback.locator('.studio-header nav [data-view="services"]').click();
+  await control('services', fallback).click();
   assert.ok(await fallback.locator('[data-panel="services"]').isVisible(), 'The complete website must still work without WebGL');
-  await fallback.locator('.studio-header nav [data-view="contact"]').click();
+  await control('contact', fallback).click();
   assert.ok(await fallback.locator('#contact-name').isVisible());
   await fallback.close();
+  const bootPage = await browser.newPage();
+  await bootPage.goto(`${base}/#services`);
+  await bootPage.locator('.scroll-story[data-ready=true]').waitFor();
+  let releaseScripts;
+  const scriptsHeld = new Promise(resolve => { releaseScripts = resolve; });
+  await bootPage.route('**/_astro/*.js', async route => { await scriptsHeld; await route.continue(); });
+  await bootPage.reload({ waitUntil: 'commit' });
+  await bootPage.locator('.scene').waitFor({ state: 'attached' });
+  assert.equal(await bootPage.locator('.scene').evaluate(element => getComputedStyle(element).visibility), 'hidden', 'The synchronous head guard must hide the default scene even while JavaScript is delayed');
+  releaseScripts();
+  await bootPage.locator('.scroll-story[data-ready=true]').waitFor();
+  assert.equal(await bootPage.locator('.scene').getAttribute('data-phase'), 'complete');
+  assert.equal(await bootPage.locator('.content-workspace').getAttribute('data-content-view'), 'services');
+  await bootPage.close();
   assert.deepEqual(errors, []);
-  console.log('Passed: persistent content nodes and rearrangement, every composition and Close action at 320–2000px, no overlaps, rapid navigation, unchanged autoplay/skip/replay, service tabs and contact context, FAQs, reading/view restoration, contact success/error, reduced motion, no WebGL, and client guide.');
+  console.log('Passed: persistent logo/content rearrangement without a navbar, every composition at 320–2000px, no clipped summaries, full-aspect project previews, upward Replay wipe, guarded refresh restoration with delayed JavaScript, autoplay/Skip, service tabs, FAQs, contact success/error, reduced motion, and client guide.');
 } finally { await browser.close(); }

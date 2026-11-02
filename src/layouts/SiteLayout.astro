@@ -18,6 +18,7 @@ const isHome = Astro.url.pathname === '/';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {immersive && <script is:inline>document.documentElement.dataset.sceneBoot = 'pending';</script>}
     <meta name="description" content={description} />
     <meta name="theme-color" content="#000000" />
     <meta name="color-scheme" content="dark" />
