@@ -51,10 +51,8 @@ const inside = ([x, y], polygon) => {
 };
 const holes = contours.filter(contour => contours.filter(other => other !== contour && inside(contour[0], other)).length % 2);
 const width = number((maxX - minX) * scale);
-// Counters are open, not black. A blurred copy of the counter sits behind the
-// letter so the glow pools inside it; the letter strokes cover any spill.
-const defs = holes.length ? '<defs><filter id="avexel-counter-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="60"/></filter><filter id="avexel-counter-bloom" x="-120%" y="-120%" width="340%" height="340%"><feGaussianBlur stdDeviation="140"/></filter></defs>' : '';
-const counterGlow = holes.length ? `<path d="${holes.map(path).join('')}" fill="currentColor" opacity=".55" filter="url(#avexel-counter-glow)"/><path d="${holes.map(path).join('')}" fill="currentColor" opacity=".12" filter="url(#avexel-counter-bloom)"/>` : '';
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} 1000" width="${width}" height="1000" fill="currentColor" aria-hidden="true">${defs}${counterGlow}<path fill-rule="evenodd" d="${contours.map(path).join('')}"/></svg>\n`;
+// Counters stay open so the letterform's own glow shows through them; they are
+// not opaque gaps like the logo. The rendered drop-shadow lights the inside.
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} 1000" width="${width}" height="1000" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="${contours.map(path).join('')}"/></svg>\n`;
 await writeFile('src/assets/avexel-wordmark.svg', svg);
 console.log(`Converted ${segments.length} CAD edges into ${contours.length} closed contours (${holes.length} counters); aspect ratio ${width / 1000}`);
