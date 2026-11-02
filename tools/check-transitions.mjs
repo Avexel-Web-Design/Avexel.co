@@ -66,6 +66,7 @@ try {
         return [[element.style.viewTransitionName, { ...rect.toJSON(), radius: parseFloat(getComputedStyle(element).borderTopLeftRadius) }]];
       })));
       await navigate(to); await running();
+      assert.equal(await page.locator('html').getAttribute('data-motion-routed'), 'true', `${width}px ${from} → ${to}: every section change needs a collision-free plan`);
       const clocks = await page.evaluate(() => {
         if (document.documentElement.dataset.motionRouted !== 'true') return [];
         return document.getAnimations().filter(animation => animation.effect?.pseudoElement?.startsWith('::view-transition')).map(animation => animation.startTime).filter(Number.isFinite);
@@ -163,7 +164,9 @@ try {
       const start = pngPixels(await page.screenshot({ scale: 'css', clip: preview }));
       const difference = regionDifference(before, start, { ...preview, x: 0, y: 0 });
       assert.ok(difference < 6, `${width}px ${from} → ${to}: the project image must begin on its resting frame (${difference.toFixed(2)})`);
-      await seek(duration / 2);
+      // The incoming frame only unfolds at the end of the shuffle, so sample
+      // late: by then the card is growing and the picture must grow with it.
+      await seek(duration * .9);
       const middle = await page.evaluate(() => {
         const style = getComputedStyle(document.documentElement, '::view-transition-group(avx-project-image)');
         return { width: parseFloat(style.width), height: parseFloat(style.height), overflow: style.overflow };

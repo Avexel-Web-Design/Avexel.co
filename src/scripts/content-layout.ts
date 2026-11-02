@@ -1,5 +1,5 @@
 import { gsap } from 'gsap';
-import { planCards, type CardBox, type CardStop } from './card-routing';
+import { planShuffle, type CardBox, type ShufflePlan } from './card-routing';
 
 const workspace = document.querySelector<HTMLElement>('.content-workspace');
 const pieces = [...document.querySelectorAll<HTMLElement>('[data-layout-piece]')];
@@ -156,7 +156,7 @@ export function morphContent(change: () => void, animate = true, complete?: () =
   const beforeContent = contentBoxes();
   let afterContent = beforeContent;
   let afterCards = beforeCards;
-  let routes: CardStop[][] | undefined;
+  let plan: ShufflePlan | undefined;
   const fromImage = Boolean(workspace.querySelector<HTMLElement>('[data-project]:not([hidden]) .work-image')?.getBoundingClientRect().width);
   const transition = document.startViewTransition(async () => {
     if (token !== generation) return;
@@ -178,15 +178,18 @@ export function morphContent(change: () => void, animate = true, complete?: () =
     afterCards = cardBoxes();
     afterContent = contentBoxes();
     if (fromView !== workspace.dataset.contentView && canAnimateCorners && CSS.supports('view-transition-group', 'contain')) {
-      routes = planCards(beforeCards, afterCards, [{ x: bounds.x, y: bounds.y, width: 180, height: 80 }]);
-      if (routes) {
+      // On phones the cards are a full-width stack. Cap the travel width to a
+      // passing lane so two cards can slide past each other side by side.
+      const lane = innerWidth <= 767 ? Math.max(96, (bounds.width - 12) / 2) : undefined;
+      plan = planShuffle(beforeCards, afterCards, bounds, lane);
+      if (plan) {
         duration = 1.6;
         root.dataset.motionRouted = 'true';
         root.style.setProperty('--motion-duration', `${duration}s`);
-        root.style.setProperty('--motion-fade-time', `${duration * .18}s`);
-        root.style.setProperty('--motion-fade-delay', `${duration * .78}s`);
-        root.style.setProperty('--motion-enter-delay', `${duration * .78}s`);
-        root.style.setProperty('--motion-clearing-time', `${duration * .22}s`);
+        root.style.setProperty('--motion-fade-time', `${duration * .12}s`);
+        root.style.setProperty('--motion-fade-delay', `${duration * plan.open}s`);
+        root.style.setProperty('--motion-enter-delay', `${duration * plan.open}s`);
+        root.style.setProperty('--motion-clearing-time', `${duration * plan.settle}s`);
       }
     }
     glassNames.forEach(view => destinationRadii.set(view, getComputedStyle(workspace.querySelector(`[data-panel="${view}"] .tile-material`)!).borderTopLeftRadius));
@@ -209,7 +212,7 @@ export function morphContent(change: () => void, animate = true, complete?: () =
       if (frames.length !== 2) return;
       if (['transform', 'width', 'height'].every(property => frames[0][property] === frames[1][property])) animation.cancel();
     });
-    if (routes) {
+    if (plan) {
       // Clear the large home identity before cards travel past it, and only
       // restore it once the cards are back in their final footprints.
       for (const animation of nativeAnimations) {
@@ -217,24 +220,37 @@ export function morphContent(change: () => void, animate = true, complete?: () =
         const frames = animation.effect.getKeyframes();
         if (frames.length !== 2) continue;
         const frame = (index: number, offset: number) => ({ transform: frames[index].transform, width: frames[index].width, height: frames[index].height, offset, easing });
-        const keys = fromView === 'home' ? [frame(0, 0), frame(1, .22), frame(1, 1)] : [frame(0, 0), frame(0, .78), frame(1, 1)];
+        const keys = fromView === 'home'
+          ? [frame(0, 0), frame(1, plan.settle), frame(1, 1)]
+          : [frame(0, 0), frame(0, plan.open), frame(1, 1)];
         motion.rounds.push(root.animate(keys, { duration: duration * 1000, fill: 'both', pseudoElement: animation.effect.pseudoElement! }));
         animation.cancel();
       }
       glassNames.forEach((view, index) => {
         const pseudoElement = `::view-transition-group(avx-${view}-card)`;
+        const track = plan!.tracks[index];
         nativeAnimations.forEach(animation => {
           if (animation.effect instanceof KeyframeEffect && animation.effect.pseudoElement === pseudoElement) animation.cancel();
         });
-        motion.rounds.push(root.animate(routes![index].map(stop => ({
-          offset: stop.offset, transform: `translate(${Math.round(stop.x) - Math.round(bounds.x)}px, ${Math.round(stop.y) - Math.round(bounds.y)}px)`,
-          width: `${stop.width}px`, height: `${stop.height}px`,
-          easing: stop.offset === 0 || stop.offset === .78 ? easing : 'linear',
+        motion.rounds.push(root.animate(track.map(stop => ({
+          offset: stop.offset,
+          transform: `translate(${Math.round(stop.x) - Math.round(bounds.x)}px, ${Math.round(stop.y) - Math.round(bounds.y)}px)`,
+          width: `${Math.round(stop.width)}px`, height: `${Math.round(stop.height)}px`,
+          easing: stop.easing,
         })), { duration: duration * 1000, fill: 'both', pseudoElement }));
         // Carry every original content layer in the card's local coordinates.
         // This preserves image resizing and keeps text attached to its card,
         // rather than letting independently moving snapshots cross its edges.
         const names = new Set([...beforeContent.keys(), ...afterContent.keys()]);
+        const beforeCard = beforeCards[index], afterCard = afterCards[index];
+        // Content only reshapes while the card itself folds or unfolds. The rest
+        // of the journey holds that shape inside the travelling card.
+        const phase = (offset: number, from: number, to: number) => {
+          const shrinks = from > to + .5;
+          if (offset <= plan!.settle) return shrinks ? offset / plan!.settle : 0;
+          if (offset >= plan!.open) return shrinks ? 1 : (offset - plan!.open) / (1 - plan!.open);
+          return shrinks ? 1 : 0;
+        };
         for (const name of names) {
           const first = beforeContent.get(name), last = afterContent.get(name);
           if ((first ?? last)?.view !== view || name.endsWith('-card') || name.endsWith('-glass')) continue;
@@ -243,12 +259,12 @@ export function morphContent(change: () => void, animate = true, complete?: () =
             y: (box.y - card.y) / card.height,
             width: box.width / card.width, height: box.height / card.height,
           });
-          const start = first ? local(first, beforeCards[index]) : local(last!, afterCards[index]);
-          const end = last ? local(last, afterCards[index]) : start;
+          const start = first ? local(first, beforeCard) : local(last!, afterCard);
+          const end = last ? local(last, afterCard) : start;
           const pseudoElement = `::view-transition-group(${name})`;
           const frames = nativeFrames.get(pseudoElement);
           if (frames?.length === 2) {
-            for (const [point, frame, card] of [[start, frames[0], beforeCards[index]], [end, frames[1], afterCards[index]]] as const) {
+            for (const [point, frame, card] of [[start, frames[0], beforeCard], [end, frames[1], afterCard]] as const) {
               const matrix = new DOMMatrix(String(frame.transform));
               point.x = matrix.m41 / card.width; point.y = matrix.m42 / card.height;
               point.width = parseFloat(String(frame.width)) / card.width;
@@ -257,7 +273,7 @@ export function morphContent(change: () => void, animate = true, complete?: () =
           } else {
             const style = getComputedStyle(root, pseudoElement);
             const matrix = new DOMMatrix(style.transform === 'none' ? undefined : style.transform);
-            const card = last ? afterCards[index] : beforeCards[index];
+            const card = last ? afterCard : beforeCard;
             for (const point of [start, end]) {
               point.x = matrix.m41 / card.width; point.y = matrix.m42 / card.height;
               point.width = parseFloat(style.width) / card.width; point.height = parseFloat(style.height) / card.height;
@@ -266,12 +282,14 @@ export function morphContent(change: () => void, animate = true, complete?: () =
           nativeAnimations.forEach(animation => {
             if (animation.effect instanceof KeyframeEffect && animation.effect.pseudoElement === pseudoElement) animation.cancel();
           });
-          motion.rounds.push(root.animate(routes![index].map(stop => {
-            const mix = (key: keyof CardBox) => start[key] + (end[key] - start[key]) * stop.offset;
+          motion.rounds.push(root.animate(track.map(stop => {
+            const mixX = (key: 'x' | 'width') => start[key] + (end[key] - start[key]) * phase(stop.offset, beforeCard.width, afterCard.width);
+            const mixY = (key: 'y' | 'height') => start[key] + (end[key] - start[key]) * phase(stop.offset, beforeCard.height, afterCard.height);
             return {
-              offset: stop.offset, transform: `translate(${mix('x') * stop.width}px, ${mix('y') * stop.height}px)`,
-              width: `${mix('width') * stop.width}px`, height: `${mix('height') * stop.height}px`,
-              easing: stop.offset === 0 || stop.offset === .78 ? easing : 'linear',
+              offset: stop.offset,
+              transform: `translate(${mixX('x') * stop.width}px, ${mixY('y') * stop.height}px)`,
+              width: `${mixX('width') * stop.width}px`, height: `${mixY('height') * stop.height}px`,
+              easing: stop.easing,
             };
           }), { duration: duration * 1000, fill: 'both', pseudoElement }));
         }
@@ -285,7 +303,7 @@ export function morphContent(change: () => void, animate = true, complete?: () =
     }
     // A shared clock is essential: even a small start-time skew could let one
     // card expand before another has cleared its destination.
-    if (routes) {
+    if (plan) {
       const startTime = document.timeline.currentTime;
       document.getAnimations().forEach(animation => {
         if (animation.effect instanceof KeyframeEffect && animation.effect.pseudoElement?.startsWith('::view-transition')) animation.startTime = startTime;
