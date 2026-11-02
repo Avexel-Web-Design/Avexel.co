@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
+import { pngPixels } from './png-pixels.mjs';
 
 const browser = await chromium.launch({ headless: true });
 const base = process.env.CHECK_URL ?? 'http://localhost:4321';
@@ -358,6 +359,16 @@ try {
       });
     }
     if (view === 'home') {
+      const logo = hoverPage.locator('.identity-wordmark > img');
+      await logo.evaluate(image => image.decode());
+      const bounds = await logo.boundingBox();
+      const image = pngPixels(await hoverPage.screenshot());
+      const logoPixel = (x, y) => {
+        const offset = (Math.floor(bounds.y + y / 500 * bounds.height) * image.width + Math.floor(bounds.x + x / 500 * bounds.width)) * image.channels;
+        return [...image.data.subarray(offset, offset + 3)];
+      };
+      for (const [x, y] of [[250, 95], [250, 205], [250, 395]]) assert.deepEqual(logoPixel(x, y), [0, 0, 0], 'The logo’s interior gaps must remain black, even with the exterior glow');
+      assert.ok(logoPixel(25, 250).some(channel => channel > 0), 'The logo should still glow outside its silhouette');
       const materials = await hoverPage.locator('.tile-material').evaluateAll(elements => elements.map(element => getComputedStyle(element).backgroundColor));
       assert.equal(new Set(materials).size, 1, 'Every card, including Contact, must use the same glass background');
       assert.equal(await hoverPage.locator('.identity-wordmark > span').evaluate(element => getComputedStyle(element).color), 'rgb(197, 138, 255)', 'The main brand purple must be #C58AFF');

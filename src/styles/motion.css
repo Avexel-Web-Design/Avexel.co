@@ -37,8 +37,13 @@
   border: 1px solid var(--studio-surface-border);
   border-radius: 20px;
   box-shadow: var(--studio-surface-light);
-  backdrop-filter: blur(24px);
+  /* The moving surface sits over solid black. Backdrop sampling four changing
+     rectangles every frame adds GPU work without changing their appearance. */
 }
+:root.studio-motion::view-transition-group(avx-services-glass) { border-radius: var(--motion-services-radius,20px); }
+:root.studio-motion::view-transition-group(avx-studio-glass) { border-radius: var(--motion-studio-radius,20px); }
+:root.studio-motion::view-transition-group(avx-work-glass) { border-radius: var(--motion-work-radius,20px); }
+:root.studio-motion::view-transition-group(avx-contact-glass) { border-radius: var(--motion-contact-radius,20px); }
 :root.studio-motion::view-transition-old(avx-services-glass),
 :root.studio-motion::view-transition-new(avx-services-glass),
 :root.studio-motion::view-transition-old(avx-studio-glass),

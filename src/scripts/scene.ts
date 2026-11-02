@@ -71,9 +71,22 @@ function showProject(index: number) {
   }, ready, undefined, .36);
 }
 
+const warmedImages = new WeakSet<HTMLImageElement>();
 function warmProject(index: number) {
-  projects[index]?.querySelectorAll<HTMLImageElement>('img').forEach(image => { image.loading = 'eager'; });
+  projects[index]?.querySelectorAll<HTMLImageElement>('img').forEach(image => {
+    if (warmedImages.has(image)) return;
+    warmedImages.add(image);
+    image.loading = 'eager';
+    // Fetch and decode on intent, before a transition needs the image texture.
+    void image.decode().catch(() => { warmedImages.delete(image); });
+  });
 }
+
+realSite?.querySelectorAll<HTMLButtonElement>('[data-view="work"]').forEach(button => {
+  const warm = () => projects.forEach((_, index) => warmProject(index));
+  button.addEventListener('pointerenter', warm);
+  button.addEventListener('focus', warm);
+});
 
 viewButtons.forEach(button => button.addEventListener('click', () => {
   const view = button.dataset.view ?? 'home';

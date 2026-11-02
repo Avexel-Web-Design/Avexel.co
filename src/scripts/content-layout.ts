@@ -32,25 +32,23 @@ function nameContent() {
   const name = (key: string, selector: string) => {
     const element = workspace?.querySelector<HTMLElement>(selector);
     if (!element || !element.getBoundingClientRect().width) return;
+    if (getComputedStyle(element).opacity === '0') return;
     next.set(element, `avx-${key}`);
   };
   name('wordmark', '.identity-wordmark > span');
   name('brand-mark', '.identity-wordmark > img');
-  name('brand-control', '.identity-wordmark');
   name('discipline', '.identity-description p:first-child');
   name('introduction', '.identity-description p:last-child');
   for (const view of glassNames) {
     const card = `[data-panel="${view}"]`;
     name(`${view}-glass`, `${card} .tile-material`);
     name(`${view}-label`, `${card} .tile-label`);
-    name(`${view}-control`, `${card} .tile-heading h2 button`);
     name(`${view}-arrow`, `${card} .tile-heading h2 .icon`);
     name(`${view}-close`, `${card} .tile-close`);
   }
   name('service-rule', '.service-tabs');
   for (const id of ['design', 'development', 'maintenance']) {
     name(`service-${id}`, `[data-service-tab="${id}"] .service-label`);
-    name(`service-${id}-control`, `[data-service-tab="${id}"]`);
     name(`service-${id}-rule`, `[data-service-tab="${id}"] .service-active-rule`);
   }
   name('service-copy', '[data-service-panel]:not([hidden])');
@@ -130,6 +128,8 @@ export function morphContent(change: () => void, animate = true, complete?: () =
   root.style.setProperty('--motion-clip', `inset(${clipped ? bounds.top : 0}px ${clipped ? innerWidth - bounds.right : 0}px ${innerHeight - bounds.bottom}px ${clipped ? bounds.left : 0}px)`);
   nameContent();
   const radii = new Map(glassNames.map(view => [view, getComputedStyle(workspace.querySelector(`[data-panel="${view}"] .tile-material`)!).borderTopLeftRadius]));
+  radii.forEach((radius, view) => root.style.setProperty(`--motion-${view}-radius`, canAnimateCorners ? radius : '20px'));
+  const destinationRadii = new Map<string, string>();
   const motion: ActiveMotion = { rounds: [] };
   active = motion;
   const transition = document.startViewTransition(async () => {
@@ -142,15 +142,25 @@ export function morphContent(change: () => void, animate = true, complete?: () =
     }));
     if (token !== generation) return;
     nameContent();
+    glassNames.forEach(view => destinationRadii.set(view, getComputedStyle(workspace.querySelector(`[data-panel="${view}"] .tile-material`)!).borderTopLeftRadius));
   });
   motion.native = transition;
   void transition.ready.then(() => {
     if (token !== generation) return;
     root.dataset.motionPhase = 'running';
+    // The browser also generates geometry animations for named pieces that did
+    // not move. Retain their snapshots/fades, but avoid updating identical
+    // transforms and dimensions every frame (especially tabs/project changes).
+    document.getAnimations().forEach(animation => {
+      if (!(animation.effect instanceof KeyframeEffect) || !animation.effect.pseudoElement?.startsWith('::view-transition-group(')) return;
+      const frames = animation.effect.getKeyframes();
+      if (frames.length !== 2) return;
+      if (['transform', 'width', 'height'].every(property => frames[0][property] === frames[1][property])) animation.cancel();
+    });
     if (!canAnimateCorners) return;
     for (const view of glassNames) {
-      const material = workspace.querySelector(`[data-panel="${view}"] .tile-material`)!;
-      motion.rounds.push(root.animate({ borderRadius: [radii.get(view)!, getComputedStyle(material).borderTopLeftRadius] }, {
+      if (radii.get(view) === destinationRadii.get(view)) continue;
+      motion.rounds.push(root.animate({ borderRadius: [radii.get(view)!, destinationRadii.get(view)!] }, {
         duration: duration * 1000, easing, fill: 'both', pseudoElement: `::view-transition-group(avx-${view}-glass)`,
       }));
     }
@@ -164,11 +174,9 @@ export function arrangeContent(view: string, animate = false, complete?: () => v
   morphContent(() => {
     const changed = workspace.dataset.contentView !== view;
     workspace.dataset.contentView = view;
-    if (changed) workspace.scrollTop = 0;
     pieces.forEach(piece => {
       const expanded = piece.dataset.panel === view;
       piece.dataset.expanded = String(expanded);
-      if (changed) { const inner = piece.querySelector<HTMLElement>('.tile-inner'); if (inner) inner.scrollTop = 0; }
       piece.querySelectorAll<HTMLElement>('[data-tile-detail]').forEach(detail => { detail.hidden = !expanded; });
       const heading = piece.querySelector<HTMLButtonElement>('.tile-heading h2 button');
       if (heading) heading.disabled = expanded;
@@ -179,5 +187,11 @@ export function arrangeContent(view: string, animate = false, complete?: () => v
         link.setAttribute('aria-label', expanded ? `Visit ${project}` : `Expand Work: ${project}`);
       });
     });
+    // Scroll setters may force layout. Batch them after all DOM/style changes,
+    // rather than flushing the grid once for each individual card.
+    if (changed) {
+      workspace.scrollTop = 0;
+      pieces.forEach(piece => { const inner = piece.querySelector<HTMLElement>('.tile-inner'); if (inner) inner.scrollTop = 0; });
+    }
   }, animate, complete);
 }

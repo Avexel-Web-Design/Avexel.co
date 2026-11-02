@@ -3,7 +3,9 @@ html.immersive-page {
   --studio-purple: #C58AFF;
   --studio-glass: #100b1699;
   --studio-surface-border: #c58aff70;
-  --studio-surface-light: inset 0 0 18px #c58aff18, inset 0 1px 0 #e9d2ff55, 0 0 8px #c58aff30, 0 0 28px #c58aff20;
+  /* Centered inset bloom follows the same rounded border on every edge. No
+     directional highlight or outer shadow to be cut off by the card's clip. */
+  --studio-surface-light: inset 0 0 14px #c58aff28;
 }
 .real-site.studio-shell {
   --studio-ink: #eee8f5; --studio-muted: #b9aec4; --studio-purple: #c58aff;
@@ -253,7 +255,7 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
   color: var(--studio-purple);
   text-shadow: 0 0 10px #c58affb3, 0 0 30px #c58aff80, 0 0 65px #c58aff55;
 }
-.identity-wordmark img { filter: drop-shadow(0 0 10px #c58aff90) drop-shadow(0 0 26px #c58aff40); }
+.identity-wordmark img { filter: drop-shadow(0 0 14px #c58aff90); }
 .identity-description p:first-child { color: #e8dfee; font-weight: 450; }
 .identity-description p:last-child { color: #ac9bb9; }
 .tile-heading h2 { color: var(--studio-purple); font-weight: 450; }
