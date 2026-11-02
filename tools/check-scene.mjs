@@ -358,6 +358,9 @@ try {
       });
     }
     if (view === 'home') {
+      const materials = await hoverPage.locator('.tile-material').evaluateAll(elements => elements.map(element => getComputedStyle(element).backgroundColor));
+      assert.equal(new Set(materials).size, 1, 'Every card, including Contact, must use the same glass background');
+      assert.equal(await hoverPage.locator('.identity-wordmark > span').evaluate(element => getComputedStyle(element).color), 'rgb(197, 138, 255)', 'The main brand purple must be #C58AFF');
       for (const selector of ['.identity-wordmark > span', '.service-label']) {
         assert.equal(await hoverPage.locator(selector).first().evaluate(element => getComputedStyle(element).backgroundImage), 'none', 'Brand typography should glow without gradients');
       }

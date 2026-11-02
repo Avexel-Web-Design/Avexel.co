@@ -34,12 +34,11 @@
   z-index: 0;
   box-sizing: border-box;
   background: var(--studio-glass);
-  border: 1px solid #d5b9ef29;
+  border: 1px solid var(--studio-surface-border);
   border-radius: 20px;
   box-shadow: var(--studio-surface-light);
   backdrop-filter: blur(24px);
 }
-:root.studio-motion::view-transition-group(avx-contact-glass) { background: var(--studio-contact-glass); }
 :root.studio-motion::view-transition-old(avx-services-glass),
 :root.studio-motion::view-transition-new(avx-services-glass),
 :root.studio-motion::view-transition-old(avx-studio-glass),
