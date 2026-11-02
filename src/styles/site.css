@@ -18,14 +18,14 @@
   --glass: rgba(37, 28, 48, .65);
   --solid: #241c2e;
   --input: rgba(17, 12, 24, .65);
-  --accent: #d82ffb;
+  --accent: #c58aff;
   --button: var(--accent);
   --button-text: #281736;
   --error: #f7b7b7;
   --shadow: 0 18px 50px -30px #09031190;
-  --purple-text-glow: 0 0 .16em rgba(216, 47, 251, .65), 0 0 .42em rgba(216, 47, 251, .32);
-  --purple-edge-glow: 0 0 12px rgba(216, 47, 251, .14);
-  --purple-button-glow: 0 0 9px rgba(216, 47, 251, .65), 0 0 24px rgba(216, 47, 251, .32);
+  --purple-text-glow: 0 0 .16em rgba(197, 138, 255, .65), 0 0 .42em rgba(197, 138, 255, .32);
+  --purple-edge-glow: 0 0 12px rgba(197, 138, 255, .14);
+  --purple-button-glow: 0 0 9px rgba(197, 138, 255, .65), 0 0 24px rgba(197, 138, 255, .32);
   background: var(--bg);
   color: var(--text);
   font-synthesis: none;
