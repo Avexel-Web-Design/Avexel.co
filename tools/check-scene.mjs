@@ -444,5 +444,5 @@ try {
     await hoverPage.close();
   }
   assert.deepEqual(errors, []);
-  console.log('Passed: viewport-fitted sections at 320–2000px, visible service terms, alumni studio copy, text project selector, custom contact selector, full-aspect previews, native transitions, Replay, refresh restoration, contact success/error, reduced motion, and client guide.');
+  console.log('Passed: viewport-fitted sections at 320–2000px, visible service terms, student-led studio copy, text project selector, custom contact selector, full-aspect previews, native transitions, Replay, refresh restoration, contact success/error, reduced motion, and client guide.');
 } finally { await browser.close(); }
