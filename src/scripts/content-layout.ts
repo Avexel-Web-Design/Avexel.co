@@ -5,6 +5,10 @@ const pieces = [...document.querySelectorAll<HTMLElement>('[data-layout-piece]')
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 const root = document.documentElement;
 const registered = new Set<HTMLElement>();
+// Avoid relying on :only-child support in the view-transition tree. Target
+// entering snapshots by name instead, using visibility in both layouts.
+const enteringStyles = document.createElement('style');
+document.head.append(enteringStyles);
 const glassNames = ['services', 'studio', 'work', 'contact'];
 const easing = 'cubic-bezier(.65,0,.35,1)';
 const canAnimateCorners = (() => {
@@ -78,9 +82,11 @@ function nameContent() {
     if (element.style.willChange !== 'transform') element.style.willChange = 'transform';
   });
   registered.clear(); next.forEach((_, element) => registered.add(element));
+  return new Set(next.values());
 }
 
 function cleanup() {
+  enteringStyles.textContent = '';
   active?.rounds.forEach(animation => animation.cancel());
   root.classList.remove('studio-motion');
   delete root.dataset.motionPhase;
@@ -132,14 +138,13 @@ export function morphContent(change: () => void, animate = true, complete?: () =
   root.style.setProperty('--motion-fade-time', `${duration * .25}s`);
   root.style.setProperty('--motion-fade-delay', `${duration * .65}s`);
   const mobile = matchMedia('(max-width:767px)').matches;
-  // Rail titles travel most of the screen on phones. Reveal new body copy only
-  // once they are nearly home, then finish its fade before capture retirement.
+  // Start near arrival, but allow a perceptible fade to outlast the card move.
   root.style.setProperty('--motion-enter-delay', `${duration * (mobile ? .84 : .6)}s`);
-  root.style.setProperty('--motion-enter-time', `${duration * (mobile ? .12 : .25)}s`);
+  root.style.setProperty('--motion-enter-time', `${duration * (mobile ? .3 : .25)}s`);
   const bounds = workspace.getBoundingClientRect();
   const clipped = getComputedStyle(workspace).overflowY !== 'visible';
   root.style.setProperty('--motion-clip', `inset(${clipped ? bounds.top : 0}px ${clipped ? innerWidth - bounds.right : 0}px ${innerHeight - bounds.bottom}px ${clipped ? bounds.left : 0}px)`);
-  nameContent();
+  const previousNames = nameContent();
   const locationVisible = () => Boolean(workspace.querySelector<HTMLElement>('.studio-introduction .locale')?.getBoundingClientRect().width);
   const fromLocation = locationVisible();
   const clipContactCopy = () => {
@@ -175,7 +180,13 @@ export function morphContent(change: () => void, animate = true, complete?: () =
       try { await image.decode(); } catch { /* A failed image must not block navigation. */ }
     }));
     if (token !== generation) return;
-    nameContent();
+    const nextNames = nameContent();
+    if (mobile) {
+      const entering = [...nextNames].filter(name => !previousNames.has(name));
+      enteringStyles.textContent = entering.length ? `${entering.map(name =>
+        `:root.studio-motion[data-motion-engine=native]::view-transition-new(${name})`
+      ).join(',')} { animation: studio-in var(--motion-enter-time) var(--motion-enter-delay) both; }` : '';
+    }
     root.dataset.motionStudioLocation = fromLocation && locationVisible() ? 'continuous' : '';
     clipContactCopy();
     glassNames.forEach(view => destinationRadii.set(view, getComputedStyle(workspace.querySelector(`[data-panel="${view}"] .tile-material`)!).borderTopLeftRadius));

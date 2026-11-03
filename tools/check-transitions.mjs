@@ -18,6 +18,21 @@ try {
     if (run === 1) await page.goto(url);
     else { await page.evaluate(url => history.replaceState(null, '', url), url); await page.reload(); }
     await page.locator('.scroll-story[data-ready=true]').waitFor();
+    if (page.viewportSize().width < 768) {
+      // Simulate engines that do not match :only-child on entering snapshots.
+      await page.evaluate(() => {
+        const strip = rules => {
+          for (const rule of rules) {
+            if (rule.selectorText) {
+              const selectors = rule.selectorText.split(',').filter(selector => !(selector.includes('::view-transition-new(') && selector.includes(':only-child')));
+              rule.selectorText = selectors.join(',') || ':root:not(*)';
+            }
+            if (rule.cssRules) strip(rule.cssRules);
+          }
+        };
+        for (const sheet of document.styleSheets) strip(sheet.cssRules);
+      });
+    }
     await page.evaluate(async () => {
       await Promise.all([...document.images].map(async image => {
         image.loading = 'eager';
@@ -153,7 +168,8 @@ try {
         assert.equal(preview.fit, 'cover');
       }
       if (from === 'home' && to === 'services' && width === 1440) await page.screenshot({ path: '/tmp/opencode/native-audit-middle.png', scale: 'css' });
-      await seek(779.9);
+      // Mobile copy finishes its fade just after the card reaches its destination.
+      await seek(width < 768 ? 889.1 : 779.9);
       const ink = await page.locator('.content-workspace .identity-wordmark > span,.content-workspace .tile-label,.content-workspace .service-label,.content-workspace .studio-introduction,.content-workspace .services-intro,.content-workspace .service-offerings dd,.content-workspace .services-support,.content-workspace .studio-people h3,.content-workspace .studio-people p,.content-workspace .contact-methods a,.content-workspace .inquiry-form label,.content-workspace .work-description h3,.content-workspace .work-description p').evaluateAll(elements => elements.filter(element => element.getBoundingClientRect().width).map(element => ({ text: element.textContent, ...element.getBoundingClientRect().toJSON() })));
       const renderedDestination = pngPixels(await page.screenshot({ scale: 'css' }));
       await finish();
