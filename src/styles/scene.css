@@ -46,13 +46,18 @@ html[data-scene-boot=pending] .scene { visibility: hidden; }
 .note-brand { left: 17%; top: calc(4% + 8px); }
 .note-nav { left: 37%; top: 108px; max-width: 360px; font-size: clamp(11px, .95vw, 14px); }
 .note-label { left: 3%; top: 12%; }
+.note-period { left: 33%; top: 43%; }
+.note-color { left: 7%; top: 49%; }
 .note-description { left: 3%; bottom: 36%; }
 .note-art { right: 4%; top: 35%; }
+.note-artsecond { right: 7%; bottom: 30%; }
 .note-button { left: 24%; bottom: 17%; }
 .note-caption { right: 7%; top: 24%; }
 .note-craft { right: 8%; bottom: 23%; }
 .note-bottom { left: 20%; bottom: 60px; }
 .note-bottom span { padding: 5px 9px; }
+.note-creativity { left: 42%; bottom: 14px; }
+.note-scroll { right: 4%; bottom: 14px; }
 .note-navcta { left: 65%; top: 3%; }
 .eraser-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
 .real-site { position: absolute; inset: 0; z-index: 5; background: #fff; color: #19191c; --reveal-edge: 0px; mask-image: linear-gradient(to bottom, #000 calc(var(--reveal-edge) - 72px), transparent var(--reveal-edge)); -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--reveal-edge) - 72px), transparent var(--reveal-edge)); display: flex; flex-direction: column; padding: 0 4%; }
@@ -76,7 +81,7 @@ html[data-scene-boot=pending] .scene { visibility: hidden; }
 .scene-form { align-self: center; }.scene-form .field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }.scene-form .form-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }.scene-form label { font-size: 12px; color: #58585f; }.scene-form input,.scene-form select,.scene-form textarea { border: 0; border-bottom: 1px solid #a6a6af; background: #f5f5f7; color: #19191c; border-radius: 0; padding: 10px; width: 100%; font-size: 15px; }.scene-form textarea { resize: vertical; }.scene-form .send-message { background: #294cff; color: #fff; border: 0; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; width: 100%; font-size: 14px; }.scene-form .form-status { margin-top: 10px; font-size: 12px; }.scene-form .form-status.error { color: #ae2635; }.real-site :focus-visible { outline-color: #294cff; }.real-site button:active { transform: translateY(1px); }
 .no-script-message { padding: 30px; background: #fff; color: #171719; }
 @media (min-width: 1600px) { .real-site { padding-inline: max(4%,calc((100vw - 1600px) / 2)); } }
-@media (max-width: 1023px) { .demo-bottom > span:nth-child(2) { display: none; } }
+@media (max-width: 1023px) { .demo-bottom > span:nth-child(2),.note-creativity { display: none; } }
 @media (max-height: 740px) and (min-width: 768px) { .scene .demo-eyebrow { margin-bottom: 30px; } }
 @media (max-height: 740px) and (min-width: 768px) { .real-header { height: 70px; }.work-view { padding-top: 24px; }.work-intro h2 { font-size: clamp(34px,4.5vw,65px); }.project-stage { padding-bottom: 14px; }.project-screen { padding: 5%; max-width: min(100%,65vh); margin-left: auto; }.project-caption { max-width: min(100%,65vh); margin-left: auto; }.project-selector { padding-block: 12px; }.project-selector button { padding-block: 9px; }.work-foot { padding-bottom: 12px; }.studio-view,.contact-view { padding-block: 25px; }.studio-heading h2,.contact-heading h2 { font-size: 52px; }.people { margin-top: 15px; }.people > div { padding: 10px 0; } }
 @media (max-width: 767px) {
@@ -87,6 +92,7 @@ html[data-scene-boot=pending] .scene { visibility: hidden; }
   .scene .note-navcta { left: auto; right: 4%; }
   .scene .note-bottom { font-size: 10px; }
   .scene .note-art { max-width: 108px; }
+  .note-artsecond,.note-scroll { display: none; }
   .scene .demo-eyebrow { margin-bottom: 44px; }
   .demo-page { padding-inline: 6%; }.demo-nav { height: 72px; }.demo-brand { font-size: 28px; }.demo-nav > div { display: none; }.demo-nav .demo-cta { font-size: 11px; gap: 10px; padding: 10px 12px; }.demo-nav .icon { width: 15px; height: 15px; }
   .demo-main { inset: 100px 6% 120px; display: block; }.demo-copy { padding-top: 0; }.demo-eyebrow { font-size: 8px; margin-bottom: 16px; }.demo-copy h1 { font-size: clamp(38px,9.4vw,65px); }.demo-art { position: absolute; right: -20%; width: 85%; height: 50%; bottom: -5%; opacity: .55; mask-image: linear-gradient(90deg,transparent,#000 35%); }.demo-art figcaption { font-size: 7px; }.art-caption { font-size: 7px; }.demo-description { font-size: 12px; bottom: 26%; max-width: 52%; left: 6%; }.demo-copy > .demo-cta { bottom: 15%; left: 6%; font-size: 11px; padding: 13px; gap: 15px; }.demo-bottom { bottom: 65px; left: 6%; right: 6%; font-size: 7px; }.demo-bottom > span:nth-child(2) { display: none; }
@@ -98,5 +104,6 @@ html[data-scene-boot=pending] .scene { visibility: hidden; }
   .studio-view,.contact-view { grid-template-columns: 1fr; gap: 25px; padding: 26px 0; overscroll-behavior: contain; }.studio-heading h2,.contact-heading h2 { font-size: 45px; }.studio-heading > p,.contact-heading > p { font-size: 13px; margin-top: 16px; }.studio-heading > a { margin-top: 16px; font-size: 12px; }.studio-services h3 { font-size: 22px; }.studio-services p { font-size: 13px; }.people { margin-top: 24px; }.people h3 { font-size: 17px; }.contact-heading > a { font-size: 25px; margin-top: 16px; }.scene-form .form-pair { grid-template-columns: 1fr; gap: 0; }.scene-form .field { margin-bottom: 14px; }
 }
 @media (max-height: 700px) and (max-width: 767px) { .real-header { height: 60px; }.work-view { padding-top: 16px; }.work-intro h2 { font-size: 32px; }.work-intro > p { font-size: 9px; margin-top: 6px; }.project-stage { padding-top: 10px; }.project-screen,.project-caption { max-width: min(100%,39vh); }.project-selector { padding-bottom: 6px; }.project-selector button { padding-block: 7px; }.real-footer { height: 35px; }.demo-description { font-size: 10px; }.demo-eyebrow { font-size: 7px; }.demo-main { top: 85px; }.demo-copy h1 { font-size: 36px; } }
+@media (max-width: 375px) { .scene .annotation { font-size: 10px; }.annotation span { padding: 4px 6px; } }
 @media (prefers-reduced-motion: reduce) { .real-site { mask-image: none; -webkit-mask-image: none; }.demo-page,.intervention,.annotations,.eraser-canvas { display: none; }.project-screen > img { transition: none; } }
 @media (max-width:767px) and (max-height:700px) { .scene .demo-copy > .demo-cta { bottom:22%; }.demo-description { bottom:32%; } }

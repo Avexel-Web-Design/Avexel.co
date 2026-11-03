@@ -75,11 +75,13 @@ export function layoutAnnotations(scene: HTMLElement) {
       if (note.dataset.note === 'bottom' && footer && candidate.top < footer.top + 10) continue;
       if (note.dataset.note === 'nav' && header && candidate.top < header.bottom + 12) continue;
       const collisions = [...content, ...dividers].filter(box => overlaps(candidate, box, 10)).length + occupied.filter(box => overlaps(candidate, box, 14)).length * 5;
+      // On crowded screens, preserve readable content before the preferred spacing.
+      const covered = [...content, ...dividers].filter(box => overlaps(candidate, box)).length + occupied.filter(box => overlaps(candidate, box)).length * 5;
       const distance = Math.hypot(Math.max(rect.left - candidate.right, 0, candidate.left - rect.right), Math.max(rect.top - candidate.bottom, 0, candidate.top - rect.bottom));
       const displacement = Math.hypot(candidate.left - preferred.left, candidate.top - preferred.top);
       const baselineAlignment = note.dataset.note === 'label' && (candidate.left >= rect.right || candidate.right <= rect.left)
         ? Math.abs((candidate.top + candidate.bottom) / 2 - centerY) * 2 : 0;
-      const score = collisions * 1000000 + distance * 3 + displacement * .2 + baselineAlignment;
+      const score = covered * 1000000000 + collisions * 1000000 + distance * 3 + displacement * .2 + baselineAlignment;
       if (score < bestScore) { best = candidate; bestScore = score; }
     }
     note.style.left = `${best.left - origin.left}px`;

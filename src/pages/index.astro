@@ -13,16 +13,21 @@ const projects = [
   { name: 'Detroit Rising', type: 'Real estate development', image: 'detroit', url: 'https://detroitrisingdevelopment.pages.dev', description: 'A clear view of a development company’s projects, services, and vision for Detroit.' },
 ];
 const annotations = [
-  { id: 'brand', target: '.demo-brand > span', text: 'A dot is not a personality.' },
-  { id: 'nav', target: '.demo-nav > div', text: 'The same menu on a thousand agency sites.' },
-  { id: 'label', target: '.demo-eyebrow', text: 'Buzzwords, not information.' },
+  { id: 'brand', target: '.demo-brand > span', text: 'Yet another pointless dot.' },
+  { id: 'nav', target: '.demo-nav > div', text: 'The same menu as everyone' },
+  { id: 'label', target: '.demo-eyebrow', text: 'Buzzwords with the little circle' },
   { id: 'description', target: '.demo-description', text: '15 words. Still no idea what you get.' },
-  { id: 'button', target: '.demo-copy > .demo-cta', text: '“Unlock your potential” could sell anything.' },
-  { id: 'art', target: '.plus-one', text: 'A plus sign that adds nothing.' },
-  { id: 'caption', target: '.demo-art figcaption', text: 'A caption that tells you nothing about the work.' },
-  { id: 'craft', target: '.art-caption', text: 'Tiny type. Another empty claim.' },
-  { id: 'bottom', target: '.demo-bottom > span:first-child', text: 'Filler, now in uppercase.' },
-  { id: 'navcta', target: '.demo-nav > .demo-cta', text: 'Same link. Different slogans.' },
+  { id: 'button', target: '.demo-copy > .demo-cta', text: 'What exactly does this button do?' },
+  { id: 'art', target: '.plus-one', text: 'Why is there a plus sign?' },
+  { id: 'artsecond', target: '.plus-two', text: 'Oh look, another plus sign' },
+  { id: 'caption', target: '.demo-art figcaption', text: 'More extra words that mean nothing' },
+  { id: 'craft', target: '.art-caption', text: 'Even more vague words' },
+  { id: 'bottom', target: '.demo-bottom > span:first-child', text: 'Filler, but uppercase' },
+  { id: 'creativity', target: '.demo-bottom > span:nth-child(2)', text: 'How many vague phrases is this?' },
+  { id: 'scroll', target: '.demo-bottom > span:last-child', text: 'Unnecessary instructions' },
+  { id: 'navcta', target: '.demo-nav > .demo-cta', text: 'Another slogan for the same thing' },
+  { id: 'period', target: '.demo-title-period', text: 'Why the hard stop?' },
+  { id: 'color', target: '.demo-title-experiences', text: 'This color really clashes with the background' },
 ];
 ---
 
@@ -32,7 +37,7 @@ const annotations = [
       <div class="demo-page" aria-label="An intentionally generic website, used as a design demonstration">
         <header class="demo-nav"><a class="demo-brand" href="#home">avexel<span>.</span></a><div><span>Solutions</span><span>Our process</span><span>Why us</span></div><button type="button" class="demo-cta" data-skip>Let’s innovate <Icon name="arrowUpRight" /></button></header>
         <div class="demo-main">
-          <div class="demo-copy"><p class="demo-eyebrow"><i></i> YOUR VISION. OUR INNOVATION.</p><h1>We build digital<br /><span>experiences.</span></h1><p class="demo-description">Empowering ambitious brands with cutting-edge solutions that elevate your digital presence and unlock limitless possibilities.</p><button class="demo-cta" type="button" data-skip>Unlock your potential <Icon name="arrowUpRight" /></button></div>
+          <div class="demo-copy"><p class="demo-eyebrow"><i></i> YOUR VISION. OUR INNOVATION.</p><h1>We build digital<br /><span><span class="demo-title-experiences">experiences</span><span class="demo-title-period">.</span></span></h1><p class="demo-description">Empowering ambitious brands with cutting-edge solutions that elevate your digital presence and unlock limitless possibilities.</p><button class="demo-cta" type="button" data-skip>Unlock your potential <Icon name="arrowUpRight" /></button></div>
           <figure class="demo-art"><picture><source data-theme-light-image media="all" srcset="/images/work-atlas-light.webp?v=13cdd7d" /><img src="/images/work-atlas.webp?v=13cdd7d" alt="Atlas web application" width="1440" height="1000" fetchpriority="high" /></picture><span class="art-plus plus-one">+</span><span class="art-plus plus-two">+</span><figcaption>DIGITAL EXCELLENCE / REIMAGINED</figcaption><span class="art-caption">CRAFTED WITH PURPOSE</span></figure>
         </div>
         <div class="demo-bottom"><span><i></i> DESIGN-DRIVEN. FUTURE-READY.</span><span>CREATIVITY MEETS TECHNOLOGY</span><span>SCROLL TO DISCOVER ↓</span></div>
