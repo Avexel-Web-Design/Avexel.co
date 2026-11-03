@@ -70,6 +70,23 @@ try {
       assert.equal(await page.locator('.content-workspace').evaluate(element => getComputedStyle(element).opacity), '1', 'The live website must never be hidden for a handoff');
       await seek(390);
       const middle = await groups();
+      if (width >= 768) {
+        for (const name of ['avx-studio-introduction', 'avx-studio-location']) {
+          const blend = await page.evaluate(name => {
+            const root = document.documentElement;
+            return ['old', 'new'].map(phase => {
+              const style = getComputedStyle(root, `::view-transition-${phase}(${name})`);
+              return { opacity: Number(style.opacity), delay: style.animationDelay, duration: style.animationDuration };
+            });
+          }, name);
+          for (const layer of blend) {
+            assert.equal(layer.delay, '0s', 'Studio subtitle must not wait for a late snapshot swap');
+            assert.equal(layer.duration, '0.78s', 'Subtitle color and glow must blend for the entire card movement');
+            assert.ok(Math.abs(layer.opacity - .5) < .02, 'Subtitle snapshots must blend evenly at the motion midpoint');
+          }
+          assert.ok(Math.abs(blend[0].opacity + blend[1].opacity - 1) < .01, 'Subtitle must not dim or brighten during the handoff');
+        }
+      }
       for (const view of views.slice(1)) {
         const key = `avx-${view}-glass`;
         const startRadius = before[key].radius;
