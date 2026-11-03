@@ -52,6 +52,17 @@ The checks cover the dark-only appearance under both device preferences at six s
 
 `dist/` is generated and excluded from version control. Cloudflare Workers serves this directory using `wrangler.jsonc`; the existing deployment workflow builds it before deployment. `npm run deploy` explicitly builds and deploys.
 
+### Cloudflare zone compatibility
+
+The `avexel.co` zone keeps **Encrypted ClientHello (ECH)** and **HTTP/3** disabled. Both are Chrome-facing features that caused intermittent grey error pages for some visitors (`ERR_ECH_FALLBACK_CERTIFICATE_INVALID`, `ERR_QUIC_PROTOCOL_ERROR`) while curl and other browsers worked. The public HTTPS record should advertise `alpn="h2"` and must not contain `ech=`.
+
+```sh
+npm run zone:check -- --dns   # tokenless HTTPS-record check
+npm run zone:check            # check ECH/HTTP3 settings (needs CLOUDFLARE_API_TOKEN)
+npm run zone:check -- --apply # turn both settings back off
+```
+
+
 ## Editing the site
 
 - `src/pages/index.astro`: homepage content and project links.
