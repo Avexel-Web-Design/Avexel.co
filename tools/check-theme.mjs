@@ -8,6 +8,10 @@ try {
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
+  const checkAtlas = async light => {
+    await page.waitForFunction(light => [...document.querySelectorAll('picture:has([data-theme-light-image]) img')].every(image => image.currentSrc.includes('work-atlas-light') === light), light);
+    await page.locator('picture:has([data-theme-light-image]) img').evaluateAll(images => Promise.all(images.map(image => image.decode())));
+  };
   for (const [width, height] of [[320,568],[375,667],[390,844],[768,900],[1024,600],[1440,600],[1440,900],[2000,1213]]) {
     await page.setViewportSize({ width, height });
     for (const view of ['home','services','studio','work','contact']) {
@@ -23,6 +27,7 @@ try {
         assert.ok(Math.abs(balance.top - balance.bottom) < 1, `Collapsed Contact must have equal vertical space at ${width}×${height} in ${view}`);
       }
       assert.equal(await page.locator('html').getAttribute('data-theme'), 'light', 'Light must be default even with a dark OS preference');
+      await checkAtlas(true);
       const toggle = page.getByRole('button', { name: 'Switch to dark mode' });
       const box = await toggle.boundingBox();
       assert.ok(box.width >= 44 && box.height >= 44 && box.x > width / 2, 'Theme control must be an accessible touch target on the right');
@@ -47,6 +52,7 @@ try {
       }
       await toggle.click();
       assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
+      await checkAtlas(false);
       assert.equal(await page.locator('.studio-shell').evaluate(e => getComputedStyle(e).backgroundColor), 'rgb(0, 0, 0)');
       await page.reload();
       await page.locator('.scroll-story[data-ready=true]').waitFor();

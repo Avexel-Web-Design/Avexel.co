@@ -2,6 +2,9 @@ const root = document.documentElement;
 const toggles = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
 function syncThemeControls() {
   const dark = root.dataset.theme === 'dark';
+  document.querySelectorAll<HTMLSourceElement>('[data-theme-light-image]').forEach(source => {
+    source.media = dark ? 'not all' : 'all';
+  });
   toggles.forEach(toggle => {
     const label = `Switch to ${dark ? 'light' : 'dark'} mode`;
     toggle.setAttribute('aria-label', label);

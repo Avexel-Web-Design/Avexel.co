@@ -322,7 +322,7 @@ try {
         await page.keyboard.press('Escape');
       }
       const filledPreview = await page.locator('[data-project]:not([hidden]) .work-image img').evaluate(image => {
-        const frame = image.parentElement.getBoundingClientRect();
+        const frame = image.closest('.work-image').getBoundingClientRect();
         const rect = image.getBoundingClientRect();
         if (!rect.width || !rect.height) return true;
         return getComputedStyle(image).objectFit === 'cover' && Math.abs(rect.width - frame.width) <= 2.1 && Math.abs(rect.height - frame.height) <= 2.1;
