@@ -139,7 +139,7 @@ try {
       }
       if (from === 'home' && to === 'services' && width === 1440) await page.screenshot({ path: '/tmp/opencode/native-audit-middle.png', scale: 'css' });
       await seek(779.9);
-      const ink = await page.locator('.content-workspace .identity-wordmark > span,.content-workspace .tile-label,.content-workspace .service-label,.content-workspace .studio-introduction,.content-workspace .service-content h3,.content-workspace .service-content p,.content-workspace .studio-people h3,.content-workspace .studio-people p,.content-workspace .contact-methods a,.content-workspace .inquiry-form label,.content-workspace .work-description h3,.content-workspace .work-description p').evaluateAll(elements => elements.filter(element => element.getBoundingClientRect().width).map(element => ({ text: element.textContent, ...element.getBoundingClientRect().toJSON() })));
+      const ink = await page.locator('.content-workspace .identity-wordmark > span,.content-workspace .tile-label,.content-workspace .service-label,.content-workspace .studio-introduction,.content-workspace .services-intro,.content-workspace .service-offerings dd,.content-workspace .services-support,.content-workspace .studio-people h3,.content-workspace .studio-people p,.content-workspace .contact-methods a,.content-workspace .inquiry-form label,.content-workspace .work-description h3,.content-workspace .work-description p').evaluateAll(elements => elements.filter(element => element.getBoundingClientRect().width).map(element => ({ text: element.textContent, ...element.getBoundingClientRect().toJSON() })));
       const renderedDestination = pngPixels(await page.screenshot({ scale: 'css' }));
       await finish();
       const retired = [pngPixels(await page.screenshot({ scale: 'css' }))];
@@ -153,21 +153,6 @@ try {
       }
       assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), to);
       assert.equal(await page.locator('.content-workspace').getAttribute('aria-busy'), null);
-    }
-    await setup('services');
-    for (const service of ['development', 'maintenance', 'design']) {
-      const start = await page.locator('[data-service-tab][aria-selected="true"] .service-active-rule').boundingBox();
-      await page.locator(`[data-service-tab="${service}"]`).dispatchEvent('click');
-      await running(); await seek(0);
-      const end = await page.locator('[data-service-tab][aria-selected="true"] .service-active-rule').boundingBox();
-      const first = (await groups())['avx-service-indicator'];
-      assert.ok(first && Math.abs(first.x - start.x) <= 1.01, 'The shared tab underline must start at the previous selection');
-      await seek(180);
-      const middle = (await groups())['avx-service-indicator'];
-      assert.ok(Math.abs(middle.x - (start.x + end.x) / 2) <= 1.01, 'The tab underline must slide continuously through the midpoint');
-      assert.ok(Math.abs(middle.width - (start.width + end.width) / 2) <= 1.01, 'The tab underline must resize continuously with its label');
-      await finish();
-      assert.equal(await page.locator(`[data-service-tab="${service}"]`).getAttribute('aria-selected'), 'true');
     }
     // A project shot keeps its full frame for the whole move, so opening and
     // closing Work resizes one picture instead of cross-fading two crops.

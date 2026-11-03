@@ -18,6 +18,16 @@ try {
       await page.goto(`${base}/?theme-check#${view}`);
       await page.locator('.scroll-story[data-ready=true]').waitFor();
       assert.equal(await page.locator('.real-site').evaluate(e => getComputedStyle(e).maskImage), 'none', 'Finished reveal must have no mask during viewport changes');
+      assert.equal(await page.locator('.studio-footer').evaluate(e => getComputedStyle(e).borderTopWidth), '0px', 'Footer must not have a divider');
+      assert.ok(!(await page.locator('.studio-footer').innerText()).includes('Harbor Springs'), 'Footer must not repeat the location');
+      if (view !== 'home') {
+        const close = await page.locator('.content-tile[data-expanded=true] .tile-close').boundingBox();
+        const card = await page.locator('.content-tile[data-expanded=true]').boundingBox();
+        assert.ok(Math.abs(close.y - card.y - (card.x + card.width - close.x - close.width)) < 1, 'Close button needs equal top and right corner insets');
+        const logo = await page.locator('.identity-wordmark img').boundingBox();
+        const workspace = await page.locator('.content-workspace').boundingBox();
+        assert.ok(Math.abs(logo.x - workspace.x) < 1, 'Brand mark must align to the left edge of the card grid');
+      }
       if (view !== 'contact') {
         const balance = await page.locator('.contact-tile .tile-inner').evaluate(e => {
           const frame = e.getBoundingClientRect();

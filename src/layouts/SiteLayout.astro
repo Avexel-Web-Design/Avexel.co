@@ -61,7 +61,7 @@ const isHome = Astro.url.pathname === '/';
     <main id="main"><slot /></main>
     {!immersive && <footer class="site-footer wrap">
       <div class="footer-top"><a class="wordmark" href="/">avexel</a><a href="mailto:contact@avexel.co">contact@avexel.co <Icon name="arrowUpRight" /></a></div>
-      <div class="footer-bottom"><span>© {new Date().getFullYear()} Avexel Web Design</span><span>Harbor Springs, Michigan</span><div><a href="/communications/">Client guide</a><a href="https://github.com/avexel-web-design" target="_blank" rel="noreferrer">GitHub <Icon name="arrowUpRight" /></a></div></div>
+      <div class="footer-bottom"><span>© {new Date().getFullYear()} Avexel Web Design</span><div><a href="/communications/">Client guide</a><a href="https://github.com/avexel-web-design" target="_blank" rel="noreferrer">GitHub <Icon name="arrowUpRight" /></a></div></div>
     </footer>}
     <script>
       import '../scripts/site';

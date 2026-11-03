@@ -166,27 +166,20 @@ try {
   assert.notDeepEqual(await page.locator('[data-panel="services"]').boundingBox(), homeBounds, 'Navigation must physically rearrange the content');
   assert.ok(await page.evaluate(() => [...document.querySelectorAll('[data-layout-piece]')].every((node, index) => node === window.originalContentNodes[index])), 'Navigation must reuse the actual content nodes');
   assert.equal(await page.locator('[data-layout-piece]:visible').count(), 5, 'All content remains part of the composition');
-  assert.equal(await page.locator('.services-tile details').count(), 0, 'Service terms should not be hidden behind accordions');
-  assert.ok(await page.getByText('You own the code and content.', { exact: false }).isVisible());
-  await click(page.getByRole('tab', { name: 'Development', exact: true }));
-  assert.ok(await page.locator('[data-service-panel="development"]').isVisible());
-  await page.getByRole('tab', { name: 'Development', exact: true }).focus();
-  await page.keyboard.press('ArrowRight');
-  await page.waitForFunction(() => document.querySelector('.content-workspace').dataset.transitioning === 'false');
-  assert.equal(await page.getByRole('tab', { name: 'Maintenance', exact: true }).getAttribute('aria-selected'), 'true');
-  assert.ok(await page.getByRole('tab', { name: 'Maintenance', exact: true }).evaluate(element => element === document.activeElement), 'Animated keyboard tabs must retain focus');
+  assert.equal(await page.locator('.services-tile [role="tablist"],.services-tile details,.service-terms').count(), 0, 'Services must be a single overview, not tabs, accordions, or boilerplate terms');
+  assert.deepEqual(await page.locator('.service-label').allTextContents(), ['Websites', 'Web apps', 'Mobile apps']);
+  assert.equal(await page.locator('.service-offerings dd:visible').count(), 3, 'All three service descriptions are readable without switching views');
   await page.reload(); await ready(); await phase('complete');
   assert.equal(await page.evaluate(() => window.exposedUnreadyScene), false, 'No pre-restoration slop frame may be painted on reload');
-  assert.ok(await page.locator('[data-service-panel="maintenance"]').isVisible(), 'Refresh should preserve the selected service');
+  assert.equal(await page.locator('.service-offerings dd:visible').count(), 3, 'Refresh should retain the complete service overview');
   assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'services');
   assert.equal(await page.locator('.services-tile [data-view="contact"]').count(), 0, 'Services should not contain a Contact button');
   await click(control('contact'));
   await click(control('home'));
   assert.equal(await page.locator('.work-description').first().isVisible(), false, 'Collapsed Work should show only the showcase, not a repeated project title');
   assert.equal(await page.locator('.studio-preview img').count(), 0, 'The collapsed Studio composition should be typographic, not a small robotics logo beside body copy');
-  await click(page.getByRole('tab', { name: 'Development', exact: true }));
-  assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'services', 'Overview service labels should expand into the same live service tabs');
-  assert.equal(await page.getByRole('tab', { name: 'Development', exact: true }).getAttribute('aria-selected'), 'true');
+  await click(page.locator('[data-service-offering="web-apps"] .service-label'));
+  assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'services', 'Compact service labels open the same complete service overview');
   await click(control('home'));
   await click(page.locator('[data-project]:not([hidden]) .work-image'));
   assert.equal(await page.locator('.content-workspace').getAttribute('data-content-view'), 'work', 'The small screenshot should expand Work before offering the external site link');
@@ -284,12 +277,7 @@ try {
       });
       assert.ok(fits, `${view} content must fit at ${width}×${height}`);
       assert.ok(await page.locator('.content-workspace').evaluate(element => element.scrollHeight <= element.clientHeight + 1), 'The entire composition must fit without scrolling');
-      if (view === 'services') {
-        for (const service of ['design', 'development', 'maintenance']) {
-          await click(page.locator(`[data-service-tab="${service}"]`));
-          assert.ok(await page.locator('.services-tile .tile-inner').evaluate(element => element.scrollHeight <= element.clientHeight + 1), `${service} content must fit without scrolling at ${width}×${height}`);
-        }
-      }
+      if (view === 'services') assert.equal(await page.locator('.service-offerings dd:visible').count(), 3, 'Every offering must be visible in the no-scroll composition');
       if (view === 'studio' && width >= 768) {
         const intro = await page.locator('.studio-introduction').evaluate(element => {
           const first = element.querySelector('strong');
@@ -433,8 +421,13 @@ try {
       await logo.evaluate(image => image.decode());
       const bounds = await logo.boundingBox();
       const image = pngPixels(await hoverPage.screenshot());
+      // The mark now has its transparent outer padding trimmed (47px left,
+      // 31px top). Keep these probes in the original 500px source coordinates.
+      const scale = Math.min(bounds.width / 404, bounds.height / 430);
       const logoPixel = (x, y) => {
-        const offset = (Math.floor(bounds.y + y / 500 * bounds.height) * image.width + Math.floor(bounds.x + x / 500 * bounds.width)) * image.channels;
+        const px = bounds.x + (bounds.width - 404 * scale) / 2 + (x - 47) * scale;
+        const py = bounds.y + (bounds.height - 430 * scale) / 2 + (y - 31) * scale;
+        const offset = (Math.floor(py) * image.width + Math.floor(px)) * image.channels;
         return [...image.data.subarray(offset, offset + 3)];
       };
       for (const [x, y] of [[250, 95], [250, 205], [250, 395]]) assert.deepEqual(logoPixel(x, y), [0, 0, 0], 'The logo’s interior gaps must remain black, even with the exterior glow');
@@ -456,5 +449,5 @@ try {
     await hoverPage.close();
   }
   assert.deepEqual(errors, []);
-  console.log('Passed: viewport-fitted sections at 320–2000px, visible service terms, Team copy, text project selector, custom contact selector, full-aspect previews, native transitions, extended annotation pause, refresh restoration, contact success/error, reduced motion, and client guide.');
+  console.log('Passed: viewport-fitted sections at 320–2000px, complete service overview, Team copy, text project selector, custom contact selector, full-aspect previews, native transitions, extended annotation pause, refresh restoration, contact success/error, reduced motion, and client guide.');
 } finally { await browser.close(); }

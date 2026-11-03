@@ -51,7 +51,7 @@
 :root[data-theme=light] .identity-wordmark > span { filter: none; }
 :root[data-theme=light] .identity-wordmark img { filter: grayscale(1) brightness(2.5) invert(1) contrast(2); }
 :root[data-theme=light] .studio-shell .glass-surface { background: #fff !important; backdrop-filter: none; -webkit-backdrop-filter: none; }
-:root[data-theme=light] .studio-shell :is(.studio-footer,.work-image,.service-detail) { border-color: #d4d4d4; }
+:root[data-theme=light] .studio-shell .work-image { border-color: #d4d4d4; }
 :root[data-theme=light] .studio-shell :is(.tile-close,.inquiry-form input,.inquiry-form textarea,.service-select-trigger,.service-select-options,.work-image > span) { background: #fff; color: #000; border-color: #b8b8b8; }
 :root[data-theme=light] .studio-shell :is(.tile-close:hover,.service-select-options button[data-active=true]) { background: #f0f0f0; }
 :root[data-theme=light] .studio-shell .inquiry-submit { background: #000; border-color: #000; color: #fff !important; }

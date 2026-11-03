@@ -48,15 +48,12 @@ function nameContent() {
     name(`${view}-arrow`, `${card} .tile-heading h2 .icon`);
     name(`${view}-close`, `${card} .tile-close`);
   }
-  name('service-rule', '.service-tabs');
-  for (const id of ['design', 'development', 'maintenance']) {
-    name(`service-${id}`, `[data-service-tab="${id}"] .service-label`);
+  for (const id of ['websites', 'web-apps', 'mobile-apps']) {
+    name(`service-${id}`, `[data-service-offering="${id}"] .service-label`);
+    name(`service-${id}-description`, `[data-service-offering="${id}"] dd`);
   }
-  // One visual identity follows the active tab, so its underline travels
-  // between labels instead of fading one line out and another line in.
-  name('service-indicator', '[data-service-tab][aria-selected="true"] .service-active-rule');
-  name('service-copy', '[data-service-panel]:not([hidden])');
-  name('service-terms', '.service-terms');
+  name('service-intro', '.services-intro');
+  name('service-copy', '.services-tile [data-tile-detail]');
   name('studio-introduction', '.studio-introduction strong');
   name('studio-location', '.studio-introduction .locale');
   name('studio-copy', '.studio-tile [data-tile-detail]');

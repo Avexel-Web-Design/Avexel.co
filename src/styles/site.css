@@ -249,7 +249,7 @@ details p { font-size: 15px; padding-bottom: 24px; max-width: 600px; }
 .form-status.error { color: var(--error); }
 .honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 
-.site-footer { border-top: 1px solid var(--line); }
+.site-footer { border: 0; }
 .footer-top { display: flex; align-items: center; justify-content: space-between; gap: 25px; padding: 34px 0; }
 .footer-top > .wordmark { font-size: 30px; }
 .footer-top > a:last-child { font-size: 14px; display: flex; align-items: center; gap: 14px; }

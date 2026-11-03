@@ -23,7 +23,6 @@ let ready = false;
 let lastSaved = 0;
 let selectedView = 'home';
 let selectedProject = 0;
-let selectedService = 'design';
 let pausedForVisibility = false;
 const eraseTime = 16.5;
 const revealTime = 18.85;
@@ -112,33 +111,6 @@ document.querySelectorAll<HTMLAnchorElement>('.work-image').forEach(link => link
   navigateView('work');
 }));
 
-const serviceTabs = [...document.querySelectorAll<HTMLButtonElement>('[data-service-tab]')];
-function showService(id: string, animate = false, focus = false) {
-  if (!serviceTabs.some(tab => tab.dataset.serviceTab === id)) return;
-  if (selectedService === id) return;
-  selectedService = id;
-  const update = () => {
-    serviceTabs.forEach(tab => { const active = tab.dataset.serviceTab === id; tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
-    realSite?.querySelectorAll<HTMLElement>('[data-service-panel]').forEach(panel => { panel.hidden = panel.dataset.servicePanel !== id; });
-    if (focus) serviceTabs.find(tab => tab.dataset.serviceTab === id)?.focus({ preventScroll: true });
-  };
-  if (animate && selectedView === 'services') morphContent(update, true, undefined, .36);
-  else update();
-}
-serviceTabs.forEach((tab, index) => {
-  tab.addEventListener('click', () => {
-    showService(tab.dataset.serviceTab ?? 'design', true);
-    if (selectedView !== 'services') navigateView('services');
-    savePosition();
-  });
-  tab.addEventListener('keydown', event => {
-    const direction = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
-    if (!direction && event.key !== 'Home' && event.key !== 'End') return;
-    event.preventDefault();
-    const next = event.key === 'Home' ? 0 : event.key === 'End' ? serviceTabs.length - 1 : (index + direction + serviceTabs.length) % serviceTabs.length;
-    showService(serviceTabs[next].dataset.serviceTab ?? 'design', true, true); savePosition();
-  });
-});
 
 realSite?.querySelectorAll<HTMLElement>('.content-tile').forEach(card => card.addEventListener('click', event => {
   if (card.dataset.expanded === 'true' || event.button || event.ctrlKey || event.metaKey) return;
@@ -189,7 +161,7 @@ function savePosition(force = true) {
   lastSaved = performance.now();
   const workspace = document.querySelector<HTMLElement>('.content-workspace');
   const sheet = panels.find(panel => panel.dataset.panel === selectedView)?.querySelector<HTMLElement>('.tile-inner');
-  try { sessionStorage.setItem(storageKey, JSON.stringify({ time: timeline?.time() ?? endTime, duration: endTime, view: selectedView, project: selectedProject, service: selectedService, reading: { workspace: workspace?.scrollTop ?? 0, sheet: sheet?.scrollTop ?? 0 } })); } catch { /* Storage can be unavailable in private browsing. */ }
+  try { sessionStorage.setItem(storageKey, JSON.stringify({ time: timeline?.time() ?? endTime, duration: endTime, view: selectedView, project: selectedProject, reading: { workspace: workspace?.scrollTop ?? 0, sheet: sheet?.scrollTop ?? 0 } })); } catch { /* Storage can be unavailable in private browsing. */ }
 }
 
 function updateScene() {
@@ -298,7 +270,6 @@ void document.fonts.ready.then(() => {
   if (restore && saved) {
     if (saved.view) showView(saved.view === 'brief' ? 'home' : saved.view);
     if (Number.isInteger(saved.project) && saved.project! >= 0 && saved.project! < projects.length) showProject(saved.project!);
-    if (saved.service) showService(saved.service);
     const workspace = document.querySelector<HTMLElement>('.content-workspace');
     const sheet = panels.find(panel => panel.dataset.panel === selectedView)?.querySelector<HTMLElement>('.tile-inner');
     if (workspace && Number.isFinite(saved.reading?.workspace)) workspace.scrollTop = saved.reading?.workspace ?? 0;
