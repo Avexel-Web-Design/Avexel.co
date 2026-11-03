@@ -2,6 +2,7 @@ import { gsap } from 'gsap';
 import { layoutAnnotations } from './annotations';
 import { arrangeContent, morphContent } from './content-layout';
 import './service-select';
+import './button-spotlight';
 
 const story = document.querySelector<HTMLElement>('.scroll-story');
 const scene = document.querySelector<HTMLElement>('.scene');
