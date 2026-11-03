@@ -80,8 +80,11 @@
 :root.studio-motion::view-transition-group(avx-work-glass) { border-radius: var(--motion-work-radius,20px); }
 :root.studio-motion::view-transition-group(avx-contact-glass) { border-radius: var(--motion-contact-radius,20px); }
 @supports (view-transition-group: contain) {
-  /* A real border would inset the nested snapshot origin by one pixel. */
-  :root.studio-motion::view-transition-group(avx-contact-glass) { border: 0; box-shadow: var(--studio-surface-light), inset 0 0 0 1px var(--studio-surface-border); }
+  /* A real border would inset the nested snapshot origin by one pixel, so draw
+     the edge as an inner outline instead. Outline keeps the group and nested
+     text on the same origin without relying on box-shadow lists that turn
+     invalid when --studio-surface-light is none in light mode. */
+  :root.studio-motion::view-transition-group(avx-contact-glass) { border: 0; outline: 1px solid var(--studio-surface-border); outline-offset: -1px; box-shadow: var(--studio-surface-light); }
 }
 :root.studio-motion::view-transition-old(avx-services-glass),
 :root.studio-motion::view-transition-new(avx-services-glass),
