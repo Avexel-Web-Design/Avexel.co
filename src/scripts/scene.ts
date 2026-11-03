@@ -201,9 +201,7 @@ function updateScene() {
   scene.dataset.time = time.toFixed(3);
   realSite.inert = !complete;
   const demo = document.querySelector<HTMLElement>('.demo-page');
-  const controls = document.querySelector<HTMLElement>('.story-controls');
   if (demo) demo.inert = time >= 14.25;
-  if (controls) controls.inert = time >= 14.25;
   savePosition(false);
 }
 
@@ -264,7 +262,6 @@ function buildTimeline() {
     .to('.intervention', { opacity: 0, y: -30, duration: .45 }, 'annotations')
     .to('.demo-page', { opacity: 1, duration: .45 }, 'annotations')
     .to('.annotation', { opacity: 1, duration: .25, stagger: .1 }, 9.1)
-    .to('.story-controls', { opacity: 0, duration: .2 }, 14.25)
     .addLabel('erase', 14.5)
     .to(eraseState, { progress: 1, duration: 2.2, onUpdate: () => drawErase(eraseState.progress) }, 'erase')
     .addLabel('reveal', 16.85)
@@ -300,7 +297,7 @@ document.querySelectorAll('[data-replay]').forEach(button => button.addEventList
   realSite.inert = true;
   scene.dataset.phase = 'replay-wipe';
   scene.dataset.playback = 'wiping';
-  document.querySelectorAll<HTMLElement>('.demo-page,.story-controls').forEach(element => { element.inert = true; });
+  document.querySelector<HTMLElement>('.demo-page')?.toggleAttribute('inert', true);
   replayWipe = gsap.fromTo(realSite, { '--reveal-edge': `${height + 72}px` }, { '--reveal-edge': '0px', duration: .85, ease: 'power2.inOut', onComplete: () => {
     replayWipe = undefined;
     replaying = false;

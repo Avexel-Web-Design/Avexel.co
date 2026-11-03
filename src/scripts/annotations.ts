@@ -24,11 +24,11 @@ export function layoutAnnotations(scene: HTMLElement) {
   const bounds = { left: origin.left + 14, top: origin.top + 14, right: origin.right - 14, bottom: origin.bottom - 14 };
   const footer = scene.querySelector<HTMLElement>('.demo-bottom')?.getBoundingClientRect();
   const header = scene.querySelector<HTMLElement>('.demo-nav')?.getBoundingClientRect();
-  const protectedElements = [...scene.querySelectorAll<HTMLElement>('.demo-brand,.demo-nav > div span,.demo-nav > .demo-cta,.demo-eyebrow,.demo-copy h1,.demo-description,.demo-copy > .demo-cta,.demo-art figcaption,.art-caption,.art-plus,.demo-bottom > span,.story-controls')];
+  const protectedElements = [...scene.querySelectorAll<HTMLElement>('.demo-brand,.demo-nav > div span,.demo-nav > .demo-cta,.demo-eyebrow,.demo-copy h1,.demo-description,.demo-copy > .demo-cta,.demo-art figcaption,.art-caption,.art-plus,.demo-bottom > span')];
   const content = protectedElements.flatMap(element => {
     element.dataset.annotationObstacle = '';
     if (!element.getBoundingClientRect().width) return [];
-    return element.matches('button,.story-controls') ? [element.getBoundingClientRect()] : textBoxes(element);
+    return element.matches('button') ? [element.getBoundingClientRect()] : textBoxes(element);
   });
   const dividers = [...scene.querySelectorAll<HTMLElement>('.demo-nav,.demo-bottom')].map(element => {
     const rect = element.getBoundingClientRect();
