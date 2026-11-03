@@ -3,10 +3,13 @@ import { chromium } from 'playwright';
 import { pngPixels } from './png-pixels.mjs';
 
 const browser = await chromium.launch({ headless: true });
+// Keep the existing dark-design regression coverage; check-theme exercises the
+// new light default independently, including persistence and both palettes.
 const base = process.env.CHECK_URL ?? 'http://localhost:4321';
 const errors = [];
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.addInitScript(() => localStorage.setItem('avexel-theme', 'dark'));
   page.on('pageerror', error => errors.push(error.message));
   await page.addInitScript(() => {
     window.exposedUnreadyScene = false;
@@ -147,7 +150,7 @@ try {
   assert.equal(await page.locator('.demo-page').evaluate(element => getComputedStyle(element).opacity), '1');
   assert.equal(await page.locator('.line-one').evaluate(element => getComputedStyle(element).opacity), '0');
   await phase('default');
-  await click(page.locator('.story-controls [data-skip]'));
+  await click(page.locator('.demo-nav [data-skip]'));
   assert.equal(await page.locator('.scene').getAttribute('data-playback'), 'fast-forward');
   await phase('complete');
   assert.ok(await page.locator('[data-panel="home"]').isVisible());
@@ -269,7 +272,7 @@ try {
     // unchanged in this content-focused pass.
     if (height >= 667 && (width >= 375 || height >= 844)) await verifyCallouts();
     if (width === 390) await page.screenshot({ path: '/tmp/opencode/scene-annotations-mobile.png' });
-    await click(page.locator('.story-controls [data-skip]')); await phase('complete');
+    await click(page.locator('.demo-nav [data-skip]')); await phase('complete');
     const layout = await page.evaluate(() => ({ width: document.documentElement.scrollWidth, footer: document.querySelector('.studio-footer').getBoundingClientRect().top, panel: document.querySelector('.content-workspace').getBoundingClientRect().bottom, brokenImages: [...document.images].filter(image => image.complete && !image.naturalWidth).map(image => image.src) }));
     assert.ok(layout.width <= width && layout.panel <= layout.footer + 1, `Layout should fit ${width}×${height}`);
     assert.deepEqual(layout.brokenImages, []);
@@ -389,6 +392,7 @@ try {
   await bootPage.close();
   for (const view of ['home', 'studio', 'work', 'contact']) {
     const hoverPage = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+    await hoverPage.addInitScript(() => localStorage.setItem('avexel-theme', 'dark'));
     await hoverPage.goto(`${base}/#${view}`);
     await hoverPage.locator('.scroll-story[data-ready=true]').waitFor();
     const arrows = hoverPage.locator('.studio-shell .icon[data-icon="arrowUpRight"]');

@@ -36,6 +36,7 @@ function nameContent() {
     next.set(element, `avx-${key}`);
   };
   name('wordmark', '.identity-wordmark > span');
+  name('theme-control', '.theme-toggle');
   name('brand-mark', '.identity-wordmark > img');
   name('discipline', '.identity-description p:first-child');
   name('introduction', '.identity-description p:last-child');

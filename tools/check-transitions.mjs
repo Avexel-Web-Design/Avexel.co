@@ -8,6 +8,7 @@ const browser = await chromium.launch();
 try {
   const density = Number(process.env.CHECK_DPR ?? 1);
   const page = await browser.newPage({ deviceScaleFactor: density });
+  await page.addInitScript(theme => localStorage.setItem('avexel-theme', theme), process.env.CHECK_THEME ?? 'dark');
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.addInitScript(() => sessionStorage.removeItem('avexel-autoplay-v1'));

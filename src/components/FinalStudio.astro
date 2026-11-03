@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import wordmark from '../assets/avexel-wordmark.svg?raw';
+import ThemeToggle from './ThemeToggle.astro';
 interface Project { name: string; type: string; image: string; url: string; description: string; }
 interface Props { projects: Project[]; }
 const { projects } = Astro.props;
@@ -14,6 +15,7 @@ const inquiries = ['New website', 'Web application', 'Website redesign', 'Mainte
 
 <div class="real-site studio-shell">
   <div class="content-workspace" data-content-view="home" data-transitioning="false">
+    <ThemeToggle />
     <section class="identity-tile" data-panel="home" data-layout-piece aria-labelledby="home-title">
       <h2 id="home-title"><button type="button" class="identity-wordmark" data-view="home" aria-label="Avexel home"><img src="/Logo-studio.png" width="500" height="500" alt="" /><span aria-hidden="true" set:html={wordmark} /></button></h2>
       <div class="identity-description"><p>Web design, development<br />& maintenance.</p><p>Work directly with the people<br />building your website.</p></div>

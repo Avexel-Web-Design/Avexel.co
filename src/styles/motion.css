@@ -13,6 +13,8 @@
   z-index: 1;
 }
 :root.studio-motion::view-transition-image-pair(*) { isolation: isolate; }
+:root.studio-motion::view-transition-old(avx-theme-control) { animation: none; opacity: 0; }
+:root.studio-motion::view-transition-new(avx-theme-control) { animation: none; opacity: 1; width: 100%; height: 100%; }
 :root.studio-motion::view-transition-group(avx-contact-copy) { clip-path: var(--motion-contact-copy-clip,none); }
 :root.studio-motion::view-transition-old(*) {
   animation: studio-out var(--motion-fade-time) var(--motion-fade-delay) both;
