@@ -25,7 +25,7 @@ const inquiries = ['Website', 'Web application', 'Mobile app', 'Updates & fixes'
       <div class="tile-inner"><header class="tile-heading"><h2 id="services-title"><button type="button" data-view="services"><span class="tile-label">Services</span><Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Services and return home" disabled aria-hidden="true"><Icon name="plus" /></button></header>
         <p class="services-intro">We handle the design and development.</p>
         <dl class="service-offerings">{services.map(service => <div data-service-offering={service.id}><dt><span class="service-label">{service.label}</span></dt><dd>{service.description}</dd></div>)}</dl>
-        <div class="tile-detail" data-tile-detail hidden><p class="services-support">We also fix, update, and extend existing projects.</p></div>
+        <div class="tile-detail" data-tile-detail hidden><p class="services-support">We also fix, update, and extend existing projects.</p><p class="services-support">You own everything we build for you — content, code, and all.</p></div>
       </div>
     </section>
 
