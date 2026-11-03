@@ -291,6 +291,18 @@ try {
           assert.ok(await page.locator('.services-tile .tile-inner').evaluate(element => element.scrollHeight <= element.clientHeight + 1), `${service} content must fit without scrolling at ${width}×${height}`);
         }
       }
+      if (view === 'studio' && width >= 768) {
+        const intro = await page.locator('.studio-introduction').evaluate(element => {
+          const first = element.querySelector('strong');
+          const second = element.querySelector('.locale');
+          const a = first.getBoundingClientRect(), b = second.getBoundingClientRect();
+          return { sameLine: Math.abs(a.top - b.top) < 1 && b.left >= a.right,
+            sameStyle: ['fontSize', 'fontWeight', 'color', 'textShadow'].every(key => getComputedStyle(first)[key] === getComputedStyle(second)[key]),
+            names: [first.style.viewTransitionName, second.style.viewTransitionName] };
+        });
+        assert.ok(intro.sameLine && intro.sameStyle, 'Focused Studio intro must be one line in the quieter subtitle style');
+        assert.equal(new Set(intro.names).size, 2, 'Studio phrases must move as independently named layers');
+      }
       if (view === 'contact') {
         const insets = await page.locator('.inquiry-submit').evaluate(element => {
           const button = element.getBoundingClientRect();

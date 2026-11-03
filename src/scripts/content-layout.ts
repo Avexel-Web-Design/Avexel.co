@@ -55,7 +55,8 @@ function nameContent() {
   name('service-indicator', '[data-service-tab][aria-selected="true"] .service-active-rule');
   name('service-copy', '[data-service-panel]:not([hidden])');
   name('service-terms', '.service-terms');
-  name('studio-introduction', '.studio-introduction');
+  name('studio-introduction', '.studio-introduction strong');
+  name('studio-location', '.studio-introduction .locale');
   name('studio-copy', '.studio-tile [data-tile-detail]');
   name('project-controls', '.work-tile [data-tile-detail]');
   name('project-indicator', '[data-select-project][aria-pressed="true"] .project-active-rule');
