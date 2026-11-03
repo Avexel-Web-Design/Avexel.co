@@ -41,6 +41,10 @@
 :root.studio-motion::view-transition-old(avx-studio-location):only-child,
 :root.studio-motion::view-transition-new(avx-studio-introduction):only-child,
 :root.studio-motion::view-transition-new(avx-studio-location):only-child { animation-delay: 0s; }
+/* Identical lettering/color needs no dissolve. Keep one full-opacity capture
+   alive while its group interpolates position and scale. */
+:root[data-motion-studio-location=continuous]::view-transition-old(avx-studio-location) { animation: none; opacity: 0; }
+:root[data-motion-studio-location=continuous]::view-transition-new(avx-studio-location) { animation: none; opacity: 1; mix-blend-mode: normal; }
 :root.studio-motion::view-transition-group(avx-project-image) { overflow: clip; border-radius: 10px; }
 :root.studio-motion::view-transition-image-pair(avx-project-image) { width: 100%; height: 100%; }
 :root.studio-motion::view-transition-old(avx-project-image),

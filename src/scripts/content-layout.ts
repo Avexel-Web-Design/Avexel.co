@@ -86,6 +86,7 @@ function cleanup() {
   root.classList.remove('studio-motion');
   delete root.dataset.motionPhase;
   delete root.dataset.motionProjectImage;
+  delete root.dataset.motionStudioLocation;
   workspace?.style.removeProperty('opacity');
   if (replay) replay.disabled = false;
   if (workspace) { workspace.dataset.transitioning = 'false'; workspace.removeAttribute('aria-busy'); }
@@ -134,6 +135,8 @@ export function morphContent(change: () => void, animate = true, complete?: () =
   const clipped = getComputedStyle(workspace).overflowY !== 'visible';
   root.style.setProperty('--motion-clip', `inset(${clipped ? bounds.top : 0}px ${clipped ? innerWidth - bounds.right : 0}px ${innerHeight - bounds.bottom}px ${clipped ? bounds.left : 0}px)`);
   nameContent();
+  const locationVisible = () => Boolean(workspace.querySelector<HTMLElement>('.studio-introduction .locale')?.getBoundingClientRect().width);
+  const fromLocation = locationVisible();
   const clipContactCopy = () => {
     const card = workspace.querySelector<HTMLElement>('.contact-tile')!;
     const copy = card.querySelector<HTMLElement>('[data-tile-detail]')!.getBoundingClientRect();
@@ -168,6 +171,7 @@ export function morphContent(change: () => void, animate = true, complete?: () =
     }));
     if (token !== generation) return;
     nameContent();
+    root.dataset.motionStudioLocation = fromLocation && locationVisible() ? 'continuous' : '';
     clipContactCopy();
     glassNames.forEach(view => destinationRadii.set(view, getComputedStyle(workspace.querySelector(`[data-panel="${view}"] .tile-material`)!).borderTopLeftRadius));
   });

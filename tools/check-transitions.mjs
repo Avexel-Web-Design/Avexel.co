@@ -79,6 +79,17 @@ try {
               return { opacity: Number(style.opacity), delay: style.animationDelay, duration: style.animationDuration };
             });
           }, name);
+          if (name === 'avx-studio-location') {
+            assert.equal(blend[0].opacity, 0, 'Location must not crossfade two captures');
+            assert.equal(blend[1].opacity, 1, 'Location must stay fully visible while moving');
+            for (const time of [0, 195, 585, 779.9]) {
+              await seek(time);
+              const opacity = await page.evaluate(() => Number(getComputedStyle(document.documentElement, '::view-transition-new(avx-studio-location)').opacity));
+              assert.equal(opacity, 1, `Location must not fade at ${time}ms`);
+            }
+            await seek(390);
+            continue;
+          }
           for (const layer of blend) {
             assert.equal(layer.delay, '0s', 'Studio subtitle must not wait for a late snapshot swap');
             assert.equal(layer.duration, '0.78s', 'Subtitle color and glow must blend for the entire card movement');
