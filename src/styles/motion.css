@@ -29,12 +29,12 @@
 :root.studio-motion::view-transition-old(*):only-child { animation-delay: 0s; }
 :root.studio-motion::view-transition-new(*):only-child { animation-delay: var(--motion-enter-delay); }
 /* The brand mark scales several x between the hero and the header. It travels
-   with its group the whole way, but the captures swap early while both are
-   near native size, so no bitmap is ever stretched far. */
+   with its group the whole way, dissolving between captures over a long
+   overlap so it never blinks out or pops between sizes. */
 :root.studio-motion::view-transition-old(avx-wordmark),
-:root.studio-motion::view-transition-old(avx-brand-mark) { animation: studio-out calc(var(--motion-duration) * .1) calc(var(--motion-duration) * .2) both; mix-blend-mode: normal; }
+:root.studio-motion::view-transition-old(avx-brand-mark) { animation: studio-out calc(var(--motion-duration) * .3) calc(var(--motion-duration) * .1) both; mix-blend-mode: normal; }
 :root.studio-motion::view-transition-new(avx-wordmark),
-:root.studio-motion::view-transition-new(avx-brand-mark) { animation: studio-in calc(var(--motion-duration) * .1) calc(var(--motion-duration) * .26) both; mix-blend-mode: normal; }
+:root.studio-motion::view-transition-new(avx-brand-mark) { animation: studio-in calc(var(--motion-duration) * .3) calc(var(--motion-duration) * .2) both; mix-blend-mode: normal; }
 /* The Studio phrases are persistent text, not entering/leaving card copy.
    Blend their color and glow throughout the same eased movement as their
    geometry, rather than swapping typography near the end of the move. Both
