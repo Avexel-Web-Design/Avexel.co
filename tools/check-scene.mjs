@@ -429,7 +429,7 @@ try {
       await hoverPage.mouse.move(0, 0);
     }
     if (view === 'home') {
-      const logo = hoverPage.locator('.identity-wordmark > img');
+      const logo = hoverPage.locator('.identity-wordmark > img:visible');
       await logo.evaluate(image => image.decode());
       const bounds = await logo.boundingBox();
       const image = pngPixels(await hoverPage.screenshot());

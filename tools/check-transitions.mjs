@@ -88,6 +88,19 @@ try {
       }
       await seek(390);
       const middle = await groups();
+      if (width < 768 && to !== 'home') {
+        const contentNames = {
+          services: ['service-intro', 'service-websites-description', 'service-web-apps-description', 'service-mobile-apps-description', 'service-copy'],
+          studio: ['studio-copy'],
+          work: ['project-controls', 'project-title', 'project-description'],
+          contact: ['contact-copy'],
+        }[to];
+        const opacity = () => page.evaluate(names => names.map(name => Number(getComputedStyle(document.documentElement, `::view-transition-new(avx-${name})`).opacity)), contentNames);
+        assert.ok((await opacity()).every(value => value === 0), `${from} → ${to}: mobile body copy must wait for the moving title`);
+        await seek(702);
+        assert.ok((await opacity()).every(value => value > 0 && value < 1), `${from} → ${to}: mobile content must fade in, not appear instantly`);
+        await seek(390);
+      }
       if (width >= 768) {
         for (const name of ['avx-studio-introduction', 'avx-studio-location']) {
           const blend = await page.evaluate(name => {

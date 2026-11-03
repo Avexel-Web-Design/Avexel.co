@@ -6,6 +6,7 @@
 .theme-toggle > span { display: flex; }
 .theme-toggle .icon { width: 20px; height: 20px; }
 :root[data-theme=light] .theme-to-light,:root[data-theme=dark] .theme-to-dark { display: none; }
+:root[data-theme=light] .brand-mark-dark,:root[data-theme=dark] .brand-mark-light { display: none; }
 .content-workspace > .theme-toggle { z-index: 2; grid-column: 12; grid-row: 1; align-self: center; justify-self: end; }
 .content-workspace[data-content-view=home] > .theme-toggle { grid-column: 8; grid-row: 3; align-self: end; margin: 0; }
 @media (max-width:767px) {
@@ -49,7 +50,7 @@
 :root[data-theme=light] .studio-shell :is(h2,h3,p,a,button,label,strong,span) { color: #000 !important; }
 :root[data-theme=light] .studio-shell .icon,
 :root[data-theme=light] .identity-wordmark > span { filter: none; }
-:root[data-theme=light] .identity-wordmark img { filter: grayscale(1) brightness(2.5) invert(1) contrast(2); }
+:root[data-theme=light] .identity-wordmark img { filter: none; }
 :root[data-theme=light] .studio-shell .glass-surface { background: #fff !important; backdrop-filter: none; -webkit-backdrop-filter: none; }
 :root[data-theme=light] .studio-shell .work-image { border-color: #d4d4d4; }
 :root[data-theme=light] .studio-shell :is(.tile-close,.inquiry-form input,.inquiry-form textarea,.service-select-trigger,.service-select-options,.work-image > span) { background: #fff; color: #000; border-color: #b8b8b8; }

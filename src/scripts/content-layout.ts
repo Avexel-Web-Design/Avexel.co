@@ -36,7 +36,7 @@ function nameContent() {
   };
   name('wordmark', '.identity-wordmark > span');
   name('theme-control', '.theme-toggle');
-  name('brand-mark', '.identity-wordmark > img');
+  name('brand-mark', root.dataset.theme === 'dark' ? '.brand-mark-dark' : '.brand-mark-light');
   name('discipline', '.identity-description p:first-child');
   name('introduction', '.identity-description p:last-child');
   for (const view of glassNames) {
@@ -131,7 +131,11 @@ export function morphContent(change: () => void, animate = true, complete?: () =
   root.style.setProperty('--motion-duration', `${duration}s`);
   root.style.setProperty('--motion-fade-time', `${duration * .25}s`);
   root.style.setProperty('--motion-fade-delay', `${duration * .65}s`);
-  root.style.setProperty('--motion-enter-delay', `${duration * .6}s`);
+  const mobile = matchMedia('(max-width:767px)').matches;
+  // Rail titles travel most of the screen on phones. Reveal new body copy only
+  // once they are nearly home, then finish its fade before capture retirement.
+  root.style.setProperty('--motion-enter-delay', `${duration * (mobile ? .84 : .6)}s`);
+  root.style.setProperty('--motion-enter-time', `${duration * (mobile ? .12 : .25)}s`);
   const bounds = workspace.getBoundingClientRect();
   const clipped = getComputedStyle(workspace).overflowY !== 'visible';
   root.style.setProperty('--motion-clip', `inset(${clipped ? bounds.top : 0}px ${clipped ? innerWidth - bounds.right : 0}px ${innerHeight - bounds.bottom}px ${clipped ? bounds.left : 0}px)`);

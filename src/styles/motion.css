@@ -27,7 +27,7 @@
   mix-blend-mode: plus-lighter;
 }
 :root.studio-motion::view-transition-old(*):only-child { animation-delay: 0s; }
-:root.studio-motion::view-transition-new(*):only-child { animation-delay: var(--motion-enter-delay); }
+:root.studio-motion::view-transition-new(*):only-child { animation-delay: var(--motion-enter-delay); animation-duration: var(--motion-enter-time); }
 /* The Studio phrases are persistent text, not entering/leaving card copy.
    Blend their color and glow throughout the same eased movement as their
    geometry, rather than swapping typography near the end of the move. Both
@@ -45,6 +45,13 @@
 :root.studio-motion::view-transition-old(avx-studio-location):only-child,
 :root.studio-motion::view-transition-new(avx-studio-introduction):only-child,
 :root.studio-motion::view-transition-new(avx-studio-location):only-child { animation-delay: 0s; }
+@media (max-width:767px) {
+  :root.studio-motion::view-transition-new(avx-studio-introduction):only-child,
+  :root.studio-motion::view-transition-new(avx-studio-location):only-child {
+    animation-delay: var(--motion-enter-delay);
+    animation-duration: var(--motion-enter-time);
+  }
+}
 /* Identical lettering/color needs no dissolve. Keep one full-opacity capture
    alive while its group interpolates position and scale. */
 :root[data-motion-studio-location=continuous]::view-transition-old(avx-studio-location) { animation: none; opacity: 0; }

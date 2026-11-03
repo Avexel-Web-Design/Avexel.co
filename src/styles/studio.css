@@ -343,7 +343,7 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
   .content-workspace:not([data-content-view=home]) .identity-tile { grid-column: 1 / -1; grid-row: 1; order: 0; padding: 0; }
   .content-workspace:not([data-content-view=home]) .content-tile { grid-column: auto; grid-row: 3; width: auto; min-height: 0; order: 0; }
   .content-workspace:not([data-content-view=home]) .content-tile[data-expanded=true] { grid-column: 1 / -1; grid-row: 2; }
-  .content-workspace:not([data-content-view=home]) .content-tile:not([data-expanded=true]) .tile-inner { height: 100%; padding: 0 12px; display: flex; align-items: center; }
+  .content-workspace:not([data-content-view=home]) .content-tile:not([data-expanded=true]) .tile-inner { height: 100%; padding: 0 12px; display: flex; align-items: center; justify-content: center; }
   .content-workspace:not([data-content-view=home]) .content-tile:not([data-expanded=true]) .tile-heading { width: 100%; }
   .content-workspace:not([data-content-view=home]) .content-tile:not([data-expanded=true]) .tile-heading h2 { font-size: 12px; }
   .content-workspace:not([data-content-view=home]) .content-tile:not([data-expanded=true]) .tile-heading h2 button { gap: 6px; }
