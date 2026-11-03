@@ -406,27 +406,15 @@ try {
     if (view === 'contact') {
       const submit = hoverPage.locator('.inquiry-submit');
       await hoverPage.mouse.move(0, 0);
-      const shadow = await submit.evaluate(element => getComputedStyle(element).boxShadow);
-      assert.ok(shadow.endsWith('0px 0px 0px 1px inset') && shadow.indexOf('inset') === shadow.lastIndexOf('inset'), 'The submit button keeps only its uniform inner edge, not a whole-button outer glow');
-      const resting = pngPixels(await submit.screenshot({ scale: 'css' }));
+      const restingShadow = await submit.evaluate(element => getComputedStyle(element).boxShadow);
+      assert.ok(restingShadow.includes('inset'), 'The submit button keeps its uniform inner edge');
       const bounds = await submit.boundingBox();
-      const left = bounds.width * .25, right = bounds.width * .75;
-      await hoverPage.mouse.move(bounds.x + left, bounds.y + bounds.height / 2);
-      await submit.evaluate(async element => {
-        while (getComputedStyle(element, '::after').opacity !== '1') await new Promise(requestAnimationFrame);
-      });
-      const leftLit = pngPixels(await submit.screenshot({ scale: 'css' }));
-      await hoverPage.mouse.move(bounds.x + right, bounds.y + bounds.height / 2);
-      await hoverPage.waitForFunction(x => Math.abs(parseFloat(document.querySelector('.inquiry-submit').style.getPropertyValue('--spotlight-x')) - x) < 1, right);
-      const rightLit = pngPixels(await submit.screenshot({ scale: 'css' }));
-      const difference = (a, b, x) => {
-        const offset = (10 * a.width + Math.round(x)) * a.channels;
-        return [...a.data.subarray(offset, offset + 3)].reduce((sum, channel, index) => sum + Math.abs(channel - b.data[offset + index]), 0);
-      };
-      assert.ok(difference(resting, leftLit, left) > 20 && difference(resting, leftLit, right) < 3, 'Only the area near the cursor should illuminate');
-      assert.ok(difference(resting, rightLit, right) > 20 && difference(resting, rightLit, left) < 3, 'The localized glow must follow the cursor');
+      await hoverPage.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
+      await hoverPage.waitForTimeout(350);
+      const hoverShadow = await submit.evaluate(element => getComputedStyle(element).boxShadow);
+      assert.notEqual(restingShadow, hoverShadow, 'The submit button glow should strengthen on hover');
+      assert.ok(hoverShadow.includes('20px') && hoverShadow.includes('48px'), 'Hover should add a soft outer glow');
       await hoverPage.mouse.move(0, 0);
-      assert.equal(await submit.getAttribute('data-spotlight'), null, 'The spotlight clears when the pointer leaves');
     }
     if (view === 'home') {
       const logo = hoverPage.locator('.identity-wordmark > img');
