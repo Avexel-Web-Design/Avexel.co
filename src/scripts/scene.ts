@@ -259,7 +259,7 @@ function goToEnd(animate = false) {
 
 document.querySelectorAll('[data-skip]').forEach(button => button.addEventListener('click', () => goToEnd(true)));
 
-void document.fonts.ready.then(() => {
+const bootScene = () => {
   buildTimeline();
   const hashViews = new Map([['#contact', 'contact'], ['#team', 'studio'], ['#studio', 'studio'], ['#about', 'studio'], ['#services', 'services'], ['#work', 'work'], ['#brief', 'home'], ['#home', 'home']]);
   const hashView = hashViews.get(location.hash);
@@ -289,6 +289,19 @@ void document.fonts.ready.then(() => {
     else timeline.play();
   }
   savePosition();
+};
+
+// Fonts give the most accurate measurements, but a stalled font request must
+// never keep the immersive page hidden. Boot on a short deadline, then
+// re-measure once the real font set arrives.
+void Promise.race([
+  document.fonts.ready.then(() => true),
+  new Promise<boolean>(resolve => setTimeout(() => resolve(false), 1200)),
+]).then(bootedWithFonts => {
+  bootScene();
+  if (!bootedWithFonts) {
+    void document.fonts.ready.then(() => { if (ready) buildTimeline(); });
+  }
 });
 
 let resizeTimer: number;
