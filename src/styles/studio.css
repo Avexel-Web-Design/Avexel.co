@@ -148,6 +148,11 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
 .person-background { font-size: 11px; line-height: 1.55; margin-top: 3px; color: #a892b8; }
 .person-background a { color: #d4b7eb; }
 .bg-short { display: none; }
+/* The intro stacks as two lines at rest; when Studio is focused the lines
+   join into one sentence with a comma. */
+.studio-introduction .comma { display: none; }
+.studio-tile[data-expanded=true] .studio-introduction .stop { display: none; }
+.studio-tile[data-expanded=true] .studio-introduction .comma { display: inline; }
 @media (max-width:767px) {
   .bg-full { display: none; }
   .bg-short { display: inline; }
@@ -156,7 +161,8 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
   .studio-tile[data-expanded=true] .studio-preview { display: none; }
   .studio-tile[data-expanded=true] .studio-roots > p { display: none; }
   .studio-tile[data-expanded=true] .studio-people { padding-block: 8px; }
-  .studio-tile[data-expanded=true] .studio-people > div { padding-block: 6px; }
+  .studio-tile[data-expanded=true] .studio-people > div { padding-block: 4px; }
+  .studio-tile[data-expanded=true] .studio-summary { display: none; }
   .studio-tile[data-expanded=true] .studio-people h3 { font-size: 15px; }
   .studio-tile[data-expanded=true] .person-role { font-size: 11px; margin-top: 2px; }
   .studio-tile[data-expanded=true] .person-background { font-size: 10px; margin-top: 2px; }
@@ -474,6 +480,7 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
 @media (max-height:620px) and (min-width:768px) {
   .studio-tile[data-expanded=true] .studio-people { column-gap: 24px; }
   .studio-tile[data-expanded=true] .studio-preview { margin-bottom: 8px; }
+  .studio-tile[data-expanded=true] .person-background { font-size: 10px; }
   .studio-people > div { padding-block: 7px; }
   .contact-tile:not([data-expanded=true]) .tile-inner { padding-block: 12px; }
   .contact-tile[data-expanded=true] .tile-inner { padding-block: 14px; }
