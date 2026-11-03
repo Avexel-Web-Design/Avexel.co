@@ -45,7 +45,7 @@ html[data-scene-boot=pending] .scene { visibility: hidden; }
 .annotation[data-pointer="bottom"]::after { top: 100%; left: var(--pointer-offset); transform: translateX(-50%) rotate(90deg); }
 .note-brand { left: 17%; top: calc(4% + 8px); }
 .note-nav { left: 37%; top: 108px; max-width: 360px; font-size: clamp(11px, .95vw, 14px); }
-.note-label { left: 3%; top: 12%; }
+.note-label { left: 3%; top: 12%; max-width: 180px; }
 .note-period { left: 33%; top: 43%; }
 .note-color { left: 7%; top: 49%; }
 .note-description { left: 3%; bottom: 36%; }
