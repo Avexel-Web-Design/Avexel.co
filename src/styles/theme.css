@@ -2,15 +2,29 @@
 .work-image > picture,.demo-art > picture { display: contents; }
 .theme-toggle { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; padding: 11px; border: 1px solid var(--line); border-radius: 50%; background: var(--bg); color: var(--text); }
 .theme-toggle:hover { background: var(--solid); }
+.theme-toggle:disabled { opacity: 1; cursor: wait; }
 .theme-toggle > span { display: flex; }
 .theme-toggle .icon { width: 20px; height: 20px; }
 :root[data-theme=light] .theme-to-light,:root[data-theme=dark] .theme-to-dark { display: none; }
 .content-workspace > .theme-toggle { z-index: 2; grid-column: 12; grid-row: 1; align-self: center; justify-self: end; }
-.content-workspace[data-content-view=home] > .theme-toggle { grid-column: 8; grid-row: 3; align-self: end; margin: 0 24px 12px 0; }
+.content-workspace[data-content-view=home] > .theme-toggle { grid-column: 8; grid-row: 3; align-self: end; margin: 0 28px 0 0; }
 @media (max-width:767px) {
   .content-workspace > .theme-toggle { grid-column: 3; grid-row: 1; }
   .content-workspace[data-content-view=home] > .theme-toggle { grid-column: 2; grid-row: 1; margin: 0 0 4px; }
 }
+
+/* One full-page pair keeps pictures and text on the same circular boundary.
+   Section morphs temporarily yield their independently named capture layers. */
+:root.theme-changing { view-transition-name: root; }
+:root.theme-changing * { view-transition-name: none !important; transition: none !important; }
+:root.theme-changing::view-transition { pointer-events: none; }
+:root.theme-changing::view-transition-group(root) { animation: none; }
+:root.theme-changing::view-transition-old(root),
+:root.theme-changing::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+:root.theme-changing::view-transition-old(root) { z-index: 0; }
+:root.theme-changing::view-transition-new(root) { z-index: 1; }
+:root.theme-changing .theme-toggle:disabled { opacity: 1; cursor: wait; }
+:root.theme-changing .content-workspace { pointer-events: none; }
 
 :root[data-theme=light] {
   color-scheme: light;

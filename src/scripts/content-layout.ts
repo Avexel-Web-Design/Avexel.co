@@ -96,6 +96,10 @@ function cleanup() {
 
 export function morphContent(change: () => void, animate = true, complete?: () => void, duration = .78) {
   if (!workspace) { change(); complete?.(); return; }
+  if (root.classList.contains('theme-changing')) {
+    root.addEventListener('theme-motion-end', () => morphContent(change, animate, complete, duration), { once: true });
+    return;
+  }
   if (active && animate && !reduce.matches && !document.hidden) {
     // Finish the current movement, then combine rapid requests into one next
     // movement. Never force a partly visible frame to jump to its endpoint.
