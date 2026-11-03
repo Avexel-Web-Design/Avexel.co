@@ -16,8 +16,6 @@ const storageKey = 'avexel-autoplay-v1';
 const eraseState = { progress: 0 };
 let timeline: gsap.core.Timeline | undefined;
 let fastPlayback: gsap.core.Tween | undefined;
-let replayWipe: gsap.core.Tween | undefined;
-let replaying = false;
 let playbackMode = 'playing';
 let width = 0;
 let height = 0;
@@ -27,6 +25,9 @@ let selectedView = 'home';
 let selectedProject = 0;
 let selectedService = 'design';
 let pausedForVisibility = false;
+const eraseTime = 16.5;
+const revealTime = 18.85;
+const endTime = 20.3;
 
 if (realSite) realSite.inert = true;
 
@@ -59,7 +60,7 @@ function showView(view: string, focus = false) {
 function navigateView(view: string) {
   if (view === selectedView) return;
   showView(view, true);
-  history.pushState({ view }, '', view === 'home' ? location.pathname : `#${view}`);
+  history.pushState({ view }, '', view === 'home' ? location.pathname : `#${view === 'studio' ? 'team' : view}`);
   savePosition();
 }
 
@@ -188,20 +189,20 @@ function savePosition(force = true) {
   lastSaved = performance.now();
   const workspace = document.querySelector<HTMLElement>('.content-workspace');
   const sheet = panels.find(panel => panel.dataset.panel === selectedView)?.querySelector<HTMLElement>('.tile-inner');
-  try { sessionStorage.setItem(storageKey, JSON.stringify({ time: timeline?.time() ?? 18.3, view: selectedView, project: selectedProject, service: selectedService, reading: { workspace: workspace?.scrollTop ?? 0, sheet: sheet?.scrollTop ?? 0 } })); } catch { /* Storage can be unavailable in private browsing. */ }
+  try { sessionStorage.setItem(storageKey, JSON.stringify({ time: timeline?.time() ?? endTime, duration: endTime, view: selectedView, project: selectedProject, service: selectedService, reading: { workspace: workspace?.scrollTop ?? 0, sheet: sheet?.scrollTop ?? 0 } })); } catch { /* Storage can be unavailable in private browsing. */ }
 }
 
 function updateScene() {
-  if (!scene || !realSite || replaying) return;
-  const time = reduce.matches ? 18.3 : timeline?.time() ?? 0;
-  const complete = time >= 18.29;
-  const phase = complete ? 'complete' : time < 1.8 ? 'default' : time < 3.8 ? 'first-line' : time < 6 ? 'second-line' : time < 8.7 ? 'statement' : time < 14.5 ? 'annotations' : time < 16.85 ? 'erase' : 'reveal';
+  if (!scene || !realSite) return;
+  const time = reduce.matches ? endTime : timeline?.time() ?? 0;
+  const complete = time >= endTime - .01;
+  const phase = complete ? 'complete' : time < 1.8 ? 'default' : time < 3.8 ? 'first-line' : time < 6 ? 'second-line' : time < 8.7 ? 'statement' : time < eraseTime ? 'annotations' : time < revealTime ? 'erase' : 'reveal';
   scene.dataset.phase = phase;
   scene.dataset.playback = complete ? 'complete' : playbackMode;
   scene.dataset.time = time.toFixed(3);
   realSite.inert = !complete;
   const demo = document.querySelector<HTMLElement>('.demo-page');
-  if (demo) demo.inert = time >= 14.25;
+  if (demo) demo.inert = time >= eraseTime - .25;
   savePosition(false);
 }
 
@@ -223,7 +224,6 @@ function mergeY(selector: string) {
 
 function buildTimeline() {
   if (!scene || !realSite || !canvas) return;
-  replayWipe?.progress(1).kill();
   const previousTime = timeline?.time() ?? 0;
   const resume = !timeline || Boolean((!timeline.paused() || fastPlayback?.isActive()) && previousTime < timeline.duration());
   fastPlayback?.kill();
@@ -262,9 +262,9 @@ function buildTimeline() {
     .to('.intervention', { opacity: 0, y: -30, duration: .45 }, 'annotations')
     .to('.demo-page', { opacity: 1, duration: .45 }, 'annotations')
     .to('.annotation', { opacity: 1, duration: .25, stagger: .1 }, 9.1)
-    .addLabel('erase', 14.5)
+    .addLabel('erase', eraseTime)
     .to(eraseState, { progress: 1, duration: 2.2, onUpdate: () => drawErase(eraseState.progress) }, 'erase')
-    .addLabel('reveal', 16.85)
+    .addLabel('reveal', revealTime)
     .to(realSite, { '--reveal-edge': `${height + 72}px`, duration: 1.3 }, 'reveal')
     .to({}, { duration: .15 });
   timeline.seek(Math.min(previousTime, timeline.duration()), false);
@@ -286,35 +286,12 @@ function goToEnd(animate = false) {
 }
 
 document.querySelectorAll('[data-skip]').forEach(button => button.addEventListener('click', () => goToEnd(true)));
-document.querySelectorAll('[data-replay]').forEach(button => button.addEventListener('click', event => {
-  event.preventDefault();
-  if (!timeline || !realSite || !scene || reduce.matches || replaying) return;
-  fastPlayback?.kill();
-  history.replaceState(null, '', location.pathname);
-  // Reset the intro underneath the still-visible studio, then wipe upwards.
-  timeline.pause(0, false);
-  replaying = true;
-  realSite.inert = true;
-  scene.dataset.phase = 'replay-wipe';
-  scene.dataset.playback = 'wiping';
-  document.querySelector<HTMLElement>('.demo-page')?.toggleAttribute('inert', true);
-  replayWipe = gsap.fromTo(realSite, { '--reveal-edge': `${height + 72}px` }, { '--reveal-edge': '0px', duration: .85, ease: 'power2.inOut', onComplete: () => {
-    replayWipe = undefined;
-    replaying = false;
-    playbackMode = 'playing';
-    showView('home');
-    timeline?.play(0);
-    updateScene();
-    document.querySelector<HTMLButtonElement>('[data-skip]')?.focus({ preventScroll: true });
-    savePosition();
-  } });
-}));
 
 void document.fonts.ready.then(() => {
   buildTimeline();
-  const hashViews = new Map([['#contact', 'contact'], ['#studio', 'studio'], ['#about', 'studio'], ['#services', 'services'], ['#work', 'work'], ['#brief', 'home'], ['#home', 'home']]);
+  const hashViews = new Map([['#contact', 'contact'], ['#team', 'studio'], ['#studio', 'studio'], ['#about', 'studio'], ['#services', 'services'], ['#work', 'work'], ['#brief', 'home'], ['#home', 'home']]);
   const hashView = hashViews.get(location.hash);
-  let saved: { time?: number; view?: string; project?: number; service?: string; reading?: { workspace?: number; sheet?: number } } | undefined;
+  let saved: { time?: number; duration?: number; view?: string; project?: number; service?: string; reading?: { workspace?: number; sheet?: number } } | undefined;
   try { saved = JSON.parse(sessionStorage.getItem(storageKey) ?? 'null'); } catch { /* Start at the beginning if storage is unavailable. */ }
   const navigation = performance.getEntriesByType('navigation')[0];
   const restore = navigation instanceof PerformanceNavigationTiming && (navigation.type === 'reload' || navigation.type === 'back_forward');
@@ -326,7 +303,10 @@ void document.fonts.ready.then(() => {
     const sheet = panels.find(panel => panel.dataset.panel === selectedView)?.querySelector<HTMLElement>('.tile-inner');
     if (workspace && Number.isFinite(saved.reading?.workspace)) workspace.scrollTop = saved.reading?.workspace ?? 0;
     if (sheet && Number.isFinite(saved.reading?.sheet)) sheet.scrollTop = saved.reading?.sheet ?? 0;
-    if (Number.isFinite(saved.time)) timeline?.seek(gsap.utils.clamp(0, timeline.duration(), saved.time ?? 0), false);
+    if (Number.isFinite(saved.time)) {
+      const time = !saved.duration && saved.time! >= 18.29 ? endTime : saved.time ?? 0;
+      timeline?.seek(gsap.utils.clamp(0, timeline.duration(), time), false);
+    }
   } else if (hashView) { goToEnd(); showView(hashView); }
   ready = true;
   if (story) story.dataset.ready = 'true';
@@ -351,16 +331,16 @@ window.addEventListener('resize', () => {
 reduce.addEventListener('change', () => { buildTimeline(); showView(selectedView); });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    pausedForVisibility = Boolean(replayWipe?.isActive() || fastPlayback?.isActive() || timeline?.isActive());
-    (replayWipe ?? fastPlayback ?? timeline)?.pause();
+    pausedForVisibility = Boolean(fastPlayback?.isActive() || timeline?.isActive());
+    (fastPlayback ?? timeline)?.pause();
     savePosition();
-  } else if (pausedForVisibility) { pausedForVisibility = false; (replayWipe ?? fastPlayback ?? timeline)?.resume(); }
+  } else if (pausedForVisibility) { pausedForVisibility = false; (fastPlayback ?? timeline)?.resume(); }
 });
 window.addEventListener('pagehide', () => savePosition());
 document.querySelectorAll<HTMLElement>('.content-workspace,.tile-inner').forEach(element => element.addEventListener('scroll', () => savePosition(false), { passive: true }));
 function restoreHistoryView() {
   const hash = location.hash.slice(1);
-  const view = hash === 'about' ? 'studio' : hash === 'brief' ? 'home' : hash || 'home';
+  const view = hash === 'about' || hash === 'team' ? 'studio' : hash === 'brief' ? 'home' : hash || 'home';
   if (!['home', 'services', 'work', 'studio', 'contact'].includes(view) || view === selectedView) return;
   if (scene?.dataset.phase !== 'complete') goToEnd();
   showView(view, true);

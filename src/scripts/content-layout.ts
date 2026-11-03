@@ -4,7 +4,6 @@ const workspace = document.querySelector<HTMLElement>('.content-workspace');
 const pieces = [...document.querySelectorAll<HTMLElement>('[data-layout-piece]')];
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 const root = document.documentElement;
-const replay = document.querySelector<HTMLButtonElement>('[data-replay]');
 const registered = new Set<HTMLElement>();
 const glassNames = ['services', 'studio', 'work', 'contact'];
 const easing = 'cubic-bezier(.65,0,.35,1)';
@@ -89,7 +88,6 @@ function cleanup() {
   delete root.dataset.motionProjectImage;
   delete root.dataset.motionStudioLocation;
   workspace?.style.removeProperty('opacity');
-  if (replay) replay.disabled = false;
   if (workspace) { workspace.dataset.transitioning = 'false'; workspace.removeAttribute('aria-busy'); }
   active = undefined;
 }
@@ -109,7 +107,6 @@ export function morphContent(change: () => void, animate = true, complete?: () =
     cleanup(); change(); nameContent(); complete?.(); return;
   }
   workspace.dataset.transitioning = 'true'; workspace.setAttribute('aria-busy', 'true');
-  if (replay) replay.disabled = true;
   const done = () => {
     if (token !== generation) return;
     cleanup();

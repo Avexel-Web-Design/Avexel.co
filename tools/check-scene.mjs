@@ -127,7 +127,7 @@ try {
   await verifyCallouts();
   await page.screenshot({ path: '/tmp/opencode/scene-annotations.png' });
   const annotationTime = await time();
-  await page.waitForTimeout(1200);
+  await page.waitForTimeout(3200);
   assert.equal(await page.locator('.scene').getAttribute('data-phase'), 'annotations', 'Annotations need a deliberate reading pause');
   assert.ok(await time() > annotationTime + 1, 'Playback should continue without any input');
   await phase('erase'); await page.waitForTimeout(800);
@@ -141,15 +141,11 @@ try {
   assert.equal(await page.locator('[data-stack-object],.stack-render').count(), 0, 'The 3D logo must be completely removed');
   await page.screenshot({ path: '/tmp/opencode/scene-final-desktop.png' });
 
-  await click(page.locator('.studio-footer [data-replay]'));
-  assert.equal(await page.locator('.scene').getAttribute('data-playback'), 'wiping');
-  const wipeEdge = await page.locator('.real-site').evaluate(element => parseFloat(getComputedStyle(element).getPropertyValue('--reveal-edge')));
-  await page.waitForTimeout(300);
-  assert.ok(await page.locator('.real-site').evaluate(element => parseFloat(getComputedStyle(element).getPropertyValue('--reveal-edge'))) < wipeEdge, 'Replay should wipe upwards');
-  assert.equal(await time(), 0, 'Replay must reset the hidden intro rather than reverse its animations');
-  assert.equal(await page.locator('.demo-page').evaluate(element => getComputedStyle(element).opacity), '1');
-  assert.equal(await page.locator('.line-one').evaluate(element => getComputedStyle(element).opacity), '0');
-  await phase('default');
+  assert.equal(await page.locator('[data-replay]').count(), 0, 'Replay has been removed');
+  assert.equal(await page.locator('.identity-description').count(), 0, 'Remove the redundant home descriptions');
+  assert.equal(await page.locator('.studio-tile .tile-label').innerText(), 'Team');
+  await page.goto(`${base}/?skip-check`);
+  await ready();
   await click(page.locator('.demo-nav [data-skip]'));
   assert.equal(await page.locator('.scene').getAttribute('data-playback'), 'fast-forward');
   await phase('complete');
@@ -460,5 +456,5 @@ try {
     await hoverPage.close();
   }
   assert.deepEqual(errors, []);
-  console.log('Passed: viewport-fitted sections at 320–2000px, visible service terms, student-led studio copy, text project selector, custom contact selector, full-aspect previews, native transitions, Replay, refresh restoration, contact success/error, reduced motion, and client guide.');
+  console.log('Passed: viewport-fitted sections at 320–2000px, visible service terms, Team copy, text project selector, custom contact selector, full-aspect previews, native transitions, extended annotation pause, refresh restoration, contact success/error, reduced motion, and client guide.');
 } finally { await browser.close(); }

@@ -57,6 +57,9 @@ html[data-scene-boot=pending] .scene { visibility: hidden; }
 .eraser-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
 .real-site { position: absolute; inset: 0; z-index: 5; background: #fff; color: #19191c; --reveal-edge: 0px; mask-image: linear-gradient(to bottom, #000 calc(var(--reveal-edge) - 72px), transparent var(--reveal-edge)); -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--reveal-edge) - 72px), transparent var(--reveal-edge)); display: flex; flex-direction: column; padding: 0 4%; }
 .real-site p { color: #626269; }
+/* Once revealed, remove the mask entirely. A pixel-valued reveal edge lags
+   behind viewport growth while the intro timeline rebuild is debounced. */
+.scene[data-phase=complete] .real-site { mask-image: none !important; -webkit-mask-image: none !important; }
 .real-header { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; height: 88px; border-bottom: 1px solid #dcdce0; }
 .real-wordmark { font-size: 43px; font-weight: 650; letter-spacing: -.075em; line-height: 1; }.real-wordmark > span { font-size: 12px; vertical-align: top; display: inline-block; margin: 7px 0 0 6px; letter-spacing: 0; }
 .real-header nav { display: flex; gap: 34px; }.real-header nav button { background: none; border: 0; color: #6b6b72; font-size: 14px; padding: 10px 0; position: relative; white-space: nowrap; }.real-header nav button[aria-pressed=true] { color: #19191c; }.real-header nav button[aria-pressed=true]::after { content: ''; position: absolute; width: 5px; height: 5px; background: #294cff; border-radius: 50%; left: -12px; top: 17px; }.real-header nav button span { font-size: 9px; vertical-align: super; margin-left: 3px; }.real-header nav button:last-child { color: #294cff; }.real-header .icon { width: 16px; height: 16px; margin-left: 6px; }

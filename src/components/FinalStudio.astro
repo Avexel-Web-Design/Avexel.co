@@ -18,7 +18,6 @@ const inquiries = ['New website', 'Web application', 'Website redesign', 'Mainte
     <ThemeToggle />
     <section class="identity-tile" data-panel="home" data-layout-piece aria-labelledby="home-title">
       <h2 id="home-title"><button type="button" class="identity-wordmark" data-view="home" aria-label="Avexel home"><img src="/Logo-studio.png" width="500" height="500" alt="" /><span aria-hidden="true" set:html={wordmark} /></button></h2>
-      <div class="identity-description"><p>Web design, development<br />& maintenance.</p><p>Work directly with the people<br />building your website.</p></div>
     </section>
 
     <section class="content-tile services-tile" data-panel="services" data-layout-piece aria-labelledby="services-title">
@@ -33,7 +32,7 @@ const inquiries = ['New website', 'Web application', 'Website redesign', 'Mainte
 
     <section class="content-tile studio-tile" data-panel="studio" data-layout-piece aria-labelledby="studio-title">
       <div class="tile-material glass-surface" aria-hidden="true"></div>
-      <div class="tile-inner"><header class="tile-heading"><h2 id="studio-title"><button type="button" data-view="studio"><span class="tile-label">Studio</span><Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Studio and return home" disabled aria-hidden="true"><Icon name="plus" /></button></header>
+      <div class="tile-inner"><header class="tile-heading"><h2 id="studio-title"><button type="button" data-view="studio"><span class="tile-label">Team</span><Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Team and return home" disabled aria-hidden="true"><Icon name="plus" /></button></header>
         <div class="studio-preview"><p class="studio-introduction"><strong>Student-led team,</strong> <span class="locale">based in Harbor Springs.</span></p></div>
         <div class="tile-detail" data-tile-detail hidden>
         <div class="studio-people"><div><h3>Ryan Latimer</h3><p class="person-role">Operations & development</p><p class="person-background"><span class="bg-full">Harbor Springs High School junior · Captain & programming lead, Baywatch Robotics</span><span class="bg-short">Harbor Springs junior · Baywatch captain</span></p></div><div><h3>Gavin Moceri</h3><p class="person-role">Development · <a href="https://gavinmoceri.com" target="_blank" rel="noreferrer">Portfolio <Icon name="arrowUpRight" /></a></p><p class="person-background"><span class="bg-full">Michigan Technological University freshman · Former Baywatch captain & design lead, now mentor</span><span class="bg-short">Michigan Technological University freshman · Baywatch mentor</span></p></div><div><h3>Conner Breckenfeld</h3><p class="person-role">Client outreach, photography & drone</p><p class="person-background"><span class="bg-full">Northern Michigan University freshman · Former Baywatch assistant captain & build lead, now mentor</span><span class="bg-short">NMU freshman · Baywatch mentor</span></p></div><div><h3>Brooke Winkler</h3><p class="person-role">Client outreach & social · <a href="https://brookewinkler.com" target="_blank" rel="noreferrer">Portfolio <Icon name="arrowUpRight" /></a></p><p class="person-background"><span class="bg-full">Michigan Technological University freshman · Former captain, FRC 7598 SCA Constellations</span><span class="bg-short">Michigan Technological University freshman · Former FRC 7598 captain</span></p></div></div>
@@ -67,5 +66,5 @@ const inquiries = ['New website', 'Web application', 'Website redesign', 'Mainte
     </section>
   </div>
 
-  <footer class="studio-footer"><span>Harbor Springs, Michigan</span><button type="button" data-replay>Replay the teardown <span>↺</span></button><span>© {new Date().getFullYear()} Avexel</span></footer>
+  <footer class="studio-footer"><span>Harbor Springs, Michigan</span><span>© {new Date().getFullYear()} Avexel</span></footer>
 </div>

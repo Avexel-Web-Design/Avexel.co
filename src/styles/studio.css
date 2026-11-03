@@ -226,9 +226,6 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
 .service-select-options button[aria-selected=true] > span { opacity: 1; }
 .inquiry-form .form-status.error { color: #ffb6bf; }
 .studio-footer { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; gap: 20px; height: 46px; border-top: 1px solid #d7b1ff1c; color: #ad9bbb; font-size: 11px; }
-.studio-footer button { border: 0; background: none; color: #bba7ca; padding: 10px 0; font-size: 11px; }
-.studio-footer button:disabled { opacity: 1; cursor: wait; }
-.studio-footer [data-replay] span { margin-left: 8px; }
 @media (max-width:1100px) and (min-width:768px) {
   .content-workspace { gap: 12px; }
   .tile-inner { padding: 20px; }
@@ -273,7 +270,7 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
   .work-choices { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 16px; }.work-choices button { font-size: 12px; min-height: 44px; }.work-tile[data-expanded=true] .work-description h3 { font-size: 24px; }
   .contact-tile[data-expanded=true] .contact-methods a:first-child { font-size: 21px; }
   .inquiry-form input,.inquiry-form select,.inquiry-form textarea { font-size: 16px; }
-  .studio-footer { height: 42px; font-size: 10px; }.studio-footer > span:first-child { display: none; }.studio-footer button { font-size: 10px; }
+  .studio-footer { height: 42px; font-size: 10px; }.studio-footer > span:first-child { display: none; }
 }
 @media (max-width:350px) { .tile-inner,.content-tile[data-expanded=true] .tile-inner { padding-inline: 19px; }.service-tabs { gap: 14px; } }
 /* Overview composition. Expanded topics use the fixed-height composition below. */
@@ -302,7 +299,6 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
 }
 @media (prefers-reduced-transparency:reduce) { .glass-surface { background: #150d1e !important; -webkit-backdrop-filter: none; backdrop-filter: none; } }
 @supports not (backdrop-filter:blur(1px)) { .glass-surface { background: #150d1e; } }
-@media (prefers-reduced-motion:reduce) { .studio-footer [data-replay] { display: none; } }
 
 /* Light belongs to the content, not another decorative layer over the grid. */
 .studio-shell {
@@ -359,7 +355,6 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
 .studio-shell .icon[data-icon="arrowUpRight"] { filter: drop-shadow(0 0 5px #c58affb3); }
 .service-tabs button[aria-selected=true] { color: var(--studio-purple); }
 .service-active-rule { background: var(--studio-purple); box-shadow: 0 0 6px #c58aff,0 0 18px #c58aff90; }
-.studio-footer button { color: var(--studio-purple); text-shadow: var(--studio-glow-soft); }
 @media (min-width:768px) {
   .service-content h3 { font-size: clamp(34px,3.2vw,46px); letter-spacing: -.045em; }
   .service-overview > p:not(.service-detail) { font-size: 16px; max-width: 48ch; }
@@ -537,6 +532,15 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
   .content-workspace[data-content-view=home] .studio-tile .tile-heading h2 { font-size: 12px; }
   .content-workspace[data-content-view=home] .studio-preview { margin-top: 8px; }
   .content-workspace[data-content-view=home] .studio-introduction > span { font-size: 10px; line-height: 1.3; }
+}
+
+/* Center the collapsed Contact content as one group, regardless of card height. */
+.content-workspace .contact-tile:not([data-expanded=true]) .tile-inner { display: flex; flex-direction: column; justify-content: center; }
+.work-image > span { gap: 6px; }
+@media (max-width:767px) {
+  .content-workspace[data-content-view=home] .contact-tile .tile-inner { flex-direction: row; align-items: center; justify-content: space-between; }
+  .content-workspace[data-content-view=home] .contact-methods { margin-top: 0; }
+  .content-workspace:not([data-content-view=home]) .contact-tile:not([data-expanded=true]) .tile-inner { flex-direction: row; align-items: center; }
 }
 
 /* Keep the submit button on the card's bottom inset. The message field takes

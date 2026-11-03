@@ -57,6 +57,9 @@ h3 { letter-spacing: -.025em; }
 .icon svg { width: 100%; height: 100%; fill: currentColor; }
 a:is(:hover,:focus-visible) .icon[data-icon="arrowUpRight"],
 button:is(:hover,:focus-visible) .icon[data-icon="arrowUpRight"] { transform: rotate(45deg); }
+/* Text-following arrows belong to their label, not the far edge of a button. */
+:is(a,button):has(> .icon[data-icon="arrowUpRight"]) { column-gap: 6px !important; justify-content: flex-start; }
+:is(a,button) > .icon[data-icon="arrowUpRight"] { margin-inline-start: 0 !important; }
 .glass {
   background: var(--glass);
   border: 1px solid var(--line);

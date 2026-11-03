@@ -13,6 +13,15 @@ try {
     for (const view of ['home','services','studio','work','contact']) {
       await page.goto(`${base}/?theme-check#${view}`);
       await page.locator('.scroll-story[data-ready=true]').waitFor();
+      assert.equal(await page.locator('.real-site').evaluate(e => getComputedStyle(e).maskImage), 'none', 'Finished reveal must have no mask during viewport changes');
+      if (view !== 'contact') {
+        const balance = await page.locator('.contact-tile .tile-inner').evaluate(e => {
+          const frame = e.getBoundingClientRect();
+          const content = [...e.children].map(c => c.getBoundingClientRect()).filter(r => r.width && r.height);
+          return { top: Math.min(...content.map(r => r.top)) - frame.top, bottom: frame.bottom - Math.max(...content.map(r => r.bottom)) };
+        });
+        assert.ok(Math.abs(balance.top - balance.bottom) < 1, `Collapsed Contact must have equal vertical space at ${width}×${height} in ${view}`);
+      }
       assert.equal(await page.locator('html').getAttribute('data-theme'), 'light', 'Light must be default even with a dark OS preference');
       const toggle = page.getByRole('button', { name: 'Switch to dark mode' });
       const box = await toggle.boundingBox();
@@ -44,6 +53,11 @@ try {
       await page.getByRole('button', { name: 'Switch to light mode' }).click();
       assert.equal(await page.locator('html').getAttribute('data-theme'), 'light');
     }
+  }
+  // Resize repeatedly without waiting for the debounced intro layout rebuild.
+  for (const height of [600,640,680,720,760,800,840,900]) {
+    await page.setViewportSize({ width: 1440, height });
+    assert.equal(await page.locator('.real-site').evaluate(e => getComputedStyle(e).maskImage), 'none', 'Dragging the viewport taller must not uncover the old reveal fade');
   }
   await page.goto(`${base}/communications/`);
   assert.equal(await page.locator('html').getAttribute('data-theme'), 'light');
