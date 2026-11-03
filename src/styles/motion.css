@@ -6,6 +6,8 @@
 @supports (view-transition-group: contain) {
   .content-workspace { view-transition-name: avx-workspace; view-transition-group: contain; }
   :root.studio-motion::view-transition-group-children(avx-workspace) { overflow: clip; }
+  .contact-tile { view-transition-group: contain; }
+  :root.studio-motion::view-transition-group-children(avx-contact-glass) { overflow: clip; border-radius: inherit; }
 }
 :root.studio-motion::view-transition-group(*) {
   animation-duration: var(--motion-duration);
@@ -77,6 +79,10 @@
 :root.studio-motion::view-transition-group(avx-studio-glass) { border-radius: var(--motion-studio-radius,20px); }
 :root.studio-motion::view-transition-group(avx-work-glass) { border-radius: var(--motion-work-radius,20px); }
 :root.studio-motion::view-transition-group(avx-contact-glass) { border-radius: var(--motion-contact-radius,20px); }
+@supports (view-transition-group: contain) {
+  /* A real border would inset the nested snapshot origin by one pixel. */
+  :root.studio-motion::view-transition-group(avx-contact-glass) { border: 0; box-shadow: var(--studio-surface-light), inset 0 0 0 1px var(--studio-surface-border); }
+}
 :root.studio-motion::view-transition-old(avx-services-glass),
 :root.studio-motion::view-transition-new(avx-services-glass),
 :root.studio-motion::view-transition-old(avx-studio-glass),

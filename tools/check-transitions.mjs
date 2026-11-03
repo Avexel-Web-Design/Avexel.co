@@ -44,7 +44,9 @@ try {
       const style = getComputedStyle(document.documentElement, `::view-transition-group(${name})`);
       if (!style.width || style.width === 'auto') return [];
       const transform = new DOMMatrix(style.transform === 'none' ? undefined : style.transform);
-      return [[name, { x: transform.m41 + parent.m41, y: transform.m42 + parent.m42, width: parseFloat(style.width), height: parseFloat(style.height), radius: parseFloat(style.borderTopLeftRadius) }]];
+      const contact = nested && element.closest('.contact-tile') && name !== 'avx-contact-glass'
+        ? new DOMMatrix(getComputedStyle(document.documentElement, '::view-transition-group(avx-contact-glass)').transform) : new DOMMatrix();
+      return [[name, { x: transform.m41 + parent.m41 + contact.m41, y: transform.m42 + parent.m42 + contact.m42, width: parseFloat(style.width), height: parseFloat(style.height), radius: parseFloat(style.borderTopLeftRadius) }]];
     }));
   });
   for (const [width, height] of [[1440, 900], [1440, 700], [390, 844]]) {
@@ -69,6 +71,21 @@ try {
       }
       assert.equal(await page.locator('.content-morph,.morph-pane,.morph-visual').count(), 0, 'No script-owned text/card copies may be mounted');
       assert.equal(await page.locator('.content-workspace').evaluate(element => getComputedStyle(element).opacity), '1', 'The live website must never be hidden for a handoff');
+      if (width >= 768 && ['home', 'studio'].includes(from) && ['home', 'studio'].includes(to)) {
+        assert.ok(await page.locator('.contact-tile').evaluate(card => !CSS.supports('view-transition-group', 'contain') ||
+          (card.style.viewTransitionName === 'avx-contact-glass' && getComputedStyle(card).viewTransitionGroup === 'contain')),
+        'Contact must own the nested transition group so its text travels with the surface');
+        for (const time of [0, 78, 195, 312, 390, 468, 585, 702, 779.9]) {
+          await seek(time);
+          const frame = await groups();
+          const card = frame['avx-contact-glass'];
+          for (const name of ['avx-contact-label', 'avx-contact-arrow', 'avx-email']) {
+            const text = frame[name];
+            assert.ok(text.x >= card.x && text.y >= card.y && text.x + text.width <= card.x + card.width && text.y + text.height <= card.y + card.height,
+              `${width}px ${from} → ${to}: ${name} escapes Contact at ${time}ms`);
+          }
+        }
+      }
       await seek(390);
       const middle = await groups();
       if (width >= 768) {

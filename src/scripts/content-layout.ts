@@ -41,7 +41,9 @@ function nameContent() {
   name('introduction', '.identity-description p:last-child');
   for (const view of glassNames) {
     const card = `[data-panel="${view}"]`;
-    name(`${view}-glass`, `${card} .tile-material`);
+    // Keep Contact's text in the moving card's coordinate system. Independent
+    // viewport-space snapshots can drift outside it on the long Home/Team move.
+    name(`${view}-glass`, view === 'contact' && CSS.supports('view-transition-group', 'contain') ? card : `${card} .tile-material`);
     name(`${view}-label`, `${card} .tile-label`);
     name(`${view}-arrow`, `${card} .tile-heading h2 .icon`);
     name(`${view}-close`, `${card} .tile-close`);
