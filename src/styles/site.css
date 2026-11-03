@@ -5,24 +5,9 @@
   font-weight: 100 900;
   font-display: swap;
 }
-@font-face {
-  font-family: 'Geist Sans';
-  src: url('/fonts/geist-latin-var.woff2') format('woff2');
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Geist Mono';
-  src: url('/fonts/geist-mono-latin-var.woff2') format('woff2');
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-}
-
 /* Glass panels: 16px corners; controls: 8px. Header/menu layers: 10/11. */
 :root {
-  font-family: 'Geist Sans', system-ui, sans-serif;
+  font-family: Outfit, system-ui, sans-serif;
   color-scheme: dark;
   --bg: #000000;
   --text: #f2eef6;
@@ -43,11 +28,6 @@
   background: var(--bg);
   color: var(--text);
   font-synthesis: none;
-}
-/* The intentionally-generic "slop" intro site keeps Outfit; the real site uses Geist. */
-.demo-page { font-family: Outfit, system-ui, sans-serif; }
-.real-site :is(.project-caption > span, .project-selector button > span) {
-  font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 * { box-sizing: border-box; }
