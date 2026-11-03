@@ -133,6 +133,16 @@ export function morphContent(change: () => void, animate = true, complete?: () =
   const clipped = getComputedStyle(workspace).overflowY !== 'visible';
   root.style.setProperty('--motion-clip', `inset(${clipped ? bounds.top : 0}px ${clipped ? innerWidth - bounds.right : 0}px ${innerHeight - bounds.bottom}px ${clipped ? bounds.left : 0}px)`);
   nameContent();
+  const clipContactCopy = () => {
+    const card = workspace.querySelector<HTMLElement>('.contact-tile')!;
+    const copy = card.querySelector<HTMLElement>('[data-tile-detail]')!.getBoundingClientRect();
+    if (!copy.width) return;
+    const frame = card.getBoundingClientRect();
+    // Named snapshots escape their original card's overflow clip. Preserve it
+    // for the submit glow now that the button sits near the bottom edge.
+    root.style.setProperty('--motion-contact-copy-clip', `inset(${frame.top - copy.top}px ${copy.right - frame.right}px ${copy.bottom - frame.bottom}px ${frame.left - copy.left}px round ${getComputedStyle(card).borderRadius})`);
+  };
+  clipContactCopy();
   const radii = new Map(glassNames.map(view => [view, getComputedStyle(workspace.querySelector(`[data-panel="${view}"] .tile-material`)!).borderTopLeftRadius]));
   radii.forEach((radius, view) => root.style.setProperty(`--motion-${view}-radius`, canAnimateCorners ? radius : '20px'));
   const destinationRadii = new Map<string, string>();
@@ -157,6 +167,7 @@ export function morphContent(change: () => void, animate = true, complete?: () =
     }));
     if (token !== generation) return;
     nameContent();
+    clipContactCopy();
     glassNames.forEach(view => destinationRadii.set(view, getComputedStyle(workspace.querySelector(`[data-panel="${view}"] .tile-material`)!).borderTopLeftRadius));
   });
   motion.native = transition;

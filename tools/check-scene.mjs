@@ -292,6 +292,12 @@ try {
         }
       }
       if (view === 'contact') {
+        const insets = await page.locator('.inquiry-submit').evaluate(element => {
+          const button = element.getBoundingClientRect();
+          const card = element.closest('.contact-tile').getBoundingClientRect();
+          return { left: button.left - card.left, right: card.right - button.right, bottom: card.bottom - button.bottom };
+        });
+        assert.ok(Math.abs(insets.bottom - insets.left) < 1 && Math.abs(insets.bottom - insets.right) < 1, 'Send message must have matching bottom and side spacing');
         if (width >= 768) assert.ok(await page.locator('.studio-preview').isVisible(), 'The collapsed Studio summary must remain visible beside Contact');
         const borders = await page.locator('.inquiry-submit').evaluate(element => {
           const style = getComputedStyle(element);

@@ -495,3 +495,32 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
   .work-tile[data-expanded=true] .work-description p { font-size: 11px; }
   .work-tile[data-expanded=true] .tile-detail { margin-top: 10px; }
 }
+
+/* Keep the submit button on the card's bottom inset. The message field takes
+   the available space, and bottom/side insets share one responsive value. */
+.contact-tile[data-expanded=true] .tile-inner {
+  --contact-inset: clamp(24px,3vw,36px);
+  display: flex; flex-direction: column;
+  padding-inline: var(--contact-inset); padding-bottom: var(--contact-inset);
+}
+.contact-tile[data-expanded=true] .tile-detail { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.contact-tile[data-expanded=true] .inquiry-form { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.contact-tile[data-expanded=true] .inquiry-form > * { flex-shrink: 0; }
+.contact-tile[data-expanded=true] .field:has(textarea) { flex: 1; min-height: 0; }
+.contact-tile[data-expanded=true] .inquiry-form textarea { flex: 1; min-height: 60px; }
+.contact-tile[data-expanded=true] .inquiry-submit { margin-top: auto; }
+@media (max-width:1100px) and (min-width:768px) {
+  .contact-tile[data-expanded=true] .tile-inner { --contact-inset: 26px; }
+}
+@media (max-height:740px) and (min-width:768px) {
+  .contact-tile[data-expanded=true] .tile-inner { --contact-inset: 22px; }
+}
+@media (max-width:767px) {
+  .contact-tile[data-expanded=true] .tile-inner { --contact-inset: 20px; }
+}
+@media (max-height:740px) and (max-width:767px) {
+  .contact-tile[data-expanded=true] .tile-inner { --contact-inset: 16px; }
+}
+@media (max-height:620px) and (max-width:767px) {
+  .contact-tile[data-expanded=true] .tile-inner { --contact-inset: 14px; }
+}

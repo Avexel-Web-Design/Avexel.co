@@ -13,6 +13,7 @@
   z-index: 1;
 }
 :root.studio-motion::view-transition-image-pair(*) { isolation: isolate; }
+:root.studio-motion::view-transition-group(avx-contact-copy) { clip-path: var(--motion-contact-copy-clip,none); }
 :root.studio-motion::view-transition-old(*) {
   animation: studio-out var(--motion-fade-time) var(--motion-fade-delay) both;
   mix-blend-mode: plus-lighter;
