@@ -150,15 +150,12 @@ html.studio-fixed-corners .content-tile[data-expanded=true] { border-radius: 20p
 .bg-short { display: none; }
 /* The intro stacks as two lines at rest; when Studio is focused the lines
    join into one sentence with a comma. */
-.studio-introduction .comma { display: none; }
-.studio-tile[data-expanded=true] .studio-introduction .stop { display: none; }
-.studio-tile[data-expanded=true] .studio-introduction .comma { display: inline; }
 /* Separate named phrase layers move from stacked to side-by-side with the
    card. Inline blocks give each phrase its own measurable capture bounds. */
 .content-workspace .studio-tile[data-expanded=true] .studio-introduction { font-size: 17px; line-height: 1.5; color: #bba8ca; }
 .content-workspace .studio-tile[data-expanded=true] .studio-introduction strong { display: inline-block; font-size: 1em; line-height: inherit; font-weight: 400; letter-spacing: -.015em; color: #bba8ca; text-shadow: none; }
 .content-workspace .studio-tile[data-expanded=true] .studio-introduction .locale { display: inline-block; font-size: 1em; margin-top: 0; }
-.studio-introduction .locale::first-letter { text-transform: lowercase; }
+.studio-introduction .locale { width: fit-content; font-optical-sizing: none; }
 @media (max-width:767px) {
   .bg-full { display: none; }
   .bg-short { display: inline; }
