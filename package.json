@@ -40,6 +40,7 @@
     "test:transitions": "node tools/check-transitions.mjs",
     "test:theme": "node tools/check-theme.mjs",
     "test:theme-motion": "node tools/check-theme-motion.mjs",
+    "test:boot": "node tools/check-boot.mjs",
     "zone:check": "node tools/cloudflare-zone.mjs",
     "preview": "astro preview --host 0.0.0.0",
     "tunnel": "lt --port 4321 --local-host 127.0.0.1",

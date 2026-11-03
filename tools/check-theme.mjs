@@ -24,7 +24,7 @@ try {
         const close = await page.locator('.content-tile[data-expanded=true] .tile-close').boundingBox();
         const card = await page.locator('.content-tile[data-expanded=true]').boundingBox();
         assert.ok(Math.abs(close.y - card.y - (card.x + card.width - close.x - close.width)) < 1, 'Close button needs equal top and right corner insets');
-        const logo = await page.locator('.identity-wordmark img').boundingBox();
+        const logo = await page.locator('.identity-wordmark img:visible').boundingBox();
         const workspace = await page.locator('.content-workspace').boundingBox();
         assert.ok(Math.abs(logo.x - workspace.x) < 1, 'Brand mark must align to the left edge of the card grid');
       }
@@ -37,6 +37,15 @@ try {
         assert.ok(Math.abs(balance.top - balance.bottom) < 1, `Collapsed Contact must have equal vertical space at ${width}×${height} in ${view}`);
       }
       assert.equal(await page.locator('html').getAttribute('data-theme'), 'light', 'Light must be default even with a dark OS preference');
+      assert.equal(await page.locator('.identity-wordmark .brand-mark-light').isVisible(), true);
+      assert.equal(await page.locator('.identity-wordmark .brand-mark-dark').isVisible(), false);
+      if (width < 768 && view !== 'home') {
+        const offCenter = await page.locator('.content-tile:not([data-expanded=true]) .tile-inner').evaluateAll(elements => elements.filter(element => {
+          const frame = element.getBoundingClientRect(), title = element.querySelector('.tile-heading').getBoundingClientRect();
+          return Math.abs(title.top + title.height / 2 - frame.top - frame.height / 2) > 1;
+        }).map(element => element.parentElement.dataset.panel));
+        assert.deepEqual(offCenter, [], 'Every collapsed mobile rail title must be vertically centered');
+      }
       await checkAtlas(true);
       const toggle = page.getByRole('button', { name: 'Switch to dark mode' });
       const box = await toggle.boundingBox();
@@ -62,10 +71,13 @@ try {
       }
       await toggle.click();
       assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
+      assert.equal(await page.locator('.identity-wordmark .brand-mark-dark').isVisible(), true);
+      assert.equal(await page.locator('.identity-wordmark .brand-mark-light').isVisible(), false);
       await checkAtlas(false);
       assert.equal(await page.locator('.studio-shell').evaluate(e => getComputedStyle(e).backgroundColor), 'rgb(0, 0, 0)');
       await page.reload();
       await page.locator('.scroll-story[data-ready=true]').waitFor();
+      assert.equal(await page.locator('.identity-wordmark .brand-mark-dark').isVisible(), true, 'A saved dark theme must load the colored dark-mode logo on mobile too');
       await page.getByRole('button', { name: 'Switch to light mode' }).click();
       assert.equal(await page.locator('html').getAttribute('data-theme'), 'light');
     }

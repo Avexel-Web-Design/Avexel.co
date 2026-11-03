@@ -17,7 +17,7 @@ const inquiries = ['Website', 'Web application', 'Mobile app', 'Updates & fixes'
   <div class="content-workspace" data-content-view="home" data-transitioning="false">
     <ThemeToggle />
     <section class="identity-tile" data-panel="home" data-layout-piece aria-labelledby="home-title">
-      <h2 id="home-title"><button type="button" class="identity-wordmark" data-view="home" aria-label="Avexel home"><img src="/images/avexel-mark.webp" width="404" height="430" alt="" /><span aria-hidden="true" set:html={wordmark} /></button></h2>
+      <h2 id="home-title"><button type="button" class="identity-wordmark" data-view="home" aria-label="Avexel home"><img class="brand-mark-dark" src="/images/avexel-mark.webp" width="404" height="430" alt="" /><img class="brand-mark-light" src="/images/avexel-mark-light.webp" width="404" height="430" alt="" /><span aria-hidden="true" set:html={wordmark} /></button></h2>
     </section>
 
     <section class="content-tile services-tile" data-panel="services" data-layout-piece aria-labelledby="services-title">
@@ -25,7 +25,7 @@ const inquiries = ['Website', 'Web application', 'Mobile app', 'Updates & fixes'
       <div class="tile-inner"><header class="tile-heading"><h2 id="services-title"><button type="button" data-view="services"><span class="tile-label">Services</span><Icon name="arrowUpRight" /></button></h2><button class="tile-close" type="button" data-view="home" aria-label="Close Services and return home" disabled aria-hidden="true"><Icon name="plus" /></button></header>
         <p class="services-intro">We handle the design and development.</p>
         <dl class="service-offerings">{services.map(service => <div data-service-offering={service.id}><dt><span class="service-label">{service.label}</span></dt><dd>{service.description}</dd></div>)}</dl>
-        <div class="tile-detail" data-tile-detail hidden><p class="services-support">We also fix, update, and extend existing projects.</p></div>
+        <div class="tile-detail" data-tile-detail hidden><p class="services-support">We also fix, update, and extend existing projects.</p><p class="services-support">You own everything we build for you — content, code, and all.</p></div>
       </div>
     </section>
 
@@ -35,7 +35,7 @@ const inquiries = ['Website', 'Web application', 'Mobile app', 'Updates & fixes'
         <div class="studio-preview"><p class="studio-introduction"><strong>Student-led team,</strong> <span class="locale">based in Harbor Springs.</span></p></div>
         <div class="tile-detail" data-tile-detail hidden>
         <div class="studio-people"><div><h3>Ryan Latimer</h3><p class="person-role">Operations & development</p><p class="person-background"><span class="bg-full">Harbor Springs High School junior · Captain & programming lead, Baywatch Robotics</span><span class="bg-short">Harbor Springs junior · Baywatch captain</span></p></div><div><h3>Gavin Moceri</h3><p class="person-role">Development · <a href="https://gavinmoceri.com" target="_blank" rel="noreferrer">Portfolio <Icon name="arrowUpRight" /></a></p><p class="person-background"><span class="bg-full">Michigan Technological University freshman · Former Baywatch captain & design lead, now mentor</span><span class="bg-short">Michigan Technological University freshman · Baywatch mentor</span></p></div><div><h3>Conner Breckenfeld</h3><p class="person-role">Client outreach, photography & drone</p><p class="person-background"><span class="bg-full">Northern Michigan University freshman · Former Baywatch assistant captain & build lead, now mentor</span><span class="bg-short">NMU freshman · Baywatch mentor</span></p></div><div><h3>Brooke Winkler</h3><p class="person-role">Client outreach & social · <a href="https://brookewinkler.com" target="_blank" rel="noreferrer">Portfolio <Icon name="arrowUpRight" /></a></p><p class="person-background"><span class="bg-full">Michigan Technological University freshman · Former captain, FRC 7598 SCA Constellations</span><span class="bg-short">Michigan Technological University freshman · Former FRC 7598 captain</span></p></div></div>
-        <div class="studio-roots"><p>Our work helps fund Baywatch Robotics and STEM education.</p><div class="studio-links"><a class="team-link" href="https://frc7790.com" target="_blank" rel="noreferrer"><img src="/baywatchLogo.webp" width="72" height="72" alt="" /><span>Baywatch Robotics</span><Icon name="arrowUpRight" /></a><a class="plain-link" href="/communications/">Client guide <Icon name="arrowUpRight" /></a></div></div>
+        <div class="studio-roots"><p>Our work helps fund Baywatch Robotics and STEM education.</p><div class="studio-links"><a class="team-link" href="https://frc7790.com" target="_blank" rel="noreferrer"><img src="/images/baywatch-mark.webp" width="144" height="144" alt="" /><span>Baywatch Robotics</span><Icon name="arrowUpRight" /></a><a class="plain-link" href="/communications/">Client guide <Icon name="arrowUpRight" /></a></div></div>
         </div></div>
     </section>
 

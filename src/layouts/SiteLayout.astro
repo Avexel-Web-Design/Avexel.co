@@ -20,7 +20,16 @@ const isHome = Astro.url.pathname === '/';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    {immersive && <script is:inline>document.documentElement.dataset.sceneBoot = 'pending';</script>}
+    {immersive && <script is:inline>
+      (() => {
+        document.documentElement.dataset.sceneBoot = 'pending';
+        const clearSceneBoot = () => document.documentElement.removeAttribute('data-scene-boot');
+        // A stalled font request or a failed script must never leave the page hidden.
+        window.setTimeout(clearSceneBoot, 6000);
+        window.addEventListener('error', event => { if (event.error) clearSceneBoot(); });
+        window.addEventListener('unhandledrejection', clearSceneBoot);
+      })();
+    </script>}
     <meta name="description" content={description} />
     <meta name="theme-color" content="#ffffff" />
     <meta name="color-scheme" content="light dark" />
@@ -33,8 +42,6 @@ const isHome = Astro.url.pathname === '/';
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="sitemap" href="/sitemap.xml" />
     <link rel="preload" href="/fonts/outfit-var.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/geist-latin-var.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/geist-mono-latin-var.woff2" as="font" type="font/woff2" crossorigin />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
