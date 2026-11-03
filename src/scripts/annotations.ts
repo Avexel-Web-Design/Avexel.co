@@ -1,8 +1,30 @@
 interface Box { left: number; top: number; right: number; bottom: number; }
+type Side = 'left' | 'right' | 'top' | 'bottom';
 
 const clamp = (min: number, max: number, value: number) => Math.max(min, Math.min(max, value));
 const overlaps = (a: Box, b: Box, gap = 0) => a.left < b.right + gap && a.right > b.left - gap && a.top < b.bottom + gap && a.bottom > b.top - gap;
 const boxAt = (x: number, y: number, width: number, height: number): Box => ({ left: x, top: y, right: x + width, bottom: y + height });
+
+// Point at the subject from the edge it actually faces. When the subject sits
+// past a corner, use the nearer edge; the offset can only slide along that
+// edge, so report how far the pointer falls short of the subject's center.
+function pointerAt(box: Box, centerX: number, centerY: number) {
+  const gaps = {
+    left: Math.max(0, box.left - centerX),
+    right: Math.max(0, centerX - box.right),
+    top: Math.max(0, box.top - centerY),
+    bottom: Math.max(0, centerY - box.bottom),
+  };
+  const side: Side = Math.max(gaps.left, gaps.right) > Math.max(gaps.top, gaps.bottom)
+    ? gaps.right > gaps.left ? 'right' : 'left'
+    : gaps.bottom > gaps.top ? 'bottom' : 'top';
+  const horizontal = side === 'top' || side === 'bottom';
+  const start = horizontal ? box.left : box.top;
+  const span = horizontal ? box.right - box.left : box.bottom - box.top;
+  const desired = (horizontal ? centerX : centerY) - start;
+  const offset = clamp(12, Math.max(12, span - 12), desired);
+  return { side, offset, error: Math.abs(desired - offset) };
+}
 
 function textBoxes(element: HTMLElement): Box[] {
   const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
@@ -85,10 +107,14 @@ export function layoutAnnotations(scene: HTMLElement) {
       const baselineAlignment = note.dataset.note === 'label' && (candidate.left >= rect.right || candidate.right <= rect.left)
         ? Math.abs((candidate.top + candidate.bottom) / 2 - centerY) * 2 : 0;
       // A stacked label callout needs room for its short attached triangle.
-      // Nudge it toward the same tested spacing band the side alignment uses.
+      // Nudge it toward the same tested spacing band the side alignment uses,
+      // and prefer a spot where the triangle can actually reach the subject
+      // instead of stopping at a clamped corner. Tiny corner nudges are fine.
+      const pointer = pointerAt(candidate, centerX, centerY);
+      const pointerError = Math.max(0, pointer.error - 10) * 2;
       const labelGap = note.dataset.note === 'label' && (candidate.bottom <= rect.top || candidate.top >= rect.bottom)
         ? Math.abs((candidate.bottom <= rect.top ? rect.top - candidate.bottom : candidate.top - rect.bottom) - 11.5) * 10 : 0;
-      const score = covered * 1000000000 + collisions * 1000000 + distance * 3 + displacement * .2 + baselineAlignment + labelGap;
+      const score = covered * 1000000000 + collisions * 1000000 + distance * 3 + displacement * .2 + baselineAlignment + pointerError + labelGap;
       if (score < bestScore) { best = candidate; bestScore = score; }
     }
     note.style.left = `${best.left - origin.left}px`;
@@ -99,16 +125,9 @@ export function layoutAnnotations(scene: HTMLElement) {
     occupied.push(best);
 
     // Each callout has a short, attached triangle facing its subject.
-    const labelX = (best.left + best.right) / 2;
-    const labelY = (best.top + best.bottom) / 2;
-    const dx = (centerX - labelX) / width;
-    const dy = (centerY - labelY) / height;
-    const side = Math.abs(dx) > Math.abs(dy) ? dx > 0 ? 'right' : 'left' : dy > 0 ? 'bottom' : 'top';
-    note.dataset.pointer = side;
-    const offset = side === 'top' || side === 'bottom'
-      ? clamp(12, width - 12, centerX - best.left)
-      : clamp(12, height - 12, centerY - best.top);
-    note.style.setProperty('--pointer-offset', `${offset}px`);
+    const pointer = pointerAt(best, centerX, centerY);
+    note.dataset.pointer = pointer.side;
+    note.style.setProperty('--pointer-offset', `${pointer.offset}px`);
   }
   scene.dataset.annotationSize = `${scene.clientWidth}x${scene.clientHeight}`;
 }

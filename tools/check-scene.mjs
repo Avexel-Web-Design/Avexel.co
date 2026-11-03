@@ -84,6 +84,18 @@ try {
       });
       assert.ok(nudges.brandBaseline < 10 && nudges.labelAligned && nudges.plusGap >= 8 && nudges.plusGap <= 15, `The requested callout nudges should align with their subjects: ${JSON.stringify(nudges)}`);
     }
+    if (page.viewportSize().width >= 768) {
+      const pointers = await page.evaluate(() => [...document.querySelectorAll('[data-note="artsecond"],[data-note="period"]')].filter(note => note.getBoundingClientRect().width).map(note => {
+        const box = note.getBoundingClientRect();
+        const target = document.querySelector(note.dataset.target).getBoundingClientRect();
+        const horizontal = note.dataset.pointer === 'top' || note.dataset.pointer === 'bottom';
+        const point = (horizontal ? box.left : box.top) + parseFloat(getComputedStyle(note).getPropertyValue('--pointer-offset'));
+        const [start, end] = horizontal ? [target.left, target.right] : [target.top, target.bottom];
+        return { note: note.dataset.note, offBy: Math.round(Math.max(start - point, 0, point - end)) };
+      }));
+      assert.equal(pointers.length, 2, 'Both aligned callouts must be visible at desktop widths');
+      assert.ok(pointers.every(pointer => pointer.offBy <= 6), `Triangles must land on the plus sign and full stop, not a clamped corner: ${JSON.stringify(pointers)}`);
+    }
   };
 
   await page.goto(base);
