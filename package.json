@@ -38,6 +38,7 @@
     "lint": "oxlint",
     "test:browser": "node tools/check-scene.mjs",
     "test:transitions": "node tools/check-transitions.mjs",
+    "test:mobile-entry": "node tools/check-mobile-entry.mjs",
     "test:theme": "node tools/check-theme.mjs",
     "test:theme-motion": "node tools/check-theme-motion.mjs",
     "test:boot": "node tools/check-boot.mjs",

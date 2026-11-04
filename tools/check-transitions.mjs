@@ -113,7 +113,7 @@ try {
         const opacity = () => page.evaluate(names => names.map(name => Number(getComputedStyle(document.documentElement, `::view-transition-new(avx-${name})`).opacity)), contentNames);
         assert.ok((await opacity()).every(value => value === 0), `${from} → ${to}: mobile body copy must wait for the moving title`);
         await seek(702);
-        assert.ok((await opacity()).every(value => value > 0 && value < 1), `${from} → ${to}: mobile content must fade in, not appear instantly`);
+        assert.ok((await opacity()).every(value => value === 0), `${from} → ${to}: mobile content waits until snapshot retirement before its live-DOM fade`);
         await seek(390);
       }
       if (width >= 768) {
@@ -168,9 +168,8 @@ try {
         assert.equal(preview.fit, 'cover');
       }
       if (from === 'home' && to === 'services' && width === 1440) await page.screenshot({ path: '/tmp/opencode/native-audit-middle.png', scale: 'css' });
-      // Mobile copy finishes its fade just after the card reaches its destination.
-      await seek(width < 768 ? 889.1 : 779.9);
-      const ink = await page.locator('.content-workspace .identity-wordmark > span,.content-workspace .tile-label,.content-workspace .service-label,.content-workspace .studio-introduction,.content-workspace .services-intro,.content-workspace .service-offerings dd,.content-workspace .services-support,.content-workspace .studio-people h3,.content-workspace .studio-people p,.content-workspace .contact-methods a,.content-workspace .inquiry-form label,.content-workspace .work-description h3,.content-workspace .work-description p').evaluateAll(elements => elements.filter(element => element.getBoundingClientRect().width).map(element => ({ text: element.textContent, ...element.getBoundingClientRect().toJSON() })));
+      await seek(779.9);
+      const ink = await page.locator('.content-workspace .identity-wordmark > span,.content-workspace .tile-label,.content-workspace .service-label,.content-workspace .studio-introduction,.content-workspace .services-intro,.content-workspace .service-offerings dd,.content-workspace .services-support,.content-workspace .studio-people h3,.content-workspace .studio-people p,.content-workspace .contact-methods a,.content-workspace .inquiry-form label,.content-workspace .work-description h3,.content-workspace .work-description p').evaluateAll(elements => elements.filter(element => element.getBoundingClientRect().width && element.checkVisibility({ checkOpacity: true }) && ![...element.querySelectorAll('[style]')].some(child => child.style.opacity === '0')).map(element => ({ text: element.textContent, ...element.getBoundingClientRect().toJSON() })));
       const renderedDestination = pngPixels(await page.screenshot({ scale: 'css' }));
       await finish();
       const retired = [pngPixels(await page.screenshot({ scale: 'css' }))];

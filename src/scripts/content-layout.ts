@@ -5,8 +5,9 @@ const pieces = [...document.querySelectorAll<HTMLElement>('[data-layout-piece]')
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
 const root = document.documentElement;
 const registered = new Set<HTMLElement>();
-// Avoid relying on :only-child support in the view-transition tree. Target
-// entering snapshots by name instead, using visibility in both layouts.
+// New mobile copy fades on the original DOM after the card arrives. WebKit can
+// paint that DOM behind transparent snapshots, so snapshot opacity alone is not
+// sufficient to keep it hidden during the move.
 const enteringStyles = document.createElement('style');
 document.head.append(enteringStyles);
 const glassNames = ['services', 'studio', 'work', 'contact'];
@@ -22,7 +23,7 @@ const canAnimateCorners = (() => {
 if (!canAnimateCorners) root.classList.add('studio-fixed-corners');
 
 interface PendingMotion { changes: (() => void)[]; complete?: () => void; duration: number; }
-interface ActiveMotion { native?: ViewTransition; fade?: gsap.core.Timeline; rounds: Animation[]; }
+interface ActiveMotion { native?: ViewTransition; fade?: gsap.core.Timeline; rounds: Animation[]; entering?: Map<HTMLElement, string>; }
 let active: ActiveMotion | undefined;
 let pending: PendingMotion | undefined;
 let generation = 0;
@@ -87,6 +88,10 @@ function nameContent() {
 
 function cleanup() {
   enteringStyles.textContent = '';
+  active?.entering?.forEach((opacity, element) => {
+    if (opacity) element.style.opacity = opacity;
+    else element.style.removeProperty('opacity');
+  });
   active?.rounds.forEach(animation => animation.cancel());
   root.classList.remove('studio-motion');
   delete root.dataset.motionPhase;
@@ -138,9 +143,10 @@ export function morphContent(change: () => void, animate = true, complete?: () =
   root.style.setProperty('--motion-fade-time', `${duration * .25}s`);
   root.style.setProperty('--motion-fade-delay', `${duration * .65}s`);
   const mobile = matchMedia('(max-width:767px)').matches;
-  // Start near arrival, but allow a perceptible fade to outlast the card move.
-  root.style.setProperty('--motion-enter-delay', `${duration * (mobile ? .84 : .6)}s`);
-  root.style.setProperty('--motion-enter-time', `${duration * (mobile ? .3 : .25)}s`);
+  // Desktop entry stays within the card movement. New mobile copy is revealed
+  // on the live DOM after snapshot retirement instead (see transition.finished).
+  root.style.setProperty('--motion-enter-delay', `${duration * .6}s`);
+  root.style.setProperty('--motion-enter-time', `${duration * .25}s`);
   const bounds = workspace.getBoundingClientRect();
   const clipped = getComputedStyle(workspace).overflowY !== 'visible';
   root.style.setProperty('--motion-clip', `inset(${clipped ? bounds.top : 0}px ${clipped ? innerWidth - bounds.right : 0}px ${innerHeight - bounds.bottom}px ${clipped ? bounds.left : 0}px)`);
@@ -183,9 +189,11 @@ export function morphContent(change: () => void, animate = true, complete?: () =
     const nextNames = nameContent();
     if (mobile) {
       const entering = [...nextNames].filter(name => !previousNames.has(name));
+      motion.entering = new Map([...registered].filter(element => entering.includes(element.style.viewTransitionName)).map(element => [element, element.style.opacity]));
+      motion.entering.forEach((_, element) => { element.style.opacity = '0'; });
       enteringStyles.textContent = entering.length ? `${entering.map(name =>
         `:root.studio-motion[data-motion-engine=native]::view-transition-new(${name})`
-      ).join(',')} { animation: studio-in var(--motion-enter-time) var(--motion-enter-delay) both; }` : '';
+      ).join(',')} { animation: none; opacity: 0; }` : '';
     }
     root.dataset.motionStudioLocation = fromLocation && locationVisible() ? 'continuous' : '';
     clipContactCopy();
@@ -212,7 +220,15 @@ export function morphContent(change: () => void, animate = true, complete?: () =
       }));
     }
   }, () => { /* The browser may skip a capture when the tab becomes hidden. */ });
-  void transition.finished.then(done, done);
+  const reveal = () => {
+    if (token !== generation) return;
+    if (!motion.entering?.size || document.hidden || reduce.matches) { done(); return; }
+    root.dataset.motionPhase = 'revealing';
+    motion.fade = gsap.timeline({ onComplete: done }).to([...motion.entering.keys()], {
+      opacity: 1, duration: .24, ease: 'power1.out',
+    });
+  };
+  void transition.finished.then(reveal, reveal);
 }
 
 export function arrangeContent(view: string, animate = false, complete?: () => void) {
