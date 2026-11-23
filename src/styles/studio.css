@@ -56,7 +56,7 @@ html[data-motion-engine=fade] .content-workspace[data-transitioning=true] * { po
 .supporting-projects article:not([hidden]) { height: 100%; display: flex; flex-direction: column; }
 .work-frame { display: contents; }
 .work-image { display: block; min-height: 0; flex: 1; position: relative; overflow: hidden; border: 1px solid var(--studio-line); border-radius: 10px; background: #0a060e; }
-.work-image img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.work-image img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: left top; }
 .work-image > span { position: absolute; bottom: 0; right: 0; display: flex; gap: 10px; align-items: center; padding: 11px 14px; background: #1c1129f0; color: #e1c3f8; font-size: 12px; border-radius: 10px 0 0 0; }
 .work-image .icon { height: 14px; width: 14px; }
 .work-description { padding-top: 13px; }

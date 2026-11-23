@@ -52,7 +52,7 @@
 :root.studio-motion::view-transition-group(avx-project-image) { overflow: clip; border-radius: 10px; }
 :root.studio-motion::view-transition-image-pair(avx-project-image) { width: 100%; height: 100%; }
 :root.studio-motion::view-transition-old(avx-project-image),
-:root.studio-motion::view-transition-new(avx-project-image) { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+:root.studio-motion::view-transition-new(avx-project-image) { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
 /* Opening or closing Work changes how the same shot is framed. Keep the full
    frame visible for the whole move so the card resizes the picture instead of
    cross-fading a compact crop into the open one near the end. */
